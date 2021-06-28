@@ -1,0 +1,57 @@
+{%load static %}
+<!DOCTYPE html>
+<html dir="rtl">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link type="text/css" rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+        <link type="text/css" rel="stylesheet" href="{% static 'css/uielements.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/home.css' %}" />
+        <script type="application/javascript" src="{% static 'js/main.js' %}" ></script>
+        <script type="application/javascript" src="{% static 'js/api.js' %}"></script>
+
+
+        <style>
+            @font-face {
+                font-family: iranSANS;
+                src: url("{% static 'fonts/IranianSans.ttf' %}");
+            }
+            
+            @font-face {
+                font-family: NerkoOne-Regular;
+                src: url("{% static 'fonts/NerkoOne-Regular.ttf' %}");
+            }
+            
+            
+            
+            *{
+                font-family: iranSANS,NerkoOne-Regular;
+            }
+        </style>
+    </head>
+
+
+    <body>
+        <div class="side-box" id="side-box">
+            <p>
+             <span class="fa fa-times" onclick="showSidebox();" 
+                   style="cursor:pointer;color: rgb(248, 76, 76);position:absolute;top:1%;left:2%;z-index:200"></span>
+            </p>
+             <div  style="background-color: white;"  id="side-box-content" class="container">
+         
+             </div>
+         </div>
+         <div class="overlay" id="overlay">
+         
+         </div>
+        {% include 'navbar.html' %}
+        {% block content %}
+            
+        {% endblock %}
+        {% include 'footer.html' %}
+    </body>
+
+</html>

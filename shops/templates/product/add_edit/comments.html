@@ -1,0 +1,102 @@
+
+<div class="container" style="width: 98%;">
+    <p class="field">
+        <label class="caption" for="fname">نوع محصول</label>
+        <div class="combobox">
+            <div data-dropdown="drop" onclick="openCombobox();" class="select">لباس
+                <span class="toggle"></span>
+            </div>
+            <div onclick="comboboxSelectItem()" id="drop" class="dropdown">
+                <div class="item selected">لباس</div>
+                <div class="item">کیف</div>
+                <div class="item">کفش</div>
+            </div>
+        </div>
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">دسته بندی</label>
+        <div class="list-box" style="background-color: white;">
+            <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="دسته محصول">
+            <div id="categories" style="height: 10vh;font-size:0.8rem;" onclick="listboxSelect();" class="items">
+                <div class="item">
+                    زنانه
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    مردانه
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    بچگانه
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    اکسسوری
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+              
+            </div>
+        </div>
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">رده محصول</label>
+        <div class="list-box" style="background-color: white;">
+            <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
+            <div  id="subtypes" style="height: 10vh;font-size:0.8rem;" onclick="listboxSelect();" class="items">
+                <div class="item">
+                    معمولی
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    رسمی
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    ورزشی
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    راحتی
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    مدرسه ای
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    استوک
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+            </div>
+        </div>
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">برند</label>
+        <div class="list-box" style="background-color: white;">
+            <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
+            <div  id="subtypes" style="height: 10vh;font-size:0.8rem;" onclick="listboxSelect();" class="items">
+                <div class="item">
+                    نایک
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    پوما
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    آدیداس
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    دیانجی
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    اشتون
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+            </div>
+        </div>
+    </p>
+
+</div>

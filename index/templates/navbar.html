@@ -1,0 +1,26 @@
+<nav class="navbar">
+    <span class="logo">
+        <span style="color:red">On</span>Mode
+    </span>
+   <div class="nav">
+    <a href="#" class="nav-item">خانه</a>
+    <a href="#" class="nav-item">بوتیکها</a>
+    <a href="#" class="nav-item">محصولات</a>
+    <a href="#" class="nav-item">تخفیف</a>
+    <a href="#" class="nav-item">وبلاگ</a>
+   </div>
+
+   <div class="nav" style="flex: 10%;display:flex;justify-content: center;align-items:center;">
+       <span class="fa fa-search icon" onclick="toggle_search_box();"></span>
+       <span class="fa fa-heart icon" onclick="show_filter();"></span>
+       <span class="fa fa-user icon" data-target="{% url 'users:enrollment' %}" onclick="show_enrollment_form();"></span>
+       <span class="fa fa-shopping-basket icon"></span>
+   </div>
+</nav>
+
+<!--------------search box------------>
+<form id="search-box" class="search-box">
+    <input type="text" placeholder="جستجو..." class="text"></div>
+    <div onclick="toggle_search_box();" class="close-btn">&times;</div>
+</form>
+<!------------------------------------->

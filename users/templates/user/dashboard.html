@@ -1,0 +1,116 @@
+<style>
+    .badge{
+        position: absolute;
+        top: 40%;
+        padding: 0.5rem;
+        left: 5%;
+        font-size: 0.7rem;
+        background-color: rgb(253, 40, 40);
+        color: white;
+        border-radius: 4px;
+    }
+    .list {
+        display: flex;
+        flex-direction: column;
+        line-height: 0.1rem;
+        width: 100%;
+    }
+
+    .list .list-item {
+        background-color: transparent;
+        position: relative;
+        cursor: pointer;
+        color: rgb(87, 87, 87);
+        font-size: 0.8rem;
+        border-bottom: 1px solid rgb(243, 243, 243);
+    }
+    .list .list-item:hover{
+        background-color: rgb(240, 240, 240);
+    }
+    @media screen and (min-width:1024px) {
+        .side-box-show {
+            width: 25vw;
+        }
+       
+    }
+</style>
+<div class="list">
+        <div class="list-item">
+            <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column">
+                <p style="text-align:center;">موجودی حساب</p> 
+                <p style="color: rgb(133, 133, 133);font-size:1.5rem;text-align:center">
+                    25800
+                    <span style="font-size: 0.8rem;color:darkcyan">تومان</span>
+                    </p>
+                
+            </div>
+        </div>
+
+        <div class="list-item">
+            <div style="display: flex;font-size:0.5em">
+                <button style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-primary">افزایش موجودی</button>
+                <button style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-success">تسویه حساب</button>
+            </div>
+        </div>
+
+        <div class="list-item">
+            <p onclick="get_profile();" style="padding: 0.5rem;">
+                ویرایش مشخصات
+            </p>
+        </div>
+              <div class="list-item">
+                  <p style="padding: 0.5rem;">
+                     سفازشهای من
+                  </p>
+              </div>
+              <div class="list-item">
+                  <p style="padding: 0.5rem;">
+                     پیامها
+                     
+                  </p>
+                  <span class="badge">4</span>
+              </div>
+              <div class="list-item">
+                 <button style="border-radius:0;width: 100%;" class="btn btn-primary" >درخواست ایجاد بوتیک</button>
+              </div>
+              {% if user.is_seller %}
+              <div class="list-item caption">
+                <p style="text-align: center;font-weight:bold;cursor:default">
+                    مدیریت بوتیک
+                </p>
+             </div>
+             <div class="list-item">
+                <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column">
+                   <p style="text-align:center;">تعداد مشتریها</p> 
+                   <p style="color: rgb(50, 192, 69);font-size:1.2rem;text-align:center">
+                       258
+                    </p>
+                   
+                </div>
+            </div>
+            <div class="list-item">
+                <p style="padding: 0.5rem;">
+                   ویرایش مشخصات بوتیک
+                </p>
+            </div>
+            <div class="list-item">
+                <p style="padding: 0.5rem;">
+                   افزودن محصول
+                </p>
+            </div>
+            <div class="list-item">
+                <p style="padding: 0.5rem;">
+                   لیست همه محصولات
+                </p>
+            </div>
+            <div class="list-item">
+                <p style="padding: 0.5rem;">
+                   سفارشها
+                </p>
+                <span class="badge">5</span>
+            </div>
+              {% endif %}
+            <div class="list-item">
+                <button onclick="logout();"  style="border-radius:0;width: 100%;" class="btn btn-primary" >خروج</button>
+            </div>
+</div>

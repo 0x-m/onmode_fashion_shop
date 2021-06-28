@@ -1,0 +1,75 @@
+<style>
+    .container {
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0.7rem;
+        width: 97%;
+        
+    }
+    
+    @media screen and (min-width: 1024px) {
+        .side-box-show {
+            width: 30vw;
+        }
+        
+    }
+  
+</style>
+<div class="container">
+    <p class="field">
+        <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
+        <label style="width: 100%;text-align:center;font-size:1rem" class="caption" for="fname">www.onemode.ir/myb</label>
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">عنوان بوتیک</label>
+        <input  id="fname" class="text-box" type="text" placeholder="عنوان بوتیک" />
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">درباره بوتیک</label>
+        <textarea rows="5"  id="fname" class="text" type="text" placeholder="درباره بوتیک" >
+        </textarea>
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">لوگو</label>
+        <input  id="fname" class="text-box" type="file" />
+        <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت بشد</span>
+    </p>
+    <p class="field">
+        <label class="caption" for="fname">بنر</label>
+        <input  id="fname" class="text-box" type="file" />
+        <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو برند از 300 کیلوبایت بشد</span>
+       
+    </p>
+    <p class="field" style="margin-top: 1rem;">
+        <label class="caption" for="fname">ارسال پستی به استانهای</label>
+        <div class="list-box" style="background-color: white;width:100%">
+            <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">
+            <div id="categories" onclick="listboxSelect();" class="items">
+                <div class="item">
+                    سراسر ایران
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    کرمان
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    ایلام
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    گیلان
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+                <div class="item">
+                    بوشهر
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+            </div>
+        </div>
+    </p>
+    <p class="field" style="margin-top: -1rem;margin-bottom:1rem;">
+        <button type="button" class="btn btn-primary" style="width:100%;" >ثبت</button>
+    </p>
+</div>
+</div>

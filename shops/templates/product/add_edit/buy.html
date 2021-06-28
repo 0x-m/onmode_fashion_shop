@@ -1,0 +1,45 @@
+<style>
+    .text-box::placeholder {
+        color: rgb(139, 138, 138) !important;
+        text-align: center;
+    }
+  
+</style>
+<p style="text-align:center;font-size:1.5rem">
+    <input type="text" class="text-box" id="product-name" placeholder="عنوان محصول">
+</p>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+    <p style="text-align:center;position:relative">
+        <input  type="text" class="text-box" placeholder="قیمت" >
+        <span style="position:absolute;top:30%;left:5%;font-size:0.6rem;">تومان</span>
+    </p>
+    <p style="font-size:0.8rem">رنگ های موجود:</p>
+    <div onclick="select_multi_color();" style="flex-wrap: wrap;" class="inline-list" >
+        <div class="color" style="background-color: red;"></div>
+        <div class="color" style="background-color: green;"></div>
+        <div class="color" style="background-color: yellow;"></div>
+        <div class="color" style="background-color: black;"></div>
+        <div class="color" style="background-color: rgb(233, 230, 230);"></div>
+    </div>
+    <p style="font-size:0.8rem">سایز های موجود:</p>
+    <div onclick="select_multi_size();;" class="inline-list">
+        <div class="size">X</div>
+        <div class="size">XL</div>
+        <div class="size">S</div>
+        <div class="size">M</div>
+        <div class="size">XL</div>
+    </div>
+    <p style="font-size:0.8rem">موجودی:</p>
+    <div class="number-box">
+        <span onclick="increment();" class="inc">&plus;</span>
+        <input onkeypress="sentinel();" id="num1" type="text" value="1" class="text" disabled>
+        <span onclick="decrement();" class="dec">&minus;</span>
+    </div>
+    
+    <p style="font-size: 0.8rem;">نمایه:</p>
+    <input type="file" accept=".jpg,.jpeg,.png, .webp" class="text-box"  >
+    <!-- <p style="width: 50%;">
+        <button style="width: 100%;" class="send-btn">ثبت</button>
+    </p> -->
+</div>

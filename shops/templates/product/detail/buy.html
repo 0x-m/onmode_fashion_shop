@@ -1,0 +1,40 @@
+<p style="text-align:center;font-size:1.5rem">
+    نام لباس
+</p>
+<p style="text-align:center;font-size:1rem">
+   قیمت
+</p>
+<p style="color:rgb(158, 158, 158);text-align:center;font-size:0.8rem;margin-top:-0.2rem">
+   نام بوتیک
+</p>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+    <p style="font-size:0.8rem">رنگ دلخواه را انتخاب کنید:</p>
+    <div onclick="select_color()" class="inline-list" >
+        <div class="color" style="background-color: red;"></div>
+        <div class="color" style="background-color: green;"></div>
+        <div class="color" style="background-color: yellow;"></div>
+        <div class="color" style="background-color: black;"></div>
+        <div class="color" style="background-color: rgb(233, 230, 230);"></div>
+    </div>
+    <p style="font-size:0.8rem">سایز دلخواه را انتخاب کنید:</p>
+    <div onclick="select_size();" class="inline-list">
+        <div class="size">X</div>
+        <div class="size">XL</div>
+        <div class="size">S</div>
+        <div class="size">M</div>
+        <div class="size">XL</div>
+    </div>
+    <p style="font-size:0.8rem">تعداد:</p>
+    <div class="number-box">
+        <span onclick="increment();" class="inc">&plus;</span>
+        <input onkeypress="sentinel();" id="num1" type="text" value="1" class="text" disabled>
+        <span onclick="decrement();" class="dec">&minus;</span>
+    </div>
+    <p>
+        <button class="send-btn">افزودن به لیست خرید</button>
+        <button class="send-btn">
+            <span class="fa fa-heart"></span>
+        </button>
+    </p>
+</div>

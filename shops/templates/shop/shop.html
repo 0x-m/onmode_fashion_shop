@@ -1,0 +1,521 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .description{
+        padding-top: 3rem;
+        background-color: #fbfbfb;
+        word-wrap: break-word;
+        line-break: loose;
+        white-space: pre-line;
+
+    }
+    .banner {
+        width: 100%;
+        border-bottom: 1px solid lightgray;
+    }
+    .shop-logo {
+        position: absolute;
+        bottom: -12.5vw;
+        background-color: white;
+        left: 37.5vw;
+        width: 25vw;
+        height: 25vw;
+        border-radius: 50%;
+        border: 1px solid lightgray;
+        padding: 0.2rem;
+    }
+    .filter-btn{
+        float: right;
+        margin-right: 1rem;
+        border-radius: 2px;
+        background-color: #f34545;
+        padding: 0.5rem;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        bottom: -1rem;
+    }
+
+    .filter-container {
+        flex :20%;
+        display: block;
+        z-index: 5000;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 0vw;
+        height: 100vh;
+        overflow-y: auto;
+        transition:  0.5s;
+        box-shadow: 1px 0px 5px rgb(175, 175, 175);
+
+    }
+    .show-filter{
+        width: 80vw;
+    }
+    .product {
+        min-width: 40vw;
+        max-width: 40vw;
+    }
+
+    .remove{
+        display: block;
+    }
+  
+    @media screen and (min-width:576px) {
+        .product {
+            min-width: 20vw;
+            max-width: 20vw;
+        }
+        .shop-logo {
+            bottom: -7.5vw;
+            left: 42.5vw;
+            width: 15vw;
+            height: 15vw;
+        }
+        
+    }
+    @media screen and (min-width:768px) {
+        .shop-logo {
+            position: absolute;
+            bottom: -7.5vw;
+            left: 42.5vw;
+            width: 15vw;
+            height: 15vw;
+
+        }
+        .product{
+            min-width: 20vw;
+            max-width: 20vw;
+        }
+        .filter-container{
+            width: 40vw;
+        }
+      
+    }
+    @media screen and (min-width: 1024px) {
+        .product {
+            min-width: 16vw;
+            max-width: 16vw;
+        }
+       
+        .remove {
+            display: none;
+        }
+        .remove{
+            display: none;
+        }
+        
+    }
+    .main-container {
+        flex-basis: 75%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content:center;
+        align-items:flex-start;
+        gap:1rem;
+        padding: 0.5rem;
+        background-color: white
+    }
+
+   
+
+    .filter-box {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding: 0.5rem;
+        width: 98%;
+        background-color: white;
+        transition: 0.5s;
+
+    }
+   
+   
+
+    @media screen and (min-width: 1024px) {
+        .shop-logo {
+            position: absolute;
+            bottom: -5vw;
+            background-color: white;
+            left: 45vw;
+            width: 10vw;
+            height: 10vw;
+            border-radius: 50%;
+            border: 1px solid lightgray;
+            padding: 0.2rem;
+        }
+
+        .filter-container {
+            position: static;
+            box-shadow: none;
+            margin-right: 1rem;
+            padding: 1rem;
+            height: auto;
+            overflow-y: hidden;
+
+           
+        }
+        .filter-box{
+            border-left: 1px solid rgb(179, 179, 179);
+        }
+        .color {
+            min-width: 24px;
+            min-height: 24px;
+        }
+        .size {
+            font-size: 1.3rem;
+        }
+        .select-size {
+            font-size: 1.5rem;
+            opacity: 1;
+        }
+       
+
+    }
+
+
+</style>
+<div style="position: relative;" class="row">
+    <img src="{% static 'img/img1/banner-1.jpg' %}" class="banner">
+    <img src="../../img/h.jpg" class="shop-logo">
+    <span class="fa fa-search filter-btn remove" onclick="showfilter();">
+        <span style="font-size:0.8rem">جستجو</span>
+    </span>    
+</div>
+<div class="row description">
+  <div style="flex: 20%;display:flex;flex-direction:column;">
+    <p style="font-size: 0.8rem;text-align:center;width:100%">
+        انواع لباس با برندهای مطرح خارجی...
+        با خرید از ما علاوه
+        ....
+    </p>
+    <p style="font-size: 0.9rem;text-align:center;width:100%">
+        فروشنده: علی علوی
+    </p>
+  </div>
+</div>
+
+<div class="row">
+    <aside style="margin-right: -1rem;" id="filter-container" class="filter-container">
+        <div class="filter-box">
+            <span class="fa fa-times remove" style="color:red;position:absolute;left:2%;top:1%;cursor:pointer" onclick="showfilter();"></span>
+            {% include 'product/filter.html' %}
+        </div>
+    </aside>
+    <section class="main-container">
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+            <div class="product">
+                <img src="../../img1/product-4.jpg" class="img" />
+                <div class="container-col">
+                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+                    
+                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                    
+                        <span class="fa fa-shopping-basket btn-tiny" ></span>
+                        <span class="fa fa-heart btn-tiny"></span>
+                    </p>
+                    <p class="badge" style="background-color:green">15%</p>
+                </div>
+            </div>
+    </section>
+    
+</div>
+<div class="pagination">
+    <a href="#" class="active-page">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a style="background-color:transparent;border:0;" >...</a>
+</div>
+<div class="row" style="margin-top: 2rem;justify-content:center">
+    <p style="text-align:center;border-bottom:2px solid red;padding:0.5rem">
+        پرفروش ترینهای بوتیک
+    </p>
+</div>
+<div class="rail">
+    <div class="product">
+        <img src="../../img1/product-4.jpg" class="img" />
+        <div class="container-col">
+            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+            
+            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                <span style="text-decoration:line-through;color:gray;">100000</span>
+            </p>
+            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+            
+                <span class="fa fa-shopping-basket btn-tiny" ></span>
+                <span class="fa fa-heart btn-tiny"></span>
+            </p>
+            <p class="badge" style="background-color:green">15%</p>
+        </div>
+    </div>
+    <div class="product">
+        <img src="../../img1/product-4.jpg" class="img" />
+        <div class="container-col">
+            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+            
+            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                <span style="text-decoration:line-through;color:gray;">100000</span>
+            </p>
+            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+            
+                <span class="fa fa-shopping-basket btn-tiny" ></span>
+                <span class="fa fa-heart btn-tiny"></span>
+            </p>
+            <p class="badge" style="background-color:green">15%</p>
+        </div>
+    </div>
+    <div class="product">
+        <img src="../../img1/product-4.jpg" class="img" />
+        <div class="container-col">
+            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+            
+            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                <span style="text-decoration:line-through;color:gray;">100000</span>
+            </p>
+            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+            
+                <span class="fa fa-shopping-basket btn-tiny" ></span>
+                <span class="fa fa-heart btn-tiny"></span>
+            </p>
+            <p class="badge" style="background-color:green">15%</p>
+        </div>
+    </div>
+    <div class="product">
+        <img src="../../img1/product-4.jpg" class="img" />
+        <div class="container-col">
+            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+            
+            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                <span style="text-decoration:line-through;color:gray;">100000</span>
+            </p>
+            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+            
+                <span class="fa fa-shopping-basket btn-tiny" ></span>
+                <span class="fa fa-heart btn-tiny"></span>
+            </p>
+            <p class="badge" style="background-color:green">15%</p>
+        </div>
+    </div>
+    <div class="product">
+        <img src="../../img1/product-4.jpg" class="img" />
+        <div class="container-col">
+            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
+            
+            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                <span style="text-decoration:line-through;color:gray;">100000</span>
+            </p>
+            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+            
+                <span class="fa fa-shopping-basket btn-tiny" ></span>
+                <span class="fa fa-heart btn-tiny"></span>
+            </p>
+            <p class="badge" style="background-color:green">15%</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showfilter(){
+        document.getElementById("filter-container").classList.toggle("show-filter");
+    }
+</script>
+{% endblock %}

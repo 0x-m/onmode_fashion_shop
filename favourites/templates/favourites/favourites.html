@@ -1,0 +1,168 @@
+{% load static %}
+<style>
+    .cart-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        
+    }
+    .cart-list {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem;
+        
+        
+    }
+
+    .cart-item {
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-bottom: 1px solid rgb(226, 226, 226);
+        padding: 0.2rem;
+        padding-bottom: 0.6rem;
+        margin-top: 1.2rem;
+        position: relative;
+
+
+    }
+
+    .cart-list .cart-item:first-child{
+        margin-top: -0.2rem;
+    }
+   
+    .cart-item .remove {
+        color: red;
+        position: absolute;
+        top: 30%;
+        left: 2%;
+        cursor: pointer;
+    }
+    .cart-item .img{
+        width: 24vw ;
+        height: 32vw;
+        border-radius: 4px;
+    }
+
+    .cart-list .cart-item:first-child{
+        margin-top: 1.8rem;
+    }
+    @media screen and (min-width:698px) {
+
+             
+        .cart-list:first-child{
+            margin-top: 0.1rem;
+        }
+    
+        .cart-item .img{
+            width: 9vw;
+            height: 12vw;
+        }
+        .number-box {
+            max-width: 10vw;
+        }
+
+        .coupon-box{
+            width: 80%;
+            height: 4vh;
+        }
+        
+
+    }
+
+
+
+   
+    @media screen and (min-width:698px)  and (orientation:landscape) {
+
+       
+        .cart-list:first-child{
+            margin-top: 0.1rem;
+        }
+    
+        .cart-item .img{
+            width: 9vw;
+            height: 12vw;
+        }
+        .number-box {
+            max-width: 10vw;
+        }
+        
+
+    }
+    @media screen and (min-width:996px) {
+
+      
+        .cart-list:first-child{
+            margin-top: 0.1rem;
+        }
+    
+        .cart-item .img{
+            width: 8vw;
+            height: 9vw;
+        }
+        .number-box {
+            max-width: 5vw;
+        }
+        
+        .coupon-box{
+            width: 80%;
+            height: 5vh;
+        }
+
+        .side-box-show {
+            width: 30vw;
+        }
+
+    }
+
+    @media screen and (min-width:996px) and (orientation:landscape) {
+
+        
+        .cart-list:first-child{
+            margin-top: 0.1rem;
+        }
+    
+        .cart-item .img{
+            width: 8vw;
+        }
+        .number-box {
+            max-width: 8vw;
+        }
+        
+        .coupon-box{
+            width: 80%;
+            height: 5vh;
+        }
+
+    }
+
+</style>
+<div class="cart-container">
+    <div class="cart-list">
+        <div class="cart-item">
+            <span class="fa fa-trash remove"></span>
+            <img src="{% static 'img/img1/product-1.jpg' %}" class="img">
+            <div   style="margin-top:-0.7em;margin-right: 0.5rem;font-size:0.7rem;line-height:0.8rem">
+                <p>
+                    نام محصول
+                </p>
+                <p>
+                    موجودی
+                </p>
+                <p>
+                    <span style="text-decoration:line-through;color:rgb(170, 170, 170)">6000</span>
+                    <span style="color:red">6000</span>
+                    <span>تومان</span>
+                </p>
+                
+            </div>
+            <div style="position:absolute;bottom:-1rem;left:45%;background-color:white">
+               <button class="btn btn-primary">
+                   <spanc class="fa fa-shopping-basket"></spanc>
+               </button>
+            </div>  
+        </div>
+    </div>
+</div>

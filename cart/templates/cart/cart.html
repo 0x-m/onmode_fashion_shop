@@ -1,0 +1,354 @@
+<style>
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    
+}
+
+.cart-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    
+    
+}
+
+.cart-item {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgb(226, 226, 226);
+    padding: 0.2rem;
+    padding-bottom: 0.6rem;
+    margin-top: 1.2rem;
+    position: relative;
+
+
+}
+
+.cart-list .cart-item:first-child{
+    margin-top: -0.2rem;
+}
+
+
+.ensure-box{
+    width: 100%;
+    height: 20vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 255, 255);
+    display: none;
+    z-index: 456;
+
+}
+
+.show-d{
+    display: block !important;
+}
+
+.overlay{
+    position:fixed;
+    width: 100vw;
+    height: 100vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    top: 0;
+    right: 0;
+    display: none;
+}
+
+.text-box {
+   border-radius: 2px;
+   border: 1px solid lightgray;
+   color: gray;
+   outline: none;
+}
+
+.text-box:hover, .text-box:focus {
+   border-color:gray;
+}
+.coupon-box {
+   width: 80%;
+   border: 1px solid rgb(233, 233, 233);
+   border-radius: 4px;
+   height: 5vh;
+   display: flex;
+}
+.coupon-box .text {
+   outline: none;
+   border: none;
+   height: 100%;
+   padding-right: 0.5rem;
+   font-size: 1.2rem;
+   border-radius: 0 4px 4px 0;
+   flex: 70%;
+   width: 70%;
+}
+.coupon-box .text::placeholder{
+   color: lightgray;
+}
+.coupon-box:hover, .coupon-box:focus-within {
+   color: gray;
+   border-color: gray;
+}
+.coupon-box .btn-a{
+   width: 20%;
+   height: 100%;
+   border: none;
+   border-radius: 4px 0 0 4px;
+   flex: 20%;
+   text-align: center;
+   background-color: rgb(248, 56, 56);
+   color: white;
+   cursor: pointer;
+}
+.coupon-box .btn-a:hover {
+   background-color: rgb(255, 0, 0);
+}
+.text-box::placeholder {
+   color: lightgrey;
+}
+.cart-item .remove {
+    color: red;
+    position: absolute;
+    top: 30%;
+    left: 2%;
+    cursor: pointer;
+}
+.cart-item .img{
+    width: 25vw ;
+    border-radius: 4px;
+}
+
+.cart-list .cart-item:first-child{
+    margin-top: 1.8rem;
+}
+
+
+.summary {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+
+}
+
+
+.color {
+   border-radius: 50%;
+   padding: 0.5rem;
+   margin-right: 0.5rem;
+   max-width: 24px;
+   max-height: 24px;
+   width: 16px;
+   cursor: pointer;
+   height: 16px;
+   opacity: 0.6;
+}
+
+.size {
+   cursor: pointer;
+   margin-right: 0.5rem;
+}
+
+.color:hover{
+   opacity: 1;
+}
+
+.inline-list .color:first-child {
+   margin-right: 0.1rem;
+}
+
+.dropbtn {
+   padding: 0.2rem;
+   cursor: pointer;
+   background-color: orange;
+}
+
+.dropdown .dropbtn:hover{
+background-color: rgb(45, 123, 190) !important;
+}
+.dropdown {
+   padding: 0.5rem;
+   position: relative;
+   display: inline-block;
+}
+
+.dropdown-menu {
+   display: none;
+   padding: 0.5rem;
+   
+   position: absolute;
+   z-index: 1500;
+   background-color: rgb(255, 255, 255);
+   border-radius: 4px;
+   border: 1px solid rgb(218, 218, 218);
+
+}
+
+
+.dropdown:hover .dropdown-menu {
+   display: block !important;
+}
+
+
+
+
+@media screen and (min-width:698px) {
+
+ 
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 10vw;
+    }
+    .number-box {
+        max-width: 10vw;
+    }
+
+    .coupon-box{
+        width: 80%;
+        height: 4vh;
+    }
+    
+
+}
+
+
+
+
+@media screen and (min-width:698px)  and (orientation:landscape) {
+
+   
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 10vw;
+    }
+    .number-box {
+        max-width: 10vw;
+    }
+    
+
+}
+@media screen and (min-width:996px) {
+
+  
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 8vw;
+    }
+    .number-box {
+        max-width: 5vw;
+    }
+    
+    .coupon-box{
+        width: 80%;
+        height: 5vh;
+    }
+
+}
+
+@media screen and (min-width:996px) and (orientation:landscape) {
+
+    
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 8vw;
+    }
+    .number-box {
+        max-width: 8vw;
+    }
+    
+    .coupon-box{
+        width: 80%;
+        height: 5vh;
+    }
+
+}
+
+</style>
+<div class="cart-container">
+    <div class="cart-list">
+        <div class="cart-item">
+            <img src="../../img/prod.jpeg" class="img">
+            <div   style="margin-top:-0.7em;margin-right: 0.5rem;font-size:0.7rem;line-height:0.8rem">
+                <p>
+                    نام محصول
+                </p>
+                <p style="margin-top:-0.5rem">
+                    <div  style="margin-right:-0.5rem"  class="dropdown">
+                        <span id="color1" onclick="open_drop()" data-toggle="p-1" class="fa fa-caret-down dropbtn">
+                            &nbsp;
+                            رنگ
+                        </span>
+                        <div id="p-1" s class="dropdown-menu">
+                            <div onclick="color_select();" class="inline-list">
+                                <div class="color" style="background-color: red;"></div>
+                                <div class="color" style="background-color: red;"></div>
+                                <div class="color" style="background-color: red;"></div>
+                                <div class="color" style="background-color: red;"></div>
+                                <div class="color" style="background-color: blue;"></div>
+                                <div class="color" style="background-color: rgb(0, 0, 0);"></div>
+                                <div class="color" style="background-color: rgb(233, 188, 188);"></div>
+                            </div>
+  
+                        </div>
+                    </div>
+                    <div class="dropdown"  style="margin-right: -1rem;">
+                        <span id="color1" onclick="open_drop()" style="background-color: black;color:white" data-toggle="p-2" class="fa fa-caret-down dropbtn">
+                            &nbsp;
+                            XL
+                        </span>
+                        <div id="p-2" class="dropdown-menu">
+                            <div onclick="select_size();" class="inline-list">
+                                <div class="size">S</div>
+                                <div class="size">M</div>
+                                <div class="size">L</div>
+                                <div class="size">XL</div>
+                                <div class="size">XXL</div>
+                            </div>
+  
+                        </div>
+                    </div>
+
+                </p>
+                <p>
+                    <span style="text-decoration:line-through;color:rgb(170, 170, 170)">6000</span>
+                    <span style="color:red">6000</span>
+                    <span>تومان</span>
+                </p>
+                
+            </div>
+            <div style="position:absolute;bottom:-1rem;left:40%;background-color:white">
+                <div class="number-box">
+                    <span onclick="increment();" class="inc">&plus;</span>
+                    <input onkeypress="sentinel();" id="num1" type="text" value="1" class="text" disabled>
+                    <span onclick="decrement();" class="dec">&minus;</span>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="summary">
+    <p style="font-size: 1.3rem;color:rgb(119, 119, 119)">
+       جمع کل:
+       250000 تومان
+    </p>
+        <input class="btn btn-primary" style="padding: 0.8rem;width:60%" type="button" value="خرید" />
+</div>

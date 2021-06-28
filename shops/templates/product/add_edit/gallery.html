@@ -1,0 +1,15 @@
+{% load static %}
+<div class="gallery">
+    <img id="hero" src="{% static 'img/img1/b.jpg' %}" class="img"  />
+    <div onclick="changeHero();" class="thumbs">
+        <img  src="{% static 'img/img1/b.jpg' %}" class="thumb" />
+        <img src="{% static 'img/img1/aaa.jpg' %}" class="thumb" />
+        <img src="{% static 'img/img1/fff.jpg' %}" class="thumb" />
+        <img src="{% static 'img/img1/h.jpg' %}" class="thumb" />
+        <img src="{% static 'img/img1/b.jpg' %}" class="thumb thumb-active" />
+     </div>
+</div>
+<div style="text-align:center">
+    <p style="font-size:0.8rem">تصاویر محصول (حد اکثر پنج تصویر)</p>
+    <input type="file"  class="text-box">
+</div>

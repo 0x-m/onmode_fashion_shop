@@ -1,0 +1,150 @@
+<style>
+    table{
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        padding: 0.4rem;
+        font-size: 0.8rem;
+        border-bottom: 1px solid rgb(226, 226, 226);
+    }
+    th{
+        background-color: rgb(240, 240, 240);
+        padding: 0.5rem;
+        color: rgb(54, 54, 54);
+    }
+    tr{
+        background-color: rgba(249,249,249,0.9);
+        color: black;
+        padding: 15px;
+        height: 10vw;
+        margin: 0.5rem;
+    }
+    tr:nth-child(even){
+        background-color: white;
+    }
+
+    tfoot {
+        background-color: #efefef;
+    }
+
+    .order {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgb(226, 226, 226);
+    }
+
+    @media screen and (min-width: 576px) {
+        tr {
+            height: 4vw;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        tr {
+            height: 2vw;
+        }
+
+        .side-box-show {
+            width: 30vw;
+        }
+    }
+</style>
+<div class="container"">
+    <div class="order" style="width: 95%;margin-top:2rem;background-color:rgba(247, 247, 247,0.6);height:min-content">
+       
+        <table>
+           <thead>
+            <tr>
+                <th>نام</th>
+                <th>تعداد</th>
+                <th>قیمت</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+                <td>
+                    <a href="#">
+                        لباس خوب
+                    </a>
+                </td>
+                <td>2</td>
+                <td>27000 تومان</td>
+            </tr>
+            <tr>
+                <td>لباس خوب</td>
+                <td>2</td>
+                <td>27000 تومان</td>
+            </tr>
+            <tr>
+                <td>لباس خوب</td>
+                <td>2</td>
+                <td>27000 تومان</td>
+            </tr>
+            <tr>
+                <td>لباس خوب</td>
+                <td>2</td>
+                <td>27000 تومان</td>
+            </tr>
+            <tr>
+                <td>لباس خوب</td>
+                <td>2</td>
+                <td>27000 تومان</td>
+            </tr>
+           </tbody>
+        </table>
+       <p style="font-size: 0.8rem;color:gray;margin:0.3rem;width:98%">
+                             <span style="float: left;padding:0.5rem;background-color:rgb(143, 143, 143);color:white">جمع کل: 8000تومان</span>
+       </p>
+       <p style="text-align:center;width: 100%;line-height:2rem;font-size:0.8rem;padding-right:0.5rem">
+            <span ">شماره سفارش: 258885</span>
+            <br/>
+            <span>نام خریدار: بوعذار</span>
+            <br>
+            <span>استان:فارس</span>
+            <br>
+            <span>شهرستان:شیراز</span>
+            <br>
+            <span>شهر:شیراز</span>
+            <br>
+            <span>نشانی:فلکه گاز/...</span>
+            <br>
+            <span>کد پستی:</span>
+            <br>
+            <span>تاریخ ثبت:29/8/00</span>
+            <br />
+            <span style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(255, 80, 80)">رد میکنم</span>
+            <span style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">آماده میکنم</span>
+       </p>
+       <div style="background-color: rgb(218, 218, 218);width:100%;display:flex;justify-content:center">
+            <p>
+                وضعیت: در انتظار تایید
+            </p>
+       </div>
+       <div style="background-color: rgb(17, 218, 84);width:100%;display:flex;justify-content:center">
+            <p style="color: white;">
+                وضعیت: تایید شده 
+            </p>
+       </div>
+       <div style="background-color: rgb(39, 177, 231);width:100%;display:flex;justify-content:center">
+        <p style="color: white;">
+            وضعیت: ارسال شده 
+        </p>
+        </div>
+        <div style="background-color: rgb(250, 29, 29);width:100%;display:flex;justify-content:center">
+            <p style="color: white;">
+                وضعیت: رد شده 
+            </p>
+        </div>
+        <div style="background-color: rgb(34, 34, 34);width:100%;display:flex;justify-content:center">
+            <p style="color: white;">
+                وضعیت: کنسل شده 
+            </p>
+        </div>
+        <div style="background-color: rgb(245, 156, 23);width:100%;display:flex;justify-content:center">
+            <p style="color: white;">
+                وضعیت:  بازگشت داده شده 
+            </p>
+        </div>
+    </div>
+</div>
