@@ -1,0 +1,29 @@
+[
+    {
+        "model": "shops.Size",
+        "pk":1,
+        "fields":
+        {
+            "code": "S",
+            "description": "for kids"
+        }
+    },
+    {
+        "model": "shops.Size",
+        "pk":2,
+        "fields":
+        {
+            "code": "M",
+            "description": "for youngs"
+        }
+    },
+    {
+        "model": "shops.Size",
+        "pk":3,
+        "fields":
+        {
+            "code": "L",
+            "description": "for adults"
+        }
+    }
+]

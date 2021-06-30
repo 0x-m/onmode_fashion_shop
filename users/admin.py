@@ -1,12 +1,65 @@
 from typing import Any, Optional
-from .models import User
+
+from django.db.models import fields
+from django.forms.widgets import PasswordInput
+from .models import Address, User
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django import forms
+
+
+class AddressInline(admin.StackedInline):
+    model = Address
+
+
+
+class UserCreationForm(forms.ModelForm):
+    password1 = forms.CharField(label='password',widget=forms.PasswordInput)
+    password2 = forms.CharField(label='password confirmation',widget=PasswordInput)
+    def clean_password2(self):
+        password1 = self.cleaned_data['password1']
+        password2 = self.cleaned_data['password2']
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("passwords don't match")
+        return password2
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password1'])
+        if commit:
+            user.save()
+        return user
+    
+    class Meta:
+        model = User
+        fields = ['phone_no','email']
 
 class UserModelAdmin(UserAdmin):
-    fields = [('first_name', 'last_name','gender'),'phone_no','email','is_active','is_staff','is_superuser','groups','user_permissions',]
-    readonly_fields = ['date_joined','last_login',]
-    fieldsets = None
+   # fields = [('first_name', 'last_name','gender'),'phone_no','email','is_active','is_staff','is_superuser','groups','user_permissions',]
+
+    add_form = UserCreationForm
+    fieldsets = (("Phone Number (Username)",{
+        "fields": ['phone_no',]
+        }),
+        ("Other informations",{
+            'fields': ('id','first_name','last_name','gender','email','merchan_card','user_code','points')
+        }),
+        ('History',{
+            'fields':('date_joined','last_login',)
+        }),
+        ('Privileges',{
+            'fields': ('is_active','is_staff','is_superuser')
+        }),
+        ('Groups and Permissions',{
+            'fields': ('groups',),
+            
+        }),
+
+    )
+    inlines = [
+        AddressInline
+    ]
+    readonly_fields = ['date_joined','last_login','user_code','id']
     ordering = ['phone_no', 'first_name', 'last_name']
     actions_selection_counter = True
     date_hierarchy = 'date_joined'
@@ -14,6 +67,11 @@ class UserModelAdmin(UserAdmin):
     list_editable = ['is_active']
     search_fields = ['phone_no', 'first_name', 'last_name']
     
+    add_fieldsets = (
+        (None,{
+            'fields':('phone_no','email','password1', 'password2')
+        }),
+    )
     def get_form(self, request: Any, obj=None, **kwargs: Any):
         form = super().get_form(request, obj=obj,**kwargs)
         is_superuser = request.user.is_superuser

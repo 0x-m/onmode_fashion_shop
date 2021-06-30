@@ -1,0 +1,22 @@
+[
+    {
+        "model": "shops.Brand",
+        "pk": 1,
+        "fields": {
+            "name": "Nike"
+        }
+    },
+    {
+        "model": "shops.Brand",
+        "pk": 2,
+        "fields": {
+            "name": "puma"
+        }
+    },    {
+        "model": "shops.Brand",
+        "pk": 2,
+        "fields": {
+            "name": "D&G"
+        }
+    }
+]

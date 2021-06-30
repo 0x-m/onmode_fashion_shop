@@ -1,0 +1,29 @@
+[
+    {
+        "model": "shops.Type",
+        "pk": 1,
+        "fields": {
+            "categories": [1,2,3],
+            "name": "cloth",
+            "description": "best clothes"
+        }
+    },
+    {
+        "model": "shops.Type",
+        "pk": 2,
+        "fields": {
+            "categories": [1,2,3],
+            "name": "shoe",
+            "description": "best shoes"
+        }
+    },
+    {
+        "model": "shops.Type",
+        "pk": 3,
+        "fields": {
+            "categories": [1,2,3],
+            "name": "bag",
+            "description": "best bags"
+        }
+    }
+]

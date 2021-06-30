@@ -1,0 +1,26 @@
+[
+    {
+        "model": "shops.SubType",
+        "pk": 1,
+        "fields": {
+            "type": 2,
+            "name": "scholar"
+        }
+    },
+    {
+        "model": "shops.SubType",
+        "pk": 2,
+        "fields": {
+            "type": 1,
+            "name": "official"
+        }
+    },
+    {
+        "model": "shops.SubType",
+        "pk": 3,
+        "fields": {
+            "type": 3,
+            "name": "sport"
+        }
+    }
+]

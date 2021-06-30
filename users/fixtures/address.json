@@ -1,0 +1,38 @@
+[
+    {
+        "model": "users.Address",
+        "pk": 1,
+        "fields":{
+            "user":1,
+            "state": "fars",
+            "city" : "gerash",
+            "town": "gerash",
+            "postal_code": "015225",
+            "description" : "this is the end"
+        }
+    },
+    {
+        "model": "users.Address",
+        "pk": 2,
+        "fields":{
+            "user":2,
+            "state": "tehran",
+            "city" : "ray",
+            "town": "jade",
+            "postal_code": "015225",
+            "description" : "this is the end"
+        }
+    },
+    {
+        "model": "users.Address",
+        "pk": 3,
+        "fields":{
+            "user":3,
+            "state": "gilan",
+            "city" : "rasht",
+            "town": "sss",
+            "postal_code": "015225",
+            "description" : "this is the end"
+        }
+    }
+]

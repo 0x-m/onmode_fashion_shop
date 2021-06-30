@@ -1,0 +1,33 @@
+[
+    {
+        "model": "shops.shop",
+        "pk":1,
+        "fields":{
+            "seller":1,
+            "name": "my_shop",
+            "description": "best..",
+            "fee": 9
+        }
+    },
+    {
+        "model": "shops.shop",
+        "pk":2,
+        "fields":{
+            "seller":2,
+            "name": "your_shop",
+            "description": "best..",
+            "fee": 12
+        }
+    },
+    {
+        "model": "shops.shop",
+        "pk":3,
+        "fields":{
+            "seller":3,
+            "name": "bot",
+            "description": "best..",
+            "fee" : 15
+        }
+    }
+
+]

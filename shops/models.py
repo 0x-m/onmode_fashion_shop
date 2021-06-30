@@ -5,7 +5,7 @@ from django.db.models.signals import ModelSignal
 from django.utils import tree
 from django.utils import timezone
 from users.models import User, Address
-
+from django.utils import timezone
 
 class Shop(models.Model):
     seller = models.ForeignKey(to=User,on_delete=models.CASCADE, related_name='shop')
@@ -15,14 +15,16 @@ class Shop(models.Model):
     logo = models.ImageField()
     banner = models.ImageField()
     is_active = models.BooleanField(default=True)
-    fee = models.PositiveBigIntegerField(validators=[
+    fee = models.PositiveBigIntegerField(verbose_name='fee %',validators=[
         MaxValueValidator(100),
         MinValueValidator(0)
     ])
     
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(default=timezone.now)
     post_destinatinos = models.JSONField(null=True)
     
+    def __str__(self) -> str:
+        return self.name
 
 class Appeal(models.Model):
     PENDING = 'pending'
@@ -36,7 +38,7 @@ class Appeal(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='appeal')
     page_name = models.CharField(max_length=30)
     description = models.CharField(max_length=500)
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(default=timezone.now)
     state = models.CharField(choices=STATES,default='pending',max_length=20)
     status = models.CharField(max_length=500)
     
@@ -64,6 +66,7 @@ class Brand(models.Model):
 #such as men, women, kids,...
 class Category(models.Model):
     name = models.CharField(max_length=40,unique=True)
+    description = models.CharField(max_length=500, null=True)
     slug = models.SlugField()
     is_active = models.BooleanField(default=True)
     image = models.ImageField()
@@ -72,13 +75,20 @@ class Category(models.Model):
 class Type(models.Model):
     categories = models.ManyToManyField(Category,related_name='types')
     name = models.CharField(max_length=50, unique=True)
+    description = models.CharField(max_length=500, null=True)
     is_active = models.BooleanField(default=True)
     atrrs = models.JSONField(null=True)
+
+    def __str__(self) -> str:
+        return self.name
     
 #product subtype: sport shoes, classic bag,...
 class SubType(models.Model):
     type = models.ForeignKey(Type,on_delete=models.CASCADE, related_name='subtypes')
     name = models.CharField(max_length=50)
+    
+    def __str__(self) -> str:
+        return self.name
 
 class Color(models.Model):
     name = models.CharField(max_length=50)
@@ -100,7 +110,7 @@ class Product(models.Model):
     description = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=10,decimal_places=3)
     is_available = models.BooleanField(default=True)
-    date_created = models.DateTimeField(auto_now_add=True,null=True)
+    date_created = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(default=0)
     keywords = models.CharField(max_length=2000,null=True)
@@ -130,9 +140,13 @@ class Collection(models.Model):
     description = models.CharField(max_length=500)
     is_active = models.BooleanField(default=True)
     slug = models.SlugField()
+
+    def __str__(self) -> str:
+        return self.name
     
 class CollectionItem(models.Model):
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='items')
     Product = models.ForeignKey(Product,on_delete=models.CASCADE)
     
+
     

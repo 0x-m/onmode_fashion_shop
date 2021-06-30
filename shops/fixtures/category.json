@@ -1,0 +1,26 @@
+[
+    {
+        "model": "shops.Category",
+        "pk": 1,
+        "fields": {
+            "name": "Mens",
+            "description": "for mens"
+        }
+    },
+    {
+        "model": "shops.Category",
+        "pk": 2,
+        "fields": {
+            "name": "Womens",
+            "description": "for women"
+        }
+    },
+    {
+        "model": "shops.Category",
+        "pk": 3,
+        "fields": {
+            "name": "Children",
+            "description": "for childs.."
+        }
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "model": "shops.Color",
+        "pk":1,
+        "fields": {
+            "name": "red",
+            "code": "#ff0000"
+        }
+    },
+    {
+        "model": "shops.Color",
+        "pk":2,
+        "fields": {
+            "name": "green",
+            "code": "#00ff00"
+        }
+    },
+    {
+        "model": "shops.Color",
+        "pk":3,
+        "fields": {
+            "name": "blue",
+            "code": "#0000ff"
+        }
+    }
+]

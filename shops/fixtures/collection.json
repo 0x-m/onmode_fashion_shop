@@ -1,0 +1,19 @@
+[
+    {
+        "model": "shops.Collection",
+        "pk":1,
+        "fields": {
+            "name": "summer",
+            "description": "best summer collections"
+        }
+    },
+    {
+        "model": "shops.Collection",
+        "pk":2,
+        "fields": {
+            "name": "winter",
+            "description": "best summer winter"
+        }
+    }
+
+]

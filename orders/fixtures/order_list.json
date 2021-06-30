@@ -1,0 +1,26 @@
+[
+    {
+        "model": "orders.OrderList",
+        "pk":1,
+        "fields":{
+            "user": 1,
+            "post_method" : "express"
+        }
+    },
+    {
+        "model": "orders.OrderList",
+        "pk":2,
+        "fields":{
+            "user": 2,
+            "post_method": "ultimate"
+        }
+    },
+    {
+        "model": "orders.OrderList",
+        "pk":3,
+        "fields":{
+            "user": 3,
+            "post_method": "local"
+        }
+    }
+]

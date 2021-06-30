@@ -1,0 +1,35 @@
+[
+    {
+        "model": "users.User",
+        "pk": 1,
+        "fields": {
+            "phone_no": "09179827587",
+            "first_name": "ali",
+            "last_name": "hasani",
+            "address":1
+   
+        }
+    },
+    {
+        "model": "users.User",
+        "pk": 2,
+        "fields": {
+            "phone_no": "09179827588",
+            "first_name": "hasan",
+            "last_name": "ali",
+            "address":2
+           
+        }
+    },
+    {
+        "model": "users.User",
+        "pk": 3,
+        "fields": {
+            "phone_no": "09179827589",
+            "first_name": "nima",
+            "last_name": "nini",
+            "address":3
+            
+        }
+    }
+]
