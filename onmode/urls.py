@@ -10,8 +10,10 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('favourites/', include('favourites.urls', namespace='favourites')),
     path('cart/', include('cart.urls', namespace='cart')),
+    path('shops/', include('shops.urls', namespace='shops')),
+    path('payments/', include('payments.urls', namespace='payments')),
     path('', include('index.urls', namespace='index')),
-    path('', include('shops.urls', namespace='shops')),
+    
     
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

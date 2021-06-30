@@ -109,11 +109,12 @@ class Order(models.Model):
     order_list = models.ForeignKey(to=OrderList,on_delete=models.CASCADE,related_name='orders')
     date_created = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='orders')
-    shop = models.ForeignKey(to=Shop,on_delete=models.SET_NULL, related_name='orders')
+    shop = models.ForeignKey(to=Shop,on_delete=models.DO_NOTHING, related_name='orders')
     total_price = models.DecimalField(max_digits=10,decimal_places=0)
-    discounted_total_price = models.DecimalField(max_digits=10,decimal_places=0)
-    tracking_code = models.CharField(max_length=50)
-    state = models.CharField(choices=STATES,default='pending')
+    discounted_total_price = models.DecimalField(verbose_name='total',max_digits=10,decimal_places=0)
+    tracking_code = models.CharField(max_length=30)
+    state = models.CharField(choices=STATES,default='pending', max_length=20)
+    verify_sent = models.BooleanField(default=False)
     
     
     def __set_total_price(self):

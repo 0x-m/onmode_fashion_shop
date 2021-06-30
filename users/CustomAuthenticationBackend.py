@@ -14,8 +14,9 @@ logger.setLevel('DEBUG')
 
 class PhoneAuthentication(BaseBackend):
     def authenticate(self, request, phone_no, password):
+        print('authentiaca....')
         logger.info('authenticating....')
-        u = User.objects.get(phone_no=phone_no)
+        u = User.objects.filter(phone_no=phone_no).first()
         if u:
             logger.info('checking password')
             logger.critical('user password is :%s ', u.password)
@@ -24,9 +25,13 @@ class PhoneAuthentication(BaseBackend):
                 logger.info('passwor is correct!')
                 return u
             logger.critical('authentication faild due to invalid password')
+        return None
 
         
         
     def get_user(self, user_id: int):
-        return User.objects.get(pk=user_id)
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
     

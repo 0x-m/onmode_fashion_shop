@@ -33,7 +33,7 @@ class Appeal(models.Model):
         (ACCEPTED,'accepted'),
         (REJECTED,'rejected')
     ]
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='appeal')
     page_name = models.CharField(max_length=30)
     description = models.CharField(max_length=500)
     date_created = models.DateTimeField(auto_now_add=True)

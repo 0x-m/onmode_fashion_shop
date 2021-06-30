@@ -1,4 +1,6 @@
 from os import stat
+
+from django.http.response import HttpResponse, HttpResponseBadRequest
 from onmode import orders
 from django.shortcuts import render
 from django.http import HttpRequest
@@ -74,5 +76,14 @@ def get_user_orders(request:HttpRequest, state):
             'state': state
         })
         
-
+def get_shop_orders(request:HttpRequest, state):
+    if request.method == "POST":
+        if not request.uer.shop:
+            return HttpResponseBadRequest("shop not found")
+        orders = Order.objects.filter(shop=request.user.shop, state=state)
+        return render(request, 'shop/orders.html',{
+            'orders':orders,
+            'state': state
+        })
+        
         

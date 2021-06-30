@@ -37,7 +37,13 @@ class Cart():
             
         self.save()
     
-  
+    def update(self, product_id, size, color):
+        id = str(product_id)
+        if id in self.cart.keys():
+            self.cart[id]['color'] = color
+            self.cart[id]['size'] = size
+            self.save()
+            
     def remove(self, product_id):
         id = str(product_id)
         if id in self.cart:

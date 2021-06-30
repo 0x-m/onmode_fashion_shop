@@ -39,17 +39,17 @@ class User(AbstractUser):
     USERNAME_FIELD = 'phone_no'
     objects = CustomUserManager()
     mechan_card = models.CharField(max_length=16, null=True)
-    user_code = models.CharField(unique=True,max_length=20)
+    user_code = models.CharField(max_length=20)
     points = models.PositiveIntegerField(default=0)
     
     @classmethod
     def post_create(cls, sender, instance, created, *args, **kwargs):
-        
         if created:
             id = str(instance.id)
             alphbet = 'ABCDEFGHIJKLmNOPQRSTWXYZabcdefghijklmnopqrstuwxyz0123456789'
-            code = ''.join(secrets.choice(alphbet) for i in range(6))
-            instance.use_code = code + id
+            code = ''.join(secrets.choice(alphbet)for i in range(6))
+            print(code + id)
+            instance.user_code = code + id
             instance.save()
             
 

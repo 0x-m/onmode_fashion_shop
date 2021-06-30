@@ -26,7 +26,7 @@ class SetPasswordForm(forms.Form):
         raise Exception(msg + password)
 
 class VerificationForm(Form):
-    code = forms.CharField(max_length=6)
+    code = forms.CharField(max_length=6,min_length=6)
     
 
 class LoginForm(Form):

@@ -1,5 +1,7 @@
 from django import http
+from django.contrib.sessions.backends.base import SessionBase
 from django.forms.models import inlineformset_factory
+from django.forms.widgets import Select
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError
 from django.shortcuts import render, resolve_url
 from django.http import HttpRequest, request
@@ -36,6 +38,7 @@ def enrollment(request:HttpRequest):
         if form.is_valid():
             phone_no = form.cleaned_data['phone_no']
             request.session['phone_no'] = phone_no
+            request.session['verified'] = 'False'
             request.session.save()
             logger.info("phone_no is saved into session")
         else:
@@ -72,14 +75,16 @@ def verification(request:HttpRequest):
         form = VerificationForm(request.POST)
         if form.is_valid():
             code = form.cleaned_data['code']
-            phone_no = request.session['phone_no']
+            phone_no = request.session.get('phone_no')
             if not phone_no:
-                pass
+                return HttpResponseBadRequest("no phone number")
             
             #validate code
             totp  = pyotp.TOTP('base32secret3232',interval=120)
             if not totp.verify(code):
-                return HttpResponseUnprocessableEntity("expired or invalid code")
+                return HttpResponseBadRequest("expired or invalid code")
+            request.session['verified'] = 'True'
+            request.session.save()
             return render(request, 'registration/password.html')
         else:
             return HttpResponseUnprocessableEntity("invalid code")
@@ -89,11 +94,17 @@ def verification(request:HttpRequest):
 
 def set_password(request:HttpRequest):
     if request.method == 'POST':
+        
+        verified = request.session.get('verified')
+        print('verified: ',verified)
+        if not verified or verified != 'True':
+            return HttpResponseBadRequest("unauthenticated attempt")
+       
         form = SetPasswordForm(request.POST)
         if form.is_valid():
             phone_no = request.session.get('phone_no')
             if not phone_no:
-                pass
+                return HttpResponseBadRequest("phone no is not set")
             
             password = form.cleaned_data['password']
             print(password)
@@ -104,11 +115,12 @@ def set_password(request:HttpRequest):
             user.save()
             
             login(request, user)
+            del request.session['phone_no']
+            del request.session['verified']
             return render(request,'user/dashboard.html')
         else:
             return HttpResponseUnprocessableEntity(form.errors)
-        
-    #request.method == 'get'
+
     return HttpResponseNotAllowed(['POST'])
 
 
@@ -120,16 +132,23 @@ def login_user(request:HttpRequest):
             if not phone_no:
                 return HttpResponseUnprocessableEntity("invalid phone number")
             
-            password = form.cleaned_data['password']       
+            password = form.cleaned_data['password']    
+           
             user = authenticate(phone_no=phone_no, password=password)
+            
             if user :
                 login(request, user)
+                del request.session['phone_no']
+                if request.session.get('verified'):
+                    del request.session['verified']
+                request.session.save()
                 return render(request, 'user/dashboard.html')
             else:
-                return HttpResponseBadRequest("try again")
+                return HttpResponseBadRequest("incorrect password...try again")
             
         else:
             return HttpResponseUnprocessableEntity("invalid password")
+    return HttpResponseNotAllowed(['POST'])
 
 @login_required
 def logout_user(request:HttpRequest):

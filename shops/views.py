@@ -8,10 +8,11 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 
 @login_required
 def make_appeal(request:HttpRequest):
+    print('appeal was issued...')
+    appeal = Appeal.objects.filter(user=request.user).first()
     if request.method == 'POST':
-        appeal = request.user.appeal
         if appeal:
-            return render(request,'shop/appeal',{
+            return render(request,'shop/appeal.html',{
                 'appeal': appeal
             })
         
@@ -19,21 +20,28 @@ def make_appeal(request:HttpRequest):
         description = request.POST.get('description')
         
         if not page_name:
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("page name is not provided")
         shop =  Shop.objects.filter(name=page_name).exists()
         if shop:
-            return HttpResponseBadRequest("the boutique with name %s is already exists" % page_name)
-        appeal = Appeal(user=request.user, name=page_name)
+            return HttpResponseBadRequest("the boutique with name %s is already exist" % page_name)
+        appeal = Appeal(user=request.user, page_name=page_name)
         appeal.save()
+        print('appeal regi..')
         return HttpResponse("an appeal is registered")
+    if appeal:
+        return render(request, 'shop/appeal.html', {
+            'appeal': appeal
+        })
+        
+    return render(request, 'shop/request.html')
+    
 
 
 @login_required
 def check_for_shop_name(request:HttpRequest, shop_name):
     res = Shop.objects.filter(name=shop_name).exists()
-    
     if res:
-        return HttpResponseForbidden()
+        return HttpResponseBadRequest("shop with this name is already exist")
     return HttpResponse("it's ok!")
 
 @login_required
