@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-02 12:02+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: coupons/apps.py:8 coupons/models.py:29
+msgid "Coupons"
+msgstr "کوپنها"
+
+#: coupons/models.py:14
+msgid "percent"
+msgstr "درصد تخفیف ٪"
+
+#: coupons/models.py:15
+msgid "amount"
+msgstr "مقدار"
+
+#: coupons/models.py:17
+msgid "Code"
+msgstr "کد تخفیف"
+
+#: coupons/models.py:18
+msgid "Date from"
+msgstr "اعتبار از "
+
+#: coupons/models.py:19
+msgid "Date to"
+msgstr "اعتبار تا"
+
+#: coupons/models.py:20
+msgid "Coupon type"
+msgstr "نوع کوپن"
+
+#: coupons/models.py:21
+msgid "Percent %"
+msgstr "درصد تخفیف ٪"
+
+#: coupons/models.py:22
+msgid "Amount"
+msgstr "مقدار"
+
+#: coupons/models.py:23
+msgid "MAx Allowed Discount"
+msgstr "سقف تخفیف (تومان)"
+
+#: coupons/models.py:24
+msgid "Active"
+msgstr "فعال"
+
+#: coupons/models.py:25
+msgid "Used"
+msgstr "استفاده شده"
+
+#: coupons/models.py:28
+msgid "Coupon"
+msgstr "کوپن"
+
+#~ msgid "Type"
+#~ msgstr "نوع کوپن"

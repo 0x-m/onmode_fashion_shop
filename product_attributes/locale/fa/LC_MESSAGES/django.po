@@ -1,0 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-02 12:02+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: product_attributes/apps.py:8
+msgid "Product attributes"
+msgstr "ویژگهای محصولات"
+
+#: product_attributes/models.py:6
+msgid "Name"
+msgstr "نام رنگ"
+
+#: product_attributes/models.py:7
+msgid "Color code"
+msgstr "کد رنگ"
+
+#: product_attributes/models.py:10
+msgid "Color"
+msgstr "رنگ"
+
+#: product_attributes/models.py:11
+msgid "Colors"
+msgstr "رنگها"
+
+#: product_attributes/models.py:18
+msgid "Size code"
+msgstr "سایز"
+
+#: product_attributes/models.py:19
+msgid "Description"
+msgstr "توضیحات مرتبط"
+
+#: product_attributes/models.py:22
+msgid "Size"
+msgstr "سایز"
+
+#: product_attributes/models.py:23
+msgid "Sizes"
+msgstr "سایزها"

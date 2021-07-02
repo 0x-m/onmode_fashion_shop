@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-02 12:02+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: orders/apps.py:8 orders/models.py:133
+msgid "Orders"
+msgstr "سفارشها"
+
+#: orders/models.py:19
+msgid "First name"
+msgstr "نا"
+
+#: orders/models.py:20
+msgid "Last name"
+msgstr "نام خانوادگی"
+
+#: orders/models.py:21
+msgid "Phone Number"
+msgstr "شماره همراه"
+
+#: orders/models.py:22 orders/models.py:128
+msgid "State"
+msgstr "استان"
+
+#: orders/models.py:23
+msgid "City"
+msgstr "شهرستان"
+
+#: orders/models.py:24
+msgid "town"
+msgstr "شهر"
+
+#: orders/models.py:25
+msgid "Postal Code"
+msgstr "کد پستی"
+
+#: orders/models.py:26
+msgid "Description"
+msgstr "نشانی"
+
+#: orders/models.py:29
+msgid "Order Address"
+msgstr "آدرس"
+
+#: orders/models.py:30
+msgid "Order Adresses"
+msgstr "آدرسها "
+
+#: orders/models.py:38
+msgid "ultimate"
+msgstr "پیشتاز"
+
+#: orders/models.py:39
+msgid "express"
+msgstr "ویژه"
+
+#: orders/models.py:40
+msgid "normal"
+msgstr "عادی"
+
+#: orders/models.py:41
+msgid "Local"
+msgstr "داخل شهر"
+
+#: orders/models.py:43 orders/models.py:123
+msgid "User"
+msgstr "کاربر"
+
+#: orders/models.py:44
+msgid "Date created"
+msgstr "تاریخ ایجاد"
+
+#: orders/models.py:45 orders/models.py:194
+msgid "Total price"
+msgstr "قیمت کل"
+
+#: orders/models.py:46
+msgid "Discounted Total Price"
+msgstr "قیمت کل با محاسبه تخفیف جاری"
+
+#: orders/models.py:47
+msgid "Total price after applying coupon"
+msgstr "قیمت کل بعد از اعمال کوپن"
+
+#: orders/models.py:48
+msgid "Coupon"
+msgstr "کوپن"
+
+#: orders/models.py:49
+msgid "Paid"
+msgstr "پرداخت شده"
+
+#: orders/models.py:50
+msgid "Address"
+msgstr "آدرس"
+
+#: orders/models.py:51
+msgid "Use default address"
+msgstr "از آدرس ذخیره شده استفاده شود"
+
+#: orders/models.py:52
+msgid "Post Method"
+msgstr "روش ارسال پستی"
+
+#: orders/models.py:56 orders/models.py:121
+msgid "Order List"
+msgstr ""
+
+#: orders/models.py:57
+msgid "Order Lists"
+msgstr "لیستهای سفارش"
+
+#: orders/models.py:112
+msgid "pending"
+msgstr "در انتظار تایید"
+
+#: orders/models.py:113
+msgid "accept"
+msgstr "پذیرفته شده"
+
+#: orders/models.py:114
+msgid "rejected"
+msgstr "رد شده"
+
+#: orders/models.py:115
+msgid "sent"
+msgstr "ارسال شده"
+
+#: orders/models.py:116
+msgid "recieved"
+msgstr "دریافت شده"
+
+#: orders/models.py:117
+msgid "cancelled"
+msgstr "لغو شده"
+
+#: orders/models.py:118
+msgid "returned"
+msgstr "مرجوع"
+
+#: orders/models.py:122
+msgid "Date Created"
+msgstr "تاریخ ایجاد"
+
+#: orders/models.py:124
+msgid "Shop"
+msgstr "فروشگاه"
+
+#: orders/models.py:125
+msgid "Total Price"
+msgstr "قیمت کل"
+
+#: orders/models.py:126 orders/models.py:195
+msgid "Discounted total price"
+msgstr ""
+
+#: orders/models.py:127
+msgid "Tracking code"
+msgstr "کد رهگیری"
+
+#: orders/models.py:129
+msgid "Verify sent"
+msgstr "تایید کد مرسوله"
+
+#: orders/models.py:132 orders/models.py:186
+msgid "Order"
+msgstr "سفارش"
+
+#: orders/models.py:187
+msgid "Product"
+msgstr "محصول"
+
+#: orders/models.py:188
+msgid "Quantity"
+msgstr "تعداد"
+
+#: orders/models.py:189
+msgid "Price"
+msgstr "قیمت"
+
+#: orders/models.py:190
+msgid "Color"
+msgstr "رنگ"
+
+#: orders/models.py:191
+msgid "Size"
+msgstr "سایز"
+
+#: orders/models.py:192
+msgid "Has discount"
+msgstr "تخفیف دارد"
+
+#: orders/models.py:193
+msgid "Discounted Price"
+msgstr "قیمت با تخفیف"
+
+#: orders/models.py:196
+msgid "Discount"
+msgstr "تخفیف"
+
+#: orders/models.py:199
+#, fuzzy
+#| msgid "Order Lists"
+msgid "Order Item"
+msgstr "ایتم سفارش"
+
+#: orders/models.py:200
+msgid "Order Items"
+msgstr "ایتمهای سفارش"

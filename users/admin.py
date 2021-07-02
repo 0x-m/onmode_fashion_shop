@@ -1,4 +1,5 @@
 from typing import Any, Optional
+from django.contrib.admin.options import ModelAdmin
 
 from django.db.models import fields
 from django.forms.widgets import PasswordInput
@@ -6,6 +7,10 @@ from .models import Address, User
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
+from jalali_date.admin import ModelAdminJalaliMixin, StackedInlineJalaliMixin, TabularInlineJalaliMixin	
+from jalali_date import datetime2jalali, date2jalali
+from django.utils.translation import gettext_lazy as _
+
 
 
 class AddressInline(admin.StackedInline):
@@ -14,8 +19,8 @@ class AddressInline(admin.StackedInline):
 
 
 class UserCreationForm(forms.ModelForm):
-    password1 = forms.CharField(label='password',widget=forms.PasswordInput)
-    password2 = forms.CharField(label='password confirmation',widget=PasswordInput)
+    password1 = forms.CharField(label=_('password'),widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_('password confirmation'),widget=PasswordInput)
     def clean_password2(self):
         password1 = self.cleaned_data['password1']
         password2 = self.cleaned_data['password2']
@@ -34,23 +39,23 @@ class UserCreationForm(forms.ModelForm):
         model = User
         fields = ['phone_no','email']
 
-class UserModelAdmin(UserAdmin):
+class UserModelAdmin(ModelAdminJalaliMixin,UserAdmin):
    # fields = [('first_name', 'last_name','gender'),'phone_no','email','is_active','is_staff','is_superuser','groups','user_permissions',]
 
     add_form = UserCreationForm
-    fieldsets = (("Phone Number (Username)",{
+    fieldsets = ((_("Phone Number (Username)"),{
         "fields": ['phone_no',]
         }),
-        ("Other informations",{
+        (_("Other informations"),{
             'fields': ('id','first_name','last_name','gender','email','merchan_card','user_code','points')
         }),
-        ('History',{
+        (_('History'),{
             'fields':('date_joined','last_login',)
         }),
-        ('Privileges',{
+        (_('Privileges'),{
             'fields': ('is_active','is_staff','is_superuser')
         }),
-        ('Groups and Permissions',{
+        (_('Groups and Permissions'),{
             'fields': ('groups',),
             
         }),
@@ -63,7 +68,7 @@ class UserModelAdmin(UserAdmin):
     ordering = ['phone_no', 'first_name', 'last_name']
     actions_selection_counter = True
     date_hierarchy = 'date_joined'
-    list_display = ['phone_no', 'first_name', 'last_name','is_active','is_staff','is_superuser', 'date_joined']
+    list_display = ['phone_no', 'first_name', 'last_name','is_active','is_staff','is_superuser', 'get_joined_date']
     list_editable = ['is_active']
     search_fields = ['phone_no', 'first_name', 'last_name']
     
@@ -96,4 +101,13 @@ class UserModelAdmin(UserAdmin):
                 form.base_fields[f].disabled = True
         return form
     
+    def get_joined_date(self, obj):
+        return datetime2jalali(obj.date_joined).strftime('%y/%m/%d  %H:%M:%S')
+    get_joined_date.short_description = 'تاریخ ایجاد کاربر'
+    get_joined_date.adim_orde_field = 'date_join'
+    
 admin.site.register(User,UserModelAdmin)
+
+@admin.register(Address)
+class AddressAdmin(ModelAdmin):
+    list_display = ['user','state','city','town','postal_code']

@@ -3,17 +3,25 @@ from django.db import models
 from django.db.models.base import ModelState
 from django.utils import timezone
 import math
-from shops.models import Collection, Product
+from shops.models import  Product
+from django.utils.translation import gettext_lazy as _
 
 
 class Discount(models.Model):
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE,related_name='discounts')
-    percent = models.PositiveIntegerField()
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_from = models.DateTimeField()
-    date_to = models.DateTimeField()
-    quantity = models.PositiveIntegerField()
-    is_active = models.BooleanField(default=True)
+    product = models.ForeignKey(verbose_name=_('Product'),to=Product, on_delete=models.CASCADE,related_name='discounts')
+    percent = models.PositiveIntegerField(verbose_name=_('Percent %'))
+    date_created = models.DateTimeField(verbose_name=_('Date created'),auto_now_add=True)
+    date_from = models.DateTimeField(verbose_name=_('Date from'))
+    date_to = models.DateTimeField(verbose_name=_('Date to'))
+    quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
+    is_active = models.BooleanField(verbose_name=_('Active'),default=True)
+    
+    class Meta:
+        verbose_name = _('Discount')
+        verbose_name_plural = _('Discounts')
+    
+    def __str__(self) -> str:
+        return self.percent + '%'
     
     def is_valid(self):
         dt = timezone.now()

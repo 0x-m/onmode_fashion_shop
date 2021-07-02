@@ -247,7 +247,13 @@
      
     }
 </style>
-
+{% if product == None %}
+    <div class="centerized">
+        <p>
+            خطا: محصول وجود ندارد
+        </p>
+    </div>
+{% else %}
 <div class="row">
     <div class="col-6">
         {% include 'product/add_edit/gallery.html' %}
@@ -277,6 +283,8 @@
 <p style="width: 100%;text-align:center">
     <button style="width: 30%;" class="send-btn">ثبت</button>
 </p>
+{% endif %}
+
 
 <script>
     function select_multi_color(){

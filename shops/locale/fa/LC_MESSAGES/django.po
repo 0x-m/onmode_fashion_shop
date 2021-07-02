@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-02 12:02+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: shops/apps.py:7
+msgid "Shops Management"
+msgstr "مدیریت فروشگاه ها"
+
+#: shops/models.py:11
+msgid "Seller"
+msgstr "فروشنده"
+
+#: shops/models.py:12 shops/models.py:31 shops/models.py:47 shops/models.py:64
+#: shops/models.py:80 shops/models.py:99
+msgid "Name"
+msgstr "نام"
+
+#: shops/models.py:13 shops/models.py:48 shops/models.py:65 shops/models.py:100
+msgid "Description"
+msgstr "توضیحات"
+
+#: shops/models.py:14
+msgid "Address"
+msgstr "آدرس"
+
+#: shops/models.py:15 shops/models.py:33
+msgid "Logo"
+msgstr "لوگو"
+
+#: shops/models.py:16
+msgid "Banner"
+msgstr "بنر"
+
+#: shops/models.py:17
+msgid "active"
+msgstr "فعال"
+
+#: shops/models.py:19 shops/models.py:103
+msgid "Date created"
+msgstr "تاریخ ایجاد"
+
+#: shops/models.py:20
+msgid "Postal Destinations"
+msgstr "استانهای مورد پشتیبانی پستی"
+
+#: shops/models.py:23 shops/models.py:92
+msgid "Shop"
+msgstr "فروشگاه"
+
+#: shops/models.py:24
+msgid "Shops"
+msgstr "فروشگاه"
+
+#: shops/models.py:34 shops/models.py:50 shops/models.py:66
+msgid "Active"
+msgstr "فعال"
+
+#: shops/models.py:38 shops/models.py:93
+msgid "Brand"
+msgstr "برند"
+
+#: shops/models.py:39
+msgid "Brands"
+msgstr "برندها"
+
+#: shops/models.py:51 shops/models.py:107
+msgid "Image"
+msgstr "تصویر"
+
+#: shops/models.py:55
+msgid "Category"
+msgstr "دسته ها"
+
+#: shops/models.py:56 shops/models.py:63 shops/models.py:94
+msgid "Categories"
+msgstr "دسته ها"
+
+#: shops/models.py:67
+msgid "Attributes"
+msgstr "ویژگیها"
+
+#: shops/models.py:71 shops/models.py:79 shops/models.py:95
+msgid "Type"
+msgstr "نوع محصول"
+
+#: shops/models.py:72
+msgid "Types"
+msgstr "انواع محصول"
+
+#: shops/models.py:83 shops/models.py:96
+msgid "SubType"
+msgstr "زیر نوع"
+
+#: shops/models.py:84
+msgid "SubTypes"
+msgstr "زیر نوع"
+
+#: shops/models.py:97
+msgid "Colors"
+msgstr "رنگها"
+
+#: shops/models.py:98
+msgid "Sizes"
+msgstr "سایزها"
+
+#: shops/models.py:101
+msgid "Price"
+msgstr "قیمت"
+
+#: shops/models.py:102
+msgid "Available"
+msgstr "موجود"
+
+#: shops/models.py:105
+msgid "Quantity"
+msgstr "تعداد"
+
+#: shops/models.py:106
+msgid "Keywords"
+msgstr "کلیدواژهها"
+
+#: shops/models.py:112
+msgid "Product"
+msgstr "محصول"
+
+#: shops/models.py:113
+msgid "Products"
+msgstr "محصولات"
+
+#~ msgid "accept appeals"
+#~ msgstr "قبول درخواستها"
+
+#~ msgid "Reject appeals"
+#~ msgstr "رد درخواستها"
+
+#~ msgid "pending"
+#~ msgstr "درانتظار تایید"
+
+#~ msgid "accepted"
+#~ msgstr "پذیرفته شده"
+
+#~ msgid "rejected"
+#~ msgstr "رد شده"
+
+#~ msgid "User"
+#~ msgstr "کاربر"
+
+#~ msgid "Page Name"
+#~ msgstr "نام صفحه"
+
+#~ msgid "Status"
+#~ msgstr "وضعیت"
+
+#~ msgid "Appeal"
+#~ msgstr "درخواست ایجاد بوتیک"
+
+#~ msgid "Appeals"
+#~ msgstr "درخواستهای ایجاد بوتیک"
+
+#~ msgid "Color code"
+#~ msgstr "کد رنگ"
+
+#~ msgid "Color"
+#~ msgstr "رنگها"
+
+#~ msgid "Size code"
+#~ msgstr "سایز"
+
+#~ msgid "Size"
+#~ msgstr "سایزها"
+
+#~ msgid "Collection"
+#~ msgstr "کلکسیون"
+
+#~ msgid "Collections"
+#~ msgstr "کلکسیونها"
+
+#~ msgid "Collection Item"
+#~ msgstr "عضو کلکسیون"
+
+#~ msgid "Collection Items"
+#~ msgstr "اعضا کلکسیون"
+
+#~ msgid "fee %"
+#~ msgstr "مالیات ٪"

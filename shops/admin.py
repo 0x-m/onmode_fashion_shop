@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
-from .models import Brand, Category, Collection, Color, Product, Shop, Size, Type, CollectionItem
+from .models import  Brand, Category,   Product, Shop, SubType, Type
+from django.utils.translation import gettext_lazy as _
 
 class ProductInline(admin.TabularInline):
     model = Product
@@ -14,17 +15,18 @@ class ProductInline(admin.TabularInline):
 class ShopAdmin(ModelAdmin):
     #fields = ['name','seller','fee','is_active', 'date_created']
     readonly_fields = ['date_created']
-    list_display = ['name','seller','fee','is_active', 'date_created']
+    list_display = ['name','seller','is_active', 'date_created']
     list_editable = ['is_active']
     inlines = [
         ProductInline
     ]
 
 
-
 @admin.register(Product)
 class ProductCustomAdmin(ModelAdmin):
     list_display = ['shop','name', 'quantity']
+    readonly_fields = ['date_created']
+   
     
 
 @admin.register(Category)
@@ -34,22 +36,14 @@ class CategoryAdmin(ModelAdmin):
 @admin.register(Type)
 class TypeAdmin(ModelAdmin):
     list_display = ['name', 'is_active']
-@admin.register(Size)
-class SizeAdmin(ModelAdmin):
-    list_display = ['code', 'description']
 
-@admin.register(Color)
-class ColorAdmin(ModelAdmin):
-    list_display = ['name', 'code']
+@admin.register(SubType)
+class SubtTypeAdmin(ModelAdmin):
+    list_display = ['name', 'type']
+
 
 @admin.register(Brand)
 class BrandAdmin(ModelAdmin):
-    list_display = ['name', 'slug']
-
-@admin.register(Collection)
-class CollectionAdmin(ModelAdmin):
-    list_display = ['name', 'description', 'is_active']
-
-@admin.register(CollectionItem)
-class CollectionItemAdmin(ModelAdmin):
-    list_display = ['Product','collection']
+    list_display = ['name', 'slug', 'is_active']
+    list_editable = ['is_active']
+    readonly_fields = ['slug']

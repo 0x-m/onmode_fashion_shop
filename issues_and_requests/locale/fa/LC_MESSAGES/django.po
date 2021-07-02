@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-02 12:02+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: issues_and_requests/apps.py:8
+msgid "Issues and requests"
+msgstr "درخواستها و شکایات"
+
+#: issues_and_requests/models.py:13
+msgid "pending"
+msgstr "در انتظار تایید"
+
+#: issues_and_requests/models.py:14
+msgid "accepted"
+msgstr "پذیرفته شده"
+
+#: issues_and_requests/models.py:15
+msgid "rejected"
+msgstr "رد شده"
+
+#: issues_and_requests/models.py:17 issues_and_requests/models.py:62
+msgid "User"
+msgstr "کاربر"
+
+#: issues_and_requests/models.py:18
+msgid "Page Name"
+msgstr "نام صفحه"
+
+#: issues_and_requests/models.py:19 issues_and_requests/models.py:66
+msgid "Description"
+msgstr "سایر توضیحات"
+
+#: issues_and_requests/models.py:20
+msgid "Date created"
+msgstr "تاریخ ایجاد"
+
+#: issues_and_requests/models.py:22 issues_and_requests/models.py:68
+msgid "Status"
+msgstr "پیام وضعیت"
+
+#: issues_and_requests/models.py:41
+msgid "Appeal"
+msgstr "درخواست ایجاد بوتیک"
+
+#: issues_and_requests/models.py:42
+msgid "Appeals"
+msgstr "درخواست ایجاد بوتیک"
+
+#: issues_and_requests/models.py:50
+
+msgid "Issue Subject"
+msgstr "عنوان شکایت"
+
+#: issues_and_requests/models.py:51
+
+msgid "Issue Subjects"
+msgstr "عناوین"
+
+#: issues_and_requests/models.py:58
+msgid "Pending"
+msgstr "در انتظار تایید"
+
+#: issues_and_requests/models.py:59
+msgid "Accepted"
+msgstr "پذیرفته شده"
+
+#: issues_and_requests/models.py:60
+msgid "Rejected"
+msgstr "رد شده"
+
+#: issues_and_requests/models.py:63
+msgid "Title"
+msgstr "عنوان"
+
+#: issues_and_requests/models.py:64
+msgid "Order"
+msgstr "شماره سفارش"
+
+#: issues_and_requests/models.py:65
+msgid "Subject"
+msgstr "موضوع"
+
+#: issues_and_requests/models.py:67
+msgid "State"
+msgstr "وضعیت"
+
+#: issues_and_requests/models.py:70
+msgid "Issue"
+msgstr "شکایت"
+
+#: issues_and_requests/models.py:71
+msgid "Issues"
+msgstr "شکایات"

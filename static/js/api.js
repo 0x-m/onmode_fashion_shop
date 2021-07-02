@@ -110,10 +110,21 @@ function verify_code(){
 function validate_password(){
     let password = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
-    if (password == confirm && password.length >= 8){
-        return true;
+    const error = document.getElementById("error");
+    let rx = RegExp('(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
+    if (password != confirm ){
+        error.innerText = "تکرار رمز عبور صحیح نمیباشد"
+        return false;
     }
-    return false;
+    else if(password.length < 8){
+        error.innerText = "رمز عبور باید حداقل هشت حرفی باشد"
+        return false
+    }
+    else if(! rx.test(password)){
+        error.innerText = "رمز عبور باید شامل حروف اعداد و نمادها باشد"
+        return false
+    }
+    return true;
 }
 function set_password(){
 
@@ -203,6 +214,6 @@ function getFavs(){
         }
     };
 
-    xhttp.open("GET","{% url 'favourites:favs' %}")
+    xhttp.open("GET","/favourites/")
     xhttp.send();
 }

@@ -142,6 +142,15 @@ body {
 .text-box:disabled{
     background-color: rgb(247, 247, 247);
 }
+fz-tiny{
+    font-size: 0.6rem;
+}
+fz-small{
+    font-size: 0.8rem;
+}
+.fz-big {
+    font-size: 1,2rem;
+}
 /*-------------checkbox-----------------*/
 .checkbox {
     position: relative;
@@ -987,6 +996,10 @@ pb-1{padding-bottom: 1rem;}
 
 /*****************************/
 
+.w-100{
+    width: 100%;
+}
+
 /******** side-box*************/
 .side-box {
     display: flex;
@@ -1016,11 +1029,15 @@ pb-1{padding-bottom: 1rem;}
 
 @media screen and (min-width: 1024px) {
     .side-box-show {
-        width: 35vw;
+        width: 25vw;
     }
     
 }
+.overflow-hidden {
+    overflow: hidden;
 
+    
+}
 .side-box .close-btn {
     position: absolute;
     top: 1%;

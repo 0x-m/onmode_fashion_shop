@@ -1,12 +1,17 @@
 <div class="centerized">
-    <p class="field">
-        <label class="caption">کد ارسال شده را وارد کنید</label>
-        <input name="code" id="code" type="text" class="text-box" placeholder="کد تایید" >
-    </p>
-    <p class="field">
-        <button type="button" class="btn btn-primary" onclick="verify_code();">تایید</button>
-    </p>
-    <p class="field">
-        <span>{{ code }}</span>
-    </p>
+    <div class="container">
+        <p style="font-size: 0.8rem;">
+            کد ارسال شده را وارد کنید
+        </p>
+
+        <input type="text" class="text-box" id="code" name="code" placeholder="کد تایید">
+        <p id="error" style="color: red;" class="fz-tiny"></p>
+        <button  class="btn btn-primary fz-bg mt-1 w-100" onclick="verify_code();" >ادامه</button>
+        <p class="fz-small txt-center" >
+            عضویت در آنمد به منزله پذیرفتن تمامی <a href="#">قوانین </a>آنمد میابشد
+        </p>
+        <p>
+            {{ code}}
+        </p>
+    </div>
 </div>

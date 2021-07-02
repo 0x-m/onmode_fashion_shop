@@ -39,6 +39,7 @@ def enrollment(request:HttpRequest):
             phone_no = form.cleaned_data['phone_no']
             request.session['phone_no'] = phone_no
             request.session['verified'] = 'False'
+            request.session['secret'] = pyotp.random_base32()
             request.session.save()
             logger.info("phone_no is saved into session")
         else:
@@ -54,6 +55,7 @@ def enrollment(request:HttpRequest):
         else: #use does not exist
             #generate time-based one time password
             totp = pyotp.TOTP('base32secret3232',interval=120)
+            
             verification_code = totp.now()
             #send otp via sms
             is_sent  = True
@@ -80,7 +82,8 @@ def verification(request:HttpRequest):
                 return HttpResponseBadRequest("no phone number")
             
             #validate code
-            totp  = pyotp.TOTP('base32secret3232',interval=120)
+            secret = request.session.get('secret')
+            totp  = pyotp.TOTP(secret,interval=120)
             if not totp.verify(code):
                 return HttpResponseBadRequest("expired or invalid code")
             request.session['verified'] = 'True'
@@ -111,6 +114,7 @@ def set_password(request:HttpRequest):
             user = User.objects.filter(phone_no=phone_no).first()
             if not user:
                 user = User(phone_no=phone_no)
+            user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
             user.set_password(password)
             user.save()
             
@@ -135,9 +139,10 @@ def login_user(request:HttpRequest):
             password = form.cleaned_data['password']    
            
             user = authenticate(phone_no=phone_no, password=password)
-            
+            user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
+ 
             if user :
-                login(request, user)
+                login(request, user,backend='users.CustomAuthenticationBackend.PhoneAuthentication')
                 del request.session['phone_no']
                 if request.session.get('verified'):
                     del request.session['verified']

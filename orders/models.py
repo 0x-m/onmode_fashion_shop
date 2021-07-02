@@ -13,17 +13,21 @@ from discounts.models import Discount
 from django.utils import timezone
 from django.db.models.signals import post_save
 from users.models import Address, User
+from django.utils.translation import gettext_lazy as _
 
 class OrderAddress(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone_no = models.CharField(max_length=11)
-    state = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    town = models.CharField(max_length=50)
-    posta_code = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
+    first_name = models.CharField(verbose_name=_('First name'),max_length=50)
+    last_name = models.CharField(verbose_name=_('Last name'),max_length=50)
+    phone_no = models.CharField(verbose_name=_('Phone Number'),max_length=11)
+    state = models.CharField(verbose_name=_('State'),max_length=50)
+    city = models.CharField(verbose_name=_('City'),max_length=50)
+    town = models.CharField(verbose_name=_('town'),max_length=50)
+    postal_code = models.CharField(verbose_name=_('Postal Code'),max_length=50,null=True)
+    description = models.CharField(verbose_name=_('Description'),max_length=500)
 
+    class Meta:
+        verbose_name = _('Order Address')
+        verbose_name_plural = _('Order Adresses')
 
 class OrderList(models.Model):
     ULTIMATE = 'ultimate'
@@ -31,20 +35,26 @@ class OrderList(models.Model):
     NORMAL = 'normal'
     LOCAL = 'local'
     POST_METHODS = [
-        (ULTIMATE,'ultimate'),
-        (EXPRESS, 'express'),
-        (NORMAL, 'normal'),
+        (ULTIMATE,_('ultimate')),
+        (EXPRESS, _('express')),
+        (NORMAL, _('normal')),
+        (LOCAL, _('Local'))
     ]
-    user = models.ForeignKey(to=User,on_delete=models.DO_NOTHING,related_name='order_lists')
-    date_created = models.DateTimeField(default=timezone.now)
-    total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
-    total_price_after_discount = models.DecimalField(max_digits=10,decimal_places=0,default=0)
-    total_price_after_applying_coupon = models.DecimalField(max_digits=10, decimal_places=0,default=0)
-    coupon = models.ForeignKey(to=Coupon,on_delete=models.SET_NULL, null=True) 
-    is_paid = models.BooleanField(default=False)
-    Address = models.ForeignKey(to=OrderAddress,on_delete=models.CASCADE, null=True)
-    use_default_address = models.BooleanField(default=True)
-    post_method = models.CharField(max_length=20,choices=POST_METHODS,default='ultimate')
+    user = models.ForeignKey(verbose_name=_('User'),to=User,on_delete=models.DO_NOTHING,related_name='order_lists')
+    date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
+    total_price = models.DecimalField(verbose_name=_('Total price'),max_digits=10,decimal_places=0,default=0)
+    total_price_after_discount = models.DecimalField(verbose_name=_('Discounted Total Price'),max_digits=10,decimal_places=0,default=0)
+    total_price_after_applying_coupon = models.DecimalField(verbose_name=_('Total price after applying coupon'),max_digits=10, decimal_places=0,default=0)
+    coupon = models.ForeignKey(verbose_name=_('Coupon'),to=Coupon,on_delete=models.SET_NULL, null=True) 
+    is_paid = models.BooleanField(verbose_name=_('Paid'),default=False)
+    Address = models.ForeignKey(verbose_name=_('Address'),to=OrderAddress,on_delete=models.CASCADE, null=True)
+    use_default_address = models.BooleanField(verbose_name=_('Use default address'),default=True)
+    post_method = models.CharField(verbose_name=_('Post Method'),max_length=20,choices=POST_METHODS,default='ultimate')
+    
+    
+    class Meta:
+        verbose_name = _('Order List')
+        verbose_name_plural = _('Order Lists')
     
     def set_coupon(self, coupon:Coupon):
         self.coupon = coupon
@@ -99,25 +109,28 @@ class Order(models.Model):
     RETURNED = 'returned' #customer issue an return request
     
     STATES = [
-        (PENDING,'pending'),
-        (ACCEPTED,'accept'),
-        (REJECTED, 'rejected'),
-        (SENT,'sent'),
-        (RECEIVED,'recieved'),
-        (CANCELLED,'cancelled'),
-        (RETURNED,'returned'),
+        (PENDING,_('pending')),
+        (ACCEPTED,_('accept')),
+        (REJECTED, _('rejected')),
+        (SENT,_('sent')),
+        (RECEIVED,_('recieved')),
+        (CANCELLED,_('cancelled')),
+        (RETURNED,_('returned')),
     ]
     
-    order_list = models.ForeignKey(to=OrderList,on_delete=models.CASCADE,related_name='orders')
-    date_created = models.DateTimeField(default=timezone.now)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='orders')
-    shop = models.ForeignKey(to=Shop,on_delete=models.DO_NOTHING, related_name='orders')
-    total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
-    discounted_total_price = models.DecimalField(verbose_name='total',max_digits=10,decimal_places=0,default=0)
-    tracking_code = models.CharField(max_length=30)
-    state = models.CharField(choices=STATES,default='pending', max_length=20)
-    verify_sent = models.BooleanField(default=False)
+    order_list = models.ForeignKey(verbose_name=_('Order List'),to=OrderList,on_delete=models.CASCADE,related_name='orders')
+    date_created = models.DateTimeField(verbose_name=_('Date Created'),default=timezone.now)
+    user = models.ForeignKey(verbose_name=_('User'),to=User, on_delete=models.CASCADE, related_name='orders')
+    shop = models.ForeignKey(verbose_name=_('Shop'),to=Shop,on_delete=models.DO_NOTHING, related_name='orders')
+    total_price = models.DecimalField(verbose_name=_('Total Price'),max_digits=10,decimal_places=0,default=0)
+    discounted_total_price = models.DecimalField(verbose_name=_('Discounted total price'),max_digits=10,decimal_places=0,default=0)
+    tracking_code = models.CharField(verbose_name=_('Tracking code'),max_length=30)
+    state = models.CharField(verbose_name=_('State'),choices=STATES,default='pending', max_length=20)
+    verify_sent = models.BooleanField(verbose_name=_('Verify sent'),default=False)
     
+    class Meta:
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
     
     def add_item(self,item):
         if not item in self.items.all():
@@ -170,17 +183,21 @@ class Order(models.Model):
         
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(to=Order,on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10,decimal_places=0,default=0) #price of product
-    color = models.ForeignKey(to=Color,on_delete=models.DO_NOTHING, null=True)
-    size = models.ForeignKey(to=Size,on_delete=models.DO_NOTHING, null=True)
-    has_discount = models.BooleanField(default=False)
-    discounted_price = models.DecimalField(max_digits=10,decimal_places=0,default=0) #discounted price
-    total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0) # price * quantity
-    discounted_total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
-    discount = models.ForeignKey(to=Discount,on_delete=models.DO_NOTHING,null=True)
+    order = models.ForeignKey(verbose_name=_('Order'),to=Order,on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(verbose_name=_('Product'),to=Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
+    price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,default=0) #price of product
+    color = models.ForeignKey(verbose_name=_('Color'),to=Color,on_delete=models.DO_NOTHING, null=True)
+    size = models.ForeignKey(verbose_name=_('Size'),to=Size,on_delete=models.DO_NOTHING, null=True)
+    has_discount = models.BooleanField(verbose_name=_('Has discount'),default=False)
+    discounted_price = models.DecimalField(verbose_name=_('Discounted Price'),max_digits=10,decimal_places=0,default=0) #discounted price
+    total_price = models.DecimalField(verbose_name=_('Total price'),max_digits=10,decimal_places=0,default=0) # price * quantity
+    discounted_total_price = models.DecimalField(verbose_name=_('Discounted total price'),max_digits=10,decimal_places=0,default=0)
+    discount = models.ForeignKey(verbose_name=_('Discount'),to=Discount,on_delete=models.DO_NOTHING,null=True)
+    
+    class Meta:
+        verbose_name = _('Order Item')
+        verbose_name_plural = _('Order Items')
     
     def __set_price(self):
         self.price = self.product.price

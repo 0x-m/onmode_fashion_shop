@@ -1,39 +1,43 @@
+from django.forms import forms
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
-from .models import Appeal, Product, Shop
+from .models import  Product, Shop
 from django import http
 from django.http.request import HttpRequest
 from django.shortcuts import render, resolve_url
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_list_or_404, get_object_or_404
+from .models import *
+from django.core.paginator import Paginator
 
-@login_required
-def make_appeal(request:HttpRequest):
-    print('appeal was issued...')
-    appeal = Appeal.objects.filter(user=request.user).first()
-    if request.method == 'POST':
-        if appeal:
-            return render(request,'shop/appeal.html',{
-                'appeal': appeal
-            })
+from .forms import AddProductForm
+# @login_required
+# def make_appeal(request:HttpRequest):
+#     print('appeal was issued...')
+#     appeal = Appeal.objects.filter(user=request.user).first()
+#     if request.method == 'POST':
+#         if appeal:
+#             return render(request,'shop/appeal.html',{
+#                 'appeal': appeal
+#             })
         
-        page_name = request.POST.get('page_name')
-        description = request.POST.get('description')
+#         page_name = request.POST.get('page_name')
+#         description = request.POST.get('description')
         
-        if not page_name:
-            return HttpResponseBadRequest("page name is not provided")
-        shop =  Shop.objects.filter(name=page_name).exists()
-        if shop:
-            return HttpResponseBadRequest("the boutique with name %s is already exist" % page_name)
-        appeal = Appeal(user=request.user, page_name=page_name)
-        appeal.save()
-        print('appeal regi..')
-        return HttpResponse("an appeal is registered")
-    if appeal:
-        return render(request, 'shop/appeal.html', {
-            'appeal': appeal
-        })
+#         if not page_name:
+#             return HttpResponseBadRequest("page name is not provided")
+#         shop =  Shop.objects.filter(name=page_name).exists()
+#         if shop:
+#             return HttpResponseBadRequest("the boutique with name %s is already exist" % page_name)
+#         appeal = Appeal(user=request.user, page_name=page_name)
+#         appeal.save()
+#         print('appeal regi..')
+#         return HttpResponse("an appeal is registered")
+#     if appeal:
+#         return render(request, 'shop/appeal.html', {
+#             'appeal': appeal
+#         })
         
-    return render(request, 'shop/request.html')
+#     return render(request, 'shop/request.html')
     
 
 
@@ -46,34 +50,74 @@ def check_for_shop_name(request:HttpRequest, shop_name):
 
 @login_required
 def add_edit_product(request:HttpRequest,product_id=None):
-    pass
+    shop = get_object_or_404(Shop, seller=request.user)
+    if request.method == 'POST':
+        form = AddProductForm(request.POST,files=request.FILES)
+        if form.is_valid():
+            id = form.cleaned_data['id']
+            new_values = {
+                'brand' : form.cleaned_data['brand'],
+                'categories' : form.cleaned_data['categories'],
+                'type' : form.cleaned_data['type'],
+                'subtype' : form.cleaned_data['subtype'],
+                'colors' : form.cleaned_data['colors'],
+                'sizes' : form.cleaned_data['sizes'],
+                'price' : form.cleaned_data['price'],
+                'name' : form.cleaned_data['name'],
+                'description' : form.cleaned_data['description'],
+                'is_available' : form.cleaned_data['is_available'],
+                'quantity' : form.cleaned_data['quantity'],
+                'keywords' : form.cleaned_data['keywords'],
+                'attrs' : form.cleaned_data['attrs'],
+                'images' : form.cleaned_data['images'],
+                'avatar' : form.cleaned_data['avatar'],
+                
+            }
+            try:
+                product = Product.objects.get(id=id)
+                for key,value in new_values.items():
+                    setattr(product,key, value)
+                product.save()
+                
+            except Product.DoesNotExist:
+                product = Product(**new_values)
+                product.save()
+        else:
+            return HttpResponseBadRequest(form.errors)
+    else:
+        product = Product.objects.filter(id=product_id,shop=shop, is_active=True).first()
+        return render(request, 'product/add_edit/product.html',{
+            'product': product
+        })
 
 @login_required
-def remove_product(reqest:HttpRequest, product_id):
-    product = Product.objects.filter(id=product_id).first()
+def remove_product(request:HttpRequest, product_id):
+    product = Product.objects.filter(id=product_id,shop=request.user.shop,is_active=True).first()
     if product:
-        if product.shop.seller == reqest.user:
-            product.is_active = False
-            product.save()
-            return HttpResponse("the product was successfully removed.")
-        else:
-            return HttpResponseForbidden("you dont have permission to remove this product")
-    else:
-        return HttpResponseBadRequest("product was not found!")
+        product.is_active = False
+        product.save()
+        return HttpResponse("product was sucessfully removed")
+    
+    return HttpResponseBadRequest("product was not found!")
     
     
 
-def get_products_of_shop(reqest:HttpRequest, shop_name):
-    
+def get_products_of_shop(reqest:HttpRequest, shop_name):  
     products = get_list_or_404(Product,shop__name=shop_name)
-    
+    paginator = Paginator(products, 20)
+    pg_number = reqest.GET.get('pg')
+    page = paginator.get_page(pg_number)
     return render(reqest, 'product/product_list.html', {
-        'products': products
+        'page': page
     })
         
 
 def product_list(request:HttpRequest, shop_name):
-    pass
+    products = get_list_or_404(Product,shop__name=shop_name)
+    return render(request,'shop/shop.html',{
+        'products':products
+    })
+    
 
 def product_detail(request:HttpRequest, product_id):
     product = get_object_or_404(Product,id=product_id)
@@ -83,7 +127,13 @@ def product_detail(request:HttpRequest, product_id):
     
 
 def get_all_products(request:HttpRequest):
-    pass
+    products = Product.objects.all()
+    paginator = Paginator(products, 20)
+    pg_num = request.GET.get('pg')
+    page = paginator.get_page(pg_num)
+    return render(request,'',{
+        'page':page
+    })
 
 def filter(request:HttpRequest, shop_name=None):
     pass
@@ -94,4 +144,4 @@ def search(request:HttpRequest, keywords):
 
 
 def detail(request:HttpRequest):
-    return render(request, 'shop/orders.html')
+    return render(request, 'product/add_edit/product.html')

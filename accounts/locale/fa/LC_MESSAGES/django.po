@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-02 12:02+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: accounts/apps.py:8 accounts/models.py:15
+msgid "Accounts"
+msgstr "حسابها"
+
+#: accounts/models.py:9
+msgid "User"
+msgstr "کاربر"
+
+#: accounts/models.py:10
+msgid "Balance"
+msgstr "موجودی حساب"
+
+#: accounts/models.py:11
+msgid "Last Update"
+msgstr "آخرین بازبینی"
+
+#: accounts/models.py:14 accounts/models.py:49 accounts/models.py:137
+msgid "Account"
+msgstr "حساب"
+
+#: accounts/models.py:40 accounts/models.py:133
+msgid "pending"
+msgstr "در انتظار تایید"
+
+#: accounts/models.py:41
+msgid "accepted"
+msgstr "پذیرفته شده"
+
+#: accounts/models.py:42
+msgid "rejected"
+msgstr "رد شده"
+
+#: accounts/models.py:46
+msgid "Checkout request"
+msgstr "درخواست تسویه حساب"
+
+#: accounts/models.py:47
+msgid "Checkout requests"
+msgstr "درخواستهای تسویه حساب"
+
+#: accounts/models.py:50 accounts/models.py:94
+msgid "Date created"
+msgstr "تاریخ ایجاد"
+
+#: accounts/models.py:51 accounts/models.py:95 accounts/models.py:138
+msgid "Amount"
+msgstr "مبلغ"
+
+#: accounts/models.py:52
+msgid "Description"
+msgstr "توضیحات"
+
+#: accounts/models.py:53
+msgid "state"
+msgstr "وضعیت"
+
+#: accounts/models.py:54
+msgid "status"
+msgstr "پیام وضعیت"
+
+#: accounts/models.py:55
+msgid "Fee"
+msgstr ""
+
+#: accounts/models.py:56
+#, fuzzy
+#| msgid "Amount"
+msgid "Final Amount"
+msgstr "مبلغ"
+
+#: accounts/models.py:64
+msgid "Checkout Request"
+msgstr "درخواست تسویه حساب"
+
+#: accounts/models.py:65
+msgid "Checkout Requests"
+msgstr "درخواستهای تسویه حساب"
+
+#: accounts/models.py:87
+msgid "prepared"
+msgstr "آماده شده"
+
+#: accounts/models.py:88 accounts/models.py:132
+msgid "committed"
+msgstr "انجام شده"
+
+#: accounts/models.py:89
+msgid "rollbacked"
+msgstr "برگشت موجودی"
+
+#: accounts/models.py:92
+msgid "debtor"
+msgstr "خریدار"
+
+#: accounts/models.py:93
+msgid "creditor"
+msgstr "فروشنده"
+
+#: accounts/models.py:96
+#, fuzzy
+#| msgid "state"
+msgid "State"
+msgstr "وضعیت"
+
+#: accounts/models.py:99
+#, fuzzy
+#| msgid "Deposit Transaction"
+msgid "Transfer Transaction"
+msgstr "تراکنش انتقال بین حسابی"
+
+#: accounts/models.py:100
+msgid "Transfer Tranactions"
+msgstr "تراکنشهای انتقال بین حسابی"
+
+#: accounts/models.py:139
+msgid "Date Created"
+msgstr "تاریخ ایجاد"
+
+#: accounts/models.py:144
+msgid "Deposit Transaction"
+msgstr "تراکنش واریز به حساب"
+
+#: accounts/models.py:145
+msgid "Deposit Transactions"
+msgstr "تراکنشهای واریز به حساب"

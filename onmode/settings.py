@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'index',
+    'product_attributes',
     'shops',
     'favourites',
     'cart',
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'accounts',
     'payments',
     'orders',
+    'jalali_date',
+    'issues_and_requests',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +57,7 @@ AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'users.CustomAuthenticationBackend.PhoneAuthentication',
-]
+] 
 
 
 ROOT_URLCONF = 'onmode.urls'
@@ -111,9 +114,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'fa-ir'
+lANGUAGES = [
+    ('en','English'),
+    ('fa','Farsi')
+]
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 

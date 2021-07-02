@@ -3,6 +3,7 @@ from django.utils import timezone
 from shops.models import Product
 import secrets
 from django.db.models.signals import post_save
+from django.utils.translation import gettext_lazy as _
 
 
 class Coupon(models.Model):
@@ -10,19 +11,22 @@ class Coupon(models.Model):
     AMOUNT = 'amount'
 
     TYPES = [
-        (PERCENT,'percent'),
-        (AMOUNT,'amount')
+        (PERCENT,_('percent')),
+        (AMOUNT,_('amount'))
     ]
-    code = models.CharField(max_length=15,null=True, blank=True)
-    date_from = models.DateTimeField()
-    date_to = models.DateTimeField()
-    type = models.CharField(max_length=20,choices=TYPES)
-    percent = models.PositiveIntegerField()
-    amount = models.PositiveIntegerField()
-    max_allowed_discount = models.PositiveBigIntegerField()
-    is_active = models.BooleanField(default=True)
-    is_used = models.BooleanField(default=False)
+    code = models.CharField(verbose_name=_('Code'),max_length=15,null=True, blank=True)
+    date_from = models.DateTimeField(verbose_name=_('Date from'))
+    date_to = models.DateTimeField(verbose_name=_('Date to'),)
+    type = models.CharField(verbose_name=_('Coupon type'),max_length=20,choices=TYPES)
+    percent = models.PositiveIntegerField(verbose_name=_('Percent %'),)
+    amount = models.PositiveIntegerField(verbose_name=_('Amount'),)
+    max_allowed_discount = models.PositiveBigIntegerField(verbose_name=_('MAx Allowed Discount'),)
+    is_active = models.BooleanField(verbose_name=_('Active'),default=True)
+    is_used = models.BooleanField(verbose_name=_('Used'),default=False)
 
+    class Meta:
+        verbose_name = _('Coupon')
+        verbose_name_plural = _('Coupons')
 
     @classmethod
     def post_create(cls, sender, instance, created, *args, **kwargs): 

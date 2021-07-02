@@ -188,6 +188,7 @@ function changeHero() {
     console.log("show")
     document.getElementById("overlay").classList.toggle("show");
     document.getElementById("side-box").classList.toggle("side-box-show");
+    document.body.classList.toggle("overflow-hidden");
 }
 
 
