@@ -49,19 +49,20 @@ def check_for_shop_name(request:HttpRequest, shop_name):
     return HttpResponse("it's ok!")
 
 @login_required
-def add_edit_product(request:HttpRequest,product_id=None):
+def add_edit_product(request:HttpRequest, product_id=None):
+    print(product_id)
+    print('add begins...')
     shop = get_object_or_404(Shop, seller=request.user)
+    print('after...')
     if request.method == 'POST':
         form = AddProductForm(request.POST,files=request.FILES)
         if form.is_valid():
             id = form.cleaned_data['id']
             new_values = {
+                'shop': shop,
                 'brand' : form.cleaned_data['brand'],
-                'categories' : form.cleaned_data['categories'],
                 'type' : form.cleaned_data['type'],
                 'subtype' : form.cleaned_data['subtype'],
-                'colors' : form.cleaned_data['colors'],
-                'sizes' : form.cleaned_data['sizes'],
                 'price' : form.cleaned_data['price'],
                 'name' : form.cleaned_data['name'],
                 'description' : form.cleaned_data['description'],
@@ -69,24 +70,54 @@ def add_edit_product(request:HttpRequest,product_id=None):
                 'quantity' : form.cleaned_data['quantity'],
                 'keywords' : form.cleaned_data['keywords'],
                 'attrs' : form.cleaned_data['attrs'],
-                'images' : form.cleaned_data['images'],
-                'avatar' : form.cleaned_data['avatar'],
                 
             }
+            categories = form.cleaned_data['categories']
+            colors = form.cleaned_data['colors']
+            sizes = form.cleaned_data['sizes']
+            images = request.FILES.getlist("images")
+            print('images:', images)
+
             try:
                 product = Product.objects.get(id=id)
                 for key,value in new_values.items():
                     setattr(product,key, value)
+                product.categories.set(categories)
+                product.colors.set(colors)
+                product.sizes.set(sizes)
                 product.save()
+                if images:
+                    for img in product.images.all():
+                        img.image.delete()
+                        img.delete()
+                    for img in images:
+                        if not img:
+                            prodimg = ProductImage(product=product,image=img)
+                            prodimg.save()
+                return HttpResponse("update successfully")
                 
             except Product.DoesNotExist:
+                print('create new..')
                 product = Product(**new_values)
                 product.save()
+                product.categories.set(categories)
+                product.colors.set(colors)
+                product.sizes.set(sizes)
+                product.save()
+                if images:
+                    for img in images:
+                        print('create images...')
+                        print(img)
+                        prodimg = ProductImage(product=product,image=img)
+                        prodimg.save()
+                return HttpResponse("added successfully")
         else:
             return HttpResponseBadRequest(form.errors)
     else:
-        product = Product.objects.filter(id=product_id,shop=shop, is_active=True).first()
-        return render(request, 'product/add_edit/product.html',{
+        product = None
+        if product_id:
+             product = Product.objects.filter(id=product_id,shop=shop).first()
+        return render(request, 'product/edit.html',{
             'product': product
         })
 

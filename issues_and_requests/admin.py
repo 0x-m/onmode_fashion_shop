@@ -5,13 +5,13 @@ from .models import Appeal, Issue, IssuesSubject
 @admin.register(Appeal)
 class AppealAdmin(admin.ModelAdmin):
     
-    @admin.action(description=_('accept appeals'))
+   # @admin.action(description=_('accept appeals'))
     def accept_appeal(modeladmin, request, queryset):
         for ap in queryset:
             ap.accept()
     
 
-    @admin.action(description=_('Reject appeals'))
+   # @admin.action(description=_('Reject appeals'))
     def reject_appeal(modeladmin, reaquest, queryset):
         for ap in queryset:
             ap.reject()

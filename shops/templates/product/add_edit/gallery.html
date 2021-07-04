@@ -1,4 +1,9 @@
 {% load static %}
+<style>
+   .gallery .img {
+       max-width: 600px;
+   } 
+</style>
 <div class="gallery">
     <img id="hero" src="{% static 'img/img1/b.jpg' %}" class="img"  />
     <div onclick="changeHero();" class="thumbs">

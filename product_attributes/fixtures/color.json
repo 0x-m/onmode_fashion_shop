@@ -1,6 +1,6 @@
 [
     {
-        "model": "shops.Color",
+        "model": "product_attributes.Color",
         "pk":1,
         "fields": {
             "name": "red",
@@ -8,7 +8,7 @@
         }
     },
     {
-        "model": "shops.Color",
+        "model": "product_attributes.Color",
         "pk":2,
         "fields": {
             "name": "green",
@@ -16,7 +16,7 @@
         }
     },
     {
-        "model": "shops.Color",
+        "model": "product_attributes.Color",
         "pk":3,
         "fields": {
             "name": "blue",

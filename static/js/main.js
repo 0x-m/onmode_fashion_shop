@@ -127,6 +127,22 @@ function listboxSelect(){
             //  ele[0].classList.toggle("visi");
     }
 }
+
+function listboxSelect_mono(){
+    const item = event.target
+    if(item){
+        if(item.classList.contains("item")){
+            const items = item.parentNode.getElementsByClassName("item")
+            for(let i=0; i < items.length; ++i){
+                items[i].classList.remove("selected")
+                items[i].children[0].classList.remove("show")
+               
+            }
+            item.classList.add("selected")
+            item.children[0].classList.add("show")
+        }
+    }
+}
 function listboxFilter (){
     var items = event.target.parentNode.getElementsByClassName("item");
     var txt = event.target.value;
@@ -212,4 +228,60 @@ function select_size(){
     }
       event.target.classList.toggle("select-size");
   }
+}
+
+
+function select_multi_color(){
+    console.log("multi color select")
+    if(event.target.classList.contains("color")){
+        event.target.classList.toggle("select-color");
+    }
+}
+function select_multi_size(){
+    console.log("multi size select")
+  if(event.target.classList.contains("size")){
+      event.target.classList.toggle("select-size");
+  }
+}
+
+
+
+function add_attr(){
+  if (window.product_attrs == null){
+     window.product_attrs = new Map();
+  }
+  var t = document.getElementById("attr-txt").value;
+  if (t.indexOf(":") < 0){
+      return
+  }
+  k = t.toString().split(":");
+  if (window.product_attrs.has(k[0])){
+    window.product_attrs.set(k[0].trim(),k[1].trim());
+      return;
+  }
+  window.product_attrs.set(k[0].trim(),k[1].trim());
+  var div = document.createElement("DIV");
+  div.className = "attr";
+  var sp1 = document.createElement("SPAN");
+  sp1.innerText = t;
+  var sp2 = document.createElement("SPAN");
+  sp2.innerHTML = "&times;";
+  sp2.className = "close";
+  sp2.addEventListener('click', delete_attr);
+  div.appendChild(sp1);
+  div.appendChild(sp2);
+  document.getElementById("attr-list").appendChild(div);
+  console.log(window.product_attrs)
+
+
+}
+function delete_attr(){
+
+  console.log("aads");
+  console.log(product_attrs)
+  var t = event.target.parentNode.innerText;
+  console.log(t);
+  product_attrs.delete(t.split(":")[0]);
+  console.log(product_attrs)
+  event.target.parentNode.remove();
 }

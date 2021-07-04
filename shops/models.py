@@ -6,6 +6,7 @@ from users.models import User, Address
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
+import os
 
 class Shop(models.Model):
     seller = models.ForeignKey(verbose_name=_('Seller'),to=User,on_delete=models.CASCADE, related_name='shop')
@@ -111,7 +112,6 @@ class Product(models.Model):
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
-
     
     def default_keywords(self):
         self.keywords += ''
@@ -131,6 +131,9 @@ class Product(models.Model):
     
     
 class ProductImage(models.Model):
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='media/img')
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE,related_name='images')
+    def generate_path(instance, filename):
+        path = 'photos/' + str(instance.product.id) + '/'
+        return os.path.join(path,filename)
+    image = models.ImageField(upload_to = generate_path)
 

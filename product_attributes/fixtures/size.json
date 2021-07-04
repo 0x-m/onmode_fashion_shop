@@ -1,6 +1,6 @@
 [
     {
-        "model": "shops.Size",
+        "model": "product_attributes.Size",
         "pk":1,
         "fields":
         {
@@ -9,7 +9,7 @@
         }
     },
     {
-        "model": "shops.Size",
+        "model": "product_attributes.Size",
         "pk":2,
         "fields":
         {
@@ -18,7 +18,7 @@
         }
     },
     {
-        "model": "shops.Size",
+        "model": "product_attributes.Size",
         "pk":3,
         "fields":
         {

@@ -136,7 +136,7 @@ body {
 }
 
 .text-box::placeholder {
-    color: var(--text-secondary);
+    color: lightgray;
 }
 
 .text-box:disabled{

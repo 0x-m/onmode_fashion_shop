@@ -42,53 +42,51 @@ class AddProductForm(forms.Form):
     quantity = forms.IntegerField()
     keywords = CSVField()
     attrs = JsonField()
-    images = forms.ImageField()
-    avatar = forms.ImageField()
     price = forms.IntegerField()
     
     def clean_brand(self):
         id = self.cleaned_data['brand']
-        count = Brand.objects.filter(id=id).count()
-        if count == 0:
+        brand = Brand.objects.filter(id=id).first()
+        if not brand:
             raise ValidationError('Brand is not defined')
-        return id
+        return brand
     
     def clean_categories(self):
         ids = self.cleaned_data['categories']
-        count = Category.objects.filter(id_in=ids).count()
-        if len(ids) != count:
+        cateegories = Category.objects.filter(id__in=ids)
+        if len(ids) != len(cateegories):
             raise ValidationError('Some categories are not defined')
-        return ids
+        return cateegories
     
     def clean_type(self):
         id = self.cleaned_data['type']
-        count = Type.objects.filter(id=id).count()
-        if count == 0:
+        type = Type.objects.filter(id=id).first()
+        if not type:
             raise ValidationError("Type is not defined")
-        return id
+        return type
     
     
     def clean_subtype(self):
         id = self.cleaned_data['subtype']
-        count = SubType.objects.filter(id=id).count()
-        if count == 0:
+        subtype = SubType.objects.filter(id=id).first()
+        if not subtype:
             raise ValidationError("Subtype is not defined")
-        return id
+        return subtype
     
     
     def clean_colors(self):
         color_ids = self.cleaned_data['colors']
-        color_count = Color.objects.filter(id__in=color_ids).count()
-        if len(color_ids) != color_count:
+        colors = Color.objects.filter(id__in=color_ids)
+        if len(color_ids) != len(colors):
             raise ValidationError("some colors are not defined")
-        return color_ids
+        return colors
     
     def clean_sizes(self):
         size_ids = self.cleaned_data['sizes']
-        size_count = Size.objects.filter(id__in=size_ids).count()
-        if len(size_ids) != size_count:
+        sizes = Size.objects.filter(id__in=size_ids)
+        if len(size_ids) != len(sizes):
             raise ValidationError("Some sizes are not defined")
-        return size_ids 
+        return sizes 
     
     def clean_quantity(self):
         quantity = self.cleaned_data['quantity']
