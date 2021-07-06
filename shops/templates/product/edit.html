@@ -163,8 +163,8 @@
     <div style="display: flex;justify-content:center;margin-top:0.5rem" class="w-100 thumbs">
        {% for item in product.images.all %}
         <label>
-            <img style="border-color: red;" id="img-1-thumb"  src="{{ item.image }}" class="thumb" />
-            <input data-img="img-1-thumb" onchange="changeimg();" type="file" id="img-1" name="image" style="position: fixed;top:-100px">
+            <img data-id="{{item.id}}" id="img-{{item.id}}"  src=" {{item.image.url}}" class="thumb" />
+            <input data-img="img-{{item.id}}" onchange="changeimg();" type="file" id="img-1" name="image" style="position: fixed;top:-100px">
         </label>
        {% endfor %}
         

@@ -226,15 +226,32 @@ function openDialog(){
 
 function changeimg(){
     const id = event.target.dataset['img'];
-    console.log(id);
-    const path = event.target.files[0];
-    console.log(path);
-    document.getElementById(id).src = path;
+    const img = document.getElementById(id);
+    const prod_img_id = img.dataset['id'];
+    const file = event.target.files[0];
+    console.log(file)
+    console.log(prod_img_id)
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () =>{
+        if (xhttp.status == 200){
+            path = xhttp.responseText;
+            img.src = path;
+            console.log("changed...");
+        }
+    }
+
+    xhttp.open("POST", "shops/change_image/")
+    const data = new FormData();
+    data.append("image",file);
+    data.append("id",prod_img_id);
+    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
+    xhttp.send(data);
+    
 }
 
 
 function get_selecteds(name, single){
-    const items = document.getElementById(name).children
+    const items = document.getElementById(name).children;
     let selecteds = ""
     for (let i=0; i < items.length; ++i){
         if (items[i].classList.contains("selected")){
@@ -312,5 +329,34 @@ function product_form(){
     xhttp.open("POST", "/shops/add_edit/");
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
     xhttp.send(data);
+
+}
+
+function filter_product(){
+
+    document.getElementById("categories").value = get_selecteds("category_list", false);
+    document.getElementById("types").value = get_selecteds("type_list", false);
+    document.getElementById("subtypes").value = get_selecteds("subtype_list", false);
+    document.getElementById("brands").value = get_selecteds("brand_list", false);
+    let selected_colors = "";
+    const colors = document.getElementById("color_list");
+    for (let i=0; i < colors.length; ++i){
+        if (colors[i].classList.contains("select-color")){
+            selected_colors += "," + colors[i].dataset["id"];
+        }
+    }
+    selected_colors = selected_colors.slice(1,selected_colors.length);
+    const sizes = document.getElementById("size_list").children;
+    let selected_sizes = "";
+    for (let i=0; i < sizes.length; ++i){
+        if (sizes[i].classList.contains("select-size")){
+            selected_sizes += "," + sizes[i].dataset["id"];
+        }
+    }
+    selected_sizes = selected_sizes.slice(1, selected_sizes.length);
+
+    document.getElementById("colors").value = selected_colors;
+    document.getElementById("sizes").value = selected_sizes;
+    return true
 
 }

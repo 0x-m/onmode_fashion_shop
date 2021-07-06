@@ -29,7 +29,7 @@ class HttpResponseUnprocessableEntity(HttpResponse):
         
 
 def enrollment(request:HttpRequest):
-    return render(request,'product/edit.html')
+    return render(request,'shop/shop.html')
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
         return render(request, 'user/dashboard.html')
