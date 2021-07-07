@@ -36,7 +36,7 @@
     <label class="caption" for="fname"> نوع محصول</label>
     <div  class="list-box" style="background-color: white">
         <input data-target="type_list" onkeyup="listboxFilter();" type="text" class="filter" placeholder="دسته محصول">
-        <div id="type_lsit" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
+        <div id="type_list" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
             {% for type in types %}
                 <div data-id="{{ type.id }}" class="item">
                     {{ type.name }}
@@ -89,41 +89,41 @@
         <div id="color_list" onclick="select_multi_color();" style="flex-wrap: wrap;" class="inline-list" >
             
             {% for color in colors %}
-                <div class="color" style="background-color:{{color.code }};"></div>
+                <div data-id="{{ color.id }}" class="color" style="background-color:{{color.code }};"></div>
             {% endfor %}
             
-        </div>
+        </div>  
         <p style="font-size:0.8rem">سایز های موجود:</p>
-        <div id="size_list" onclick="select_multi_size();;" class="inline-list">
-            <div class="size">X</div>
+        <div id="size_list" onclick="select_multi_size();" class="inline-list">
             {% for size in sizes %}
-                <div class="size">{{ size.code }}</div>
+                <div data-id="{{ size.id }}" class="size">{{ size.code }}</div>
             {% endfor %}
         </div>
         <label class="caption mt-1">
-            <input type="checkbox" id="discounted" name="discounted">
+            <input type="checkbox" id="discounted" name="discounted" >
             تخفیف دار
         </label>
         <span class="mt-1 caption " style="padding:0.5rem;border-bottom: 1px solid gray;">مرتب سازی بر اساس</span>
         <div class="mt-1">
             <label class="caption mt-1">
-                <input  type="radio" id="discounted" name="discounted" value="price">
+                <input  type="radio"  name="order_by" value="price" checked>
                 قیمت
             </label>
             <label class="caption mt-1">
-                <input id="discounted" type="radio" name="discounted" value="date_created">
+                <input  type="radio" name="order_by" value="date_created">
                 تاریخ 
             </label>
         </div>
         <div class="mt-1">
             <label class="caption mt-1">
-                <input id="discounted" type="radio" name="kind" value="asc">
+                <input  type="radio" name="order_kind" value="asc" checked>
                 صعودی 
             </label>
             <label class="caption mt-1">
-                <input id="discounted" type="radio" name="kind" value="desc">
+                <input  type="radio" name="order_kind" value="desc" >
                 نزولی 
             </label>
         </div>
-        <input onclick="filter_product();"  type="submit" class="w-100 mt-1 btn btn-primary" value="فیلتر کن"></button>
+        
+        <input   type="submit" class="w-100 mt-1 btn btn-primary" value="فیلتر کن"></button>
 </div>

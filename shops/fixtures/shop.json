@@ -5,8 +5,8 @@
         "fields":{
             "seller":1,
             "name": "my_shop",
-            "description": "best..",
-            "fee": 9
+            "description": "best.."
+
         }
     },
     {
@@ -15,8 +15,7 @@
         "fields":{
             "seller":2,
             "name": "your_shop",
-            "description": "best..",
-            "fee": 12
+            "description": "best.."
         }
     },
     {
@@ -25,8 +24,8 @@
         "fields":{
             "seller":3,
             "name": "bot",
-            "description": "best..",
-            "fee" : 15
+            "description": "best.."
+
         }
     }
 

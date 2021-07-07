@@ -33,12 +33,12 @@ INSTALLED_APPS = [
     'shops',
     'favourites',
     'cart',
-    'discounts',
     'coupons',
     'accounts',
     'payments',
     'orders',
     'jalali_date',
+    'discounts',
     'issues_and_requests',
 ]
 

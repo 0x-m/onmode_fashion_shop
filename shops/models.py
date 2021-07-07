@@ -13,10 +13,9 @@ class Shop(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40,blank=True,unique=True)
     description = models.CharField(verbose_name=_('Description'),max_length=500,blank=True)
     address = models.CharField(verbose_name=_('Address'),max_length=500,blank=True)
-    logo = models.ImageField(verbose_name=_('Logo'), null=True)
-    banner = models.ImageField(verbose_name=_('Banner'), null=True)
+    logo = models.ImageField(verbose_name=_('Logo'), null=True, blank=True)
+    banner = models.ImageField(verbose_name=_('Banner'),blank=True, null=True)
     is_active = models.BooleanField(default=True,verbose_name=_('active'))
-   
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     post_destinatinos = models.JSONField(verbose_name=_('Postal Destinations'),null=True)
     
@@ -31,7 +30,7 @@ class Shop(models.Model):
 class Brand(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40, unique=True)
     slug = models.SlugField()
-    logo = models.ImageField(verbose_name=_('Logo'))
+    logo = models.ImageField(verbose_name=_('Logo'),null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
     
         
@@ -49,7 +48,7 @@ class Category(models.Model):
     description = models.CharField(verbose_name=_('Description'),max_length=500, null=True)
     slug = models.SlugField()
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
-    image = models.ImageField(verbose_name=_('Image'))
+    image = models.ImageField(verbose_name=_('Image'),null=True,blank=True)
 
         
     class Meta:
@@ -63,9 +62,9 @@ class Category(models.Model):
 class Type(models.Model):
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='types')
     name = models.CharField(verbose_name=_('Name'),max_length=50,blank=True, unique=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=500,null=True)
+    description = models.CharField(verbose_name=_('Description'),max_length=500,null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
-    atrrs = models.JSONField(verbose_name=_('Attributes'),null=True)
+    atrrs = models.JSONField(verbose_name=_('Attributes'),null=True, blank=True)
 
 
     class Meta:
@@ -105,7 +104,7 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=2000,null=True)
-    image = models.ImageField(verbose_name=_('Image'))
+    image = models.ImageField(verbose_name=_('Image'), null=True, blank=True)
     attrs = models.JSONField(null=True)
     
         

@@ -1,3 +1,5 @@
+
+
 function getCookie(name){
     let cookieValue = null;
     if(document.cookie && document.cookie != ''){
@@ -48,7 +50,7 @@ function show_enrollment_form(){
         }
         
     }
-    xhttp.open("GET", event.target.dataset['target']);
+    xhttp.open("GET", "/product/add_edit/");
     xhttp.send();
 }
 
@@ -253,7 +255,9 @@ function changeimg(){
 function get_selecteds(name, single){
     const items = document.getElementById(name).children;
     let selecteds = ""
+    let all = ""
     for (let i=0; i < items.length; ++i){
+        all += "," + items[i].dataset["id"];
         if (items[i].classList.contains("selected")){
             if (single){
                 return items[i].dataset["id"]
@@ -261,15 +265,39 @@ function get_selecteds(name, single){
             selecteds += ',' + items[i].dataset["id"]
         }
     }
-
+    if(single && selecteds == ""){
+        return "0"
+    }
+    if (selecteds == ""){
+        selecteds = all;
+    }
     return selecteds.slice(1,selecteds.length) //eliminating first ,
+}
+
+function validate_field(rx){
+    console.log("validate...")
+   const  regx = new RegExp(rx)
+   const  obj = event.target
+    if (!regx.test(obj.value)){
+        obj.classList.add("error");
+    }
+    else{
+        obj.classList.remove("error");
+    }
+}
+
+function get_attrs(){
+    const _attrs = document.getElementById("attr-list").children;
+    let attrs = new Object();
+    for (let i=0; i < _attrs.length; ++i){
+        key_value = _attrs[i].children[0].innerHTML.split(':');
+        attrs[key_value[0]] = key_value[1];
+    }
+    return JSON.stringify(attrs);
 }
 
 function product_form(){
     const id = document.getElementById("id");
-    if (id != null){
-        id = id.value;
-    }
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const quantity = document.getElementById("quantity").value;
@@ -280,53 +308,66 @@ function product_form(){
     const categories = get_selecteds("categories",false);
     const subtype = get_selecteds("subtypes", true);
     const images = document.getElementById("images").files;
-    const attrs = window.product_attrs;
+    const attrs =  get_attrs();
+    console.log("----------------")
+    console.log(attrs);
     const  colors = document.getElementById("colors").children;
 
     let selected_colors = "";
+    let all_colors = "";
     for (let i=0; i < colors.length; ++i){
+        all_colors += "," + colors[i].dataset["id"];
         if (colors[i].classList.contains("select-color")){
             selected_colors += "," + colors[i].dataset["id"];
         }
     }
+    if (selected_colors == ""){
+        selected_colors = all_colors;
+    }
     selected_colors = selected_colors.slice(1,selected_colors.length);
+
     const sizes = document.getElementById("sizes").children;
+    let all_sizes = "";
     let selected_sizes = "";
     for (let i=0; i < sizes.length; ++i){
+        all_sizes += "," + sizes[i].dataset["id"];
         if (sizes[i].classList.contains("select-size")){
             selected_sizes += "," + sizes[i].dataset["id"];
         }
     }
+    if (selected_sizes == ""){
+        selected_sizes = all_sizes;
+    }
     selected_sizes = selected_sizes.slice(1, selected_sizes.length);
 
-   const xhttp = new XMLHttpRequest();
-   xhttp.onreadystatechange = () => {
-       document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-       console.log("done...")
-       console.log(xhttp.responseText)
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+        document.getElementById("side-box-content").innerHTML = xhttp.responseText;
+        console.log("done...")
+        console.log(xhttp.responseText)
 
 
-   }
+    }
     const data = new FormData();
-    data.append("name", 'abc');
-    data.append("price", 125);
-    data.append("description", 'description');
-    data.append("quantity",10);
-    data.append("id",15);
-    data.append("keywords", 'a,b,c');
-    data.append("colors", '1,2');
-    data.append("sizes", '1,2');
-    data.append("type", 1);
-    data.append("subtype", 1);
-    data.append("attrs","{\"\":\"\"}");
+    data.append("name", name);
+    data.append("price", price);
+    data.append("description", description);
+    data.append("quantity",quantity);
+    data.append("id",document.getElementById("id").value);
+    data.append("keywords", keywords);
+    data.append("colors", selected_colors);
+    data.append("sizes", selected_sizes);
+    data.append("type", type);
+    data.append("subtype", subtype);
+    data.append("attrs",attrs);
     data.append("is_available",'True')
-    data.append("categories", '1,2');
-    data.append("brand", '1');
+    data.append("categories",categories);
+    data.append("brand", brand);
     for (let i=0; i < images.length; i++){
         data.append("images",images[i]);
     }
     console.log(data.get("images"));
-    xhttp.open("POST", "/shops/add_edit/");
+    xhttp.open("POST", "/product/add_edit/");
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
     xhttp.send(data);
 
@@ -334,29 +375,46 @@ function product_form(){
 
 function filter_product(){
 
+    console.log("submitting....")
+
     document.getElementById("categories").value = get_selecteds("category_list", false);
     document.getElementById("types").value = get_selecteds("type_list", false);
     document.getElementById("subtypes").value = get_selecteds("subtype_list", false);
     document.getElementById("brands").value = get_selecteds("brand_list", false);
+    console.log(get_selecteds("category_list",false));
     let selected_colors = "";
-    const colors = document.getElementById("color_list");
+    let all_colors = "";
+    const colors = document.getElementById("color_list").children;
     for (let i=0; i < colors.length; ++i){
+        all_colors += "," + colors[i].dataset["id"];
         if (colors[i].classList.contains("select-color")){
             selected_colors += "," + colors[i].dataset["id"];
         }
     }
-    selected_colors = selected_colors.slice(1,selected_colors.length);
+
     const sizes = document.getElementById("size_list").children;
     let selected_sizes = "";
+    let all_sizes = "";
     for (let i=0; i < sizes.length; ++i){
+        all_sizes += "," + sizes[i].dataset["id"];
+
         if (sizes[i].classList.contains("select-size")){
             selected_sizes += "," + sizes[i].dataset["id"];
         }
     }
-    selected_sizes = selected_sizes.slice(1, selected_sizes.length);
 
-    document.getElementById("colors").value = selected_colors;
-    document.getElementById("sizes").value = selected_sizes;
+    if (selected_colors == ""){
+        selected_colors = all_colors;
+    }
+    if (selected_sizes == ""){
+        selected_sizes = all_sizes;
+    }
+    console.log("colors");
+    console.log(selected_colors);
+    console.log("sizes");
+    console.log(selected_sizes);
+    document.getElementById("colors").value = selected_colors.slice(1,selected_colors.length);
+    document.getElementById("sizes").value = selected_sizes.slice(1, selected_sizes.length);
     return true
 
 }

@@ -13,14 +13,14 @@
    <div class="nav" style="flex: 10%;display:flex;justify-content: center;align-items:center;">
        <span class="fa fa-search icon" onclick="toggle_search_box();"></span>
        <span class="fa fa-heart icon" onclick="getFavs();"></span>
-       <span class="fa fa-user icon" data-target="{% url 'users:enrollment'   %}" onclick="show_enrollment_form();"></span>
+       <span class="fa fa-user icon" data-target="{% url 'shops:add_edit'   %}" onclick="show_enrollment_form();"></span>
        <span class="fa fa-shopping-basket icon"></span>
    </div>
 </nav>
 
 <!--------------search box------------>
-<form id="search-box" class="search-box">
-    <input type="text" placeholder="جستجو..." class="text"></div>
+<form id="search-box" action="{% url 'shops:search' 1 %}" method="GET" class="search-box">
+    <input name="keywords" type="text" placeholder="جستجو..." class="text"></div>
     <div onclick="toggle_search_box();" class="close-btn">&times;</div>
 </form>
 <!------------------------------------->

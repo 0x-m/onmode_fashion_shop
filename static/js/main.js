@@ -1,4 +1,5 @@
 //--------------------------combobox-----------------------------------------
+let product_attrs = new Map()
 function openCombobox(){
     event.stopPropagation();
     event.preventDefault();
@@ -9,6 +10,7 @@ function openCombobox(){
    toggle.classList.toggle("up-arrow");
     
 }
+
 function comboboxSelectItem()
 {
      var dropdown = event.currentTarget;
@@ -233,12 +235,15 @@ function select_size(){
 
 function select_multi_color(){
     console.log("multi color select")
+    event.stopPropagation();
     if(event.target.classList.contains("color")){
         event.target.classList.toggle("select-color");
     }
+    
 }
 function select_multi_size(){
     console.log("multi size select")
+    event.stopPropagation();
   if(event.target.classList.contains("size")){
       event.target.classList.toggle("select-size");
   }
@@ -247,19 +252,20 @@ function select_multi_size(){
 
 
 function add_attr(){
-  if (window.product_attrs == null){
-     window.product_attrs = new Map();
-  }
+    
+//   if (window.product_attrs == null){
+//      window.product_attrs = new Map();
+//   }
   var t = document.getElementById("attr-txt").value;
   if (t.indexOf(":") < 0){
       return
   }
   k = t.toString().split(":");
-  if (window.product_attrs.has(k[0])){
-    window.product_attrs.set(k[0].trim(),k[1].trim());
+  if (product_attrs.has(k[0])){
+    product_attrs.set(k[0].trim(),k[1].trim());
       return;
   }
-  window.product_attrs.set(k[0].trim(),k[1].trim());
+  product_attrs.set(k[0].trim(),k[1].trim());
   var div = document.createElement("DIV");
   div.className = "attr";
   var sp1 = document.createElement("SPAN");
@@ -271,7 +277,7 @@ function add_attr(){
   div.appendChild(sp1);
   div.appendChild(sp2);
   document.getElementById("attr-list").appendChild(div);
-  console.log(window.product_attrs)
+  console.log(product_attrs)
 
 
 }

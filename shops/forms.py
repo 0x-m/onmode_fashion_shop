@@ -1,5 +1,6 @@
+import re
 from typing import OrderedDict, SupportsBytes
-from django.db.models.query import FlatValuesListIterable
+from django.db.models.query import FlatValuesListIterable, prefetch_related_objects
 from django.forms.widgets import SelectDateWidget
 
 from django.shortcuts import resolve_url
@@ -18,12 +19,17 @@ class AppealForm(forms.Form):
     ])
     description = forms.CharField(max_length=500)
 
-class CSVField(forms.Field):
+class StringCSVField(forms.Field):
     def to_python(self, value):
-        if not value:
-            return []
         return value.split(',')
-    
+
+class IntegerCSVFields(forms.Field):
+    def to_python(self, value):
+        try:
+            return [int(i) for i in value.split(',')]
+        except:
+            raise ValidationError("Invalid ids")
+        
     
 class JsonField(forms.Field):
     def to_python(self, value):
@@ -34,16 +40,16 @@ class JsonField(forms.Field):
 class AddProductForm(forms.Form):
     id = forms.IntegerField()
     brand = forms.IntegerField()
-    categories = CSVField()
+    categories = IntegerCSVFields()
     type = forms.IntegerField()
     subtype = forms.IntegerField()
-    colors = CSVField()
-    sizes = CSVField()
+    colors = IntegerCSVFields()
+    sizes = IntegerCSVFields()
     name = forms.CharField(max_length=120)
     description = forms.CharField(max_length=500)
     is_available = forms.BooleanField()
     quantity = forms.IntegerField()
-    keywords = CSVField()
+    keywords = StringCSVField()
     attrs = JsonField()
     price = forms.IntegerField()
     
@@ -105,99 +111,108 @@ class AddProductForm(forms.Form):
         return price
     
     def clean_id(self):
-        if self.cleaned_data['id'] < 0:
+        if self.cleaned_data['id'] < -1:
             raise ValidationError("id must be positive or zero")
         return self.cleaned_data['id']
     
 
 
 class FilterForm(forms.Form):
-    price_from = forms.CharField(max_length=10)
-    price_to = forms.CharField(max_length=10)
-    categories = CSVField()
-    types = CSVField()
-    subtypes = CSVField()
-    colors = CSVField()
-    sizes = CSVField()
-    brands = CSVField()
+    price_from = forms.IntegerField()
+    price_to = forms.IntegerField()
+    categories = IntegerCSVFields()
+    types = IntegerCSVFields()
+    subtypes = IntegerCSVFields()
+    colors = IntegerCSVFields()
+    sizes = IntegerCSVFields()
+    brands = IntegerCSVFields()
     discounted = forms.BooleanField()
     order_by = forms.CharField(max_length=20)
     order_kind = forms.CharField(max_length=20) 
-    shop_ids = CSVField()
     
     def clean_order_by(self):
-        order_by = self.cleaned_data['order_by']
-        kind = self.cleaned_data['order_kin']
+        try:
+            
+          order_by = self.cleaned_data['order_by']
+        except:
+            order_by = "date_created"
         if order_by == 'price' or order_by == 'date_created':
-            order = ''
-            if kind == 'asc':
-                order = '+' + order_by
-            elif kind == 'desc':
-                order = '-' + order_by
-            return order
+            return order_by
         
         raise ValidationError("invalid order_by")
     
     def clean_order_kind(self):
-        kind = self.cleaned_data['order_kind']
+        try:
+             kind = self.cleaned_data['order_kind']
+        except:
+            kind = "asc"
+            
         if kind == 'asc' or kind == 'desc':
             return kind
         raise ValidationError("Invalid order kind")
         
     def clean_price_from(self):
-        price_from = self.cleaned_data['price_form']
-        price_to = self.cleaned_data['price_to']
-        
-        if (price_from < 0) or (price_from > price_to):
-            raise ValidationError("invalid price range")
+        price_from = self.cleaned_data['price_from']
+        if (price_from < 0):
+            raise ValidationError("price must be positive")
         return price_from
     
     
     def clean_price_to(self):
-        price_from = self.cleaned_data['price_form']
         price_to = self.cleaned_data['price_to']
-        if (price_to < 0) or (price_from < price_to):
-            raise ValidationError("invalid price range")
+        if (price_to < 0):
+            raise ValidationError("price must be positive")
         return price_to
     
+    def clean(self) :
+        price_from = self.cleaned_data['price_from']
+        price_to = self.cleaned_data['price_to']
+        if (price_from > price_to):
+            raise ValidationError("invalid price range")
+        return super().clean()
     
-    def clean_brands(self):
-        ids = self.cleaned_data['brands']
-        if ids == '':
-            ids = Brand.objects.all().values_list('id',flat=True)
-        return ids
+    # def clean_brands(self):
+    #     ids = self.cleaned_data['brands']
+    #     try:
+    #         ids = [int(i) for i in ids]
+    #     except:
+    #         raise ValidationError("invalid brands")
+        
+    #     return ids
     
-    def clean_categories(self):
-        ids = self.cleaned_data['categories']
-        if ids == '':
-            ids = Category.objects.all().values_list('id',flat=True)
-        return ids
-    
-    
-    def clean_types(self):
-        ids = self.cleaned_data['types']
-        if ids == "":
-            ids = Type.objects.all().values_list('id',flat=True)
-        raise ids
-    
+    # def clean_categories(self):
+    #     uds = self.cleaned_data['ids']
+    #     try:
+    #         ids = [int(i) for i in ids]
+    #     except:
+    #         raise ValidationError("invalid brands")
+        
+    #     return ids
     
     
-    def clean_subtypes(self):
-        ids = self.cleaned_data['subtypes']
-        subtypes = SubType.objects.filter(id__in=ids)
-        if ids == "":
-            ids = SubType.objects.all().values_list('id',flat=True)
-        return ids
+    # def clean_types(self):
+    #     ids = self.cleaned_data.get('types')
+    #     if ids == ['all']:
+    #         ids = list(Type.objects.all().values_list('id',flat=True))
+    #     return ids
     
-    def clean_colors(self):
-        ids = self.cleaned_data['colors']
-        if ids == "":
-            ids = Color.objects.all().values_list('id',flat=True)
+    # def clean_subtypes(self):
+    #     ids = self.cleaned_data['subtypes']
+    #     subtypes = SubType.objects.filter(id__in=ids)
+    #     if ids == ['all']:
+    #         ids = list(SubType.objects.all().values_list('id',flat=True))
+    #     return ids
     
-    def clean_sizes(self):
-        ids = self.cleaned_data['sizes']
-        if ids == "":
-            ids = Size.objects.all().values_list('id',flat=True)
-        return ids
+    # def clean_colors(self):
+    #     ids = self.cleaned_data['colors']
+    #     if ids == ['all']:
+    #         ids = list(Color.objects.all().values_list('id',flat=True))
+    #     return ids
+    
+    # def clean_sizes(self):
+    #     ids = self.cleaned_data['sizes']
+    #     if ids == ['all']:
+    #         ids = list(Size.objects.all().values_list('id',flat=True))
+    #     return ids
     
     

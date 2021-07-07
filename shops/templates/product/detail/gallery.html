@@ -2,10 +2,8 @@
 <div class="gallery">
     <img id="hero" src="{% static 'img/img1/b.jpg' %}" class="img"  />
     <div onclick="changeHero();" class="thumbs">
-        <img  src="{% static 'img/img1/b.jpg' %}" class="thumb" />
-        <img src="{% static 'img/img1/aaa.jpg' %}" class="thumb" />
-        <img src="{% static 'img/img1/fff.jpg' %}" class="thumb" />
-        <img src="{% static 'img/img1/h.jpg' %}" class="thumb" />
-        <img src="{% static 'img/img1/b.jpg' %}" class="thumb thumb-active" />
+        {% for item in product.images.all %}
+        <img src="{{ item.image.url }}" class="thumb {% if forloop.counter0 == 0 %}thumb-active{% endif %}" />
+        {% endfor %}
      </div>
 </div>

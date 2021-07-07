@@ -5,9 +5,7 @@
         "fields": {
             "phone_no": "09179827587",
             "first_name": "ali",
-            "last_name": "hasani",
-            "address":1
-   
+            "last_name": "hasani"
         }
     },
     {
@@ -16,9 +14,7 @@
         "fields": {
             "phone_no": "09179827588",
             "first_name": "hasan",
-            "last_name": "ali",
-            "address":2
-           
+            "last_name": "ali"
         }
     },
     {
@@ -27,9 +23,7 @@
         "fields": {
             "phone_no": "09179827589",
             "first_name": "nima",
-            "last_name": "nini",
-            "address":3
-            
+            "last_name": "nini"
         }
     }
 ]

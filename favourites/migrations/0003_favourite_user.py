@@ -11,13 +11,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('payments', '0001_initial'),
+        ('favourites', '0002_favourite_product'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='paymenttransaction',
+            model_name='favourite',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='transactions', to=settings.AUTH_USER_MODEL, verbose_name='User'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='favourites', to=settings.AUTH_USER_MODEL, verbose_name='User'),
         ),
     ]

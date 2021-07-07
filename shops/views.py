@@ -54,10 +54,8 @@ def check_for_shop_name(request:HttpRequest, shop_name):
 
 @login_required
 def add_edit_product(request:HttpRequest, product_id=None):
-    print(product_id)
-    print('add begins...')
+
     shop = get_object_or_404(Shop, seller=request.user)
-    print('after...')
     if request.method == 'POST':
         form = AddProductForm(request.POST,files=request.FILES)
         if form.is_valid():
@@ -84,8 +82,12 @@ def add_edit_product(request:HttpRequest, product_id=None):
 
             try:
                 product = Product.objects.get(id=id)
+                if product.shop.seller != request.user:
+                    return HttpResponseForbidden("you are not allowed to update this product")
+                
                 for key,value in new_values.items():
                     setattr(product,key, value)
+                    
                 product.categories.set(categories)
                 product.colors.set(colors)
                 product.sizes.set(sizes)
@@ -121,8 +123,18 @@ def add_edit_product(request:HttpRequest, product_id=None):
         product = None
         if product_id:
              product = Product.objects.filter(id=product_id,shop=shop).first()
+        else:
+            product_id = -1
         return render(request, 'product/edit.html',{
-            'product': product
+            'product': product,
+            'product_id': product_id,
+            'categories': Category.objects.all(),
+            'types': Type.objects.all(),
+            'subtypes': SubType.objects.all(),
+            'brands': Brand.objects.all(),
+            'colors': Color.objects.all(),
+            'sizes': Size.objects.all(),
+            
         })
 
 @login_required
@@ -211,32 +223,39 @@ def filter(request:HttpRequest,shop_name=None):
         shop = Shop.objects.filter(name=shop_name).first()
         categories = filter_form.cleaned_data['categories']
         brands = filter_form.cleaned_data['brands']
-        sizes  = filter_form.changed_data['sizes']
+        sizes  = filter_form.cleaned_data['sizes']
         colors = filter_form.cleaned_data['colors']
         types = filter_form.cleaned_data['types']
         subtypes = filter_form.cleaned_data['subtypes']
         discounted_only = filter_form.cleaned_data['discounted']
         order_by = filter_form.cleaned_data['order_by']
+        order_kind = filter_form.cleaned_data['order_kind']
         price_from = filter_form.cleaned_data['price_from']
         price_to = filter_form.cleaned_data['price_to']
+        print(categories,"  ", brands, " " , colors, sizes,
+              types, subtypes,price_from, price_to )
+        if order_kind == 'desc':
+            order_by = '-' + order_by
         
         products = Product.objects.filter(type__id__in =types,
-                                subtypes__id__in=subtypes,
-                                categories__id__in=categories,
-                                brand__id__in=brands,
-                                sizes__id__in=sizes,
-                                colors__id__in=colors,
-                                shop=shop,
-                                price__lte=price_to,
-                                price__gte=price_from).order_by(order_by)
+                           subtype__id__in=subtypes,
+                            categories__id__in=categories,
+                            brand__id__in=brands,
+                            sizes__id__in=sizes,
+                            colors__id__in=colors,
+                            price__lte=price_to,
+                            price__gte=price_from).distinct().order_by(order_by)
+    
+        print("prod_num: ",len(products))
+        print(products.query)
         if shop:
-            products &= Product.objects.filter(shop=shop)
+            products &= Product.objects.filter(shop=shop).distinct().all()
         if discounted_only:
             dt = timezone.now()
             products &= Product.objects.filter( discounts__is_active=True,
                                                 discounts__date_from__gte=dt,
                                                 discounts__date_to__lte=dt,
-                                                discounts__quantity__gt=0)
+                                                discounts__quantity__gt=0).distinct().all()
        
         
         paginator = Paginator(products, 20)
@@ -259,8 +278,15 @@ def filter(request:HttpRequest,shop_name=None):
             'page': page,
             'brands': Brand.objects.all(),
             'categories': Category.objects.all(),
+            'types': Type.objects.all(),
+            'subtypes': SubType.objects.all(),
+            'colors': Color.objects.all(),
+            'sizes': Size.objects.all(),
+            'shop': shop,
             
         })
+    else:
+        return HttpResponse(filter_form.errors)
         
     return Http404()
         
@@ -277,12 +303,20 @@ def search(request:HttpRequest, pg):
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
         
-    return render(request,'shop/search.html',{
-        'page': page
+    return render(request,'product/all_products.html',{
+        'page': page,
+        'brands': Brand.objects.all(),
+        'categories': Category.objects.all(),
+        'types': Type.objects.all(),
+        'subtypes': SubType.objects.all(),
+        'colors': Color.objects.all(),
+        'sizes': Size.objects.all(),
+        
     })
 
 
 def detail(request:HttpRequest, product_id):
+    print("detail....")
     product = get_object_or_404(Product,id=product_id)
     return render(request, 'product/detail/product.html',{
         'product': product

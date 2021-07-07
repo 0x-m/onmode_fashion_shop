@@ -39,7 +39,7 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'phone_no'
     objects = CustomUserManager()
-    merchan_card = models.CharField(verbose_name=_('Merchand Card'),max_length=16, null=True)
+    merchan_card = models.CharField(verbose_name=_('Merchand Card'),max_length=16,blank=True, null=True)
     user_code = models.CharField(verbose_name=_('User Code'),max_length=20)
     points = models.PositiveIntegerField(verbose_name=_('Points'),default=0)
     fee = models.PositiveIntegerField(verbose_name=_('Fee'),validators=[
@@ -72,16 +72,27 @@ class User(AbstractUser):
    
 
 class Address(models.Model):
-    user = models.OneToOneField(verbose_name=_('User'),to=User,on_delete=models.CASCADE,related_name='address',null=True)
-    state = models.CharField(verbose_name=_('State'),max_length=40,blank=True)
-    city = models.CharField(verbose_name=_('City'),max_length=40,blank=True)
-    town = models.CharField(verbose_name=_('Town'),max_length=40,blank=True)
-    postal_code = models.CharField(verbose_name=_('Postal Code'),max_length=20,blank=True)
-    description = models.TextField(verbose_name=_('Description'),max_length=250,blank=True)
+    user = models.OneToOneField(verbose_name=_('User'),to=User,on_delete=models.CASCADE,related_name='address',null=True,blank=True)
+    state = models.CharField(verbose_name=_('State'),max_length=40,blank=True,null=True)
+    city = models.CharField(verbose_name=_('City'),max_length=40,blank=True,null=True)
+    town = models.CharField(verbose_name=_('Town'),max_length=40,blank=True,null=True)
+    postal_code = models.CharField(verbose_name=_('Postal Code'),max_length=20,blank=True,null=True)
+    description = models.TextField(verbose_name=_('Description'),max_length=250,blank=True,null=True)
     
     class Meta:
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
+     
+    def __check_for_nullity_and_blank(self, value):
+        return (value != None) and (value != '')
+    
+    def is_complete(self):
+        return (self.__check_for_nullity_and_blank(self.state) and
+                self.__check_for_nullity_and_blank(self.city) and
+                self.__check_for_nullity_and_blank(self.town) and
+                self.__check_for_nullity_and_blank(self.postal_code) and
+                self.__check_for_nullity_and_blank(self.description))
+        
      
     def __str__(self) -> str:
         return 'آدرس کاربر :%s' % self.user.phone_no
