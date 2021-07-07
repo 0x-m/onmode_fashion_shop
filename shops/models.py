@@ -6,6 +6,7 @@ from users.models import User, Address
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
+
 import os
 
 class Shop(models.Model):
@@ -98,7 +99,9 @@ class Product(models.Model):
     sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products')
     name = models.CharField(verbose_name=_('Name'),max_length=120)
     description = models.CharField(verbose_name=_('Description'),max_length=500)
-    price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=3)
+    price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
+        MinValueValidator(1000),
+    ])
     is_available = models.BooleanField(verbose_name=_('Available'),default=True)
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     last_update = models.DateTimeField(auto_now=True,null=True)
@@ -107,6 +110,17 @@ class Product(models.Model):
     image = models.ImageField(verbose_name=_('Image'), null=True, blank=True)
     attrs = models.JSONField(null=True)
     
+        
+    # @property
+    # def discount(self):
+    #     dt = timezone.now()
+    #     discount = Discount.objects.filter(Product=self, is_active=True,
+    #                                        date_from__gte=dt,
+    #                                        date_to__lte=dt,
+    #                                        quantity__gt=0)
+    #     if discount:
+    #         return discount
+    #     return None
         
     class Meta:
         verbose_name = _('Product')

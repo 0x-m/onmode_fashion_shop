@@ -1,0 +1,24 @@
+{% load static %}
+{% for product in page.object_list %}
+<div class="product">
+    <img src="{% static 'img/img1/proddd.jpg' %}" class="img" />
+    <div class="container-col">
+        <p class="title" style="margin-top: -0.1em;">{{product.name}}</p>
+        <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+            {% if product.discounts.last.is_valid %}
+                <span style="color: red;font-weight:bold;">{{product.discounts.last.get_discounted_price}}تومان</span>&nbsp;&nbsp;
+                <span style="text-decoration:line-through;color:gray;">{{product.price}}تومان</span>
+                <p class="badge" style="background-color:rgb(245, 56, 56)">{{ product.discounts.last.percent }}%</p>
+
+            {% else %}
+              <span style="color:gray;">{{product.price}}</span>
+            {% endif %}
+        </p>
+        
+        <p style="text-align: center;font-size:0.8rem;margin-top:-0.7rem;margin-bottom:-0.2rem">
+            <span class="fa fa-shopping-basket btn-tiny" ></span>
+            <span class="fa fa-heart btn-tiny"></span>
+        </p>
+    </div>
+  </div>
+{% endfor %}

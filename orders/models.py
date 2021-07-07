@@ -205,18 +205,17 @@ class OrderItem(models.Model):
 
     def __apply_discount(self):
         dt = timezone.now()
-        discount = Discount.objects.filter(product=self.product,
-                                      date_from__lte=dt,
-                                      date_to__gte=dt).last(); #get the latest discount!
+        discount = Discount.objects.filter(product=self.product).last(); #get the latest discount!
         if discount:
-            self.has_discount = True
-            self.discount = discount
-            self.discounted_price = self.price - discount.get_discounted_price()
+            if discount.is_valid():
+                self.has_discount = True
+                self.discount = discount
+                self.discounted_price = discount.get_discounted_price()
             
-            if discount.quantity >= self.quantity:
-                self.discounted_total_price = self.discounted_price * self.quantity
-            else:
-                self.discounted_total_price = self.discounted_price * discount.quantity + self.price * (self.quantity - discount.quantity)
+                if discount.quantity >= self.quantity:
+                    self.discounted_total_price = self.discounted_price * self.quantity
+                else:
+                    self.discounted_total_price = self.discounted_price * discount.quantity + self.price * (self.quantity - discount.quantity)
         else:
             self.has_discount = False
             self.discount = None

@@ -1,3 +1,5 @@
+import decimal
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from shops.models import Product
@@ -18,9 +20,15 @@ class Coupon(models.Model):
     date_from = models.DateTimeField(verbose_name=_('Date from'))
     date_to = models.DateTimeField(verbose_name=_('Date to'),)
     type = models.CharField(verbose_name=_('Coupon type'),max_length=20,choices=TYPES)
-    percent = models.PositiveIntegerField(verbose_name=_('Percent %'),)
-    amount = models.PositiveIntegerField(verbose_name=_('Amount'),)
-    max_allowed_discount = models.PositiveBigIntegerField(verbose_name=_('MAx Allowed Discount'),)
+    percent = models.PositiveIntegerField(verbose_name=_('Percent %'),validators=[
+        MinValueValidator(0),
+        MaxValueValidator(100)
+    ])
+    
+    amount = models.DecimalField(verbose_name=_('Amount'),max_digits=10,decimal_places=0,default=0)
+    max_allowed_discount = models.DecimalField(verbose_name=_('MAx Allowed Discount'),max_digits=10,
+                                               decimal_places=0,default=0)
+                                               
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
     is_used = models.BooleanField(verbose_name=_('Used'),default=False)
 
@@ -51,13 +59,15 @@ class Coupon(models.Model):
         self.is_active = False
         self.save()
     
-    def get_price_after_applying_coupon(self,price:float):
+    def get_price_after_applying_coupon(self,price:decimal):
         discount = 0
         if self.type == self.AMOUNT:
             discount = self.amount
             
         elif self.type == self.PERCENT:
-            discount = price * (self.percent / 100.0)
+            discount = price * decimal.Decimal(self.percent / 100.0)
+            discount = round(discount)
+            
             if discount > self.max_allowed_discount:
                 discount = self.max_allowed_discount
             

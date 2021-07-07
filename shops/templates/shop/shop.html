@@ -216,43 +216,7 @@
         </div>
     </aside>
     <section style="height:min-content" class="main-container">
-        {% for prod in page.object_list %}
-            <div class="product">
-                <img src="{% static 'img/img1/proddd.jpg' %}" class="img" />
-                <div class="container-col">
-                    <p class="title" style="margin-top: -0.1em;">{{prod.name}} </p>
-                    
-                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                        <span style="color: red;font-weight:bold;">{{prod.price}}</span>&nbsp;&nbsp;
-                        <span style="text-decoration:line-through;color:gray;">{{prod.price}}</span>
-                    </p>
-                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                    
-                        <span class="fa fa-shopping-basket btn-tiny" ></span>
-                        <span class="fa fa-heart btn-tiny"></span>
-                    </p>
-                    <p class="badge" style="background-color:green">15%</p>
-                </div>
-            </div>
-        {% endfor %}
-           
-            <div class="product">
-                <img src="{% static 'img/img1/noimg1.png' %}" class="img" />
-                <div class="container-col">
-                    <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                    
-                    <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                        <span style="text-decoration:line-through;color:gray;">100000</span>
-                    </p>
-                    <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                    
-                        <span class="fa fa-shopping-basket btn-tiny" ></span>
-                        <span class="fa fa-heart btn-tiny"></span>
-                    </p>
-                    <p class="badge" style="background-color:green">15%</p>
-                </div>
-            </div>
+        {% include 'product/list.html' %}
     </section>
 </div>
 <div class="pagination">    
@@ -277,23 +241,26 @@
     </p>
 </div>
 <div class="rail">
-    <div class="product">
-        <img src="{% static 'img/img1/proddd.jpg' %}" class="img" />
-        <div class="container-col">
-            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-            
-            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                <span style="text-decoration:line-through;color:gray;">100000</span>
-            </p>
-            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-            
-                <span class="fa fa-shopping-basket btn-tiny" ></span>
-                <span class="fa fa-heart btn-tiny"></span>
-            </p>
-            <p class="badge" style="background-color:green">15%</p>
+    {% for product in top_products %}
+        <div class="product">
+            <img src="{% static 'img/img1/proddd.jpg' %}" class="img" />
+            <div class="container-col">
+                <p class="title" style="margin-top: -0.1em;">{{ product.name }}</p>
+                
+                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
+                    <span style="color: red;font-weight:bold;">{{ product.price }}</span>&nbsp;&nbsp;
+                    <span style="text-decoration:line-through;color:gray;">100000</span>
+                </p>
+                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
+                
+                    <span class="fa fa-shopping-basket btn-tiny" ></span>
+                    <span class="fa fa-heart btn-tiny"></span>
+                </p>
+                <p class="badge" style="background-color:green">15%</p>
+            </div>
         </div>
-    </div>
+    {% endfor %}
+   
 </div>
 
 <script>
