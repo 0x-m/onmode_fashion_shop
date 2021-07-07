@@ -15,45 +15,216 @@ function getCookie(name){
     }
 }
 
-/*********** enrollment  ********* */
+function set_error(msg, timeout, after){
+    const error_dialog = document.getElementById("error-dialog");
+    error_dialog.innerText = msg;
+    error_dialog.classList.add("show");
+    setTimeout(() => {
+        error_dialog.classList.remove("show");
+    }, timeout);
+    after();
+}
 
-function show_filter(){
+function set_confirmation_dialog(msg, accept, reject){
+    confirmation_dialog = document.getElementById("confirmation-dialog");
+    confirmation_dialog.getElementById("msg").innerText = msg
+    confirmation_dialog.getElementById("accept").onclick = accept;
+    confirmation_dialog.getElementById("reject").onclick = reject;
+
+}
+function toggle_confirmation_dialog(){
+    document.getElementById("confirmation-dialog").classList.toggle("show");
+    document.getElementById("side-box").classList.toggle("overflow-hidden");
+}
+
+function toggle_waiting(){
+    document.getElementById("waiting").classList.toggle("show");
+    document.getElementById("side-box").classList.toggle("overflow-hidden");
+}
+
+
+function set_view(view){
+    document.getElementById("side-box-content").innerHTML = view;
+}
+
+function load_view(url,method, data,enc){
     const xhttp = new XMLHttpRequest()
-    console.log("filter...")
     xhttp.onreadystatechange = () =>{
-        if(xhttp.status == 200 ){
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-            showSidebox();
-            console.log("success");
+        if (xhttp.status == 200){
+            toggle_waiting();
+            set_view(xhttp.responseText);
+        }
+        else {
+            set_error("error");
         }
     }
+    toggle_waiting()
+    if (method == "POST"){
+        xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
 
-    xhttp.open("GET","/cart/");
-    xhttp.send();
+    }
+    if (enc == true){
+        xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    }
+    xhttp.open(method, url);
+    xhttp.send(data);
 }
 
-function sett(){
-    document.getElementById("max_price").min = document.getElementById("min_price").value;
-    document.getElementById("min_val").innerText = document.getElementById("min_price").value;
-}
-
-
-function show_enrollment_form(){
-    console.log("show enroll")
+function command(url, data){
     const xhttp = new XMLHttpRequest()
-    xhttp.onload = () =>
-    {
-        if(this.status = 200){
-            console.log("success");
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-            showSidebox();
-        }
-        
+    xhttp.onreadystatechange = () =>{
+       return (xhttp.status == 200);
     }
-    xhttp.open("GET", "/product/add_edit/");
-    xhttp.send();
+    xhttp.open("GET", url);
+    xhttp.send(data);
 }
 
+/********************CART******************** */
+function get_cart(){
+
+    load_view("/cart/")
+}
+
+function add_to_cart(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData()
+    data.append("id", id);
+    command("/cart/add/", data);
+}
+function remove_from_cart(){
+    const product_id = event.target.dataset["id"]
+    const data = new FormData()
+    data.append("id",product_id);
+    command("/cart/remove/",data);
+}
+function update_cart(){}
+function change_product_color(){
+    const color = event.target;
+    if (color.classList.contains("color")){
+        const color_id = color.dataset["id"];
+        const data = new FormData()
+        data.append("id",color_id);
+        command("/cart/set_color/",data);
+    }
+}
+function change_product_size(){
+    const size = event.target;
+    if (color.classList.contains("size")){
+        const size_id = color.dataset["id"];
+        const data = new FormData()
+        data.append("id",size_id);
+        command("/cart/set_size/",data);
+    }
+}
+function increment_product(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData();
+    data.append("id",product_id);
+    res = command("/cart/increment/",data);
+    if (!res){
+        msg = "اتمام موجودی";
+        set_error(msg, 1000, ()=>{});
+    }
+
+}
+function decrement_product(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData();
+    data.append("id",product_id);
+    res = command("/cart/decrement/",data);
+    if (!res){
+        msg = "اتمام موجودی";
+        set_error(msg, 1000, ()=>{});
+    }
+}
+function apply_coupon(){
+    const coupon_code = document.getElementById("coupon-code").value;
+}
+function checkout_cart(){}
+
+/********************************************* */
+
+/*******************FAVOURITES**************** */
+
+function get_favourites(){
+    load_view("/favourites/","GET",null)
+}
+function add_to_favourites(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData()
+    data.append("id", product_id);
+    command("/favourites/add/", data);
+}
+function remove_from_favourites(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData()
+    data.append("id", product_id);
+    command("/favourites/remove/", data);
+}
+
+/********************************************* */
+
+/*********************SHOP******************** */
+
+function get_add_product_form(){
+    load_view("product/add/", "GET", null, false);
+}
+
+function add_product(){
+
+}
+
+function edit_product(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData();
+    data.append("id", product_id);
+    load_view("/product/add_edit/", data);
+}
+
+function remove_product(){
+    const product_id = event.target.dataset["id"];
+    const data = new FormData();
+    data.append("id", product_id);
+    msg = "آیا از حذف محصول اطمینان دارید؟"
+    set_confirmation_dialog(msg,()=>{
+        command("product/remove/", data);
+        confirmation_dialog.classList.remove("show");
+
+
+    }, () => {
+        confirmation_dialog.classList.remove("show");
+    })
+
+}
+function changeimg(){
+    const id = event.target.dataset['img'];
+    const img = document.getElementById(id);
+    const prod_img_id = img.dataset['id'];
+    const file = event.target.files[0];
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () =>{
+        if (xhttp.status == 200){
+            path = xhttp.responseText;
+            img.src = path;
+        }
+    }
+
+    xhttp.open("POST", "shops/change_image/")
+    const data = new FormData();
+    data.append("image",file);
+    data.append("id",prod_img_id);
+    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
+    xhttp.send(data);
+    
+}
+
+
+/********************************************* */
+
+/*******************REGISTRATION**************** */
+function get_enrollment_form(){
+    load_view("users/enrollment/");
+}
 
 function validate_phone_number() {
     console.log("validate..phone...")
@@ -70,29 +241,24 @@ function enroll(){
     }
     document.getElementById("error").innerText = "";
 
-    const xhttp = new XMLHttpRequest()
+    const phone_no = document.getElementById("phone_no").value;
+    const data = new FormData();
+    data.append("phone_no", phone_no);
+    load_view("/users/enrollment","POST", data, true);
+}
 
-    xhttp.onreadystatechange = () => {
+function login(){
+    const password = document.getElementById("password").value;
+    const data = new FormData()
+    data.append("password", password);
+    load_view("users/login/","POST",data, true);
+}
 
-        if(xhttp.status == 200){
-            console.log("phone send");
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-            
-
-        }
-    }
-    
-    var phone_no = document.getElementById("phone_no").value;
-    console.log(phone_no)
-    xhttp.open("POST","users/enrollment/");
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
-    xhttp.send("phone_no="+phone_no);
-
+function logout(){
+    load_view("/users/logout/", "GET", null, false);
 }
 
 function verify_code(){
-    console.log("verifiying...")
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () =>{
         if(xhttp.status == 200){
@@ -101,12 +267,11 @@ function verify_code(){
         }
         
     }
-    let code = document.getElementById("code").value;
-
-    xhttp.open("POST","users/verification/");
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
-    xhttp.send("code="+code);
+    const code = document.getElementById("code").value;
+    const data = new FormData()
+    data.append("code", code);
+    load_view("users/verification", "POST", data, true);
+    
 }
 
 function validate_password(){
@@ -129,128 +294,46 @@ function validate_password(){
     return true;
 }
 function set_password(){
-
-    console.log("setting password")
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-
-        if(xhttp.status == 200){
-            console.log("bingo...")
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-        }
-    };
-
     let password = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
+    const data = new FormData();
+    data.append("password", password);
+    data.append("confirm", confirm);
     if(validate_password()){
-        console.log("password validated..")
-        xhttp.open("POST","users/set_password/")
-        xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
-        xhttp.send("password="+password+"&confirm="+confirm);
+       load_view("users/set_password", "POST", data, true);
     }
-
-
 }
 
-function login(){
-    console.log("login issued...");
-    const xhttp = new XMLHttpRequest()
-    xhttp.onreadystatechange = () => {
 
-        if (xhttp.status == 200){
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-        }
-    }
-    const password = document.getElementById("password").value;
-    xhttp.open("POST", "users/login/");
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
-    xhttp.send("password="+password);
-
-}
 
 function get_profile(){
-    console.log("getting profile...")
-    const xhttp = new XMLHttpRequest()
-    xhttp.onreadystatechange = () =>
-    {
-        if (xhttp.status == 200){
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-        }
-    }
+    load_view("/users/profile/","GET", null,false);
+}
 
-    const f = new FormData()
-    
+/************************************************ */
 
-    xhttp.open("GET", "users/profile");
-    xhttp.send();
+
+/*********************ORDERS********************* */
+function get_orders(){
 
 }
 
-function logout(){
-    console.log("logout issued..")
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () =>{
-        if (xhttp.status == 200){
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-        }
-    }
-    xhttp.open("GET","users/logout/")
-    xhttp.send()
-    
+function order_accepted(){}
+function order_rejected(){}
+function order_sent(){}
+function order_cancelled() {}
+function order_received() {}
+function issue_order_return() {}
+/*********************COMMENTS******************* */
+
+function get_comments(){
 
 }
 
-function getFavs(){
-    var xhttp = new XMLHttpRequest();
-    console.log("favs...")
-
-    xhttp.onreadystatechange = () => {
-
-        console.log("favs ready")
-        console.log(xhttp.responseText);
-        if(xhttp.status == 200){
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;   
-            showSidebox();
-        }
-    };
-
-    xhttp.open("GET","/favourites/")
-    xhttp.send();
-}
-
-function openDialog(){
-    const img1 = document.getElementById("img-1")
-    
+function leave_comment(){
 
 }
-
-function changeimg(){
-    const id = event.target.dataset['img'];
-    const img = document.getElementById(id);
-    const prod_img_id = img.dataset['id'];
-    const file = event.target.files[0];
-    console.log(file)
-    console.log(prod_img_id)
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () =>{
-        if (xhttp.status == 200){
-            path = xhttp.responseText;
-            img.src = path;
-            console.log("changed...");
-        }
-    }
-
-    xhttp.open("POST", "shops/change_image/")
-    const data = new FormData();
-    data.append("image",file);
-    data.append("id",prod_img_id);
-    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
-    xhttp.send(data);
-    
-}
-
+/************************************************** */
 
 function get_selecteds(name, single){
     const items = document.getElementById(name).children;
@@ -296,7 +379,7 @@ function get_attrs(){
     return JSON.stringify(attrs);
 }
 
-function product_form(){
+function add_product(){
     const id = document.getElementById("id");
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
@@ -309,10 +392,9 @@ function product_form(){
     const subtype = get_selecteds("subtypes", true);
     const images = document.getElementById("images").files;
     const attrs =  get_attrs();
-    console.log("----------------")
-    console.log(attrs);
-    const  colors = document.getElementById("colors").children;
 
+
+    const  colors = document.getElementById("colors").children;
     let selected_colors = "";
     let all_colors = "";
     for (let i=0; i < colors.length; ++i){
@@ -339,15 +421,8 @@ function product_form(){
         selected_sizes = all_sizes;
     }
     selected_sizes = selected_sizes.slice(1, selected_sizes.length);
+    
 
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-        document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-        console.log("done...")
-        console.log(xhttp.responseText)
-
-
-    }
     const data = new FormData();
     data.append("name", name);
     data.append("price", price);
@@ -366,17 +441,21 @@ function product_form(){
     for (let i=0; i < images.length; i++){
         data.append("images",images[i]);
     }
-    console.log(data.get("images"));
+    load_view("","POST", data, false);
     xhttp.open("POST", "/product/add_edit/");
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
-    xhttp.send(data);
+    document.getElementById("waiting-overlay").classList.add("show");
+    
+    setTimeout(() => {
+        document.getElementById("waiting-overlay").classList.remove("show");
+        document.getElementById("side-box").classList.remove("overflow-hidden");
+
+    }, 4000);
+   // xhttp.send(data);
 
 }
 
 function filter_product(){
-
-    console.log("submitting....")
-
     document.getElementById("categories").value = get_selecteds("category_list", false);
     document.getElementById("types").value = get_selecteds("type_list", false);
     document.getElementById("subtypes").value = get_selecteds("subtype_list", false);
@@ -416,5 +495,5 @@ function filter_product(){
     document.getElementById("colors").value = selected_colors.slice(1,selected_colors.length);
     document.getElementById("sizes").value = selected_sizes.slice(1, selected_sizes.length);
     return true
-
 }
+
