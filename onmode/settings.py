@@ -154,6 +154,6 @@ import dj_database_url
 
 prod_db  =  dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
-PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
-STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
+
+STATIC_ROOT  =   BASE_DIR
 STATIC_URL = '/static/'
