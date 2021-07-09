@@ -469,7 +469,7 @@ function make_appeal_for_boutique(){
 }
 /*******************REGISTRATION**************** */
 function get_enrollment_form(){
-    load_view("/users/enrollment/");
+    load_view("https://onmode.herokuapp.com/users/enrollment/");
 }
 
 function validate_phone_number() {
