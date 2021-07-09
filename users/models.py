@@ -20,12 +20,6 @@ class CustomUserManager(UserManager):
       u.is_staff = True
       u.save(using=self._db)
     
-    # def create_user(self, phone_no: str,email=None, password=None, **extra_fields):
-    #     user = self.model(phone_no=phone_no)
-    #     user.set_password(password)
-    #     user.save(usin_db=self._db)
-    #     return user
-        
 
 
 class User(AbstractUser):

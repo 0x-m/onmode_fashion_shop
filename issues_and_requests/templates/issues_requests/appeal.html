@@ -1,0 +1,55 @@
+<style>
+    .error { 
+        border-bottom-color: red;
+    }
+</style>
+<div style="width: 80%;"  class="container centerized">
+    {% if appeal %}
+        {% if appeal.state == 'pending' %}
+            <p class="w-100 txt-center">
+                درخواست شما ثبت شده است و در انتظار تایید مباشد
+            </p>
+        {% endif %}
+        {% if appeal.state == 'Accepted' %}
+            <div class="centerized">
+                <p>
+                    درخواست شما پذیرفته شده و بوتیک شما آماده است
+                </p>
+            </div>
+        {% endif %}
+
+        {% if appeal.state == 'rejected' %}
+            <div class="centerized">
+                <p>
+                    درخواست شما رد شده است
+                </p>
+                <p>
+                    علت:
+                    {{appeal.status}}
+                </p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="field">
+            <input  style="direction: ltr;" onblur="validate_page_name();" type="text" id="page_name" class="text-box w-100" name="page_name" placeholder="نام بوتیک به انگلیسی">
+            <span class="txt-center fz-small">ex: https://www.onmode.ir/<span style="color: red;">YourBoutiqueName</span></span>
+        </div>
+       
+        <div class="field">
+            <textarea class="text-box w-100" id="description"  name="description" style="resize: vertical;" placeholder="سایر توضیحات"></textarea>
+        </div>
+        <button onclick="make_appeal_for_boutique();" type="biutton" class="btn btn-primary w-100" >ثبت درخواست</button>
+        <dvi class="field">
+            <ul class="fz-small ">
+                <li >
+                    نام بوتیک تنها شامل حروف کوچک انگلیسی اعداد و زیر خط(ـ) میتواند باشد
+                </li>
+            </ul>
+        </dvi>
+        <div class="field">
+            <p>
+                سایر توضیحات ...
+            </p>
+        </div>
+    {% endif %}
+</div>

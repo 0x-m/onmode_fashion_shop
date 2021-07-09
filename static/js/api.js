@@ -104,13 +104,16 @@ function add_to_cart(){
     event.target.disabled = true;
     const product_id = event.target.dataset["id"];
     command("/cart/add/" + product_id + "/");
-    
+    const num =  document.getElementById("card-num");
+    const q = parseInt(num.innerText) + 1;
+    num.innerText = q;
     event.target.disabled = false;
 
 
 }
 function remove_from_cart(){
-    console.log("remove issued..")
+    const t = event.target;
+    t.disabled = true;
     const item = event.target.parentNode
     const product_id = event.target.dataset["id"]
     msg = "آیا مایل به حذف مورد انتخابی هستید؟"
@@ -118,6 +121,10 @@ function remove_from_cart(){
 
         toggle_confirmation_dialog(); 
         command("/cart/remove/" + product_id + "/", (data) => {
+            const num =  document.getElementById("card-num");
+            const q = parseInt(num.innerText) - 1;
+            num.innerText = q;
+            t.disabled = false;
             get_cart();
         })
        
@@ -428,7 +435,38 @@ function changeimg(){
 function get_messages(){
     load_view("/messages/","GET", null);
 }
+function get_appeal_form(){
+    load_view("/appeal/register/", "GET", null);
+}
 
+function validate_page_name(){
+    const obj = event.target
+    const rx = new RegExp("^[a-z0-9_]{4,}$");
+    if (! (rx.test(page_name)) ){
+        obj.classList.add("error")
+    }
+    else{
+        obj.classList.remove("error")
+    }
+}
+
+function make_appeal_for_boutique(){
+    const data = new FormData()
+    const page_name = document.getElementById("page_name").value
+    const rx = new RegExp("^[a-z0-9_]{4,}$")
+    if (! (rx.test(page_name)) ){
+        return
+    }
+    const description = document.getElementById("description").value
+    data.append("page_name", page_name)
+    data.append("description", description)
+    load_view("/appeal/register/", "POST",data, (x)=>{
+        if(x.status == 200){
+            console.log("successsfull");
+        }
+    })
+       
+}
 /*******************REGISTRATION**************** */
 function get_enrollment_form(){
     load_view("/users/enrollment/");
@@ -534,6 +572,47 @@ function get_profile(){
     load_view("/users/profile/","GET", null,false);
 }
 
+function edit_profile(){
+    form = document.getElementById("personal_info");
+    const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
+    const email = document.getElementById("email").value;
+    const card = document.getElementById("merchan_card").value;
+    if(! is_valid_email(email) && ! is_valid_card(card)){
+        const msg  = "شماره کارت و ایمل نامعتبر است"
+        set_error(msg,1000);
+        return
+    }
+    else if(! is_valid_email(email)){
+        const msg  = " ایمل نامعتبر است"
+        set_error(msg,1000);
+        return
+    }
+    else if(! is_valid_card(card)){
+        const msg  = "شماره کارت نامعتبر است"
+        set_error(msg,1000);
+        return
+    }
+
+    fetch("/users/profile/", 
+    {
+        method: 'post',
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: data
+
+        
+    }).then((res)=>{
+        if(res.status == 200){
+            msg = "اطلاعات ویرایش شد"
+            set_error(msg,1000,()=>{
+                
+            })
+        }
+      
+    })
+}
+
 /************************************************ */
 
 function checkout_request(){
@@ -570,3 +649,48 @@ function leave_comment(){
 
 }
 /************************************************** */
+function is_valid_email(email){
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+function validate_email(){
+    const email = document.getElementById("email")
+    if (! is_valid_email(email.value)){
+        email.classList.add("error");
+    }
+    else{
+        email.classList.remove("error")
+    }
+}
+
+function is_valid_card(card_num){
+
+    card_num = String(card_num);
+    const rx = new RegExp("^[0-9]{16}$");
+    if (card_num != "" && rx.test(card_num)){
+        let sum = 0;
+        let pattern = "2121212121212121";
+        for (let i=0;i < card_num.length; i = i + 2){
+          let p = parseInt(card_num[i]) * parseInt(pattern[i])
+          if (p > 9){
+              p -=9;
+          }
+          sum +=p;
+        }
+        
+        return (sum % 10 == 0);
+    }
+    return false;
+}
+
+function validate_card(){
+    const card = document.getElementById("merchan_card");
+    
+    if(! is_valid_card(card.value)){
+        card.classList.add("error");
+    }
+    else{
+        card.classList.remove("error");
+    }
+    
+}

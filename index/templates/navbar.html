@@ -1,3 +1,6 @@
+<style>
+
+</style>
 <nav class="navbar">
     <span class="logo">
         <span style="color:red">On</span>Mode
@@ -14,7 +17,9 @@
        <span class="fa fa-search icon" onclick="toggle_search_box();"></span>
        <span class="fa fa-heart icon" onclick="get_favourites();"></span>
        <span class="fa fa-user icon"  onclick="get_enrollment_form();"></span>
-       <span class="fa fa-shopping-basket icon" onclick="get_cart();"></span>
+       <span style="position: relative;" class="fa fa-shopping-basket icon" onclick="get_cart();">
+           <span id="card-num"  style="position: absolute; top:0;right:0;width:16px;height:16px"  class="badge ff">0</span>
+       </span>
    </div>
 </nav>
 

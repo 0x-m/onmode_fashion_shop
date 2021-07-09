@@ -16,10 +16,10 @@ class Appeal(models.Model):
     ]
     user = models.ForeignKey(verbose_name=_('User'),to=User, on_delete=models.CASCADE, related_name='appeal')
     page_name = models.CharField(verbose_name=_('Page Name'),max_length=30)
-    description = models.CharField(verbose_name=_('Description'),max_length=500)
+    description = models.CharField(verbose_name=_('Description'),null=True,blank=True,max_length=500)
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     state = models.CharField(choices=STATES,default='pending',max_length=20)
-    status = models.CharField(verbose_name=_('Status'),max_length=500)
+    status = models.CharField(verbose_name=_('Status'),max_length=500,blank=True,null=True)
     
     def accept(self, msg= ""):
         self.state = self.ACCEPTED

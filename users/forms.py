@@ -1,3 +1,5 @@
+from django.forms import fields
+from .models import Address, User
 from django import forms
 from django.core.exceptions import ImproperlyConfigured
 from django.forms.forms import Form
@@ -33,6 +35,11 @@ class LoginForm(Form):
     password = forms.CharField(widget=forms.PasswordInput, min_length=8)
     
 class ProfileForm(ModelForm):
-    pass
+    class Meta:
+        model = User
+        fields = ['first_name','last_name','gender', 'email', 'merchan_card']
+        
 class AddressForm(ModelForm):
-    pass
+    class Meta:
+        model = Address
+        fields = ['state','city','town','postal_code', 'description']

@@ -15,13 +15,15 @@ import os
 class Shop(models.Model):
     seller = models.ForeignKey(verbose_name=_('Seller'),to=User,on_delete=models.CASCADE, related_name='shop')
     name = models.CharField(verbose_name=_('Name'),max_length=40,blank=True,unique=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=500,blank=True)
+    title = models.CharField(verbose_name=_('title'), max_length=100,null=True,blank=True)
+    shop_phone = models.CharField(verbose_name=_('cell phone'),max_length=20,null=True, blank=True)
+    description = models.CharField(verbose_name=_('Description'),max_length=2000,blank=True)
     address = models.CharField(verbose_name=_('Address'),max_length=500,blank=True)
     logo = models.ImageField(verbose_name=_('Logo'), null=True, blank=True)
     banner = models.ImageField(verbose_name=_('Banner'),blank=True, null=True)
     is_active = models.BooleanField(default=True,verbose_name=_('active'))
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
-    post_destinatinos = models.JSONField(verbose_name=_('Postal Destinations'),null=True)
+    post_destinatinos = models.CharField(verbose_name=_('Postal Destinations'),max_length=1000,null=True)
     
     class Meta:
         verbose_name = _('Shop')

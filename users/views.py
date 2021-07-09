@@ -9,7 +9,7 @@ from http import HTTPStatus
 import logging
 from .forms import *
 import pyotp
-from .models import User
+from .models import User, Address
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 
@@ -171,15 +171,16 @@ def dashboard(request:HttpRequest):
 def profile(request:HttpRequest):
     if request.method ==  'POST':
         profile_form  = ProfileForm(request.POST, instance=request.user)
-        address_form = AddressForm(request.POST, instance=request.user.address)
-        
-        if profile_form.is_valid() and address_form.is_valid():
-            address = address_form.save()
-            user = profile_form.save(commit=False)
-            user.address = address
-            user.save()
+        print(request.POST.get('gender'))
+        print(request.POST.get('first_name'))
+        if profile_form.is_valid():
+            address = Address.objects.filter(user=request.user).first()
+            address_form = AddressForm(request.POST, instance=address)
+            if address_form.is_valid():
+                address_form.save()
+            profile_form.save()
         else:
-            return HttpResponseUnprocessableEntity("invalid inputs")
+            return HttpResponseUnprocessableEntity(profile_form.errors)
     
     return render(request, 'user/profile.html')
 

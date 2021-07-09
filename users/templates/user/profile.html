@@ -1,50 +1,60 @@
+
 <style>
-    @media screen and (min-width:1024px) {
-        .side-box-show {
-            width: 25vw;
-        }
+    .error{
+        border-bottom-color: red;
     }
 </style>
-<div class="container" style="padding: 0.8rem;">
-    <p class="field">
-        <button class="btn btn-primary">بازگشت</button>
-    </p>
-    <p  class="field">
-        <label class="caption" for="fname">نام: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="نام" />
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">نام خانوادگی: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="نام خانوادگی" />
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">ایمیل: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="ایمیل" />
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">شماره همراه: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="شماره موبایل" disabled>
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">استان: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="استان" />
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">شهرستان : </label>
-        <input  id="fname" class="text-box" type="text" placeholder=" شهرستان" />
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">شهر: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="شهر" />
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">کد پستی: </label>
-        <input  id="fname" class="text-box" type="text" placeholder="کد پستی" />
-    </p>
-    <p class="field">
-        <label for="desc" class="caption">نشانی: </label>
-        <textarea name="desc" rows="5" placeholder="شانی" class="text" style="resize: none;"  ></textarea>
-    </p>
+<div class="container" style="width:100%;">
+    <form id="personal_info">
+        <p  class="field">
+            <label class="caption" for="first_name">نام: </label>
+            <input name="first_name"  id="first_name" class="text-box" type="text" placeholder="نام" value="{{user.first_name}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="last_name">نام خانوادگی: </label>
+            <input  id="last_name" name="last_name" class="text-box" type="text" placeholder="نام خانوادگی" value="{{ user.last_name }}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="last_name">جنسیت: </label>
+            <div class="row" style="justify-content: center;flex-direction:row">
+                <label>مرد<input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}></label>
+                <label style="margin-right: 1rem;">زن<input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}></label>
+    
+            </div>
+        </p>
+        <p class="field">
+            <label class="caption" for="email">ایمیل: </label>
+            <input onblur="validate_email();" name="email" id="email" class="text-box" type="email" placeholder="ایمیل" value="{{user.email}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="merchan_card">شماره کارت: </label>
+            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text-box" type="text" placeholder="شماره کارت" value="{{user.email}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="phone_no">شماره همراه: </label>
+            <input  id="phone_no" name="phone_no" class="text-box" type="text" placeholder="{{user.phone_no}}" disabled>
+        </p>
+        <p class="field">
+            <label class="caption" for="state">استان: </label>
+            <input name="state"  id="state" class="text-box" type="text" placeholder="استان" value="{{user.address.state}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="city">شهرستان : </label>
+            <input name="city"  id="city" class="text-box" type="text" placeholder="شهرستان" value=" {{user.address.city}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="town">شهر: </label>
+            <input name="town"  id="town" class="text-box" type="text" placeholder="شهر" value="{{user.address.town}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="postal_code">کد پستی: </label>
+            <input  id="postal_code" name="postal_code" class="text-box" type="text" placeholder="کد پستی" value="{{user.address.postal_code}}" />
+        </p>
+        <p class="field">
+            <label for="description" class="caption">نشانی: </label>
+            <textarea name="description" id="description" rows="5" placeholder="نشانی" class="text" style="resize: none;"  >{{user.address.description}}</textarea>
+        </p>
+    </form>
     <p class="field">
         <button class="btn btn-primary" onclick="edit_profile();">ثبت</button>
     </p>

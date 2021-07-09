@@ -14,35 +14,7 @@ from django.utils import timezone
 from django.db.models import Q
 
 from .forms import AddProductForm, FilterForm
-# @login_required
-# def make_appeal(request:HttpRequest):
-#     print('appeal was issued...')
-#     appeal = Appeal.objects.filter(user=request.user).first()
-#     if request.method == 'POST':
-#         if appeal:
-#             return render(request,'shop/appeal.html',{
-#                 'appeal': appeal
-#             })
-        
-#         page_name = request.POST.get('page_name')
-#         description = request.POST.get('description')
-        
-#         if not page_name:
-#             return HttpResponseBadRequest("page name is not provided")
-#         shop =  Shop.objects.filter(name=page_name).exists()
-#         if shop:
-#             return HttpResponseBadRequest("the boutique with name %s is already exist" % page_name)
-#         appeal = Appeal(user=request.user, page_name=page_name)
-#         appeal.save()
-#         print('appeal regi..')
-#         return HttpResponse("an appeal is registered")
-#     if appeal:
-#         return render(request, 'shop/appeal.html', {
-#             'appeal': appeal
-#         })
-        
-#     return render(request, 'shop/request.html')
-    
+
 
 
 @login_required
@@ -187,7 +159,7 @@ def change_image(request: HttpRequest):
 def get_products_of_shop(reqest:HttpRequest, shop_name):  
 
     shop = get_object_or_404(Shop, name=shop_name, is_active=True)
-    products = get_list_or_404(Product,shop=shop, is_active=True)
+    products = Product.objects.filter(shop=shop, is_active=True)
     paginator = Paginator(products, 20)
     pg_number = reqest.GET.get('pg')
     try:

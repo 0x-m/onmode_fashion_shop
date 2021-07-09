@@ -1013,13 +1013,13 @@ pb-1{padding-bottom: 1rem;}
     width: 0;
     height: 100vh;
     overflow-y: auto;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 5px rgb(177, 177, 177);
     position: fixed;
     top: 0;
     right: 0;
     transition:  0.5s;
-    z-index: 1000;
+    z-index: 4000;
 }
 
 .side-box-show {

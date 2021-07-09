@@ -1,5 +1,6 @@
 import re
 from typing import OrderedDict, SupportsBytes
+from django.db.models import fields
 from django.db.models.query import FlatValuesListIterable, prefetch_related_objects
 from django.forms.widgets import SelectDateWidget
 
@@ -7,7 +8,7 @@ from django.shortcuts import resolve_url
 from django.utils.html import TRAILING_PUNCTUATION_CHARS
 from product_attributes.models import Color, Size
 from django.core.exceptions import ValidationError
-from .models import Brand, Category, SubType, Type
+from .models import Brand, Category, Shop, SubType, Type
 from django import forms
 from django.core.validators import RegexValidator
 from django.forms.models import model_to_dict
@@ -164,48 +165,19 @@ class FilterForm(forms.Form):
             raise ValidationError("invalid price range")
         return super().clean()
     
-    # def clean_brands(self):
-    #     ids = self.cleaned_data['brands']
-    #     try:
-    #         ids = [int(i) for i in ids]
-    #     except:
-    #         raise ValidationError("invalid brands")
-        
-    #     return ids
-    
-    # def clean_categories(self):
-    #     uds = self.cleaned_data['ids']
-    #     try:
-    #         ids = [int(i) for i in ids]
-    #     except:
-    #         raise ValidationError("invalid brands")
-        
-    #     return ids
+
+class ShopInfoForm(forms.Form):
+    title = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=2000)
+    address = forms.CharField(max_length=500)
+    shop_phone = forms.CharField(max_length=20,validators=[
+        RegexValidator('^[0-9]*$')
+    ])
+    logo = forms.ImageField()
+    banner = forms.ImageField()
+    post_destinations = forms.CharField(max_length=1000)
     
     
-    # def clean_types(self):
-    #     ids = self.cleaned_data.get('types')
-    #     if ids == ['all']:
-    #         ids = list(Type.objects.all().values_list('id',flat=True))
-    #     return ids
-    
-    # def clean_subtypes(self):
-    #     ids = self.cleaned_data['subtypes']
-    #     subtypes = SubType.objects.filter(id__in=ids)
-    #     if ids == ['all']:
-    #         ids = list(SubType.objects.all().values_list('id',flat=True))
-    #     return ids
-    
-    # def clean_colors(self):
-    #     ids = self.cleaned_data['colors']
-    #     if ids == ['all']:
-    #         ids = list(Color.objects.all().values_list('id',flat=True))
-    #     return ids
-    
-    # def clean_sizes(self):
-    #     ids = self.cleaned_data['sizes']
-    #     if ids == ['all']:
-    #         ids = list(Size.objects.all().values_list('id',flat=True))
-    #     return ids
+
     
     

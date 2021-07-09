@@ -71,44 +71,53 @@
               </div>
               
               {% if user.is_seller %}
-              <div class="list-item caption">
-                <p style="text-align: center;font-weight:bold;cursor:default">
-                    مدیریت بوتیک
-                </p>
-             </div>
-             <div class="list-item">
-                <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column">
-                   <p style="text-align:center;">تعداد مشتریها</p> 
-                   <p style="color: rgb(50, 192, 69);font-size:1.2rem;text-align:center">
-                       258
+              {% if user.shop.first.is_active %}
+                    <div class="list-item caption">
+                        <p style="text-align: center;font-weight:bold;cursor:default">
+                            مدیریت بوتیک
+                        </p>
+                    </div>
+                    <div class="list-item">
+                        <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column">
+                        <p style="text-align:center;">تعداد مشتریها</p> 
+                        <p style="color: rgb(50, 192, 69);font-size:1.2rem;text-align:center">
+                            258
+                            </p>
+                        
+                        </div>
+                    </div>
+                    <div onclick="get_edit_shop_form();" class="list-item">
+                        <p style="padding: 0.5rem;">
+                        ویرایش مشخصات بوتیک
+                        </p>
+                    </div>
+                    <div onclick="get_add_product_form();" class="list-item">
+                        <p  style="padding: 0.5rem;">
+                            افزودن محصول
+                        </p>
+                    </div>
+                    <div class="list-item">
+                        <p style="padding: 0.5rem;">
+                        <a style="text-decoration: none;" href="{{ user.shop.first.get_absolute_url }}"> برو به صفحه فروشگاه</a>
+                        </p>
+                    </div>
+                    <div class="list-item">
+                        <p style="padding: 0.5rem;">
+                        سفارشها
+                        </p>
+                        <span class="badge">5</span>
+                    </div>
+              {% else %}
+                <div class="list-item caption">
+                    <p style="text-align: center;font-weight:bold;cursor:default;color:red;font-size:1.1rem">
+                        بوتیک شما موقتا غیرفعال شده است!
                     </p>
-                   
                 </div>
-            </div>
-            <div onclick="get_edit_shop_form();" class="list-item">
-                <p style="padding: 0.5rem;">
-                   ویرایش مشخصات بوتیک
-                </p>
-            </div>
-            <div onclick="get_add_product_form();" class="list-item">
-                <p  style="padding: 0.5rem;">
-                    افزودن محصول
-                </p>
-            </div>
-            <div class="list-item">
-                <p style="padding: 0.5rem;">
-                  <a style="text-decoration: none;" href="{{ user.shop.first.get_absolute_url }}"> برو به صفحه فروشگاه</a>
-                </p>
-            </div>
-            <div class="list-item">
-                <p style="padding: 0.5rem;">
-                   سفارشها
-                </p>
-                <span class="badge">5</span>
-            </div>
+              {% endif %}
+             
             {% else %}
             <div class="list-item">
-                <button style="border-radius:0;width: 100%;" class="btn btn-primary" >درخواست ایجاد بوتیک</button>
+                <button onclick="get_appeal_form();" style="border-radius:0;width: 100%;" class="btn btn-primary" >درخواست ایجاد بوتیک</button>
              </div>
             {% endif %}
             <div class="list-item">
