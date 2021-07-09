@@ -1,0 +1,32 @@
+cart.cart -- INFO -- session for cart started.... -- 21
+cart.cart -- INFO -- coupon issued...coupon: None -- 30
+cart.cart -- INFO -- cart is empty? False -- 41
+cart.cart -- INFO -- compute total price for product:4 is issued... -- 138
+cart.cart -- INFO -- qunatity for product:4  is 1 price is 12750 -- 141
+cart.cart -- INFO -- valid discount for product:4 is 11% -- 143
+cart.cart -- INFO -- --total price for product:4 is 11347 -- 150
+cart.cart -- INFO -- compute total issued... -- 122
+cart.cart -- INFO -- dict_keys(['4']) -- 124
+cart.cart -- INFO -- nubmber of products is 1 -- 126
+cart.cart -- INFO -- compute total price for product:4 is issued... -- 138
+cart.cart -- INFO -- qunatity for product:4  is 1 price is 12750 -- 141
+cart.cart -- INFO -- valid discount for product:4 is 11% -- 143
+cart.cart -- INFO -- --total price for product:4 is 11347 -- 150
+cart.cart -- INFO -- total price is : 11347 coupon: None -- 134
+cart.cart -- INFO -- session for cart started.... -- 21
+cart.cart -- INFO -- coupon issued...coupon: None -- 30
+cart.cart -- INFO -- session for cart started.... -- 21
+cart.cart -- INFO -- coupon issued...coupon: None -- 30
+cart.cart -- INFO -- cart is empty? False -- 41
+cart.cart -- INFO -- compute total price for product:4 is issued... -- 138
+cart.cart -- INFO -- qunatity for product:4  is 1 price is 12750 -- 141
+cart.cart -- INFO -- valid discount for product:4 is 11% -- 143
+cart.cart -- INFO -- --total price for product:4 is 11347 -- 150
+cart.cart -- INFO -- compute total issued... -- 122
+cart.cart -- INFO -- dict_keys(['4']) -- 124
+cart.cart -- INFO -- nubmber of products is 1 -- 126
+cart.cart -- INFO -- compute total price for product:4 is issued... -- 138
+cart.cart -- INFO -- qunatity for product:4  is 1 price is 12750 -- 141
+cart.cart -- INFO -- valid discount for product:4 is 11% -- 143
+cart.cart -- INFO -- --total price for product:4 is 11347 -- 150
+cart.cart -- INFO -- total price is : 11347 coupon: None -- 134

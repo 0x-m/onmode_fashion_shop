@@ -96,7 +96,16 @@ function tt(data){
 
 /********************CART******************** */
 function get_cart(){
-    load_view("/cart/","GET");
+   // load_view("/cart/","GET");
+   fetch("/cart/",{
+       header :{
+           'content-type':'application/x-www-form-urlencoded'
+       }
+   }).then((res) => {
+       res.text().then((r)=>{
+           set_view(r);
+       })
+   })
 }
 
 function add_to_cart(){
