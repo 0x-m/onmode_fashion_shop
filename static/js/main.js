@@ -203,13 +203,17 @@ function changeHero() {
  //--------------------------------------------------
 
  function showSidebox(){
-    console.log("show")
-    document.getElementById("overlay").classList.toggle("show");
-    document.getElementById("side-box").classList.toggle("side-box-show");
-    document.body.classList.toggle("overflow-hidden");
+    document.getElementById("overlay").classList.add("show");
+    document.getElementById("side-box").classList.add("side-box-show");
+    document.body.classList.add("overflow-hidden");
 }
 
-
+function closeSidebox(){
+    document.getElementById("overlay").classList.remove("show");
+    document.getElementById("side-box").classList.remove("side-box-show");
+    document.getElementById("side-box-content").innerHTML = "";
+    document.body.classList.remove("overflow-hidden");
+}
 /******************************** */
 
 function select_color(){

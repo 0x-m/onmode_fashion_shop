@@ -100,6 +100,12 @@ body {
     opacity: 1;
 }
 
+.btn:disabled {
+    background-color: #efefef;
+    border-color: #efefef;
+    cursor: default;
+}
+
 .btn-normal {
     background-color: var(--cover);
     border-color: var(--outline);
@@ -1144,6 +1150,11 @@ pb-1{padding-bottom: 1rem;}
     background-color: rgba(245, 66, 66,1);
 }
 
+.btn-tiny:disabled {
+    background-color: #efefef;
+    border-color: #efefef;
+    cursor:auto;
+}
 
 
 .footer{

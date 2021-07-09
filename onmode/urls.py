@@ -11,12 +11,11 @@ urlpatterns = [
     path('favourites/', include('favourites.urls', namespace='favourites')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('payments/', include('payments.urls', namespace='payments')),
+    path('messages/', include('messaging.urls', namespace='messaging')),
     path('', include('index.urls', namespace='index')),
     path('', include('shops.urls', namespace='shops')),
-    
-    
-    
-    
+    path('', include('accounts.urls', namespace='accounts')),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

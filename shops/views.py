@@ -52,14 +52,13 @@ def check_for_shop_name(request:HttpRequest, shop_name):
         return HttpResponseBadRequest("shop with this name is already exist")
     return HttpResponse("it's ok!")
 
-@login_required
-def add_edit_product(request:HttpRequest, product_id=None):
 
-    shop = get_object_or_404(Shop, seller=request.user)
-    if request.method == 'POST':
-        form = AddProductForm(request.POST,files=request.FILES)
+@login_required
+def add_product(request:HttpRequest):
+    shop = get_object_or_404(Shop, seller=request.user, is_active=True)
+    if request.method == "POST":
+        form = AddProductForm(request.POST)
         if form.is_valid():
-            id = form.cleaned_data['id']
             new_values = {
                 'shop': shop,
                 'brand' : form.cleaned_data['brand'],
@@ -68,7 +67,6 @@ def add_edit_product(request:HttpRequest, product_id=None):
                 'price' : form.cleaned_data['price'],
                 'name' : form.cleaned_data['name'],
                 'description' : form.cleaned_data['description'],
-                'is_available' : form.cleaned_data['is_available'],
                 'quantity' : form.cleaned_data['quantity'],
                 'keywords' : form.cleaned_data['keywords'],
                 'attrs' : form.cleaned_data['attrs'],
@@ -78,64 +76,80 @@ def add_edit_product(request:HttpRequest, product_id=None):
             colors = form.cleaned_data['colors']
             sizes = form.cleaned_data['sizes']
             images = request.FILES.getlist("images")
-            print('images:', images)
-
-            try:
-                product = Product.objects.get(id=id)
-                if product.shop.seller != request.user:
-                    return HttpResponseForbidden("you are not allowed to update this product")
-                
-                for key,value in new_values.items():
-                    setattr(product,key, value)
-                    
-                product.categories.set(categories)
-                product.colors.set(colors)
-                product.sizes.set(sizes)
-                product.save()
-                # if images:
-                #     for img in product.images.all():
-                #         img.image.delete()
-                #         img.delete()
-                #     for img in images:
-                #         if not img:
-                #             prodimg = ProductImage(product=product,image=img)
-                #             prodimg.save()
-                return HttpResponse("update successfully")
-                
-            except Product.DoesNotExist:
-                print('create new..')
-                product = Product(**new_values)
-                product.save()
-                product.categories.set(categories)
-                product.colors.set(colors)
-                product.sizes.set(sizes)
-                product.save()
-                if images:
-                    for img in images:
-                        print('create images...')
-                        print(img)
-                        prodimg = ProductImage(product=product,image=img)
-                        prodimg.save()
-                return HttpResponse("added successfully")
-        else:
-            return HttpResponseBadRequest(form.errors)
-    else:
-        product = None
-        if product_id:
-             product = Product.objects.filter(id=product_id,shop=shop).first()
-        else:
-            product_id = -1
-        return render(request, 'product/edit.html',{
-            'product': product,
-            'product_id': product_id,
-            'categories': Category.objects.all(),
-            'types': Type.objects.all(),
-            'subtypes': SubType.objects.all(),
-            'brands': Brand.objects.all(),
-            'colors': Color.objects.all(),
-            'sizes': Size.objects.all(),
             
+            product = Product(**new_values)
+            product.save()
+            product.categories.set(categories)
+            product.colors.set(colors)
+            product.sizes.set(sizes)
+            product.save()
+            if images:
+                for img in images:
+                    prodimg = ProductImage(product=product,image=img)
+                    prodimg.save()
+            return render(request, 'product/status.html',{
+                'status_code': 200,
+                'status': 'added successfully'
+            })
+        return render(request,'product/status.html', {
+            'status_code': 401,
+            "status": "add failed"
         })
+    
+    return render(request, 'product/edit.html',{
+        'categories': Category.objects.all(),
+        'types': Type.objects.all(),
+        'subtypes': SubType.objects.all(),
+        'brands': Brand.objects.all(),
+        'colors': Color.objects.all(),
+        'sizes': Size.objects.all(),
+    })
+            
+@login_required
+def edit_product(request:HttpRequest, product_id):
+    shop = Shop.objects.filter(seller=request.user, is_active=True).first()
+    product = Product.objects.filter(shop=shop,is_active=True,id=product_id).first()
+    if not shop or not product:
+        return HttpResponseForbidden("You are not allowed to edit the product with id=%i" % product_id)
+
+    if request.method == "POST":
+        form = AddProductForm(request.POST)
+        if form.is_valid():
+            new_values = {
+                'brand' : form.cleaned_data['brand'],
+                'type' : form.cleaned_data['type'],
+                'subtype' : form.cleaned_data['subtype'],
+                'price' : form.cleaned_data['price'],
+                'name' : form.cleaned_data['name'],
+                'description' : form.cleaned_data['description'],
+                'quantity' : form.cleaned_data['quantity'],
+                'keywords' : form.cleaned_data['keywords'],
+                'attrs' : form.cleaned_data['attrs'],
+                
+            }
+            categories = form.cleaned_data['categories']
+            colors = form.cleaned_data['colors']
+            sizes = form.cleaned_data['sizes']
+        
+            for key,value in new_values.items():
+                setattr(product, key, value)
+                
+            product.categories.set(categories)
+            product.colors.set(colors)
+            product.sizes.set(sizes)
+            product.save()
+        else:
+            return HttpResponseBadRequest("Invalid inputs")
+    return render(request, 'product/edit.html',{
+        'product': product,
+        'categories': Category.objects.all(),
+        'types': Type.objects.all(),
+        'subtypes': SubType.objects.all(),
+        'brands': Brand.objects.all(),
+        'colors': Color.objects.all(),
+        'sizes': Size.objects.all(),
+    })
+    
 
 @login_required
 def remove_product(request:HttpRequest, product_id):
@@ -155,19 +169,25 @@ def change_image(request: HttpRequest):
         id = request.POST.get('id')
         img = request.FILES.get('image')
         if id and img:
+            
             productimg = ProductImage.objects.filter(id=id).first()
+            
+            if not (productimg.product.shop == request.user.shop):
+                return HttpResponseForbidden("you are not allowed...")
             if productimg:
                 productimg.image.delete()
                 productimg.image = img
                 productimg.save()
                 return HttpResponse(productimg.image.url)
+            
             return HttpResponseBadRequest("image not found")
         return HttpResponseBadRequest("id or image was not provided")
     return HttpResponseNotAllowed(['POST'])
             
 def get_products_of_shop(reqest:HttpRequest, shop_name):  
-    products = get_list_or_404(Product,shop__name=shop_name)
-    shop = Shop.objects.get(name=shop_name)
+
+    shop = get_object_or_404(Shop, name=shop_name, is_active=True)
+    products = get_list_or_404(Product,shop=shop, is_active=True)
     paginator = Paginator(products, 20)
     pg_number = reqest.GET.get('pg')
     try:
@@ -191,15 +211,9 @@ def get_products_of_shop(reqest:HttpRequest, shop_name):
         
     
 
-def product_detail(request:HttpRequest, product_id):
-    product = get_object_or_404(Product,id=product_id)
-    return render(request, 'product/product/detail.html',{
-        'product':product
-    })
-    
 
 def get_all_products(request:HttpRequest):
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True)
     paginator = Paginator(products, 20)
     
     pg_num = request.GET.get('pg')
@@ -210,10 +224,14 @@ def get_all_products(request:HttpRequest):
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
     
-    return render(request,'',{
+    return render(request,'product/all_product.html',{
         'page':page,
         'brands': Brand.objects.all(),
         'categories': Category.objects.all(),
+        'colors': Color.objects.all(),
+        'sizes': Size.objects.all(),
+        'subtypes': SubType.objects.all(),
+        'types': Type.objects.all(),
     })
 
 def filter(request:HttpRequest,shop_name=None):
@@ -260,8 +278,9 @@ def filter(request:HttpRequest,shop_name=None):
         
         paginator = Paginator(products, 20)
         pg_num = request.GET.get('pg')
-            
+
         page = paginator.get_page(pg_num)
+        
         try:
             page = paginator.get_page(pg_num)
         except PageNotAnInteger:
@@ -287,8 +306,7 @@ def filter(request:HttpRequest,shop_name=None):
         })
     else:
         return HttpResponse(filter_form.errors)
-        
-    return Http404()
+
         
 def search(request:HttpRequest, pg):
     keywords = request.GET.get('keywords')
@@ -315,10 +333,47 @@ def search(request:HttpRequest, pg):
     })
 
 
-def detail(request:HttpRequest, product_id):
-    print("detail....")
-    product = get_object_or_404(Product,id=product_id)
-    return render(request, 'product/detail/product.html',{
-        'product': product
+
+def product_detail(request:HttpRequest, product_id):
+    product = get_object_or_404(Product,id=product_id,is_active=True)
+    return render(request, 'product/product/detail.html',{
+        'product':product
     })
     
+def get_discounted_products(request:HttpRequest):
+    dt = timezone.now()
+    products = Product.objects.filter( discounts__is_active=True,
+                                        discounts__date_from__gte=dt,
+                                        discounts__date_to__lte=dt,
+                                        discounts__quantity__gt=0).distinct().all()
+       
+    paginator = Paginator(products, 20)
+    
+    pg_num = request.GET.get('pg')
+    try:
+        page = paginator.get_page(pg_num)
+    except PageNotAnInteger:
+        page = paginator.get_page(1)
+    except EmptyPage:
+        page = paginator.get_page(paginator.num_pages)
+    
+    return render(request,'product/all_product.html',{
+        'page':page,
+        'brands': Brand.objects.all(),
+        'categories': Category.objects.all(),
+        'colors': Color.objects.all(),
+        'sizes': Size.objects.all(),
+        'subtypes': SubType.objects.all(),
+        'types': Type.objects.all(),
+    })
+
+@login_required
+def edit_shop(request:HttpRequest):
+    if not request.user.shop:
+        return HttpResponseBadRequest("you have no shop...!")
+    if request.method == "POST":
+        pass
+    return render(request, 'shop/edit_shop.html',{
+        
+    })
+

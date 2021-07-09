@@ -29,18 +29,18 @@ class HttpResponseUnprocessableEntity(HttpResponse):
         
 
 def enrollment(request:HttpRequest):
-    return render(request,'shop/shop.html')
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
         return render(request, 'user/dashboard.html')
-    
+    print(request.POST.get('phone_no'))
     if request.method == 'POST':
         form = PhoenForm(request.POST)
         if form.is_valid():
             phone_no = form.cleaned_data['phone_no']
             request.session['phone_no'] = phone_no
             request.session['verified'] = 'False'
-            request.session['secret'] = pyotp.random_base32()
+            secret = pyotp.random_base32()
+            request.session['secret'] = secret
             request.session.save()
             logger.info("phone_no is saved into session")
         else:
@@ -54,8 +54,8 @@ def enrollment(request:HttpRequest):
                 'phone_no': phone_no
             })
         else: #use does not exist
-            #generate time-based one time password
-            totp = pyotp.TOTP('base32secret3232',interval=120)
+            
+            totp = pyotp.TOTP(secret, interval=120)
             
             verification_code = totp.now()
             #send otp via sms
@@ -75,6 +75,7 @@ def enrollment(request:HttpRequest):
 
 def verification(request:HttpRequest):
     if request.method == 'POST':
+        print(request.POST.get('code'))
         form = VerificationForm(request.POST)
         if form.is_valid():
             code = form.cleaned_data['code']
@@ -84,6 +85,7 @@ def verification(request:HttpRequest):
             
             #validate code
             secret = request.session.get('secret')
+            print(secret)
             totp  = pyotp.TOTP(secret,interval=120)
             if not totp.verify(code):
                 return HttpResponseBadRequest("expired or invalid code")
@@ -140,9 +142,9 @@ def login_user(request:HttpRequest):
             password = form.cleaned_data['password']    
            
             user = authenticate(phone_no=phone_no, password=password)
-            user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
  
             if user :
+                user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
                 login(request, user,backend='users.CustomAuthenticationBackend.PhoneAuthentication')
                 del request.session['phone_no']
                 if request.session.get('verified'):

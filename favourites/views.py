@@ -4,6 +4,7 @@ from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required
 from shops.models import Product
 from .models import Favourite
+from cart.cart import Cart
 
 @login_required
 def add(request:HttpRequest,product_id):
@@ -11,8 +12,9 @@ def add(request:HttpRequest,product_id):
     if not product:
         return HttpResponseBadRequest("prouct does not exist")
     user = request.user
-    Favourite.objects.create(product=product, user=user)
-    return HttpRequest("product was successfully added to favourites")
+    Favourite.objects.get_or_create(user=user,product=product);
+    print("addding....")
+    return HttpResponse("product was successfully added to favourites")
     
 @login_required
 def remove(request:HttpRequest,product_id):
@@ -25,9 +27,12 @@ def remove(request:HttpRequest,product_id):
 
 @login_required
 def favourites(request:HttpRequest):
-    favourites = request.user.favourites
+    favourites = request.user.favourites.all()
+    cart_list = Cart(request).cart.keys()
+    cart_list = list(cart_list)
     return render(request, 'favourites/favourites.html',{
-        'favourties': favourites
+        'favourites': favourites,
+        'cart': [int(i) for i in cart_list]
     })
 
 

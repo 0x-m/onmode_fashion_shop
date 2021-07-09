@@ -14,6 +14,15 @@
         
     }
 
+    .cart-item .remove-product {
+        color: red;
+        position: absolute;
+        top: 30%;
+        left: 2%;
+        cursor: pointer;
+    
+    }
+
     .cart-item {
         background-color: rgb(255, 255, 255);
         display: flex;
@@ -139,30 +148,55 @@
     }
 
 </style>
+{% if favourites %}
 <div class="cart-container">
     <div class="cart-list">
+        {% for item in favourites %}
         <div class="cart-item">
-            <span class="fa fa-trash remove"></span>
+            <span data-id="{{ item.product.id }}" onclick="remove_from_favourites();" class="fa fa-trash remove-product"></span>
             <img src="{% static 'img/img1/product-1.jpg' %}" class="img">
             <div   style="margin-top:-0.7em;margin-right: 0.5rem;font-size:0.7rem;line-height:0.8rem">
                 <p>
-                    نام محصول
+                    {{ item.product.name }}
                 </p>
                 <p>
-                    موجودی
+                    موجودی:{{ item.product.quantity }}
+                    تا
                 </p>
                 <p>
-                    <span style="text-decoration:line-through;color:rgb(170, 170, 170)">6000</span>
-                    <span style="color:red">6000</span>
-                    <span>تومان</span>
+                    {% with product.discounts.last as discount %}
+                        {% if discount.is_valid %}
+                            <span style="text-decoration:line-through;color:rgb(170, 170, 170)">{{item.product.price}}</span>
+                            <span style="color:red">{{ discount.get_discounted_price }}</span>
+                            <span>تومان</span>
+                        {% else %}
+                             <span style="color:rgb(170, 170, 170)">{{item.product.price}}</span>
+                             <span>تومان</span>
+                        {% endif %}
+                    {% endwith %}
                 </p>
                 
             </div>
             <div style="position:absolute;bottom:-1rem;left:45%;background-color:white">
-               <button class="btn btn-primary">
-                   <spanc class="fa fa-shopping-basket"></spanc>
-               </button>
+                {% if item.product.id in cart %}
+                    <button data-id="{{ item.product.id }}" onclick="add_to_cart();" class="btn btn-primary" disabled>
+                        <span data-id="{{ item.product.id }}" class="fa fa-check"></span>
+                    </button>
+                {%else %}
+                    <button data-id="{{ item.product.id }}" onclick="add_to_cart();" class="btn btn-primary">
+                        <span data-id="{{ item.product.id }}" class="fa fa-shopping-basket"></span>
+                    </button>
+                {% endif %}
+              
             </div>  
         </div>
+        {% endfor %}
     </div>
 </div>
+{% else %}
+<div id="empty" class="centerized w-100 ">
+    <p  class="w-100 txt-center">
+       لیست شما خالیست..!
+    </p>
+</div>
+{% endif %}

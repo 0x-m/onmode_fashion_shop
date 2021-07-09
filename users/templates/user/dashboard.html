@@ -42,14 +42,13 @@
                     25800
                     <span style="font-size: 0.8rem;color:darkcyan">تومان</span>
                     </p>
-                
             </div>
         </div>
 
         <div class="list-item">
             <div style="display: flex;font-size:0.5em">
-                <button style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-primary">افزایش موجودی</button>
-                <button style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-success">تسویه حساب</button>
+                <button onclick="deposit_request();" style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-primary">افزایش موجودی</button>
+                <button onclick="checkout_request();" style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-success">تسویه حساب</button>
             </div>
         </div>
 
@@ -63,16 +62,14 @@
                      سفازشهای من
                   </p>
               </div>
-              <div class="list-item">
+              <div onclick="get_messages();" class="list-item">
                   <p style="padding: 0.5rem;">
                      پیامها
                      
                   </p>
                   <span class="badge">4</span>
               </div>
-              <div class="list-item">
-                 <button style="border-radius:0;width: 100%;" class="btn btn-primary" >درخواست ایجاد بوتیک</button>
-              </div>
+              
               {% if user.is_seller %}
               <div class="list-item caption">
                 <p style="text-align: center;font-weight:bold;cursor:default">
@@ -88,19 +85,19 @@
                    
                 </div>
             </div>
-            <div class="list-item">
+            <div onclick="get_edit_shop_form();" class="list-item">
                 <p style="padding: 0.5rem;">
                    ویرایش مشخصات بوتیک
                 </p>
             </div>
-            <div class="list-item">
-                <p style="padding: 0.5rem;">
-                   افزودن محصول
+            <div onclick="get_add_product_form();" class="list-item">
+                <p  style="padding: 0.5rem;">
+                    افزودن محصول
                 </p>
             </div>
             <div class="list-item">
                 <p style="padding: 0.5rem;">
-                   لیست همه محصولات
+                  <a style="text-decoration: none;" href="{{ user.shop.first.get_absolute_url }}"> برو به صفحه فروشگاه</a>
                 </p>
             </div>
             <div class="list-item">
@@ -109,7 +106,11 @@
                 </p>
                 <span class="badge">5</span>
             </div>
-              {% endif %}
+            {% else %}
+            <div class="list-item">
+                <button style="border-radius:0;width: 100%;" class="btn btn-primary" >درخواست ایجاد بوتیک</button>
+             </div>
+            {% endif %}
             <div class="list-item">
                 <button onclick="logout();"  style="border-radius:0;width: 100%;" class="btn btn-primary" >خروج</button>
             </div>

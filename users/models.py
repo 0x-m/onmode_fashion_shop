@@ -64,7 +64,7 @@ class User(AbstractUser):
 
     @property
     def is_seller(self) -> bool:
-        return self.shop == None
+        return self.shop.first() != None
     
     def increment_points(self):
         self.points +=1

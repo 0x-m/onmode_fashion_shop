@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'jalali_date',
     'discounts',
     'issues_and_requests',
+    'messaging',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +142,7 @@ import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-
+CART_SESSION_ID = 'cart_id'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

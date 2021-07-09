@@ -6,22 +6,20 @@
         width: 97%;
         
     }
-    
-
   
 </style>
 <div class="container">
     <p class="field">
         <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
-        <label style="width: 100%;text-align:center;font-size:1rem" class="caption" for="fname">www.onemode.ir/myb</label>
+        <label style="width: 100%;text-align:center;font-size:1rem" class="caption" for="fname">http://www.onmode.ir/{{ user.shop.first.name }}</label>
     </p>
-    <p class="field">
-        <label class="caption" for="fname">عنوان بوتیک</label>
-        <input  id="fname" class="text-box" type="text" placeholder="عنوان بوتیک" />
-    </p>
+    <!-- <p class="field">
+        <label class="caption" for="fname">درباره بوتیک</label>
+        <textarea  id="fname" style="resize: vertical;" class="text-box" type="text" placeholder="{{ user.shop.first.description }}" ></textarea>
+    </p> -->
     <p class="field">
         <label class="caption" for="fname">درباره بوتیک</label>
-        <textarea rows="5"  id="fname" class="text" type="text" placeholder="درباره بوتیک" >
+        <textarea rows="5"  id="fname" class="text" type="text" placeholder="{{user.shop.first.description}}" >
         </textarea>
     </p>
     <p class="field">

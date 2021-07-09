@@ -1,3 +1,22 @@
+from logging import log
 from django.shortcuts import render
+from django.http import HttpRequest
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+@login_required
+def deposit(request:HttpRequest):
+    if request.method == "POST":
+        pass
+    
+    return render(request, 'accounts/deposit.html', {
+        
+    })
+
+@login_required
+def checkout_request(request:HttpRequest):
+    if request.method == "POST":
+        pass
+    
+    return render(request, 'accounts/checkout.html', {
+        
+    })

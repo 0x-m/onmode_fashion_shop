@@ -1,11 +1,14 @@
 
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator
+from django.urls import utils
+
 from django.utils import timezone
 from users.models import User, Address
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
+from django.urls import reverse
 
 import os
 
@@ -26,6 +29,16 @@ class Shop(models.Model):
 
     def __str__(self) -> str:
         return self.name
+        
+    def get_absolute_url(self):
+        return reverse('shops:shop', kwargs={'shop_name':self.name})
+    
+    def num_of_products(self):
+        return len(self.products)
+    
+    def num_of_customers(self):
+        return len(self.orders.all().distinct('user'))
+        
 
 
 class Brand(models.Model):
@@ -109,19 +122,12 @@ class Product(models.Model):
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=2000,null=True)
     image = models.ImageField(verbose_name=_('Image'), null=True, blank=True)
     attrs = models.JSONField(null=True)
+    is_active = models.BooleanField(default=True)
     
         
-    # @property
-    # def discount(self):
-    #     dt = timezone.now()
-    #     discount = Discount.objects.filter(Product=self, is_active=True,
-    #                                        date_from__gte=dt,
-    #                                        date_to__lte=dt,
-    #                                        quantity__gt=0)
-    #     if discount:
-    #         return discount
-    #     return None
-        
+    def get_absolute_url(self):
+        return reverse('shops:detail', kwargs={'product_id':self.id})
+    
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
@@ -141,6 +147,8 @@ class Product(models.Model):
     def __str__(self) -> str:
         return self.name
     
+    def is_available(self):
+        return (self.quantity > 0) and (self.is_active)
     
     
 class ProductImage(models.Model):

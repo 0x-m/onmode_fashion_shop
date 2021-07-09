@@ -38,7 +38,6 @@ class JsonField(forms.Field):
         return json.loads(value)
         
 class AddProductForm(forms.Form):
-    id = forms.IntegerField()
     brand = forms.IntegerField()
     categories = IntegerCSVFields()
     type = forms.IntegerField()
@@ -47,7 +46,6 @@ class AddProductForm(forms.Form):
     sizes = IntegerCSVFields()
     name = forms.CharField(max_length=120)
     description = forms.CharField(max_length=500)
-    is_available = forms.BooleanField()
     quantity = forms.IntegerField()
     keywords = StringCSVField()
     attrs = JsonField()
@@ -109,11 +107,6 @@ class AddProductForm(forms.Form):
         if price < 0:
             raise ValidationError("Price must be positive")
         return price
-    
-    def clean_id(self):
-        if self.cleaned_data['id'] < -1:
-            raise ValidationError("id must be positive or zero")
-        return self.cleaned_data['id']
     
 
 
