@@ -69,12 +69,12 @@ body {
 
 @font-face {
     font-family: iranSANS;
-    src: url(../Iranian\ Sans.ttf);
+    src: url(../fonts/IranianSans.ttf);
 }
 
 @font-face {
     font-family: NerkoOne-Regular;
-    src: url(../NerkoOne-Regular.ttf) format("truetype");
+    src: url(../fonts/NerkoOne-Regular.ttf);
 }
 
 
