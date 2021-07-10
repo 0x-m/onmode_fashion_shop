@@ -15,11 +15,11 @@ from django.contrib.auth.decorators import login_required
 
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
-# f_handller = logging.FileHandler('logs/users.log','w')
-# formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s -- %(lineno)d')
-# logger.setLevel('DEBUG')
-# f_handller.setFormatter(formatter)
-# logger.addHandler(f_handller)
+f_handller = logging.FileHandler('logs/users.log','a')
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s -- %(lineno)d')
+logger.setLevel('DEBUG')
+f_handller.setFormatter(formatter)
+logger.addHandler(f_handller)
 #-------------------------------------------------
 
 
