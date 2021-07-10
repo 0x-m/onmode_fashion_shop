@@ -1,1 +1,1 @@
-web: gunicorn 'onmode.wsgi.application' --log-file -
+web: gunicorn onmode.wsgi --log-file -
