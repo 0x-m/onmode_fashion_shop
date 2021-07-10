@@ -70,12 +70,7 @@ function load_view(url,method, data, after=()=>{}){
     xhttp.open(method, url);
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    if (data != null){
-        xhttp.send(data);
-    }
-    else{
-        xhttp.send();
-    }
+    xhttp.send(data);
     
 }
 
@@ -406,7 +401,7 @@ function edit_product(){
     const product_id = event.target.dataset["id"];
     const data = new FormData();
     data.append("id", product_id);
-    load_view("/product/add_edit/", data);
+    load_view("/product/add_edit/","POST", data);
 }
 
 function remove_product(){
@@ -485,7 +480,7 @@ function make_appeal_for_boutique(){
 }
 /*******************REGISTRATION**************** */
 function get_enrollment_form(){
-    load_view("/users/enrollment/");
+    load_view("/users/enrollment/","GET");
 }
 
 function validate_phone_number() {
