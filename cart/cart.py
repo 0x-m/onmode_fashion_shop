@@ -9,11 +9,11 @@ import logging
 
 #-----------------------------------------------
 logger = logging.getLogger(__name__)
-logger.setLevel("INFO")
-f_handler = logging.FileHandler('logs/cart.log','w')
-fmt = logging.Formatter("%(name)s -- %(levelname)s -- %(msg)s -- %(lineno)d")
-f_handler.setFormatter(fmt)
-logger.addHandler(f_handler)
+# logger.setLevel("INFO")
+# f_handler = logging.FileHandler('logs/cart.log','w')
+# fmt = logging.Formatter("%(name)s -- %(levelname)s -- %(msg)s -- %(lineno)d")
+# f_handler.setFormatter(fmt)
+# logger.addHandler(f_handler)
 #------------------------------------------------
 
 class Cart():

@@ -5,11 +5,11 @@ from .models import User
 import logging
 
 logger = logging.getLogger(__name__)
-formatter = logging.Formatter('%(name)s %(levelname)s %(message)s')
-f_hand =  logging.FileHandler('logs/authentication.log','w')
-f_hand.setFormatter(formatter)
-logger.addHandler(f_hand)
-logger.setLevel('DEBUG')
+# formatter = logging.Formatter('%(name)s %(levelname)s %(message)s')
+# f_hand =  logging.FileHandler('logs/authentication.log','w')
+# f_hand.setFormatter(formatter)
+# logger.addHandler(f_hand)
+# logger.setLevel('DEBUG')
 #-------------------------------------------------------------------
 
 class PhoneAuthentication(BaseBackend):
