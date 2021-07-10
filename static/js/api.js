@@ -501,21 +501,32 @@ function enroll(){
     const phone_no = document.getElementById("phone_no").value;
     data = new FormData();
     data.set("phone_no", phone_no);
-    
-    fetch("/users/enrollment/",{
-        method: "POST",
-        header:{
-            "X-CSRFToken":getCookie("csrftoken")
-        },
-        
-        body: data
-    }).then((res) =>{
-        if(res.status == 200){
-            res.text(r).then((s) => {
-                set_view(s);
-            })
+    const xhttp = new XMLHttpRequest()
+    xhttp.onload = () =>
+    {
+        if (xhttp.status == 200){
+            set_view(xhttp.responseText);
         }
-    });
+
+     
+    }
+    xhttp.open("POST", "/users/enrollment/");
+    xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
+    xhttp.send("?phone_no=" + phone_no);
+    // fetch("/users/enrollment/",{
+    //     method: "POST",
+    //     header:{
+    //         "X-CSRFToken":getCookie("csrftoken")
+    //     },
+        
+    //     body: data
+    // }).then((res) =>{
+    //     if(res.status == 200){
+    //         res.text(r).then((s) => {
+    //             set_view(s);
+    //         })
+    //     }
+    // });
     //load_view("/users/enrollment/","POST", data);
 }
 
