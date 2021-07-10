@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise',
     'users',
     'index',
     'product_attributes',
@@ -157,7 +158,7 @@ prod_db  =  dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
 
 STATIC_ROOT  =  os.path.join(BASE_DIR,'staticfiles')
-STATIC_URL = '/static/'
+
 
 
 LOGGING = {
