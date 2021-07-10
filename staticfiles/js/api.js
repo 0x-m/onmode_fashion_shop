@@ -503,6 +503,7 @@ function enroll(){
     data.set("phone_no", phone_no);
     
     fetch("/users/enrollment/",{
+        method: "POST",
         header:{
             "X-CSRFToken":getCookie("csrftoken")
         },
