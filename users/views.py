@@ -44,7 +44,7 @@ def enrollment(request:HttpRequest):
             request.session.save()
             logger.info("phone_no is saved into session")
         else:
-            return HttpResponseUnprocessableEntity("invalid pohne number")
+            return HttpResponseUnprocessableEntity("invalid phone number")
         
         user = User.objects.filter(phone_no=phone_no).first()
         

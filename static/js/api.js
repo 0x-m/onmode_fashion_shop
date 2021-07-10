@@ -500,7 +500,7 @@ function enroll(){
 
     const phone_no = document.getElementById("phone_no").value;
     data = new FormData();
-    data.set("phone_no", phone_no);
+    data.append("phone_no", phone_no);
     const xhttp = new XMLHttpRequest()
     xhttp.onload = () =>
     {
@@ -512,7 +512,8 @@ function enroll(){
     }
     xhttp.open("POST", "/users/enrollment/");
     xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    xhttp.send("phone_no=" + phone_no);
+    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+    xhttp.send(data);
     // fetch("/users/enrollment/",{
     //     method: "POST",
     //     header:{
