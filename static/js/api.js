@@ -512,7 +512,7 @@ function enroll(){
     }
     xhttp.open("POST", "/users/enrollment/");
     xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    xhttp.send("?phone_no=" + phone_no);
+    xhttp.send("phone_no=" + phone_no);
     // fetch("/users/enrollment/",{
     //     method: "POST",
     //     header:{
