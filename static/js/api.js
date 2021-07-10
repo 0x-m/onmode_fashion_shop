@@ -56,7 +56,7 @@ function set_view(view){
 
 function load_view(url,method, data, after=()=>{}){
     const xhttp = new XMLHttpRequest()
-    xhttp.onreadystatechange = () =>{
+    xhttp.onload = () =>{
         if (xhttp.status == 200){
             toggle_waiting();
             set_view(xhttp.responseText);
