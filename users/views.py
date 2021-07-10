@@ -32,7 +32,7 @@ def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
         return render(request, 'user/dashboard.html')
-    logger.error(request.POST.get('phone_no'))
+    logger.error("phone no:",request.POST.get('phone_no'))
     if request.method == 'POST':
         form = PhoenForm(request.POST)
         if form.is_valid():
