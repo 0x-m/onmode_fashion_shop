@@ -501,7 +501,19 @@ function enroll(){
     const phone_no = document.getElementById("phone_no").value;
     data = new FormData();
     data.set("phone_no", phone_no);
-    load_view("/users/enrollment/","POST", data);
+    fetch("/users/enrollment/",{
+        header:{
+            "X-CSRFToken":getCookie("csrftoken")
+        },
+        body: data
+    }).then((res) =>{
+        if(res.status == 200){
+            res.text(r).then((s) => {
+                set_view(s);
+            })
+        }
+    });
+    //load_view("/users/enrollment/","POST", data);
 }
 
 function login(){

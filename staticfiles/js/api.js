@@ -68,7 +68,7 @@ function load_view(url,method, data, after=()=>{}){
     toggle_waiting()
 
     xhttp.open(method, url);
-    xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
+    xhttp.setRequestHeader("X-CSRFToken",window.CSRF_TOKEN);
     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xhttp.send(data);
     
