@@ -15,11 +15,11 @@ from django.contrib.auth.decorators import login_required
 
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
-f_handller = logging.FileHandler('logs/users.log','a')
-formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s -- %(lineno)d')
-logger.setLevel('DEBUG')
-f_handller.setFormatter(formatter)
-logger.addHandler(f_handller)
+# f_handller = logging.FileHandler('logs/users.log','a')
+# formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s -- %(lineno)d')
+# logger.setLevel('DEBUG')
+# f_handller.setFormatter(formatter)
+# logger.addHandler(f_handller)
 #-------------------------------------------------
 
 
@@ -32,7 +32,7 @@ def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
         return render(request, 'user/dashboard.html')
-    logger.info(request.POST.get('phone_no'))
+    logger.error(request.POST.get('phone_no'))
     if request.method == 'POST':
         form = PhoenForm(request.POST)
         if form.is_valid():
