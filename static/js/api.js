@@ -501,10 +501,12 @@ function enroll(){
     const phone_no = document.getElementById("phone_no").value;
     data = new FormData();
     data.set("phone_no", phone_no);
+    
     fetch("/users/enrollment/",{
         header:{
             "X-CSRFToken":getCookie("csrftoken")
         },
+        
         body: data
     }).then((res) =>{
         if(res.status == 200){
