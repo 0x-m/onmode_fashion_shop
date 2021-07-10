@@ -621,9 +621,9 @@ function edit_profile(){
 
     fetch("/users/profile/", 
     {
-        method: 'post',
+        method: "POST",
         headers: {
-            "X-CSRFToken": getCookie("csrftoken"),
+            "X-CSRFToken": getCookie("csrftoken")
         },
         body: data
 
