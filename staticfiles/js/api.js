@@ -70,7 +70,13 @@ function load_view(url,method, data, after=()=>{}){
     xhttp.open(method, url);
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhttp.send(data);
+    if (data != null){
+        xhttp.send(data);
+    }
+    else{
+        xhttp.send();
+    }
+    
 }
 
 function  command(url, then = ()=>{}, error = ()=>{}){
@@ -479,7 +485,7 @@ function make_appeal_for_boutique(){
 }
 /*******************REGISTRATION**************** */
 function get_enrollment_form(){
-    load_view("https://onmode.herokuapp.com/users/enrollment/");
+    load_view("/users/enrollment/");
 }
 
 function validate_phone_number() {
