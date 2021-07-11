@@ -224,12 +224,13 @@ function get_favourites(){
             'content-type':'application/x-www-form-urlencoded'
         }
     }).then((response) => {
-        if(response.status == 200){
-            response.text((txt)=>{
-                set_view(txt);
-                end_waiting();
-            })
+        if(response.status != 200){
+           
         }
+        response.text((txt)=>{
+            set_view(txt);
+            end_waiting();
+        })
     })
 }
 function add_to_favourites(){
