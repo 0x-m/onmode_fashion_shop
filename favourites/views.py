@@ -33,9 +33,11 @@ def favourites(request:HttpRequest):
         favourites = request.user.favourites.all()
         cart_list = Cart(request).cart.keys()
         cart_list = list(cart_list)
+        if  cart_list:
+            cart_list = [int(i) for i in cart_list]
     return render(request, 'favourites/favourites.html',{
         'favourites': favourites,
-        'cart': [int(i) for i in cart_list]
+        'cart': cart_list
     })
 
 
