@@ -218,6 +218,7 @@ function checkout_cart(){}
 function get_favourites(){
    // load_view("/favourites/","GET")
    start_waiting();
+   showSidebox();
     fetch("/favourites/",{
         header: {
             'content-type':'application/x-www-form-urlencoded'
