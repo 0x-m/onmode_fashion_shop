@@ -777,12 +777,12 @@ function validate_email(){
 
 function is_valid_card(card_num){
 
-    card_num = String(card_num);
+    const card_num = String(card_num);
     const rx = new RegExp("^[0-9]{16}$");
     if (card_num != "" && rx.test(card_num)){
         let sum = 0;
         let pattern = "2121212121212121";
-        for (let i=0;i < card_num.length; i){
+        for (let i=0;i < card_num.length; i++){
           let p = parseInt(card_num[i],10) * parseInt(pattern[i],10)
           if (p > 9){
               p -=9;
