@@ -216,7 +216,20 @@ function checkout_cart(){}
 /*******************FAVOURITES**************** */
 
 function get_favourites(){
-    load_view("/favourites/","GET")
+   // load_view("/favourites/","GET")
+   start_waiting();
+    fetch("/favourites/",{
+        header: {
+            'content-type':'application/x-www-form-urlencoded'
+        }
+    }).then((response) => {
+        if(response.status == 200){
+            response.text((txt)=>{
+                set_view(txt);
+                end_waiting();
+            })
+        }
+    })
 }
 function add_to_favourites(){
     const product_id = event.target.dataset["id"];
