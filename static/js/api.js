@@ -216,10 +216,10 @@ function checkout_cart(){}
 /*******************FAVOURITES**************** */
 
 function get_favourites(){
-   // load_view("/favourites/","GET")
+   
    start_waiting();
    showSidebox();
-    fetch("/favourites/",{
+   fetch("/favourites/",{
         header: {
             'content-type':'application/x-www-form-urlencoded'
         }
@@ -227,7 +227,7 @@ function get_favourites(){
         if(response.status != 200){
            
         }
-        response.text((txt)=>{
+        response.text().then((txt)=>{
             set_view(txt);
             end_waiting();
         })
