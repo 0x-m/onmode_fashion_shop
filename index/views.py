@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpRequest
-
+from cart.cart import Cart
 def home(request:HttpRequest):
+
     return render(request, 'home/home.html')
+
 
 def aboutUs(request:HttpRequest):
     pass

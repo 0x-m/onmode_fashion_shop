@@ -39,7 +39,7 @@ def remove(request:HttpRequest, product_id):
     if r:
         res = {
             'total': cart.get_total_price(),
-            'is_empty': cart.is_empty,
+            'num': len(cart)
         }
         return JsonResponse(res)
     return HttpResponseBadRequest("invalid product")
@@ -48,7 +48,7 @@ def remove(request:HttpRequest, product_id):
 def increment(request:HttpRequest, product_id):
     cart = Cart(request)
     if cart.increment(product_id):
-        res = {'total': cart.get_total_price()}
+        res = {'total': cart.get_total_price(), 'num': len(cart)}
         return JsonResponse(res)
     return HttpResponseBadRequest("invalid request")
 
@@ -57,7 +57,8 @@ def decrement(request:HttpRequest, product_id):
     cart = Cart(request)
     if cart.decrement(product_id):
         res = {
-            'total': cart.get_total_price()
+            'total': cart.get_total_price(),
+            'num': len(cart)
         }
         return JsonResponse(res)
 

@@ -4,8 +4,15 @@
         border-bottom-color: red;
     }
 </style>
-<div class="container" style="width:100%;">
-    <form id="personal_info">
+<div class="container" style="width:90%;">
+    <div class="mt-1 txt-center">
+        <span class="fa fa-user-circle-o txt-center" style="font-size: 5rem;color:rgba(255, 70, 70, 0.8)"></span>
+        <br/>
+        <p style="padding:0.8rem;">
+            <span style="font-size: 1.1rem;color:rgb(68, 68, 68)">{{ user.phone_no}}</span>
+        </p>
+    </div>
+    <form style="padding: 0;width:100%" id="personal_info">
         <p  class="field">
             <label class="caption" for="first_name">نام: </label>
             <input name="first_name"  id="first_name" class="text-box" type="text" placeholder="نام" value="{{user.first_name}}" />
@@ -31,10 +38,6 @@
             <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text-box" type="text" placeholder="شماره کارت" value="{{user.email}}" />
         </p>
         <p class="field">
-            <label class="caption" for="phone_no">شماره همراه: </label>
-            <input  id="phone_no" name="phone_no" class="text-box" type="text" placeholder="{{user.phone_no}}" disabled>
-        </p>
-        <p class="field">
             <label class="caption" for="state">استان: </label>
             <input name="state"  id="state" class="text-box" type="text" placeholder="استان" value="{{user.address.state}}" />
         </p>
@@ -52,10 +55,20 @@
         </p>
         <p class="field">
             <label for="description" class="caption">نشانی: </label>
-            <textarea name="description" id="description" rows="5" placeholder="نشانی" class="text" style="resize: none;"  >{{user.address.description}}</textarea>
+            <textarea name="description" id="description" rows="5" placeholder="نشانی" class="text-box" style="resize:vertical;"  >{{user.address.description}}</textarea>
         </p>
     </form>
-    <p class="field">
-        <button class="btn btn-primary" onclick="edit_profile();">ثبت</button>
+    <p class="row" style="flex-direction: row;justify-content:space-around">
+        <button style="width:40%" class="btn btn-success" onclick="edit_profile();">ثبت</button>
+        <button style="width:40%" class="btn btn-primary" onclick="get_enrollment_form();">لغو</button>
     </p>
+</div>
+
+<div id="sucessful-edit" style="display: none;">
+    <div class="container centerized">
+        <span class="fa fa-check" style="font-size: 5rem;color:green;"></span>
+        <p style="font-size: 1rem;color:gray">
+            مشخصات شما با موفقیت ویرایش شد.
+        </p>
+    </div>
 </div>

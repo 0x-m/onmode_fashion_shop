@@ -134,18 +134,32 @@ function remove_from_cart(){
     t.disabled = true;
     const item = event.target.parentNode
     const product_id = event.target.dataset["id"]
+
     msg = "آیا مایل به حذف مورد انتخابی هستید؟"
     set_confirmation_dialog(msg, ()=>{
 
         toggle_confirmation_dialog(); 
         command("/cart/remove/" + product_id + "/", (data) => {
             start_waiting();
+            resp = JSON.stringify(data.responseText);
             const num =  document.getElementById("card-num");
             const q = parseInt(num.innerText) - 1;
-            num.innerText = q;
+            num.innerText = q; //q;
             t.disabled = false;
             get_cart();
         })
+        // fetch("/cart/remove/" + product_id + "/",{
+        //     header: {
+        //         "content-type": ""
+        //     }
+        // }).then((resp) => {
+
+        //     resp.json().then((data)=>{
+        //         document.getElementById("cart-num").innerText = data["num"];
+        //         t.disabled = false;
+        //         get_cart()
+        //     })
+        // })
        
         
     }, () =>{
@@ -656,44 +670,59 @@ function get_profile(){
 }
 
 function edit_profile(){
-    form = document.getElementById("personal_info");
-    const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
-    const email = document.getElementById("email").value;
-    const card = document.getElementById("merchan_card").value;
-    if(! is_valid_email(email) && ! is_valid_card(card)){
-        const msg  = "شماره کارت و ایمل نامعتبر است"
-        set_error(msg,1000);
-        return
-    }
-    else if(! is_valid_email(email)){
-        const msg  = " ایمل نامعتبر است"
-        set_error(msg,1000);
-        return
-    }
-    else if(! is_valid_card(card)){
-        const msg  = "شماره کارت نامعتبر است"
-        set_error(msg,1000);
-        return
-    }
+    // form = document.getElementById("personal_info");
+    // const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
+    // const email = document.getElementById("email").value;
+    // const card = document.getElementById("merchan_card").value;
+    // if(! is_valid_email(email) && ! is_valid_card(card)){
+    //     const msg  = "شماره کارت و ایمل نامعتبر است"
+    //     set_error(msg,1000);
+    //     return
+    // }
+    // else if(! is_valid_email(email)){
+    //     const msg  = " ایمل نامعتبر است"
+    //     set_error(msg,1000);
+    //     return
+    // }
+    // else if(! is_valid_card(card)){
+    //     const msg  = "شماره کارت نامعتبر است"
+    //     set_error(msg,1000);
+    //     return
+    // }
+    // const xhttp = new XMLHttpRequest()
+    // xhttp.open("POST", "/users/profile/");
+    // xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    // xhttp.onload = () =>{
+    //     if(xhttp.status == 200){
+    //         const sucess = document.getElementById("edit-successfully").innerHTML;
+    //         set_view(sucess);
+    //     }
+    // }
 
-    fetch("/users/profile/", 
-    {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": getCookie("csrftoken")
-        },
-        body: data
+    // xhttp.send(data);
+
+
+    const sucess = document.getElementById("edit-successfully").innerHTML;
+    set_view(sucess);
+    // fetch("/users/profile/", 
+    // {
+    //     method: "POST",
+    //     headers: {
+    //         "X-CSRFToken": getCookie("csrftoken")
+    //     },
+    //     body: data
 
         
-    }).then((res)=>{
-        if(res.status == 200){
-            msg = "اطلاعات ویرایش شد"
-            set_error(msg,1000,()=>{
-                
-            })
-        }
+    // }).then((res)=>{
+    //     if(res.status == 200){
+           
+    //     }
+    //     res.text().then(()=>{
+    //         const sucess = document.getElementById("edit-successfully").innerHTML;
+    //         set_view(sucess);
+    //     })
       
-    })
+    // })
 }
 
 /************************************************ */
@@ -753,8 +782,9 @@ function is_valid_card(card_num){
     if (card_num != "" && rx.test(card_num)){
         let sum = 0;
         let pattern = "2121212121212121";
-        for (let i=0;i < card_num.length; i = i + 2){
+        for (let i=0;i < card_num.length; i){
           let p = parseInt(card_num[i],10) * parseInt(pattern[i],10)
+          console.log(card_num[i] + "*" + pattern[i]);
           if (p > 9){
               p -=9;
           }

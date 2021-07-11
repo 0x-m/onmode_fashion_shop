@@ -184,4 +184,9 @@ class Cart():
             yield cart[id]
     
     def __len__(self):
-        return sum(int(item['quantity']) for item in self.cart.values())
+        num = 0
+        if self.cart:
+            num = sum(int(item['quantity']) for item in self.cart.values())
+        print("cart", num)
+        print(self.cart.keys())
+        return num

@@ -30,8 +30,8 @@
        <span class="fa fa-search icon" onclick="show_search_page();"></span>
        <span class="fa fa-heart icon" onclick="event.stopPropagation();get_favourites();"></span>
        <span class="fa fa-user icon"  onclick="event.stopPropagation();get_enrollment_form();"></span>
-       <span style="position: relative;" class="fa fa-shopping-basket icon" onclick="event.stopPropagation();get_cart();">
-           <span id="card-num"  class="cart-badge">0</span>
+       <span style="position: relative;" class="fa fa-shopping-bag icon" onclick="event.stopPropagation();get_cart();">
+           <span id="card-num"  class="cart-badge">{{cart|length}}</span>
        </span>
    </div>
 </nav>
@@ -45,10 +45,10 @@
 
 <div id="search-page" style="display: none;">
     <div  style="width: 80%;" class="container centerized">
-        <span class="fa fa-search" style="font-size: 8rem;color:rgba(255, 130, 130, 0.6)"></span>
+        <span class="fa fa-search" style="font-size: 5rem;color:rgba(255, 130, 130, 0.6)"></span>
         <form style="margin-top:2rem;" id="search-box" action="{% url 'shops:search' 1 %}"  method="GET">
-            <input style="font-size: 2rem;width:100%" name="keywords" type="text" placeholder="جستجو..." class="text-box">
-            <input type="submit" style="width: 100%;padding:0.6rem;font-size:1.2rem" class=" mt-1  btn btn-primary" value="بگرد">
+            <input style="font-size: 1.5rem;width:100%" name="keywords" type="text" placeholder="جستجو..." class="text-box">
+            <input type="submit" style="width: 100%;padding:0.4rem;font-size:1.2rem" class=" mt-1  btn btn-primary" value="بگرد">
         </form>  
     </div>
 </div>
