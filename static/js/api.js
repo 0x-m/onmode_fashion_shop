@@ -784,7 +784,6 @@ function is_valid_card(card_num){
         let pattern = "2121212121212121";
         for (let i=0;i < card_num.length; i){
           let p = parseInt(card_num[i],10) * parseInt(pattern[i],10)
-          console.log(card_num[i] + "*" + pattern[i]);
           if (p > 9){
               p -=9;
           }
