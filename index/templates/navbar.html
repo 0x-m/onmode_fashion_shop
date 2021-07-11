@@ -1,5 +1,18 @@
 <style>
+    .cart-badge {
+        font-size: 0.8rem;
+        color: white;
+        border-radius: 3px;
+        background-color: rgb(250, 78, 78);
+        text-align: center;
+        padding: 0.2rem;
+        top: 0;
+        right: 0;
+        width: 16px;
+        height: 16px;
+        position: absolute;
 
+    }
 </style>
 <nav id="navbar" class="navbar">
     <span class="logo">
@@ -15,10 +28,10 @@
 <!--toggle_search_box();-->
    <div  class="nav" style="flex: 10%;display:flex;justify-content: center;align-items:center;">
        <span class="fa fa-search icon" onclick="show_search_page();"></span>
-       <span class="fa fa-heart icon" onclick="get_favourites();"></span>
-       <span class="fa fa-user icon"  onclick="get_enrollment_form();"></span>
-       <span style="position: relative;" class="fa fa-shopping-basket icon" onclick="get_cart();">
-           <span id="card-num"  style="position: absolute; top:0;right:0;width:16px;height:16px"  class="badge ff">0</span>
+       <span class="fa fa-heart icon" onclick="event.stopPropagation();get_favourites();"></span>
+       <span class="fa fa-user icon"  onclick="event.stopPropagation();get_enrollment_form();"></span>
+       <span style="position: relative;" class="fa fa-shopping-basket icon" onclick="event.stopPropagation();get_cart();">
+           <span id="card-num"  class="cart-badge">0</span>
        </span>
    </div>
 </nav>
@@ -32,10 +45,10 @@
 
 <div id="search-page" style="display: none;">
     <div  style="width: 80%;" class="container centerized">
-        <span class="fa fa-search" style="font-size: 10rem;color:rgba(255, 130, 130, 0.6)"></span>
+        <span class="fa fa-search" style="font-size: 8rem;color:rgba(255, 130, 130, 0.6)"></span>
         <form style="margin-top:2rem;" id="search-box" action="{% url 'shops:search' 1 %}"  method="GET">
             <input style="font-size: 2rem;width:100%" name="keywords" type="text" placeholder="جستجو..." class="text-box">
-            <input type="submit" style="width: 100%;padding:1rem;font-size:1.2rem" class=" mt-1  btn btn-primary" value="بگرد">
+            <input type="submit" style="width: 100%;padding:0.6rem;font-size:1.2rem" class=" mt-1  btn btn-primary" value="بگرد">
         </form>  
     </div>
 </div>

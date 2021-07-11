@@ -38,19 +38,26 @@ function toggle_confirmation_dialog(){
     document.getElementById("side-box").classList.toggle("overflow-hidden");
 }
 
+function start_waiting(){
+    document.getElementById("waiting").classList.add("show");
+
+}
+
+function end_waiting(){
+    document.getElementById("waiting").classList.remove("show");
+
+}
+
 function toggle_waiting(){
     document.getElementById("waiting").classList.toggle("show");
     document.getElementById("side-box").classList.toggle("overflow-hidden");
 }
 
-function openSidebox(){
-    document.getElementById("side-box").classList.add("")
-}
+
 
 function set_view(view){
-    const content = document.getElementById("side-box-content");
-    content.innerHTML = view;
-    showSidebox();
+    document.getElementById("side-box-content").innerHTML = view;
+    //showSidebox();
 
 }
 
@@ -58,15 +65,16 @@ function load_view(url,method, data, after=()=>{}){
     const xhttp = new XMLHttpRequest()
     xhttp.onload = () =>{
         if (xhttp.status == 200){
-            toggle_waiting();
+            end_waiting();
             set_view(xhttp.responseText);
             
         }
         after(xhttp);
     }
    
-    toggle_waiting()
-
+    
+    showSidebox();
+    start_waiting();
     xhttp.open(method, url);
     xhttp.setRequestHeader("X-CSRFToken",window.CSRF_TOKEN);
     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -92,19 +100,18 @@ function  command(url, then = ()=>{}, error = ()=>{}){
     xhttp.send();
    
 }
-function tt(data){
-    console.log( data)
-}
 
 /********************CART******************** */
-function get_cart(){
-   // load_view("/cart/","GET");
+function get_cart(){   
+   showSidebox();
+   start_waiting();
    fetch("/cart/",{
        header :{
            'content-type':'application/x-www-form-urlencoded'
        }
    }).then((res) => {
        res.text().then((r)=>{
+           end_waiting();
            set_view(r);
        })
    })
@@ -132,6 +139,7 @@ function remove_from_cart(){
 
         toggle_confirmation_dialog(); 
         command("/cart/remove/" + product_id + "/", (data) => {
+            start_waiting();
             const num =  document.getElementById("card-num");
             const q = parseInt(num.innerText) - 1;
             num.innerText = q;
@@ -139,11 +147,9 @@ function remove_from_cart(){
             get_cart();
         })
        
-        console.log('remove done');
         
     }, () =>{
         toggle_confirmation_dialog();
-        console.log('remove aborted')
     });
     
 }
@@ -223,6 +229,7 @@ function remove_from_favourites(){
     msg = "آیا مایل به حذف مورد انتخابی هستید؟"
     set_confirmation_dialog(msg , () => {
         toggle_confirmation_dialog();
+        start_waiting();
         command("/favourites/remove/" + product_id + "/",()=>{
             get_favourites();
         });
@@ -506,6 +513,7 @@ function enroll(){
     {
         if (xhttp.status == 200){
             set_view(xhttp.responseText);
+            end_waiting();
         }
 
      
@@ -513,29 +521,17 @@ function enroll(){
     xhttp.open("POST", "/users/enrollment/");
     xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    start_waiting();
     xhttp.send("phone_no=" + phone_no.trim());
-    // fetch("/users/enrollment/",{
-    //     method: "POST",
-    //     header:{
-    //         "X-CSRFToken":getCookie("csrftoken")
-    //     },
-        
-    //     body: data
-    // }).then((res) =>{
-    //     if(res.status == 200){
-    //         res.text(r).then((s) => {
-    //             set_view(s);
-    //         })
-    //     }
-    // });
-    //load_view("/users/enrollment/","POST", data);
+
 }
 
 function show_search_page(){
     // console.log("fsdfdsf");
-     const se = document.getElementById("search-page").innerHTML;
     event.stopPropagation()
+    const se = document.getElementById("search-page").innerHTML;
     set_view(se);
+    showSidebox();
     
 }
 
@@ -577,8 +573,9 @@ function verify_code(){
     xhttp.onload = () => {
         if(xhttp.status == 422 || xhttp.status == 400){
             const msg = "کد  اشتباه است"
+            end_waiting();
             set_error(msg ,1500,()=>{});
-            toggle_waiting();
+            
         
         }
 
@@ -589,16 +586,8 @@ function verify_code(){
     xhttp.open("POST","/users/verification/");
     xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    start_waiting();
     xhttp.send("code=" + code.trim());
-
-    // load_view("/users/verification/", "POST", data,(x)=>{
-    //     if(x.status == 422 || x.status == 400){
-    //         const msg = "کد  اشتباه است"
-    //         set_error(msg ,1500,()=>{});
-    //         toggle_waiting();
-
-    //     }
-    // });
     
 }
 
@@ -606,7 +595,7 @@ function validate_password(){
     let password = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
     const error = document.getElementById("error");
-    let rx = RegExp('(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
+    let rx = RegExp('(?=.*[0-9])(?=.*[!@#$%^&*.])(?=.{8,})');
     if (password != confirm ){
         error.innerText = "تکرار رمز عبور صحیح نمیباشد"
         return false;
@@ -639,6 +628,7 @@ function set_password(){
         xhttp.open("POST","users/set_password/")
         xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
         xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        start_waiting();
         xhttp.send("password=" + password.trim() + "&confirm=" + confirm.trim());
     
     }
