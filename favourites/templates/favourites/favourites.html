@@ -148,7 +148,7 @@
     }
 
 </style>
-{% if favourites %}
+{% if favourites and user.is_authenticated %}
 <div class="cart-container">
     <div class="cart-list">
         {% for item in favourites %}
@@ -194,8 +194,9 @@
     </div>
 </div>
 {% else %}
-<div id="empty" class="centerized w-100 ">
-    <p  class="w-100 txt-center">
+<div id="empty" class="centerized w-100 txt-center">
+    <span class="fa fa-heart " style="color: rgba(255, 160, 160, 0.5);font-size:7rem;"></span>
+    <p style="color:rgb(150, 149, 149);" class="w-100 txt-center">
        لیست شما خالیست..!
     </p>
 </div>

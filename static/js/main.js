@@ -41,12 +41,24 @@ function comboboxSelectItem()
 
 // document.getElementsByClassName("combobox")
 
+function prevent_close(){
+    event.stopPropagation();
+    showSidebox();
+}
  window.addEventListener("click",()=>{
-  var dropdowns = document.getElementsByClassName("dropdown");
+  const dropdowns = document.getElementsByClassName("dropdown");
   for(var i=0; i<dropdowns.length; ++i){
       dropdowns[i].classList.remove("show");
   }
+
+  const sidebox = document.getElementById("side-box");
+  if(sidebox.classList.contains("side-box-show")){
+      closeSidebox();
+
+  }
+
 });
+
 
 //-------------------------------------------------------------------
 //----------------------------------------
@@ -206,6 +218,9 @@ function changeHero() {
     document.getElementById("overlay").classList.add("show");
     document.getElementById("side-box").classList.add("side-box-show");
     document.body.classList.add("overflow-hidden");
+    document.getElementById("content").classList.add("blur");
+    document.getElementById("navbar").classList.add("blur");
+
 }
 
 function closeSidebox(){
@@ -213,6 +228,9 @@ function closeSidebox(){
     document.getElementById("side-box").classList.remove("side-box-show");
     document.getElementById("side-box-content").innerHTML = "";
     document.body.classList.remove("overflow-hidden");
+    document.getElementById("content").classList.remove("blur");
+    document.getElementById("navbar").classList.remove("blur");
+
 }
 /******************************** */
 

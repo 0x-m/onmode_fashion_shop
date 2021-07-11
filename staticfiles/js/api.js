@@ -512,8 +512,8 @@ function enroll(){
     }
     xhttp.open("POST", "/users/enrollment/");
     xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded")
-    xhttp.send(data);
+    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhttp.send("phone_no=" + phone_no.trim());
     // fetch("/users/enrollment/",{
     //     method: "POST",
     //     header:{
@@ -530,6 +530,16 @@ function enroll(){
     // });
     //load_view("/users/enrollment/","POST", data);
 }
+
+function show_search_page(){
+    // console.log("fsdfdsf");
+     const se = document.getElementById("search-page").innerHTML;
+    event.stopPropagation()
+    set_view(se);
+    
+}
+
+
 
 function login(){
     var  d = new XMLHttpRequest()
@@ -550,27 +560,45 @@ function logout(){
     load_view("/users/logout/", "GET", null, false);
 }
 
+
+
 function verify_code(){
     const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () =>{
-        if(xhttp.status == 200){
+    // xhttp.onreadystatechange = () =>{
+    //     if(xhttp.status == 200){
             
-            document.getElementById("side-box-content").innerHTML = xhttp.responseText;
-        }
+    //         set_view(xhttp.responseText);
+    //     }
         
-    }
+    // }
     const code = document.getElementById("code").value;
-    console.log(code)
     const data = new FormData()
     data.set("code", code);
-    load_view("/users/verification/", "POST", data,(x)=>{
-        if(x.status == 422 || x.status == 400){
+    xhttp.onload = () => {
+        if(xhttp.status == 422 || xhttp.status == 400){
             const msg = "کد  اشتباه است"
             set_error(msg ,1500,()=>{});
             toggle_waiting();
-
+        
         }
-    });
+
+        if(xhttp.status == 200){
+            set_view(xhttp.responseText);
+        }
+    }
+    xhttp.open("POST","/users/verification/");
+    xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
+    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhttp.send("code=" + code.trim());
+
+    // load_view("/users/verification/", "POST", data,(x)=>{
+    //     if(x.status == 422 || x.status == 400){
+    //         const msg = "کد  اشتباه است"
+    //         set_error(msg ,1500,()=>{});
+    //         toggle_waiting();
+
+    //     }
+    // });
     
 }
 
@@ -600,7 +628,19 @@ function set_password(){
     data.append("password", password);
     data.append("confirm", confirm);
     if(validate_password()){
-       load_view("/users/set_password/", "POST", data, true);
+    //    load_view("/users/set_password/", "POST", data, true);
+        const xhttp = new XMLHttpRequest()
+        xhttp.onload = () =>{
+
+            if(xhttp.status == 200){
+                get_profile();
+            }
+        }
+        xhttp.open("POST","users/set_password/")
+        xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
+        xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhttp.send("password=" + password.trim() + "&confirm=" + confirm.trim());
+    
     }
 }
 
@@ -709,7 +749,7 @@ function is_valid_card(card_num){
         let sum = 0;
         let pattern = "2121212121212121";
         for (let i=0;i < card_num.length; i = i + 2){
-          let p = parseInt(card_num[i]) * parseInt(pattern[i])
+          let p = parseInt(card_num[i],10) * parseInt(pattern[i],10)
           if (p > 9){
               p -=9;
           }

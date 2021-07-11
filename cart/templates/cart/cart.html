@@ -60,16 +60,6 @@
     display: block !important;
 }
 
-.overlay{
-    position:fixed;
-    width: 100vw;
-    height: 100vw;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 50;
-    top: 0;
-    right: 0;
-    display: none;
-}
 
 .text-box {
    border-radius: 2px;
@@ -288,8 +278,9 @@ background-color: rgb(45, 123, 190) !important;
 </style>
 
 {% if cart.is_empty %}
-    <div  class="centerized w-100 ">
-        <p  class="w-100 txt-center">
+    <div  class="centerized w-100 txt-center ">
+        <span class="fa fa-shopping-basket " style="color: rgba(255, 160, 160, 0.5);font-size:7rem;"></span>
+        <p  class="w-100 txt-center" style="color: rgb(145, 145, 145);">
             سبد خرید شما خالیست!
         </p>
     </div>

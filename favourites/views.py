@@ -25,7 +25,7 @@ def remove(request:HttpRequest,product_id):
     favourite.delete()
     return HttpResponse("product was successfully removed from favourites")
 
-@login_required
+
 def favourites(request:HttpRequest):
     favourites = request.user.favourites.all()
     cart_list = Cart(request).cart.keys()

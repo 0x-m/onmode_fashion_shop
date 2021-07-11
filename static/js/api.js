@@ -531,6 +531,16 @@ function enroll(){
     //load_view("/users/enrollment/","POST", data);
 }
 
+function show_search_page(){
+    // console.log("fsdfdsf");
+     const se = document.getElementById("search-page").innerHTML;
+    event.stopPropagation()
+    set_view(se);
+    
+}
+
+
+
 function login(){
     var  d = new XMLHttpRequest()
     const password = document.getElementById("password").value;
@@ -550,27 +560,29 @@ function logout(){
     load_view("/users/logout/", "GET", null, false);
 }
 
+
+
 function verify_code(){
     const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () =>{
-        if(xhttp.status == 200){
+    // xhttp.onreadystatechange = () =>{
+    //     if(xhttp.status == 200){
             
-            set_view(xhttp.responseText);
-        }
+    //         set_view(xhttp.responseText);
+    //     }
         
-    }
+    // }
     const code = document.getElementById("code").value;
     const data = new FormData()
     data.set("code", code);
     xhttp.onload = () => {
-        if(x.status == 422 || x.status == 400){
+        if(xhttp.status == 422 || xhttp.status == 400){
             const msg = "کد  اشتباه است"
             set_error(msg ,1500,()=>{});
             toggle_waiting();
         
         }
 
-        if(x.status == 200){
+        if(xhttp.status == 200){
             set_view(xhttp.responseText);
         }
     }
@@ -737,7 +749,7 @@ function is_valid_card(card_num){
         let sum = 0;
         let pattern = "2121212121212121";
         for (let i=0;i < card_num.length; i = i + 2){
-          let p = parseInt(card_num[i]) * parseInt(pattern[i])
+          let p = parseInt(card_num[i],10) * parseInt(pattern[i],10)
           if (p > 9){
               p -=9;
           }
