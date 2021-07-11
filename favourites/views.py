@@ -27,9 +27,12 @@ def remove(request:HttpRequest,product_id):
 
 
 def favourites(request:HttpRequest):
-    favourites = request.user.favourites.all()
-    cart_list = Cart(request).cart.keys()
-    cart_list = list(cart_list)
+    favourites = None
+    cart_list = None
+    if request.user.is_authenticated:
+        favourites = request.user.favourites.all()
+        cart_list = Cart(request).cart.keys()
+        cart_list = list(cart_list)
     return render(request, 'favourites/favourites.html',{
         'favourites': favourites,
         'cart': [int(i) for i in cart_list]
