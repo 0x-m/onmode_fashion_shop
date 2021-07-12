@@ -357,8 +357,10 @@ def edit_shop(request:HttpRequest):
         if form.is_valid():
             shop = form.save()
             if logo:
+                shop.logo.delete()
                 shop.logo = logo
             if banner:
+                shop.banner.delete()
                 shop.banner = banner
             shop.save()
             return HttpResponse("edited successfully")
