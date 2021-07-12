@@ -875,9 +875,10 @@ function edit_shop(){
         if(xhttp.status == 200){
             const sucess = document.getElementById("sucessful-edit").innerHTML;
             set_view(sucess);
+            end_waiting();
         }
     }
-
+    start_waiting();
     xhttp.send(data);
 }
 
