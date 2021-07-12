@@ -353,7 +353,7 @@ def edit_shop(request:HttpRequest):
     if request.method == "POST":
         form = ShopInfoForm(request.POST, instance=shop)
         banner = request.FILES.get('banner')
-        logo = request.FILES.get('shop')
+        logo = request.FILES.get('logo')
         if form.is_valid():
             shop = form.save()
             if logo:
