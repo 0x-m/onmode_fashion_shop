@@ -13,6 +13,7 @@
     }
     .banner {
         width: 100%;
+        max-height: 640px;
         border-bottom: 1px solid lightgray;
     }
     .shop-logo {
@@ -187,8 +188,12 @@
 
 </style>
 <div style="position: relative;" class="row">
-    <img src="{% static 'img/img1/banner-1.jpg' %}" class="banner">
-    <img src="{% static 'img/img1/h.jpg' %}" class="shop-logo">
+    {% if shop.logo %}
+    <img src="{{ shop.logo.url }}" class="shop-logo">
+    {%endif %}
+    {% if shop.banner %}
+    <img src="{{ shop.banner.url }}" class="banner">
+    {% endif %}
     <span class="fa fa-search filter-btn remove" onclick="showfilter();">
         <span style="font-size:0.8rem">جستجو</span>
     </span>    
@@ -213,7 +218,6 @@
             <form onsubmit="filter_product();" action="{% url 'shops:shop_filter' shop_name=shop.name  %}" method="GET">
                 {% include 'product/filter.html' %}
             </form>
-            <button onclick="filter_product();">click</button>
         </div>
     </aside>
     <section style="height:min-content" class="main-container">

@@ -1,6 +1,6 @@
 
 from django.db import models
-from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator
+from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
 from django.urls import utils
 
 from django.utils import timezone
@@ -13,17 +13,28 @@ from django.urls import reverse
 import os
 
 class Shop(models.Model):
+    
+    def generate_path(instance, filename):
+        path = 'shops/photos' + str(instance.id) + '/'
+        return os.path.join(path,filename)
+    
     seller = models.ForeignKey(verbose_name=_('Seller'),to=User,on_delete=models.CASCADE, related_name='shop')
     name = models.CharField(verbose_name=_('Name'),max_length=40,blank=True,unique=True)
     title = models.CharField(verbose_name=_('title'), max_length=100,null=True,blank=True)
-    shop_phone = models.CharField(verbose_name=_('cell phone'),max_length=20,null=True, blank=True)
+    shop_phone = models.CharField(verbose_name=_('cell phone'),max_length=20,null=True, blank=True,
+                                  validators=[
+                                      RegexValidator('^[0-9]*$')
+                                  ])
     description = models.CharField(verbose_name=_('Description'),max_length=2000,blank=True)
     address = models.CharField(verbose_name=_('Address'),max_length=500,blank=True)
-    logo = models.ImageField(verbose_name=_('Logo'), null=True, blank=True)
-    banner = models.ImageField(verbose_name=_('Banner'),blank=True, null=True)
+    logo = models.ImageField(verbose_name=_('Logo'), null=True, blank=True,upload_to=generate_path)
+    banner = models.ImageField(verbose_name=_('Banner'),blank=True, null=True,upload_to=generate_path)
     is_active = models.BooleanField(default=True,verbose_name=_('active'))
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     post_destinatinos = models.CharField(verbose_name=_('Postal Destinations'),max_length=1000,null=True)
+    
+    
+    
     
     class Meta:
         verbose_name = _('Shop')
@@ -34,6 +45,8 @@ class Shop(models.Model):
         
     def get_absolute_url(self):
         return reverse('shops:shop', kwargs={'shop_name':self.name})
+    
+   
     
     def num_of_products(self):
         return len(self.products)

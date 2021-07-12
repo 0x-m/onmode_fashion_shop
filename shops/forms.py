@@ -166,16 +166,12 @@ class FilterForm(forms.Form):
         return super().clean()
     
 
-class ShopInfoForm(forms.Form):
-    title = forms.CharField(max_length=100)
-    description = forms.CharField(max_length=2000)
-    address = forms.CharField(max_length=500)
-    shop_phone = forms.CharField(max_length=20,validators=[
-        RegexValidator('^[0-9]*$')
-    ])
-    logo = forms.ImageField()
-    banner = forms.ImageField()
-    post_destinations = forms.CharField(max_length=1000)
+class ShopInfoForm(forms.ModelForm):
+    class Meta:
+        model = Shop
+        fields = ['title','description','address','shop_phone','post_destinatinos' ]
+        
+    
     
     
 

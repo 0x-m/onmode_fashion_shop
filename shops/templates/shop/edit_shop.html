@@ -9,60 +9,59 @@
   
 </style>
 <div class="container">
-    <p class="field">
-        <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
-        <label style="width: 100%;text-align:center;font-size:1rem" class="caption" for="fname">http://www.onmode.ir/{{ user.shop.first.name }}</label>
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">عنوان</label>
-        <input   id="fname"  class="text-box" type="text" placeholder="{{ user.shop.first.title }}" >
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">شماره تلفن</label>
-        <input   id="fname"  class="text-box" type="text" placeholder="{{ user.shop.first.shop_phone }}" >
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">درباره بوتیک</label>
-        <textarea rows="5"  id="fname" class="text-box" type="text" placeholder="{{user.shop.first.description}}" >
-        </textarea>
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">آدرس بوتیک</label>
-        <textarea rows="5"  id="fname" class="text-box" type="text" placeholder="{{user.shop.first.address}}" >
-        </textarea>
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">لوگو</label>
-        <input  id="fname" class="text-box" type="file" />
-        <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت بشد</span>
-    </p>
-    <p class="field">
-        <label class="caption" for="fname">بنر</label>
-        <input  id="fname" class="text-box" type="file" />
-        <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو برند از 300 کیلوبایت بشد</span>
-       
-    </p>
-    <p class="field" style="margin-top: 1rem;">
-        <label class="caption" for="fname">ارسال پستی به </label>
-        <label style="font-size: 0.8rem;">سراسر ایران
-            <input onclick="toggle_state_list();" type="checkbox" name="overall" value="true">
-        </label>
-        <div class="list-box" style="background-color: white;width:100%">
-            <input data-target="states" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">
-            <div id="states" onclick="listboxSelect();" class="items">
-                {% for province in provinces %}
-                    <div class="item">
-                        {{province.name}}
-                        <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                    </div>
-                {% endfor %}
-       
+        <form enctype="multipart/form-data" id="shop_form" class="w-100">
+        <p class="field">
+            <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
+            <label style="width: 100%;text-align:center;font-size:1rem" class="caption" for="fname">http://www.onmode.ir/{{ user.shop.first.name }}</label>
+        </p>
+        <p class="field">
+            <label class="caption" for="fname">عنوان</label>
+            <input name="title"   id="fname"  class="text-box" type="text" value="{{ user.shop.first.title }}" placeholder="عنوان بوتیک" >
+        </p>
+        <p class="field">
+            <label class="caption" for="fname">شماره تلفن</label>
+            <input name="shop_phone"   id="fname"  class="text-box" type="text" placeholder="شماره تلفن" value="{{ user.shop.first.shop_phone }}" >
+        </p>
+        <p class="field">
+            <label class="caption" for="fname">درباره بوتیک</label>
+            <textarea name="description" rows="5"  id="fname" class="text-box" type="text" placeholder="درباره بوتیک">{{user.shop.first.description}}</textarea>
+        </p>
+        <p class="field">
+            <label class="caption" for="fname">آدرس بوتیک</label>
+            <textarea name="address" rows="5"  id="fname" class="text-box" type="text"  placeholder="آدرس بوتیک" >{{user.shop.first.address}}</textarea>
+        </p>
+        <p class="field">
+            <label class="caption" for="fname">لوگو</label>
+            <input name="logo" id="fname" class="text-box" type="file" />
+            <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت بشد</span>
+        </p>
+        <p class="field">
+            <label class="caption" for="fname">بنر</label>
+            <input name="banner"  id="fname" class="text-box" type="file" />
+            <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو برند از 300 کیلوبایت بشد</span>
+           
+        </p>
+        <p class="field" style="margin-top: 1rem;">
+            <label class="caption" for="fname">ارسال پستی به </label>
+            <label style="font-size: 0.8rem;">سراسر ایران
+                <input onclick="toggle_state_list();" type="checkbox" name="overall" value="true">
+            </label>
+            <div class="list-box" style="background-color: white;width:100%">
+                <input data-target="states" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">
+                <div id="states" onclick="listboxSelect();" class="items">
+                    {% for province in provinces %}
+                        <div class="item  {% if province.name in post_destinations %}selected{% endif %}">
+                            {{province.name}}
+                            <span class="{% if province.name in post_destinations %}show{% endif %}"  style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                    {% endfor %}
+           
+                </div>
             </div>
-        </div>
-    </p>
-    <p class="row" style="flex-direction: row;justify-content:space-around">
-        <button style="width:40%" class="btn btn-success" onclick="edit_profile();">ثبت</button>
+        </p>
+    </form>
+    <p class="row" style="flex-direction: row;justify-content:space-around;margin-bottom:2rem">
+        <button style="width:40%" class="btn btn-success" onclick="edit_shop();">ثبت</button>
         <button style="width:40%" class="btn btn-primary" onclick="get_enrollment_form();">لغو</button>
     </p>
-</div>
 </div>

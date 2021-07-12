@@ -13,7 +13,7 @@ from discounts.models import Discount
 from django.utils import timezone
 from django.db.models import Q
 from index.utils import get_provinces
-from .forms import AddProductForm, FilterForm
+from .forms import AddProductForm, FilterForm, ShopInfoForm
 
 
 
@@ -159,7 +159,7 @@ def change_image(request: HttpRequest):
 def get_products_of_shop(reqest:HttpRequest, shop_name):  
 
     shop = get_object_or_404(Shop, name=shop_name, is_active=True)
-    products = Product.objects.filter(shop=shop, is_active=True)
+    products = Product.objects.filter(shop=shop, is_active=True).order_by('-date_created')
     paginator = Paginator(products, 20)
     pg_number = reqest.GET.get('pg')
     try:
@@ -341,12 +341,32 @@ def get_discounted_products(request:HttpRequest):
 
 @login_required
 def edit_shop(request:HttpRequest):
-    if not request.user.shop:
+    if not request.user.shop.first():
         return HttpResponseBadRequest("you have no shop...!")
+    
+    print(request.FILES.get('logo'))
+    shop = request.user.shop.first()
+
+    print()
+    post_destinations = shop.post_destinatinos.split(',')
+    print(post_destinations)
     if request.method == "POST":
-        pass
+        form = ShopInfoForm(request.POST, instance=shop)
+        banner = request.FILES.get('banner')
+        logo = request.FILES.get('shop')
+        if form.is_valid():
+            shop = form.save()
+            if logo:
+                shop.logo = logo
+            if banner:
+                shop.banner = banner
+            shop.save()
+            return HttpResponse("edited successfully")
+        else:
+            return HttpResponseBadRequest("Invalid inputs..")
     return render(request, 'shop/edit_shop.html',{
-        'provinces': get_provinces()
+        'provinces': get_provinces(),
+        'post_destinations': post_destinations
         
     })
 
