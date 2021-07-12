@@ -669,41 +669,64 @@ function get_profile(){
     load_view("/users/profile/","GET", null,false);
 }
 
+
+function toggle_state_list(){
+    
+  const states = document.getElementById("states").children;
+  if (event.target.checked == true){
+  for (let i=0; i < states.length; ++i){
+      states[i].classList.add('selected');
+      states[i].children[0].classList.add('show');
+  }
+  }
+  else {
+    for (let i=0; i < states.length; ++i){
+        states[i].classList.remove('selected');
+        states[i].children[0].classList.remove('show');
+    }
+  }
+}
+
 function edit_profile(){
-    // form = document.getElementById("personal_info");
-    // const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
-    // const email = document.getElementById("email").value;
-    // const card = document.getElementById("merchan_card").value;
-    // if(! is_valid_email(email) && ! is_valid_card(card)){
-    //     const msg  = "شماره کارت و ایمل نامعتبر است"
-    //     set_error(msg,1000);
-    //     return
-    // }
-    // else if(! is_valid_email(email)){
-    //     const msg  = " ایمل نامعتبر است"
-    //     set_error(msg,1000);
-    //     return
-    // }
-    // else if(! is_valid_card(card)){
-    //     const msg  = "شماره کارت نامعتبر است"
-    //     set_error(msg,1000);
-    //     return
-    // }
-    // const xhttp = new XMLHttpRequest()
-    // xhttp.open("POST", "/users/profile/");
-    // xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-    // xhttp.onload = () =>{
-    //     if(xhttp.status == 200){
-    //         const sucess = document.getElementById("edit-successfully").innerHTML;
-    //         set_view(sucess);
-    //     }
-    // }
+    form = document.getElementById("personal_info");
+    const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
+    const email = document.getElementById("email").value;
+    const card = document.getElementById("merchan_card").value;
+    if(! is_valid_email(email) && ! is_valid_card(card)){
+        const msg  = "شماره کارت و ایمل نامعتبر است"
+        set_error(msg,1000);
+        return
+    }
+    else if(! is_valid_email(email)){
+        const msg  = " ایمل نامعتبر است"
+        set_error(msg,1000);
+        return
+    }
+    else if(! is_valid_card(card)){
+        const msg  = "شماره کارت نامعتبر است"
+        set_error(msg,1000);
+        return
+    }
+    else if(! validate_province_and_city()){
+        const msg  = "استان و شهرستان نامعتبر"
+        set_error(msg,1000);
+        return
+    }
+    const xhttp = new XMLHttpRequest()
+    xhttp.open("POST", "/users/profile/");
+    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            const sucess = document.getElementById("sucessful-edit").innerHTML;
+            set_view(sucess);
+        }
+    }
 
-    // xhttp.send(data);
+    xhttp.send(data);
 
 
-    const sucess = document.getElementById("edit-successfully").innerHTML;
-    set_view(sucess);
+    // const sucess = document.getElementById("sucessful-edit").innerHTML;
+    // set_view(sucess);
     // fetch("/users/profile/", 
     // {
     //     method: "POST",
@@ -718,7 +741,7 @@ function edit_profile(){
            
     //     }
     //     res.text().then(()=>{
-    //         const sucess = document.getElementById("edit-successfully").innerHTML;
+    //         const sucess = document.getElementById("sucessful-edit").innerHTML;
     //         set_view(sucess);
     //     })
       
@@ -726,6 +749,84 @@ function edit_profile(){
 }
 
 /************************************************ */
+
+function get_cities(){
+    console.log("dsfsdfsdfds")
+
+    const province_name = event.target.value;
+    let province_id = null
+    const provinces = document.getElementById("provinces").getElementsByTagName("option");
+    
+    for (let i=0; i < provinces.length; ++i){
+        if(provinces[i].value.trim() == province_name.trim()){
+            province_id = provinces[i].dataset["id"];
+            break;
+        }
+    }
+
+
+    if (province_id != null && province_id != ""){
+        fetch("/cities/" + "?province_id=" + province_id ,{
+            header:{
+                "Content-type":"applicatin/json"
+            }
+        }).then((res) => {
+            res.json().then((data)=> {
+                const cities = document.getElementById("cities");
+                const fragment = document.createDocumentFragment();
+
+                cities.innerHTML = "";
+                console.log(data);
+                for(let i=0; i< data['cities'].length; ++i){
+                    let option  = document.createElement("option");
+                    option.value = data['cities'][i];
+                    fragment.appendChild(option);
+                }
+                cities.appendChild(fragment);
+            })
+        })
+    }
+
+}
+
+function validate_province_and_city(){
+    console.log("fsdsf")
+    const province = document.getElementById("state");
+    const city = document.getElementById("city");
+
+    const provinces = document.getElementById("provinces").getElementsByTagName("option");
+    const cities = document.getElementById("cities").getElementsByTagName("option");
+
+    let is_provinace = false , is_city = false;
+    for (let i=0; i < provinces.length; ++i){
+        if (provinces[i].value.trim() == province.value.trim()){
+            is_provinace = true
+            break;
+        }
+    }
+    for (let j=0; j < cities.length; ++j){
+        if(cities[j].value.trim() == city.value.trim()){
+            is_city = true
+            break;
+        }
+    }
+
+    if (! is_provinace){
+        province.classList.add("error");
+    }
+    else{
+        province.classList.remove("error");
+    }
+
+    if (! is_city){
+        city.classList.add("error");
+    }
+    else{
+        city.classList.remove("error");
+    }
+
+    return is_city && is_provinace;
+}
 
 function checkout_request(){
     load_view("/account/checkout","GET",null);
@@ -777,7 +878,7 @@ function validate_email(){
 
 function is_valid_card(card_num){
 
-    const card_num = String(card_num);
+    card_num = String(card_num);
     const rx = new RegExp("^[0-9]{16}$");
     if (card_num != "" && rx.test(card_num)){
         let sum = 0;

@@ -6,9 +6,9 @@
 </style>
 <div class="container" style="width:90%;">
     <div class="mt-1 txt-center">
-        <span class="fa fa-user-circle-o txt-center" style="font-size: 5rem;color:rgba(255, 70, 70, 0.8)"></span>
+        <span class="fa fa-user-circle-o txt-center" style="font-size: 6rem;color:rgba(255, 70, 70, 0.8)"></span>
         <br/>
-        <p style="padding:0.8rem;">
+        <p style="padding:0.5rem;">
             <span style="font-size: 1.1rem;color:rgb(68, 68, 68)">{{ user.phone_no}}</span>
         </p>
     </div>
@@ -35,15 +35,25 @@
         </p>
         <p class="field">
             <label class="caption" for="merchan_card">شماره کارت: </label>
-            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text-box" type="text" placeholder="شماره کارت" value="{{user.email}}" />
+            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text-box" type="text" placeholder="شماره کارت" value="{{user.merchan_card}}" />
         </p>
         <p class="field">
             <label class="caption" for="state">استان: </label>
-            <input name="state"  id="state" class="text-box" type="text" placeholder="استان" value="{{user.address.state}}" />
+            <input onblur="get_cities();validate_province_and_city();"  list="provinces" name="state"  id="state" class="text-box" type="text" placeholder="استان" value="{{user.address.state}}" />
         </p>
+        <datalist  id="provinces">
+            {% for province in provinces %}
+                 <option  data-id="{{province.id}}" value="{{province.name}}"></option>
+            {% endfor %}
+        </datalist>
+
         <p class="field">
             <label class="caption" for="city">شهرستان : </label>
-            <input name="city"  id="city" class="text-box" type="text" placeholder="شهرستان" value=" {{user.address.city}}" />
+            <input onblur="validate_province_and_city();" autoComplete="off" list="cities" name="city"  id="city" class="text-box" type="text" placeholder="شهرستان" value=" {{user.address.city}}" />
+            <datalist id="cities">
+                <option value=" "></option>
+            </datalist>
+            
         </p>
         <p class="field">
             <label class="caption" for="town">شهر: </label>
@@ -66,7 +76,7 @@
 
 <div id="sucessful-edit" style="display: none;">
     <div class="container centerized">
-        <span class="fa fa-check" style="font-size: 5rem;color:green;"></span>
+        <span class="fa fa-check-circle" style="font-size: 10rem;color:rgba(59, 209, 59,0.5);"></span>
         <p style="font-size: 1rem;color:gray">
             مشخصات شما با موفقیت ویرایش شد.
         </p>

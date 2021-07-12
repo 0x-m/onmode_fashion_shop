@@ -1,8 +1,9 @@
+from sys import getcheckinterval
 from django import http
 from django.contrib.sessions.backends.base import SessionBase
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import Select
-from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError
+from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
 from django.shortcuts import render, resolve_url
 from django.http import HttpRequest, request
 from http import HTTPStatus
@@ -12,6 +13,7 @@ import pyotp
 from .models import User, Address
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from index.utils import get_cities, get_provinces
 
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
@@ -171,18 +173,26 @@ def dashboard(request:HttpRequest):
 def profile(request:HttpRequest):
     if request.method ==  'POST':
         profile_form  = ProfileForm(request.POST, instance=request.user)
-        print(request.POST.get('gender'))
-        print(request.POST.get('first_name'))
+        print(request.POST.get('state'))
+
         if profile_form.is_valid():
             address = Address.objects.filter(user=request.user).first()
+            if not address:
+                address = Address(user=request.user)
             address_form = AddressForm(request.POST, instance=address)
             if address_form.is_valid():
+                print('address....')
+                
                 address_form.save()
             profile_form.save()
         else:
             return HttpResponseUnprocessableEntity(profile_form.errors)
     
-    return render(request, 'user/profile.html')
+    return render(request, 'user/profile.html', {
+        'provinces': get_provinces()
+    })
+
+
 
 
 

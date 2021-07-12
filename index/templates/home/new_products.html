@@ -2,11 +2,15 @@
 <div class="row new-products"  >
     <div id="slide3" class="slideshow">
         <div class="tabs">
-            <div class="header">
-                <span class="caption">جدیدترین محصولات</span>
-                <span  class="dot tab-item active" onclick="showSlide(0)">زنانه</span>
-                <span  class="dot tab-item" onclick="showSlide(1)">مردانه</span>
-                <span  class="dot tab-item" onclick="showSlide(2)">بچگانه</span>
+            <div class="header" style="display: flex;flex-direction:column;justify-content:center;margin-top:1rem">
+                <span style="font-size: 1.2rem;color:gray" class="w-100 caption txt-center">جدیدترین محصولات</span>
+                <div  style="display:flex;margin-top:1rem;justify-content:center">
+                    <span style="font-size: 0.8rem;"  class="dot tab-item active" onclick="showSlide(0)">زنانه</span>
+                    <span style="font-size: 0.8rem;" class="dot tab-item" onclick="showSlide(1)">مردانه</span>
+                    <span style="font-size: 0.8rem;" class="dot tab-item" onclick="showSlide(2)">بچگانه</span>
+                    <span style="font-size: 0.8rem;" class="dot tab-item" onclick="showSlide(3)">اکسسوری</span>
+
+                </div>
             </div>
             <div style="width: 100%;">
                 <div class="slide fade dis-block" >
@@ -39,7 +43,7 @@
                                 </p>
                                 <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
                                 
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
+                                    <span class="fa fa-shopping-bag btn-tiny" ></span>
                                     <span class="fa fa-heart btn-tiny"></span>
                                 </p>
                                 <p class="badge" style="background-color:green">15%</p>
@@ -181,4 +185,7 @@
         </div>
         
     </div>
+</div>
+<div class="row">
+    <img src="{% static 'img/img1/banner-3.jpg' %}" style="width: 100%;">
 </div>

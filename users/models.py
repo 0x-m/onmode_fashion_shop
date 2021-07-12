@@ -89,7 +89,10 @@ class Address(models.Model):
         
      
     def __str__(self) -> str:
-        return 'آدرس کاربر :%s' % self.user.phone_no
+        if self.user:
+            return 'آدرس کاربر :%s' % self.user.phone_no
+        else:
+            return ''
     
 post_save.connect(User.post_create, sender=User)
     

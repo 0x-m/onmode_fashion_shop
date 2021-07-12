@@ -12,7 +12,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from discounts.models import Discount
 from django.utils import timezone
 from django.db.models import Q
-
+from index.utils import get_provinces
 from .forms import AddProductForm, FilterForm
 
 
@@ -346,6 +346,7 @@ def edit_shop(request:HttpRequest):
     if request.method == "POST":
         pass
     return render(request, 'shop/edit_shop.html',{
+        'provinces': get_provinces()
         
     })
 

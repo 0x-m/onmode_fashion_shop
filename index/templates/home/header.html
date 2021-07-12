@@ -1,10 +1,30 @@
 {% load static %}
-<div  class="row" style="align-content:stretch;">
-    <div  class="col-6">
-            <div id="show1" class="slideshow">
-                <div style="position:relative" class="slide fade dis-block">
-                    <img src="{% static 'img/img1/category-1.jpg' %}" class=" img-fluid"/>
-                    <div class="centerized" style="width:80%;left: 40%;text-align:center;padding:0.2rem">
+<style>
+    .cat{
+        flex: 30%;
+        padding: 0.8rem;
+        position: relative;
+    }
+
+    .cat-caption {
+        position: absolute;
+        bottom: 2%;
+        right: 0;
+        
+        background-color: white;
+        color: gray;
+        padding: 1rem 2rem 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    
+
+</style>
+<div  class="row w-100" style="align-content:stretch;">
+            <div id="show1" style="margin: 0;" class="slideshow">
+                <div style="position:relative;" class="slide fade dis-block">
+                    <img src="{% static 'img/img1/banner-2.jpg' %}" class=" img-fluid"/>
+                    <!-- <div class="centerized" style="width:80%;left: 40%;text-align:center;padding:0.2rem">
                         <p style="font-size:1.1rem">
                            دنیای مد زنانه
                         </p>
@@ -13,21 +33,19 @@
                         </p>
 
                         <button class="button">عضویت</button>
+                    </div> -->
+                </div>
+                <div style="position:relative" class="slide fade">
+                    <img src="{% static 'img/img1/319.jpg' %}" class=" img-fluid"/>
+                    <div class="centerized" style="left: 30%;text-align:center">
                     </div>
                 </div>
                 <div style="position:relative" class="slide fade">
-                    <img src="{% static 'img/img1/c.jpg' %}" class=" img-fluid"/>
+                    <img src="{% static 'img/img1/salesoff.jpeg' %}" class=" img-fluid"/>
                     <div class="centerized" style="left: 30%;text-align:center">
-                       
                     </div>
                 </div>
-                <div style="position:relative" class="slide fade">
-                    <img src="{% static 'img/img1/b.jpg' %}" class="img-fluid"/>
-                    <div class="centerized" style="left: 30%;text-align:center">
-                       
-                    </div>
-                </div>
-                <div class="bullets">
+                <div  class="bullets">
                     <span class="dot" onclick="showSlide(0)"></span>
                     <span class="dot" onclick="showSlide(1)"></span>
                     <span class="dot" onclick="showSlide(2)"></span>
@@ -35,33 +53,19 @@
                 <span class="next" onclick="prevSlide()">&#10094</span>
                 <span class="prev" onclick="nextSlide()">&#10095</span>
             </div>
+</div>
+
+<div class="row" style="justify-content: center;align-items:center;">
+    <div class="cat">
+        <img src="{% static 'img/img1/men.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">مردانه</span>
     </div>
-    <div class="col-6" >
-      <div class="categories" >
-            <div class="category" >
-             <img src="{% static 'img/img1/category-2.jpg' %}" class="img-fluid"  />
-             <div style="width: 100%;text-align:center" class="centerized" >
-                <button style="color: white;" class="button">مردانه</button>
-             </div>
-           </div>
-           <div class="category">
-            <img src="{% static 'img/img1/category-3.jpg' %}" class="img-fluid" />
-            <div style="width: 100%;text-align:center" class="centerized" >
-                <button style="color: white;" class="button">زنانه</button>
-             </div>
-           </div>
-           <div class="category" >
-            <img  src="{% static 'img/img1/category-4.jpg' %}" class="img-fluid" />
-            <div style="width: 100%;text-align:center" class="centerized" >
-                <button style="color: white;" class="button">بچگانه</button>
-             </div>
-           </div>
-           <div class="category" >
-            <img  src="{% static 'img/img1/category-5.jpg' %}" class="img-fluid" />
-            <div style="width: 100%;text-align:center" class="centerized" >
-                <button style="color: white;" class="button">اکسسوری</button>
-             </div>
-            </div>
-      </div>
+    <div class="cat">
+        <img src="{% static 'img/img1/women.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">زنانه</span>
+    </div>
+    <div class="cat">
+        <img src="{% static 'img/img1/children.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">کودکانه</span>
     </div>
 </div>
