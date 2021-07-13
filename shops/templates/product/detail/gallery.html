@@ -3,7 +3,11 @@
     <img id="hero" src="{% static 'img/img1/b.jpg' %}" class="img"  />
     <div onclick="changeHero();" class="thumbs">
         {% for item in product.images.all %}
-        <img src="{{ item.image.url }}" class="thumb {% if forloop.counter0 == 0 %}thumb-active{% endif %}" />
+        {% if item.image %}
+             <img src="{{ item.image.url }}" class="thumb {% if forloop.counter0 == 0 %}thumb-active{% endif %}" />
+        {% else %}
+             <img src="{% static 'img/img1/noimg.jpg' %}" class="thumb {% if forloop.counter0 == 0 %}thumb-active{% endif %}" />
+        {% endif %}
         {% endfor %}
      </div>
 </div>

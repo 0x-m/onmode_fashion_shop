@@ -1,30 +1,16 @@
 <div style="display: flex;flex-direction:column;padding:0.5rem">
-    <div style="padding: 0.5rem;">
-        <span>ویژگی:</span>
-        &nbsp;
-        <span>مقدار</span>
-    </div>
-    <div style="padding: 0.5rem;">
-        <span>ویژگی:</span>
-        &nbsp;
-        <span>مقدار</span>
-    </div>
-    <div style="padding: 0.5rem;">
-        <span>ویژگی:</span>
-        &nbsp;
-        <span>مقدار</span>
-    </div>
-    <div style="padding: 0.5rem;">
-        <span>ویژگی:</span>
-        &nbsp;
-        <span>مقدار</span>
-    </div>
+    {% for key,value in product.attrs.items %}
+        <div style="padding: 0.5rem;">
+            <span>{{ key }}:</span>
+            &nbsp;
+            <span>{{ value }}</span>
+        </div>
+    {% endfor %}
+   
     <div style="padding: 0.5rem;">    
-        &nbsp;
+        <span>سایر توضیحات:</span>
         <p style="width: 100%;text-align:center">
-           سایر توضیحات
-           مناسب برای فلان
-           بخرید و ...
+          {{ product.description }}
         </p>
     </div>   
 </div>

@@ -136,7 +136,7 @@
        {% for item in product.images.all %}
         <label>
             <img data-id="{{item.id}}" id="img-{{item.id}}"  src="{% if item.image %} {{item.image.url}}{% else %}{% static 'img/img1/noimg.jpg' %}{% endif %}" class="thumb" />
-            <input data-img="img-{{item.id}}" onchange="changeimg();" type="file" id="img-1" name="image" style="position: fixed;top:-100px">
+            <input data-num="{{ forloop.counter }}" data-img="img-{{item.id}}" onchange="changeimg();" type="file" id="img-1" name="image" style="position: fixed;top:-100px">
         </label>
        {% endfor %}
         
@@ -162,9 +162,9 @@
                 <span >قد:بلند (مثال)</span>
                 <span class="close">&times;</span>
             </div>
-            {% for key  in product.attrs %}
+            {% for key,value in product.attrs.items %}
             <div style="background-color: #fdfdfd;"  class="attr">
-                <span >{{key}}::{{product.attrs.key}}</span>
+                <span >{{key}}:{{value}}</span>
                 <span class="close">&times;</span>
             </div>
             {% endfor %}

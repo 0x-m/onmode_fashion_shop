@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
 from django.urls import reverse
+from django_resized import ResizedImageField
 
 import os
 
@@ -130,14 +131,20 @@ class Product(models.Model):
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
         MinValueValidator(1000),
     ])
+    
+    def generate_path(instance, filename):
+        path = 'photos/avatar/' + str(instance.id) + '/'
+        return os.path.join(path,filename)    
+
     is_available = models.BooleanField(verbose_name=_('Available'),default=True)
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=200,null=True, blank=True)
-    image = models.ImageField(verbose_name=_('Image'), null=True, blank=True)
+    image = ResizedImageField(verbose_name=_('image'),size=[340,270],quality=100, upload_to=generate_path,blank=True, null=True)
     attrs = models.JSONField(null=True,blank=True)
     is_active = models.BooleanField(default=True)
+    
     
         
     def get_absolute_url(self):
@@ -168,8 +175,10 @@ class Product(models.Model):
     
 class ProductImage(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE,related_name='images')
+
     def generate_path(instance, filename):
         path = 'photos/' + str(instance.product.id) + '/'
         return os.path.join(path,filename)
+    
     image = models.ImageField(upload_to = generate_path)
 

@@ -32,9 +32,12 @@
         <span onclick="decrement();" class="dec">&minus;</span>
     </div>
     <p>
-        <button class="send-btn">افزودن به لیست خرید</button>
-        <button class="send-btn">
-            <span class="fa fa-heart"></span>
-        </button>
+        {% if user.shop.first != product.shop %}
+            <button data-id="{{ product.id }}" onclick="add_to_cart();this.disabled=true;" class="send-btn">افزودن به لیست خرید</button>
+            <button data-id="{{ product.id }}" onclick="add_to_favourites();this.disabled=true;" class="send-btn">
+                <span class="fa fa-heart"></span>
+            </button>
+        {%endif %}
+      
     </p>
 </div>

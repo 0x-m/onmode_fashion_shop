@@ -319,7 +319,7 @@ function validate_field(rx){
 function get_attrs(){
     const _attrs = document.getElementById("attr-list").children;
     let attrs = new Object();
-    for (let i=0; i < _attrs.length; ++i){
+    for (let i=1; i < _attrs.length; ++i){
         key_value = _attrs[i].children[0].innerHTML.split(':');
         attrs[key_value[0]] = key_value[1];
     }
@@ -375,7 +375,7 @@ function prepare_product_info(command){
         errors.push("نام محصول را وارد کنید");
 
     }
-    let rx = new RegExp('^[0-9]{3,7}$');
+    let rx = new RegExp('^[0-9]{4,7}$');
     if (!rx.test(price)){
         errors.push("قیمت باید بین 1000 تا 10 میلیون تومان باشد");
     }
@@ -561,6 +561,7 @@ function remove_product(){
                 const sucess = document.getElementById("sucessful-edit").innerHTML;
                 set_view(sucess);
                 product.remove();
+                
                 end_waiting();
             }
         }
@@ -583,15 +584,19 @@ function remove_product(){
 
 }
 function changeimg(){
+    const num = event.target.dataset['num'];
     const id = event.target.dataset['img'];
     const img = document.getElementById(id);
     const prod_img_id = img.dataset['id'];
+    const product_id = document.getElementById("id").value;
+    const product = document.getElementById("product-" + product_id);
     const file = event.target.files[0];
     const xhttp = new XMLHttpRequest();
     xhttp.onload = () =>{
         if (xhttp.status == 200){
             path = xhttp.responseText;
             img.src = path;
+            product.children[0].src = path;
         }
     }
 
@@ -599,6 +604,12 @@ function changeimg(){
     const data = new FormData();
     data.append("image",file);
     data.append("id",prod_img_id);
+    if (num == 1){
+        data.append('change_avatar','true');
+    }
+    else{
+        data.append('change_avatar','false');
+    }
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
     xhttp.send(data);
     

@@ -58,6 +58,8 @@ def add_product(request:HttpRequest):
             product.sizes.set(sizes)
             product.save()
             if images:
+                product.image = images[0]
+                product.save()
                 num_img = len(images)
                 if  num_img > 5:
                     images = images[:5]
@@ -146,6 +148,7 @@ def change_image(request: HttpRequest):
     if request.method == 'POST':
         id = request.POST.get('id')
         img = request.FILES.get('image')
+        change_avatar = request.POST.get('change_avatar')
         if id and img:
             
             productimg = ProductImage.objects.filter(id=id).first()
@@ -153,6 +156,10 @@ def change_image(request: HttpRequest):
             if not (productimg.product.shop == request.user.shop.first()):
                 return HttpResponseForbidden("you are not allowed...")
             if productimg:
+                if change_avatar == 'true':
+                    productimg.product.image = img
+                    productimg.product.save()
+                    
                 if productimg.image:
                     productimg.image.delete()
                 productimg.image = img
@@ -315,7 +322,7 @@ def search(request:HttpRequest, pg):
 
 def product_detail(request:HttpRequest, product_id):
     product = get_object_or_404(Product,id=product_id,is_active=True)
-    return render(request, 'product/product/detail.html',{
+    return render(request, 'product/detail/product.html',{
         'product':product
     })
     
