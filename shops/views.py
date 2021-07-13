@@ -58,8 +58,6 @@ def add_product(request:HttpRequest):
             product.sizes.set(sizes)
             product.save()
             if images:
-                product.image = images[0]
-                product.save()
                 num_img = len(images)
                 if  num_img > 5:
                     images = images[:5]
@@ -150,16 +148,11 @@ def change_image(request: HttpRequest):
         img = request.FILES.get('image')
         change_avatar = request.POST.get('change_avatar')
         if id and img:
-            
             productimg = ProductImage.objects.filter(id=id).first()
             
             if not (productimg.product.shop == request.user.shop.first()):
                 return HttpResponseForbidden("you are not allowed...")
-            if productimg:
-                if change_avatar == 'true':
-                    productimg.product.image = img
-                    productimg.product.save()
-                    
+            if productimg:                    
                 if productimg.image:
                     productimg.image.delete()
                 productimg.image = img

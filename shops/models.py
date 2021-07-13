@@ -9,8 +9,6 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
 from django.urls import reverse
-from django_resized import ResizedImageField
-
 import os
 
 class Shop(models.Model):
@@ -141,7 +139,6 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=200,null=True, blank=True)
-    image = ResizedImageField(verbose_name=_('image'),size=[340,270],quality=100, upload_to=generate_path,blank=True, null=True)
     attrs = models.JSONField(null=True,blank=True)
     is_active = models.BooleanField(default=True)
     

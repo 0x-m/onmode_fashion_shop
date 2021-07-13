@@ -585,18 +585,23 @@ function remove_product(){
 }
 function changeimg(){
     const num = event.target.dataset['num'];
+    console.log(num)
     const id = event.target.dataset['img'];
     const img = document.getElementById(id);
     const prod_img_id = img.dataset['id'];
     const product_id = document.getElementById("id").value;
     const product = document.getElementById("product-" + product_id);
+    console.log(product)
     const file = event.target.files[0];
     const xhttp = new XMLHttpRequest();
     xhttp.onload = () =>{
         if (xhttp.status == 200){
             path = xhttp.responseText;
             img.src = path;
-            product.children[0].src = path;
+            if(num == 1){
+                console.log("ojk...")
+                product.children[0].children[0].src = path;
+            }
         }
     }
 
@@ -604,12 +609,7 @@ function changeimg(){
     const data = new FormData();
     data.append("image",file);
     data.append("id",prod_img_id);
-    if (num == 1){
-        data.append('change_avatar','true');
-    }
-    else{
-        data.append('change_avatar','false');
-    }
+   
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
     xhttp.send(data);
     
