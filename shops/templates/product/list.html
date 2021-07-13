@@ -1,6 +1,10 @@
 {% load static %}
+<style>
+ 
+
+</style>
 {% for product in page.object_list %}
-<div class="product">
+<div id="product-{{ product.id }}" class="product">
     <img src="{% static 'img/img1/proddd.jpg' %}" class="img" />
     <div class="container-col">
         <p class="title" style="margin-top: -0.1em;">{{product.name}}</p>
@@ -16,9 +20,15 @@
         </p>
         
         <p style="text-align: center;font-size:0.8rem;margin-top:-0.7rem;margin-bottom:-0.2rem">
-            <button data-id="{{product.id}}" onclick="add_to_cart();" class="fa fa-shopping-basket btn-tiny"></button>
-            <button data-id="{{product.id}}" onclick="add_to_favourites();" class="fa fa-heart btn-tiny"></button>
-            
+            {% if user.shop.first.id == shop.id %}
+                <button data-id="{{product.id}}" onclick="get_edit_product();" class="fa fa-pencil btn-tiny"></button>
+                <button data-id="{{product.id}}" onclick="remove_product();" class="fa fa-trash btn-tiny"></button>
+            {% else %}
+                <button data-id="{{product.id}}" onclick="add_to_cart();this.disabled=true;" class="fa fa-shopping-bag btn-tiny"></button>
+                <button data-id="{{product.id}}" onclick="add_to_favourites();this.disabled=true;" class="fa fa-heart btn-tiny"></button>
+                
+            {% endif %}
+         
         </p>
     </div>
   </div>

@@ -532,7 +532,6 @@ fz-small{
     position: relative;
     margin: auto;
     height: 100%;
-    position: relative;
 }
 .slide{
     display: none;
@@ -541,10 +540,11 @@ fz-small{
 .fade{
     animation-name: fade;
     animation-duration: 1.5s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes fade {
-    from {opacity: 0.6;}
+    from {opacity: 0.5;}
     to {opacity: 1;}
 }
 
@@ -556,6 +556,7 @@ fz-small{
     margin: 0 2px;
     background-color: #bbb;
     border-radius: 50%;  
+
 }
 
 .active, .dot:hover {
@@ -824,12 +825,12 @@ fz-small{
     padding: 0.5em;
     font-size: 0.9em;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1.5px solid transparent;
 
 }
 
 .navbar .nav .nav-item:hover {
-    border-bottom: 2px solid red;
+    border-bottom: 1.5px solid rgb(252, 104, 104);
 
 }
 
@@ -843,7 +844,7 @@ fz-small{
 }
 
 .nav .icon:hover{
-    color: rgb(240, 75, 75);
+    color: rgb(240, 104, 104);
 }
 
 @media screen  and (max-width:675px) {
@@ -1030,19 +1031,19 @@ pb-1{padding-bottom: 1rem;}
 }
 
 .side-box-show {
-    width: 100vw;
+    width: 100%;
 
 }
 
 @media screen and (min-width:576px) {
     .side-box-show {
-        width: 50vw;
+        width: 50%;
     }
 }
 
 @media screen and (min-width: 1024px) {
     .side-box-show {
-        width: 25vw;
+        width: 30%;
     }
     
 }

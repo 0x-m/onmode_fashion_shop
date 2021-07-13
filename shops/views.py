@@ -14,6 +14,7 @@ from django.utils import timezone
 from django.db.models import Q
 from index.utils import get_provinces
 from .forms import AddProductForm, FilterForm, ShopInfoForm
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 
 
@@ -30,6 +31,7 @@ def add_product(request:HttpRequest):
     shop = get_object_or_404(Shop, seller=request.user, is_active=True)
     if request.method == "POST":
         form = AddProductForm(request.POST)
+        print(request.POST.get('keywords'))
         if form.is_valid():
             new_values = {
                 'shop': shop,
@@ -56,17 +58,21 @@ def add_product(request:HttpRequest):
             product.sizes.set(sizes)
             product.save()
             if images:
+                num_img = len(images)
+                if  num_img > 5:
+                    images = images[:5]
+                    
                 for img in images:
                     prodimg = ProductImage(product=product,image=img)
                     prodimg.save()
-            return render(request, 'product/status.html',{
-                'status_code': 200,
-                'status': 'added successfully'
-            })
-        return render(request,'product/status.html', {
-            'status_code': 401,
-            "status": "add failed"
-        })
+                
+                if num_img < 5 :
+                    for i in range(num_img,5):
+                        empty_img = ProductImage(product=product)
+                        empty_img.save()
+               
+            return HttpResponse("added successfully")
+        return HttpResponseBadRequest(form.errors)
     
     return render(request, 'product/edit.html',{
         'categories': Category.objects.all(),
@@ -125,7 +131,7 @@ def edit_product(request:HttpRequest, product_id):
 
 @login_required
 def remove_product(request:HttpRequest, product_id):
-    product = Product.objects.filter(id=product_id,shop=request.user.shop,is_active=True).first()
+    product = Product.objects.filter(id=product_id,shop=request.user.shop.first(),is_active=True).first()
     if product:
         product.is_active = False
         product.save()
@@ -144,10 +150,11 @@ def change_image(request: HttpRequest):
             
             productimg = ProductImage.objects.filter(id=id).first()
             
-            if not (productimg.product.shop == request.user.shop):
+            if not (productimg.product.shop == request.user.shop.first()):
                 return HttpResponseForbidden("you are not allowed...")
             if productimg:
-                productimg.image.delete()
+                if productimg.image:
+                    productimg.image.delete()
                 productimg.image = img
                 productimg.save()
                 return HttpResponse(productimg.image.url)

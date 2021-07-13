@@ -122,9 +122,14 @@ function add_to_cart(){
     event.target.disabled = true;
     const product_id = event.target.dataset["id"];
     command("/cart/add/" + product_id + "/");
-    const num =  document.getElementById("card-num");
-    const q = parseInt(num.innerText) + 1;
-    num.innerText = q;
+    fetch("/cart/add/" + product_id + "/").then((response) => {
+        if(response.ok){
+            response.json().then((t) =>{
+                const num =  document.getElementById("card-num");
+                num.innerText = t['cart_num']
+            })
+        }
+    })
     event.target.disabled = false;
 
 
@@ -310,6 +315,7 @@ function validate_field(rx){
     }
 }
 
+
 function get_attrs(){
     const _attrs = document.getElementById("attr-list").children;
     let attrs = new Object();
@@ -341,10 +347,11 @@ function prepare_product_info(command){
             selected_colors += "," + colors[i].dataset["id"];
         }
     }
-    if (selected_colors == ""){
-        selected_colors = all_colors;
-    }
-    selected_colors = selected_colors.slice(1,selected_colors.length);
+    // if (selected_colors == ""){
+    //     selected_colors = all_colors;
+    // }
+    if(selected_colors != "")
+          selected_colors = selected_colors.slice(1,selected_colors.length);
 
     const sizes = document.getElementById("sizes").children;
     let all_sizes = "";
@@ -355,11 +362,57 @@ function prepare_product_info(command){
             selected_sizes += "," + sizes[i].dataset["id"];
         }
     }
-    if (selected_sizes == ""){
-        selected_sizes = all_sizes;
+    // if (selected_sizes == ""){
+    //     selected_sizes = all_sizes;
+    // }
+    if (selected_sizes != ""){
+        selected_sizes = selected_sizes.slice(1, selected_sizes.length);
     }
-    selected_sizes = selected_sizes.slice(1, selected_sizes.length);
     
+    const errors = new Array()
+
+    if (name == ""){
+        errors.push("نام محصول را وارد کنید");
+
+    }
+    let rx = new RegExp('^[0-9]{3,7}$');
+    if (!rx.test(price)){
+        errors.push("قیمت باید بین 1000 تا 10 میلیون تومان باشد");
+    }
+    rx = new RegExp('^[0-9]{1,3}$')
+    if(!rx.test(quantity)){
+        errors.push("تعداد باید بین 1 تا 999 باشد");
+    }
+
+    if(type == ""){
+        errors.push("نوع محصول را انتخاب کنید");
+    }
+    if(subtype == ""){
+        errors.push("زیرنوع محصول را انخاب کنید");
+    }
+    if (brand == ""){
+        errors.push("برند محصول را انتخاب کنید");
+    }
+    if(categories == ""){
+        errors.push("دسته بندی محصول را مشخص کنید");
+    }
+    if(selected_colors == ""){
+        errors.push("رنگ بندی محصول را انتخاب کنید")
+    }
+    if(selected_sizes == ""){
+        errors.push("سایزبندی محصول را انتخاب کنید")
+    }
+
+    if( errors.length !=0){
+        let msg = ""
+        for (let i=0; i < errors.length; ++i){
+            msg += errors[i] + "\r\n\r\n";
+        }
+        set_error(msg,5000,()=>{
+
+        })
+        return null;
+    }
 
     const data = new FormData();
     data.append("name", name);
@@ -377,16 +430,34 @@ function prepare_product_info(command){
     data.append("brand", brand);
     if (command == "add"){
         const images = document.getElementById("images").files;
-        for (let i=0; i < images.length; i++){
+        for (let i=0; i < images.length && i <= 5; i++){
             data.append("images",images[i]);
         }
     }
     return data;
 }
 
-function add_product(){
+function add_product(command){
     const data = prepare_product_info("add");
-    load_view("/product/add/","POST", data, false);
+    const xhttp = new XMLHttpRequest()
+    xhttp.open("POST", "/product/add/");
+    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            const sucess = document.getElementById("sucessful-edit").innerHTML;
+            set_view(sucess);
+            end_waiting();
+        }
+        // if(xhttp.status == 400){
+        //     const msg = "لطفا اطلاعات خواسته شده را به درستی وارد کنید"
+        //     set_error(msg,1000,()=>{end_waiting();})
+        // }
+    }
+    if (data){
+        start_waiting();
+        xhttp.send(data);
+    }
+  
 }
 
 function filter_product(){
@@ -433,25 +504,82 @@ function filter_product(){
 
 
 
-function edit_product(){
+function get_edit_product(){
+    event.stopPropagation();
     const product_id = event.target.dataset["id"];
-    const data = new FormData();
-    data.append("id", product_id);
-    load_view("/product/add_edit/","POST", data);
+
+    showSidebox();
+    start_waiting();
+    fetch("/product/edit/" + product_id + "/").then((res) => {
+
+        if(res.ok){
+            res.text().then((txt)=>{
+                end_waiting();
+                set_view(txt);
+            })
+        }
+    });
+}
+
+function edit_product(){
+    const data = prepare_product_info("edit");
+    const product_id = document.getElementById("id").value;
+    
+    const xhttp = new XMLHttpRequest()
+    xhttp.open("POST", "/product/edit/" + product_id + "/");
+    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            const sucess = document.getElementById("sucessful-edit").innerHTML;
+            set_view(sucess);
+            end_waiting();
+        }
+        if(xhttp.status == 400){
+            const msg = "لطفا اطلاعات خواسته شده را به درستی وارد کنید"
+            set_error(msg,1000,()=>{end_waiting();})
+        }
+    }   
+    start_waiting();
+    xhttp.send(data);
 }
 
 function remove_product(){
+    event.stopPropagation();
     const product_id = event.target.dataset["id"];
+    const product = document.getElementById("product-" + product_id);
     const data = new FormData();
     data.append("id", product_id);
+    showSidebox();
     msg = "آیا از حذف محصول اطمینان دارید؟"
     set_confirmation_dialog(msg,()=>{
-        command("product/remove/", data);
+        
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = () =>{
+
+            if(xhttp.status == 200){
+                end_waiting();
+                const sucess = document.getElementById("sucessful-edit").innerHTML;
+                set_view(sucess);
+                product.remove();
+                end_waiting();
+            }
+        }
         confirmation_dialog.classList.remove("show");
+        xhttp.open("GET","/product/remove/" + product_id);
+        
+        start_waiting();
+        xhttp.send()
+        
 
     }, () => {
         confirmation_dialog.classList.remove("show");
     })
+
+    
+
+
+
+
 
 }
 function changeimg(){
@@ -460,14 +588,14 @@ function changeimg(){
     const prod_img_id = img.dataset['id'];
     const file = event.target.files[0];
     const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () =>{
+    xhttp.onload = () =>{
         if (xhttp.status == 200){
             path = xhttp.responseText;
             img.src = path;
         }
     }
 
-    xhttp.open("POST", "shops/change_image/")
+    xhttp.open("POST", "/product/change_image/")
     const data = new FormData();
     data.append("image",file);
     data.append("id",prod_img_id);

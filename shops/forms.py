@@ -20,9 +20,9 @@ class AppealForm(forms.Form):
     ])
     description = forms.CharField(max_length=500)
 
-class StringCSVField(forms.Field):
+class StringTagField(forms.Field):
     def to_python(self, value):
-        return value.split(',')
+        return [s.strip() for s in value.strip().split('#')]
 
 class IntegerCSVFields(forms.Field):
     def to_python(self, value):
@@ -48,7 +48,7 @@ class AddProductForm(forms.Form):
     name = forms.CharField(max_length=120)
     description = forms.CharField(max_length=500)
     quantity = forms.IntegerField()
-    keywords = StringCSVField()
+    keywords = forms.CharField(max_length=200)
     attrs = JsonField()
     price = forms.IntegerField()
     

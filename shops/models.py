@@ -126,7 +126,7 @@ class Product(models.Model):
     colors = models.ManyToManyField(verbose_name=_('Colors'),to=Color,related_name='products')
     sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products')
     name = models.CharField(verbose_name=_('Name'),max_length=120)
-    description = models.CharField(verbose_name=_('Description'),max_length=500)
+    description = models.CharField(verbose_name=_('Description'),max_length=500, blank=True)
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
         MinValueValidator(1000),
     ])
@@ -134,9 +134,9 @@ class Product(models.Model):
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
-    keywords = models.CharField(verbose_name=_('Keywords'),max_length=2000,null=True)
+    keywords = models.CharField(verbose_name=_('Keywords'),max_length=200,null=True, blank=True)
     image = models.ImageField(verbose_name=_('Image'), null=True, blank=True)
-    attrs = models.JSONField(null=True)
+    attrs = models.JSONField(null=True,blank=True)
     is_active = models.BooleanField(default=True)
     
         

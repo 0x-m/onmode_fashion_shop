@@ -3,7 +3,7 @@ from product_attributes.models import Color, Size
 from django.db.models.fields.related_descriptors import ReverseManyToOneDescriptor
 from coupons.models import Coupon
 from django.db.models.query import RawQuerySet
-from django.http.response import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.http import HttpRequest, request
 from django.contrib.auth.decorators import login_required
@@ -19,6 +19,8 @@ def add(request:HttpRequest, product_id):
     
     if not product:
         return HttpResponseBadRequest("product is not found")
+    if product.shop == request.user.shop.first():
+        return HttpResponseForbidden("you can not buy from yourself...!")
     if qunatity:
         try:
             qunatity = int(qunatity)
@@ -27,7 +29,8 @@ def add(request:HttpRequest, product_id):
         
     cart = Cart(request)
     cart.add(product.id,qunatity)
-    return HttpResponse("product was added to the cart")
+    
+    return JsonResponse({'cart_num': len(cart)})
 
 
 
