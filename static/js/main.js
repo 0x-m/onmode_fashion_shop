@@ -227,6 +227,7 @@ function hide_all_dialogs(){
     document.getElementById("error-dialog").classList.remove("show");
     document.getElementById("waiting").classList.remove("show");
     document.getElementById("confirmation-dialog").classList.remove("show");
+    document.getElementById("side-box-content").classList.remove("overflow-hidden");
 }
 
 function closeSidebox(){
