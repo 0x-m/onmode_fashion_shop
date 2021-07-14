@@ -1,17 +1,22 @@
 {% load static %}
 <style>
     .cat{
-        flex: 30%;
-        padding: 0.8rem;
+        flex: 50%;
+        padding: 0.2rem;
         position: relative;
     }
 
+    .cat-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
 
 
     @media screen and (min-width:576px) {
-        .row
-        {
+       
+        .cat-row {
             flex-direction: row;
+            flex-wrap: nowrap;
         }
         
     }
@@ -55,7 +60,7 @@
             </div>
 </div>
 
-<div class="row" style="justify-content: center;align-items:center;">
+<div class="row cat-row" style="justify-content: center;align-items:center;">
     <div class="cat">
         <img src="{% static 'img/img1/men.jpeg'%}" style="width: 100%;">
         <span class="cat-caption">مردانه</span>
@@ -67,5 +72,9 @@
     <div class="cat">
         <img src="{% static 'img/img1/children.jpeg'%}" style="width: 100%;">
         <span class="cat-caption">کودکانه</span>
+    </div>
+    <div class="cat">
+        <img src="{% static 'img/img1/access.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">اکسسوری</span>
     </div>
 </div>

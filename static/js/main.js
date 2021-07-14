@@ -223,6 +223,12 @@ function changeHero() {
 
 }
 
+function hide_all_dialogs(){
+    document.getElementById("error-dialog").classList.remove("show");
+    document.getElementById("waiting").classList.remove("show");
+    document.getElementById("confirmation-dialog").classList.remove("show");
+}
+
 function closeSidebox(){
     document.getElementById("overlay").classList.remove("show");
     document.getElementById("side-box").classList.remove("side-box-show");
@@ -230,6 +236,7 @@ function closeSidebox(){
     document.body.classList.remove("overflow-hidden");
     document.getElementById("content").classList.remove("blur");
     document.getElementById("navbar").classList.remove("blur");
+    hide_all_dialogs();
 
 }
 /******************************** */

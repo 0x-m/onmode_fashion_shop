@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from cart.cart import Cart
 from .utils import *
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 import json
 from django.http import JsonResponse, HttpResponseBadRequest
 
@@ -43,3 +43,11 @@ def get_province_cities(request:HttpRequest):
     return HttpResponseBadRequest("Invalid province id")
 
 
+@login_required
+def change_shop_logo(request:HttpRequest):
+    if not request.is_seller():
+        pass
+
+@login_required
+def change_shop_banner(reqest:HttpRequest):
+    pass

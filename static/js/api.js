@@ -503,7 +503,6 @@ function filter_product(){
 }
 
 
-
 function get_edit_product(){
     event.stopPropagation();
     const product_id = event.target.dataset["id"];

@@ -30,16 +30,21 @@
             <label class="caption" for="fname">آدرس بوتیک</label>
             <textarea name="address" rows="5"  id="fname" class="text-box" type="text"  placeholder="آدرس بوتیک" >{{user.shop.first.address}}</textarea>
         </p>
-        <p class="field">
-            <label class="caption" for="fname">لوگو</label>
-            <input name="logo" id="fname" class="text-box" type="file" />
-            <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت بشد</span>
+        <p class="mt-1 field">
+            <label style="cursor: pointer;">
+                <span class="fa fa-image"></span>
+                <span class="fz-small">لوگو</span>
+                 <input onchange="document.getElementById('img-logo').innerText=this.files[0].name;" name="logo" type="file" style="position: fixed;top:-100px;" placeholder="لوگو" multiple>
+                 <span id="img-logo" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت باشد</span>
+             </label>
         </p>
-        <p class="field">
-            <label class="caption" for="fname">بنر</label>
-            <input name="banner"  id="fname" class="text-box" type="file" />
-            <span style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو برند از 300 کیلوبایت بشد</span>
-           
+        <p class="mt-1 field">
+            <label style="cursor: pointer;">
+                <span class="fa fa-image"></span>
+                <span class="fz-small">بنر</span>
+                 <input onchange="document.getElementById('img-banner').innerText=this.files[0].name;"  name="banner" type="file" style="position: fixed;top:-100px;" placeholder="بنر" multiple>
+                 <span id="img-banner" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم بنر کمتر از 300 کیلوبایت باشد</span>
+             </label>
         </p>
         <p class="field" style="margin-top: 1rem;">
             <label class="caption" for="fname">ارسال پستی به </label>

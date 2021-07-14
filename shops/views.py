@@ -1,10 +1,11 @@
 from typing import ClassVar
+from django.db.models.query import RawQuerySet
 from django.forms import forms
 from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed
 from .models import  Product, Shop
 from django import http
 from django.http.request import HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, resolve_url
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_list_or_404, get_object_or_404
 from .models import *
@@ -379,3 +380,34 @@ def edit_shop(request:HttpRequest):
         
     })
 
+@login_required
+def change_shop_logo(request:HttpRequest):
+    if not request.is_seller():
+        return HttpResponseBadRequest("Your are not allowed....")
+    if request.method == 'POST':
+        shop = request.user.shop.first()
+        logo = request.FILES.get('logo');
+        if logo:
+            shop.logo.delete()
+            shop.logo = logo
+            shop.save()
+            return HttpResponse('logo changed successfully')
+    
+    return HttpResponseNotAllowed(['POST'])
+        
+
+@login_required
+def change_shop_banner(request:HttpRequest):
+    if not request.is_seller():
+        return HttpResponseBadRequest("Your are not allowed....")
+    if request.method == 'POST':
+        shop = request.user.shop.first()
+        banner = request.FILES.get('banner');
+        if banner:
+            shop.banner.delete()
+            shop.banner = banner
+            shop.save()
+            return HttpResponse('logo changed successfully')
+    
+    return HttpResponseNotAllowed(['POST'])
+ 
