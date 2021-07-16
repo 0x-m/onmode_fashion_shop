@@ -61,13 +61,13 @@
                 ویرایش مشخصات
             </p>
         </div>
+        <div  class="list-item">
+            <p onclick="get_orders();" style="padding: 0.5rem;">
+                سفارشهای من
+            </p>
+        </div>
               <div class="list-item">
-                  <p style="padding: 0.5rem;">
-                     سفارشهای من
-                  </p>
-              </div>
-              <div class="list-item">
-                <p style="padding: 0.5rem;">
+                <p onclick="make_issue();" style="padding: 0.5rem;">
                    درخواستها
                 </p>
             </div>
@@ -109,7 +109,7 @@
                         <a style="text-decoration: none;" href="{{ user.shop.first.get_absolute_url }}"> برو به صفحه فروشگاه</a>
                         </p>
                     </div>
-                    <div class="list-item">
+                    <div onclick="get_orders();" class="list-item">
                         <p style="padding: 0.5rem;">
                         سفارشها
                         </p>

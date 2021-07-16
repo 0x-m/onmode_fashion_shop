@@ -12,7 +12,6 @@ from django.urls import reverse
 import os
 
 class Shop(models.Model):
-    
     def generate_path(instance, filename):
         path = 'shops/photos' + str(instance.id) + '/'
         return os.path.join(path,filename)
@@ -32,9 +31,6 @@ class Shop(models.Model):
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     post_destinatinos = models.CharField(verbose_name=_('Postal Destinations'),max_length=1000,null=True)
     
-    
-    
-    
     class Meta:
         verbose_name = _('Shop')
         verbose_name_plural = _('Shops')
@@ -44,8 +40,6 @@ class Shop(models.Model):
         
     def get_absolute_url(self):
         return reverse('shops:shop', kwargs={'shop_name':self.name})
-    
-   
     
     def num_of_products(self):
         return len(self.products)

@@ -1,7 +1,7 @@
 from os import stat
 
 from django.http.response import HttpResponse, HttpResponseBadRequest
-from onmode import orders
+from .models import OrderList
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required
@@ -87,3 +87,5 @@ def get_shop_orders(request:HttpRequest, state):
         })
         
         
+def orders(request:HttpRequest):
+    return render(request, 'orders/orders.html');

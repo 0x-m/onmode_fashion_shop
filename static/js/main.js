@@ -11,6 +11,13 @@ function openCombobox(){
     
 }
 
+//------------------------swiper----------------------------
+
+//----------------------------------------------  
+
+
+
+
 function comboboxSelectItem()
 {
      var dropdown = event.currentTarget;
@@ -113,6 +120,25 @@ function prevSlide() {
 
  }
 
+var curr_index = 0;
+function autoslideshow(){
+    console.log("show....")
+    const slides = document.getElementById("show1").getElementsByClassName("slide");
+    //hide all slides----------
+    for(let i=0; i < slides.length; ++i){
+        slides[i].classList.remove("dis-block");
+    }
+    curr_index++;
+    if (curr_index >= slides.length) {
+        curr_index = 0
+    }
+    slides[curr_index].classList.add("dis-block");
+    setTimeout(autoslideshow, 3000);
+}
+
+window.addEventListener('load',()=>{
+   
+})
 
  //--------------------searchbox-----------------------------------------------
  function toggle_search_box(){
@@ -320,4 +346,24 @@ function delete_attr(){
   product_attrs.delete(t.split(":")[0]);
   console.log(product_attrs)
   event.target.parentNode.remove();
+}
+
+function select_tab(){
+    const target = event.target;
+    if (target.classList.contains('tab-item')){
+        const tab_id = target.dataset['tab'];
+        console.log(tab_id);
+        const items = target.parentNode.children;
+        for (let i = 0; i < items.length; ++i){
+            items[i].classList.remove('tab-item-selected');
+        }
+        const contents = target.parentNode.parentNode.getElementsByClassName('tab-contents')[0].children;
+        for (let i=0; i < contents.length; ++i){
+            contents[i].classList.remove('tab-show-content');
+        }
+        target.classList.add('tab-item-selected');
+        document.getElementById(tab_id).classList.add('tab-show-content');
+
+    }
+
 }

@@ -43,11 +43,6 @@ def get_province_cities(request:HttpRequest):
     return HttpResponseBadRequest("Invalid province id")
 
 
-@login_required
-def change_shop_logo(request:HttpRequest):
-    if not request.is_seller():
-        pass
 
-@login_required
-def change_shop_banner(reqest:HttpRequest):
-    pass
+def rules(request:HttpRequest):
+    return render(request, 'rules.html')

@@ -1,0 +1,64 @@
+{% load static %}
+<style>
+    .cat{
+        flex: 50%;
+        padding: 0.2rem;
+        position: relative;
+        transform-origin: center,center;
+    }
+
+
+    .cat-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .bullets {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0.5rem;
+    }
+
+
+    @media screen and (min-width:576px) {
+       
+        .cat-row {
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+        
+    }
+    .cat-caption {
+        position: absolute;
+        bottom: 2%;
+        right: 0;
+        
+        background-color: white;
+        color: gray;
+        padding: 1rem 2rem 1rem 2rem;
+        font-size: 1rem;
+    }
+
+
+</style>
+
+
+<div class="row cat-row" style="justify-content: center;align-items:center;">
+    <div class="cat">
+        <img src="{% static 'img/img1/men.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">مردانه</span>
+    </div>
+    <div class="cat">
+        <img src="{% static 'img/img1/women.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">زنانه</span>
+    </div>
+    <div class="cat">
+        <img src="{% static 'img/img1/children.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">کودکانه</span>
+    </div>
+    <div class="cat">
+        <img src="{% static 'img/img1/access.jpeg'%}" style="width: 100%;">
+        <span class="cat-caption">اکسسوری</span>
+    </div>
+</div>

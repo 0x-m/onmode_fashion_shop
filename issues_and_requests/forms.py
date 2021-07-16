@@ -1,3 +1,5 @@
+from django.db.models import fields
+from .models import Issue
 from django import forms
 from django.core.validators import RegexValidator
 
@@ -9,4 +11,7 @@ class AppealforBoutiqueForm(forms.Form):
     
 
     
-    
+class IssueForm(forms.ModelForm):
+    class Meta:
+        model=Issue
+        fields= ['subject', 'title', 'description']

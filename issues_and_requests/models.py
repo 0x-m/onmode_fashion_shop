@@ -46,6 +46,7 @@ class Appeal(models.Model):
 class IssuesSubject(models.Model):
     subject = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
+    
     class Meta:
         verbose_name = _('Issue Subject')
         verbose_name_plural = _('Issue Subjects')
@@ -61,7 +62,6 @@ class Issue(models.Model):
     ]
     user = models.ForeignKey(verbose_name=_('User'),to=User, on_delete=models.CASCADE,related_name='issues')
     title = models.CharField(verbose_name=_('Title'),max_length=100)
-    order = models.ForeignKey(verbose_name=_('Order'),to=Order,on_delete=models.CASCADE, related_name='issues', null=True)
     subject = models.ForeignKey(verbose_name=_('Subject'),to=IssuesSubject,on_delete=models.CASCADE, related_name='issues')
     description = models.CharField(verbose_name=_('Description'),max_length=2000)
     state = models.PositiveIntegerField(verbose_name=_('State'),choices=STATES)

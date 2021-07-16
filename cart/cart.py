@@ -32,8 +32,9 @@ class Cart():
     @property
     def coupon(self):
         if self.coupon_id:
-            coupon = Coupon.objects.filte(id=self.coupon_id).first()
-            return coupon
+            coupon = Coupon.objects.filter(id=self.coupon_id).first()
+            if coupon.is_valid():
+                return coupon
         return None
     
     @property

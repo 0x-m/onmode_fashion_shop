@@ -1,5 +1,6 @@
 
 
+from os import name
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -12,10 +13,11 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('payments/', include('payments.urls', namespace='payments')),
     path('messages/', include('messaging.urls', namespace='messaging')),
+    path('orders/',include('orders.urls',namespace='orders')),
     path('', include('index.urls', namespace='index')),
     path('', include('shops.urls', namespace='shops')),
     path('', include('accounts.urls', namespace='accounts')),
-    path('',include('issues_and_requests.urls', namespace='issues'))
+    path('',include('issues_and_requests.urls', namespace='issues')),
 
 ] #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

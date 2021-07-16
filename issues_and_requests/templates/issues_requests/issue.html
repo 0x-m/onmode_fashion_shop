@@ -1,0 +1,54 @@
+<style>
+    .tab-items {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+<div class="container w-100">
+    <span class="fa fa-handshake-o" style="font-size: 10rem;color:rgba(221, 221, 221,0.6)"></span>
+
+    <div class="tab-container">
+        <div class="tab-items">
+            <div onclick="select_tab();" data-tab="new-request" class="tab-item tab-item-selected" >درخواست جدید</div>
+            <div data-tab="request-list" onclick="select_tab();" class="tab-item">درخواستها</div>
+        </div>
+        <div class="tab-contents">
+            <div id="new-request" class="tab-content tab-show-content fade">
+            <form id="issue-form">
+                <label for="subject" style="font-size: 0.8rem;margin-bottom:0.5rem">نوع درخواست:</span>
+                <p class="field">
+                    <select onclick="change_issue_help();" id="subject" name="subject" style="width: 100%;padding:0.5rem" id="issues w-100">
+                        <option value="">عنوان را انتخاب کنید</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.id }}">{{subject.subject}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p class="field">
+                    <input type="text" class="text-box" name="title" placeholder="عنوان درخواست...">
+                </p>
+                <p class="field">
+                    <textarea name="description"  class="text-box" style="resize: vertical;" rows="5" placeholder="توضیحات"></textarea>
+                </p>
+            </form>
+            <p style="display: flex;justify-content:center">
+                <button class="btn btn-success" style="width: 40%;">ثبت</button>
+                <button class="btn btn-primary" style="width: 40%;margin-right:1rem">لغو</button>
+            </p>
+        {% for subject in subjects %}
+            <div id="help-{{subject.id}}"  style="display: none;width:100%">
+                <p>
+                    {{ subject.description }}
+                </p>
+            </div>
+        {% endfor %}
+    <div style="font-size: 0.8rem;" id="issue-disc">
+        
+    </div>
+    </div>
+        <div id="request-list" class="tab-content fade">
+            
+        </div>
+    </div>
+    </div>
+</div>

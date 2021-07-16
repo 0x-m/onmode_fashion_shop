@@ -1,189 +1,265 @@
 {% load static %}
-<div class="row new-products"  >
-    <div id="slide3" class="slideshow">
-        <div class="tabs">
-            <div class="header" style="display: flex;flex-direction:column;justify-content:center;margin-top:1rem">
-                <span style="font-size: 1.2rem;color:gray" class="w-100 caption txt-center">شگفت انگیزها</span>
-                <div  style="display:flex;margin-top:1rem;justify-content:center">
-                    <span style="font-size: 0.8rem;"  class="dot tab-item active" onclick="showSlide(0)">زنانه</span>
-                    <span style="font-size: 0.8rem;" class="dot tab-item" onclick="showSlide(1)">مردانه</span>
-                    <span style="font-size: 0.8rem;" class="dot tab-item" onclick="showSlide(2)">بچگانه</span>
-                    <span style="font-size: 0.8rem;" class="dot tab-item" onclick="showSlide(3)">اکسسوری</span>
 
-                </div>
+<style>
+.tab-items .tab-item{
+    font-size: 0.8rem;
+
+}
+.tab-contents {
+    width: 100%;
+    padding: 0.5rem;
+
+}
+
+.action-btn{
+    padding: 0.2rem;
+    margin-left: 0.2rem;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.5s;
+
+}
+.action-btn:hover{
+    transform: scale(1.2,1.2);
+}
+.product{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.product .title{
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: black;
+}
+
+.explode{
+    animation-name: explosion;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+}
+
+.caption {
+    font-size: 1.2rem;
+    color: gray;
+    margin-top: 2rem;
+    width: 100%;
+    text-align: center;
+}
+.row-center {
+    justify-content: center;
+}
+.price{
+    text-align:center;
+    margin-top:-0.3em;
+    font-size: 0.8rem;
+}
+/*style="position: absolute;right:0.2rem;top:-0.5rem;background-color:rgba(253,253,253,0.7);padding:0.3rem;border-radius:4px"*/
+.action-bar{
+    position:absolute;
+    right: 2%;
+    top: -0.5rem;
+    background-color: rgba(253,253,253,0.5);
+    padding: 0.3rem;
+    border-radius: 4px;
+}
+
+@keyframes explosion {
+    0% { transform: scale(1.1,1.1);opacity: 1;}
+    25% { transform: scale(1.5,1.5);opacity: 0.9;}
+    50% { transform: scale(1.7,1.7);opacity: 0.5;}
+    75% { transform: scale(4,4);opacity: 0.2;}
+    100% { transform: scale(1,1);opacity: 0.1;}
+    
+}
+</style>
+<p class="caption">
+    شگفت انگیز
+</p>
+<div style="margin-top: -3rem;" class="row">
+    <div class="w-100 tab-container" >
+        <div  onclick="select_tab();" class="tab-items w-100 row-center">
+            <div data-tab="dis-1" class="tab-item fade">
+                زنانه
             </div>
-            <div style="width: 100%;">
-                <div class="slide fade dis-block" >
-                    <div class="rail" >   
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-bag btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>   
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                    </div>
-                </div>
-                <div class="slide fade" >
-                    <div class="rail" >
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                       
-                    </div>
+            <div data-tab="dis-2" class="tab-item">
+                مردانه
+            </div>
+            <div data-tab="dis-3" class="tab-item ">
+                بچگانه
+            </div>
+            <div data-tab="dis-4" class="tab-item ">
+                اکسسوری
+            </div>
+            
+        </div>
+        <div class="tab-contents">
+            <div id="dis-1" class="tab-content fade tab-show-content">
+              <div class="rail">
+                <div class="product">
+                    <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                    <h1 class="title">لباس من مدل </h1>
+                    <p class="price">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p class="action-bar">
+                        <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                        <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                    </p>
+                    <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
                 </div>  
-                <div class="slide fade">
-                    <div class="rail">
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                            
-                        </div>  
-                        <div class="product">
-                            <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-                            <div class="container-col">
-                                <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-                               
-                                <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                                    <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                                    <span style="text-decoration:line-through;color:gray;">100000</span>
-                                </p>
-                                <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-                                
-                                    <span class="fa fa-shopping-basket btn-tiny" ></span>
-                                    <span class="fa fa-heart btn-tiny"></span>
-                                </p>
-                                <p class="badge" style="background-color:green">15%</p>
-                            </div>
-                        </div>  
-                    </div>
+                <div class="product">
+                    <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                    <h1 class="title">لباس من مدل </h1>
+                    <p class="price">
+                        <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                        <span style="text-decoration:line-through;color:gray;">100000</span>
+                    </p>
+                    <p class="action-bar">
+                        <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                        <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                    </p>
+                    <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                </div>  
+              </div>
+            </div>
+            <div id="dis-2" class="tab-content fade">
+                <div class="rail">
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                </div>
+            </div>
+            <div id="dis-3" class="tab-content fade">
+                <div class="rail">
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                </div>
+                    
+                </div>
+            <div id="dis-4" class="tab-content fade">
+                <div class="rail">
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
+                    <div class="product">
+                        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
+                        <h1 class="title">لباس من مدل </h1>
+                        <p class="price">
+                            <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
+                            <span style="text-decoration:line-through;color:gray;">100000</span>
+                        </p>
+                        <p class="action-bar">
+                            <button class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');" ></button>
+                            <button class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode')"></button>
+                        </p>
+                        <p class="badge" style="background-color:rgb(36, 204, 36)">15%</p>
+                    </div>  
                 </div>
             </div>
         </div>
-        </div>
-        
     </div>
 </div>
 <div class="row">

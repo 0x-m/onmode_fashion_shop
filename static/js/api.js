@@ -209,6 +209,7 @@ function increment_product(){
         resp = JSON.parse(data);
         console.log(data);
         document.getElementById("total_price").innerText = resp['total'];
+        document.getElementById("card-num").innerText = resp['num']
     }, ()=>{
         msg = "اتمام موجودی";
         console.log("err...inc...")
@@ -217,16 +218,67 @@ function increment_product(){
 
 
 }
+
+
+
+
 function decrement_product(){
     const product_id = event.target.dataset["id"];
     command("/cart/decrement/" + product_id + "/", (data)=> {
         resp = JSON.parse(data);
         console.log(data);
         document.getElementById("total_price").innerText = resp["total"];
+        document.getElementById("card-num").innerText = resp['num'];
     })
 }
+
+
+function make_issue(){
+    fetch("/issue/register/",{
+        method: "GET",
+
+    }).then((response)=>{
+        response.text().then((txt)=>{
+            set_view(txt)
+            showSidebox();
+        })
+    })
+}
+
+function change_issue_help(){
+    console.log("sddsdsf")
+    const id = document.getElementById("subject").value;
+    document.getElementById("issue-disc").innerHTML = document.getElementById("help-"+id).innerHTML;
+}
+
 function apply_coupon(){
+    console.log("dsfsfs")
     const coupon_code = document.getElementById("coupon-code").value;
+    // const rx = new RegExp('^[0-9A-za-z]{6}$');
+    // if(!rx.test(coupon_code)){
+    //     msg = "کوپن نامعتبر"
+    //     set_error(msg,2000);
+    //     return
+    // }
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            end_waiting();
+            get_cart();
+        }
+        if(xhttp.status == 400){
+            end_waiting();
+            console.log('ssss')
+            msg = "کوپن نامعتبر"
+            set_error(msg,2000,()=>{});
+        }
+    }
+
+    xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
+    xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+    start_waiting();
+    xhttp.send();
 }
 function checkout_cart(){}
 
@@ -1023,7 +1075,20 @@ function edit_shop(){
 
 /*********************ORDERS********************* */
 function get_orders(){
-
+    console.log('ordes...');    
+    event.stopPropagation();
+    showSidebox();
+    start_waiting();
+    fetch('/orders/all/',{
+        method: "GET"
+    }).then((res) => {
+        
+        res.text().then((txt)=>{
+            end_waiting();
+            set_view(txt);
+        }
+        );
+    });
 }
 
 function order_accepted(){}
