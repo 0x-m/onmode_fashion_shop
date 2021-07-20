@@ -3,11 +3,12 @@ from typing import Iterable, Optional
 from django.db import models
 from users.models import User
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save
 import math
 
 class Account(models.Model):
     user = models.OneToOneField(verbose_name=_('User'),to=User,on_delete=models.CASCADE,related_name='account')
-    balance = models.DecimalField(verbose_name=_('Balance'),max_digits=15,decimal_places=0)
+    balance = models.DecimalField(verbose_name=_('Balance'),max_digits=15,decimal_places=0,default=0)
     last_updated = models.DateTimeField(verbose_name=_('Last Update'),auto_now=True)
     
     class Meta:
@@ -15,7 +16,7 @@ class Account(models.Model):
         verbose_name_plural = _('Accounts')
     
     def __str__(self) -> str:
-        return self.balance
+        return str(self.balance)
     
     def deposit(self, amount):
         self.balance += amount
@@ -30,6 +31,17 @@ class Account(models.Model):
         
     def has_enough_balance(self,balance):
         return self.balance >= balance
+    
+    @classmethod
+    def create_account_for_user(cls,sender,instance, created,*args,**kwargs):
+        if created:
+            acc = Account(user=instance)
+            acc.save()
+            
+        
+
+post_save.connect(Account.create_account_for_user, sender=User)
+
     
     
 class CheckoutRequest(models.Model):
@@ -102,7 +114,7 @@ class TransferTransaction(models.Model):
  
     
     def __prepare(self):
-        self.debtor.widthraw(self.amount)
+        self.debtor.withdraw(self.amount)
           
     def commit(self):
         self.creditor.deposit(self.amount)
@@ -111,17 +123,13 @@ class TransferTransaction(models.Model):
     
     def rollback(self):
         self.debtor.deposit(self.amount)
-        self.creditor.widthraw(self.amount)
+        self.creditor.withdraw(self.amount)
         self.state = self.ROLLBACKED
         self.save()
 
-    def save(self, force_insert: bool, 
-             force_update: bool, 
-             using: Optional[str], 
-             update_fields: Optional[Iterable[str]]) -> None:
+    def save(self, **kwargs) -> None:
         self.__prepare()
-        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
-
+        return super().save(**kwargs)
 
 
         

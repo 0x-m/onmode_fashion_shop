@@ -53,6 +53,7 @@ class User(AbstractUser):
             code = ''.join(secrets.choice(alphbet)for i in range(6))
             print(code + id)
             instance.user_code = code + id
+            
             instance.save()
             
 

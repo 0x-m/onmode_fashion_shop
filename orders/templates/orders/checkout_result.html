@@ -1,0 +1,14 @@
+<div style="width: 90%;" class="container centerized">
+    {% if state == 'success' %}
+        <span class="fa fa-check-circle" style="font-size: 10rem;color:rgba(59, 209, 59,0.5);"></span>
+        <p style="font-size: 1rem;color:gray">
+        پرداخت با موفقیت انجام شد.
+        </p>
+    {% elif state == 'low balance' %}
+        <span class="fa fa-warning" style="font-size: 10rem;color:rgba(240, 40, 40, 0.5);"></span>
+        <p style="font-size: 1rem;color:gray">
+       موجودی حساب شما کافی نمیباشد.
+        </p>
+        <button type="button" class="btn btn-primary w-100" onclick="" >پرداخت از طریق درگاه بانک</button> 
+    {% endif %}
+</div>

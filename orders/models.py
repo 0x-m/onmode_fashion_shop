@@ -45,9 +45,9 @@ class OrderList(models.Model):
     total_price = models.DecimalField(verbose_name=_('Total price'),max_digits=10,decimal_places=0,default=0)
     total_price_after_discount = models.DecimalField(verbose_name=_('Discounted Total Price'),max_digits=10,decimal_places=0,default=0)
     total_price_after_applying_coupon = models.DecimalField(verbose_name=_('Total price after applying coupon'),max_digits=10, decimal_places=0,default=0)
-    coupon = models.ForeignKey(verbose_name=_('Coupon'),to=Coupon,on_delete=models.SET_NULL, null=True) 
+    coupon = models.ForeignKey(verbose_name=_('Coupon'),to=Coupon,on_delete=models.SET_NULL,blank=True, null=True) 
     is_paid = models.BooleanField(verbose_name=_('Paid'),default=False)
-    Address = models.ForeignKey(verbose_name=_('Address'),to=OrderAddress,on_delete=models.CASCADE, null=True)
+    Address = models.ForeignKey(verbose_name=_('Address'),to=OrderAddress,on_delete=models.CASCADE,blank=True, null=True)
     use_default_address = models.BooleanField(verbose_name=_('Use default address'),default=True)
     post_method = models.CharField(verbose_name=_('Post Method'),max_length=20,choices=POST_METHODS,default='ultimate')
     
@@ -56,29 +56,31 @@ class OrderList(models.Model):
         verbose_name = _('Order List')
         verbose_name_plural = _('Order Lists')
     
-    def set_coupon(self, coupon:Coupon):
-        self.coupon = coupon
-        self.save()
 
     
-    def apply_coupon(self):
+    def __apply_coupon(self):
         if self.coupon:
             if self.coupon.is_valid():
                 self.total_price_after_applying_coupon = self.coupon.get_total_price_after_applying_coupon(self.total_price_after_discount)
-               # self.coupon.make_used()
+            # self.coupon.make_used()
         else:
             self.total_price_after_applying_coupon = self.total_price_after_discount
-        self.save()
+    
+    
+    def save(self, **kwargs):
+        self.__apply_coupon()
+        super().save(**kwargs)
     
 
     
     def finish(self):
-        self.coupon.make_used()
-        for o in self.orders:
+        if self.coupon:
+            self.coupon.make_used()
+        for o in self.orders.all():
             for i in o.items.all():
-                i.decrement_discount_quantity()
-            transaction = TransferTransaction(debtor=self.user, 
-                                              creditor= o.shop.seller,
+                i.decrement_quantity()
+            transaction = TransferTransaction(debtor=self.user.account, 
+                                              creditor= o.shop.seller.account,
                                               amount=self.total_price_after_applying_coupon)
             transaction.save()
         self.is_paid = True
@@ -95,7 +97,7 @@ class OrderList(models.Model):
     def add_order(self, order):
         self.total_price += order.total_price
         self.total_price_after_discount += order.discounted_total_price
-        self.apply_coupon() #contains save
+        self.save()
   
     
 
@@ -124,7 +126,7 @@ class Order(models.Model):
     shop = models.ForeignKey(verbose_name=_('Shop'),to=Shop,on_delete=models.DO_NOTHING, related_name='orders')
     total_price = models.DecimalField(verbose_name=_('Total Price'),max_digits=10,decimal_places=0,default=0)
     discounted_total_price = models.DecimalField(verbose_name=_('Discounted total price'),max_digits=10,decimal_places=0,default=0)
-    tracking_code = models.CharField(verbose_name=_('Tracking code'),max_length=30)
+    tracking_code = models.CharField(verbose_name=_('Tracking code'),max_length=30,null=True,blank=True)
     state = models.CharField(verbose_name=_('State'),choices=STATES,default='pending', max_length=20)
     verify_sent = models.BooleanField(verbose_name=_('Verify sent'),default=False)
     
@@ -133,8 +135,9 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
     
     def add_item(self,item):
-        if not item in self.items.all():
-            return
+        if  item in self.items.all():
+            self.clearout_item(item)
+             
         self.order_list.clearout_order(self)
         self.total_price += item.total_price
         self.discounted_total_price += item.discounted_total_price
@@ -180,6 +183,16 @@ class Order(models.Model):
     
     def issue_return(self):
         pass
+    
+    def quantity(self):
+        total = 0
+        if self.items:
+            for i in self.items.all():
+                total += i.quantity
+        return total
+            
+            
+    
         
 
 class OrderItem(models.Model):
@@ -193,7 +206,7 @@ class OrderItem(models.Model):
     discounted_price = models.DecimalField(verbose_name=_('Discounted Price'),max_digits=10,decimal_places=0,default=0) #discounted price
     total_price = models.DecimalField(verbose_name=_('Total price'),max_digits=10,decimal_places=0,default=0) # price * quantity
     discounted_total_price = models.DecimalField(verbose_name=_('Discounted total price'),max_digits=10,decimal_places=0,default=0)
-    discount = models.ForeignKey(verbose_name=_('Discount'),to=Discount,on_delete=models.DO_NOTHING,null=True)
+    discount = models.ForeignKey(verbose_name=_('Discount'),to=Discount,on_delete=models.DO_NOTHING,null=True,blank=True)
     
     class Meta:
         verbose_name = _('Order Item')
@@ -223,18 +236,30 @@ class OrderItem(models.Model):
             self.discounted_price = self.price
             self.discounted_total_price = self.total_price
     
-
-    @classmethod
-    def post_create(cls, sender, instance, created, *args, **kwargs ):
-        if created:
-            print('orderitem created')
-            instance.__set_price()
-            instance.__apply_discount()
-            instance.order.add_item(instance)
-        else:
-            instance.order.clearout_item(instance)
-            instance.order.add_item(instance)
-        instance.save()
+    
+    
+    
+    def save(self, **kwargs):
+        self.__set_price()
+        self.__apply_discount()
+        self.order.add_item(self)
+        super().save(**kwargs)
+    
+    def delete(self, **kwargs):
+        self.order.clearout_item(self)
+        super().delete(**kwargs)
+    
+    # @classmethod
+    # def post_create(cls, sender, instance, created, *args, **kwargs ):
+    #     if created:
+    #         print('orderitem created')
+    #         instance.__set_price()
+    #         instance.__apply_discount()
+    #         instance.order.add_item(instance)
+    #     else:
+    #         instance.order.clearout_item(instance)
+    #         instance.order.add_item(instance)
+    #     instance.save()
     
     def decrement_quantity(self):
         if self.discount:
@@ -244,7 +269,7 @@ class OrderItem(models.Model):
     
 
     
-post_save.connect(OrderItem.post_create, sender = OrderItem)
+# post_save.connect(OrderItem.post_create, sender = OrderItem)
 
     
    

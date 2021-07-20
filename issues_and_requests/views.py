@@ -45,7 +45,7 @@ def make_issue(request:HttpRequest):
             issue.save()
             return HttpResponse('issue was registerd successfully')
     subjects = IssuesSubject.objects.all()
-    
+
     return render(request,'issues_requests/issue.html',{
         'subjects': subjects
     })

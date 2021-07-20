@@ -245,6 +245,25 @@ function make_issue(){
     })
 }
 
+function toggle_address_form(){
+    if(event.target.checked){
+        document.getElementById('address_form').style.display = "none"
+    }
+    else{
+        document.getElementById('address_form').style.display = "flex";
+    }
+}
+
+function get_all_issues(){
+    fetch('/issue/all/',{
+        method : "GET"
+    }).then((response) =>{
+        response.text().then((txt) => {
+            
+        })
+    })
+}
+
 function change_issue_help(){
     console.log("sddsdsf")
     const id = document.getElementById("subject").value;
@@ -280,9 +299,47 @@ function apply_coupon(){
     start_waiting();
     xhttp.send();
 }
-function checkout_cart(){}
+function checkout_cart(){
+    start_waiting();
+    fetch('/orders/checkout/',{
+        method: 'GET'
+    }).then((response) =>{
+
+        response.text().then((txt)=>{
+            end_waiting();
+            set_view(txt);
+        })
+
+    })
+}
 
 /********************************************* */
+function purchase(){
+    const form = document.getElementById('address_form')
+    const use_default_address = document.getElementById("use_default_address").checked;
+    const data = new FormData(form);
+    if (use_default_address == true){
+        data.append('user_default_address','true')
+    }
+    else if (use_default_address == false){
+        data.append('user_default_address', 'false')
+    }
+    
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            end_waiting()
+            set_view(xhttp.responseText);
+        }
+    }
+
+    xhttp.open("POST","/orders/checkout/");
+    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    start_waiting();
+    xhttp.send(data);
+}
+
+
 
 /*******************FAVOURITES**************** */
 
@@ -1074,12 +1131,12 @@ function edit_shop(){
 }
 
 /*********************ORDERS********************* */
-function get_orders(){
+function get_user_orders(){
     console.log('ordes...');    
     event.stopPropagation();
     showSidebox();
     start_waiting();
-    fetch('/orders/all/',{
+    fetch('/orders/user/',{
         method: "GET"
     }).then((res) => {
         

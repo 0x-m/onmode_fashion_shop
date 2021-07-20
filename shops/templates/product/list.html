@@ -11,7 +11,7 @@
 
     <div id="product-{{ product.id }}" class="product">
         <a href="{{ product.get_absolute_url }}" class="prod-link">
-            {% if product.images %}
+            {% if product.images.first.image %}
                 <img src="{{ product.images.first.image.url }}" class="img" />
             {% else %}
                 <img src="{% static 'img/img1/noimg.jpg' %}" class="img" />

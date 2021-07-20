@@ -71,6 +71,10 @@ def add_product(request:HttpRequest):
                     for i in range(num_img,5):
                         empty_img = ProductImage(product=product)
                         empty_img.save()
+            else:
+                for i in range(0,5):
+                    empty_img = ProductImage(product=product)
+                    empty_img.save()
                
             return HttpResponse("added successfully")
         return HttpResponseBadRequest(form.errors)

@@ -112,17 +112,24 @@ class SubType(models.Model):
 
 class Product(models.Model):
     shop = models.ForeignKey(verbose_name=_('Shop'),to=Shop, on_delete=models.CASCADE)
-    brand = models.ForeignKey(verbose_name=_('Brand'),to=Brand, on_delete=models.CASCADE)
+    brand = models.ForeignKey(verbose_name=_('Brand'),to=Brand, on_delete=models.CASCADE,null=True)
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='products')
-    type = models.ForeignKey(verbose_name=_('Type'),to=Type,on_delete=models.CASCADE)
-    subtype = models.ForeignKey(verbose_name=_('SubType'),to=SubType,on_delete=models.CASCADE, related_name='products')
+    type = models.ForeignKey(verbose_name=_('Type'),to=Type,on_delete=models.CASCADE,null=True)
+    subtype = models.ForeignKey(verbose_name=_('SubType'),to=SubType,on_delete=models.CASCADE, related_name='products', null=True)
     colors = models.ManyToManyField(verbose_name=_('Colors'),to=Color,related_name='products')
     sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products')
-    name = models.CharField(verbose_name=_('Name'),max_length=120)
+    name = models.CharField(verbose_name=_('Name'),max_length=120,blank=True, null=True)
     description = models.CharField(verbose_name=_('Description'),max_length=500, blank=True)
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
         MinValueValidator(1000),
     ])
+    
+    def decrement_quantity(self,q):
+        if self.quantity > q :
+            self.quantity -=q
+        else:
+            raise ValueError()
+        self.save()
     
     def generate_path(instance, filename):
         path = 'photos/avatar/' + str(instance.id) + '/'
@@ -145,11 +152,7 @@ class Product(models.Model):
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
     
-    def default_keywords(self):
-        self.keywords += ''
-    
     def save(self,*args, **kwargs):
-        self.default_keywords();
         super().save(*args, **kwargs)
         
     def add_keywords(self, keywords:list):

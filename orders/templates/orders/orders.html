@@ -2,20 +2,149 @@
     .tab-item {
         font-size: 0.7rem !important;
     }
+    table{
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        padding: 0.4rem;
+        font-size: 0.7rem;
+        border-bottom: 1px solid rgb(226, 226, 226);
+    }
+    th{
+        background-color: rgb(240, 240, 240);
+        padding: 0.5rem;
+        color: rgb(54, 54, 54);
+    }
+    tr{
+        background-color: rgba(249,249,249,0.9);
+        color: black;
+        padding: 15px;
+        height: 10vw;
+        margin: 0.5rem;
+    }
+    tr:nth-child(even){
+        background-color: white;
+    }
+
+    tfoot {
+        background-color: #efefef;
+    }
+
+    .order {
+        margin-top: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgb(226, 226, 226);
+    }
+
+    .more {
+        color: gray;
+        cursor: pointer;
+    }
+    .more:hover{
+        color: black;
+    }
+
+    .accepted {
+        background-color: rgba(131, 247, 131,0.5) !important;
+    }
+    .rejcted { 
+        background-color: #fbfbfb !important;
+    }
+    .sent { 
+        background-color: skyblue !important;
+    }
+    .recieved { 
+        background-color: green !important;
+    }
+    .cancelled { 
+        background-color: #efefef;
+    }
+
+    @media screen and (min-width: 576px) {
+        tr {
+            height: 4vw;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        tr {
+            height: 2vw;
+        }
+    }
+
 </style>
 <div class="container">
     <div class="tab-container">
         <div class="tab-items">
-            <div class="tab-item">جدیدترین</div>
-            <div class="tab-item">تایید شده</div>
-            <div class="tab-item">رد شده</div>
-            <div class="tab-item">کنسل شده</div>
+            <div data-tab="new-orders" onclick="select_tab();" class="tab-item">جدیدترین</div>
+            <div class="tab-item">تاییدی</div>
+            <div class="tab-item">ارسالی</div>
+            <div class="tab-item">دریافتی</div>
             <div class="tab-item">بازگشتی</div>
 
         </div>
         <div class="tab-contents">
-            <div class="tab-content">
-
+            <div id="new-orders" class="tab-content">
+                <div class="order">
+                    <table>
+                        <tr>
+                            <th>شماره</th>
+                            <th>خریدار</th>
+                            <th>تعداد محصولات</th>
+                            <th>قیمت کل</th>
+                            <th>وضعیت</th>
+                            <th>جزئیات</th>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>علی علوی</td>
+                            <td>10</td>
+                            <td>12500ت</td>
+                            <td>تایید</td>
+                            <td>
+                               <span class="fa fa-paperclip more"></span>
+                            </td>
+                        </tr>
+                     {% for order in pending_orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.discounted_total_price }}</td>
+                            <td>{{ order.state }}</td>
+                        </tr>
+                     {% endfor %}
+                    </table>
+                    <!-- <p style="font-size: 0.8rem;color:gray;margin:0.3rem;width:98%">
+                        <span style="float: left;padding:0.5rem;background-color:rgb(143, 143, 143);color:white">جمع کل: 8000تومان</span>
+                    </p> -->
+                    <!-- <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem">
+                        <span ">شماره سفارش: 258885</span>
+                        <br/>
+                        <span>نام خریدار: بوعذار</span>
+                        <br>
+                        <span>استان:فارس</span>
+                        <br>
+                        <span>شهرستان:شیراز</span>
+                        <br>
+                        <span>شهر:شیراز</span>
+                        <br>
+                        <span>نشانی:فلکه گاز/...</span>
+                        <br>
+                        <span>کد پستی:</span>
+                        <br>
+                        <span>تاریخ ثبت:29/8/00</span>
+                        <br />
+                        <div style="width: 100%;text-align:center">
+                            <span style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(255, 80, 80)">رد میکنم</span>
+                            <span style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">آماده میکنم</span>
+    
+                        </div>
+                    </p> -->
+                </div>
+               
             </div>
             <div class="tab-content">
 

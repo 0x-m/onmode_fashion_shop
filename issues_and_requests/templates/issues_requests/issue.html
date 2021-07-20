@@ -2,31 +2,64 @@
     .tab-items {
         display: flex;
         justify-content: center;
+        
+    }
+    .issue{
+        display: flex;
+        flex-direction: column;
+        padding: 0.2rem;
+        border-radius: 2px;
+        margin-top: 1rem;
+        border-bottom: 1px solid gray;
+
+    }
+
+    .issue .title{
+        font-size: 0.8rem;
+        margin-right: 0.3rem;
+        font-style: italic;
+
+    }
+
+    .issue .description {
+        margin-top: 0.2rem;
+        font-size: 0.7rem;
+        width: 100%;
+        padding: 0.5rem;
+        color: gray;
+
+    }
+
+    .issue .response {
+        padding: 0.5rem;
+        margin-top: 0.2rem;
+        font-size: 0.7rem;
+        background-color: #f9f9f9;
+        width: 100%;
     }
 </style>
 <div class="container w-100">
     <span class="fa fa-handshake-o" style="font-size: 10rem;color:rgba(221, 221, 221,0.6)"></span>
 
-    <div class="tab-container">
+    <div class="tab-container" style="width: 90%;">
         <div class="tab-items">
             <div onclick="select_tab();" data-tab="new-request" class="tab-item tab-item-selected" >درخواست جدید</div>
             <div data-tab="request-list" onclick="select_tab();" class="tab-item">درخواستها</div>
         </div>
-        <div class="tab-contents">
+        <div class="tab-contents" >
             <div id="new-request" class="tab-content tab-show-content fade">
             <form id="issue-form">
-                <label for="subject" style="font-size: 0.8rem;margin-bottom:0.5rem">نوع درخواست:</span>
                 <p class="field">
-                    <select onclick="change_issue_help();" id="subject" name="subject" style="width: 100%;padding:0.5rem" id="issues w-100">
+                    <select  onclick="change_issue_help();" id="subject" name="subject" style="width: 100%;padding:0.3rem;font-size:0.8rem;margin-bottom:.5rem" id="issues w-100">
                         <option value="">عنوان را انتخاب کنید</option>
                         {% for subject in subjects %}
                             <option value="{{ subject.id }}">{{subject.subject}}</option>
                         {% endfor %}
                     </select>
                 </p>
-                <p class="field">
+                <!-- <p class="field">
                     <input type="text" class="text-box" name="title" placeholder="عنوان درخواست...">
-                </p>
+                </p> -->
                 <p class="field">
                     <textarea name="description"  class="text-box" style="resize: vertical;" rows="5" placeholder="توضیحات"></textarea>
                 </p>
@@ -42,12 +75,20 @@
                 </p>
             </div>
         {% endfor %}
-    <div style="font-size: 0.8rem;" id="issue-disc">
+    <p style="font-size: 0.8rem;word-wrap:break-word;" id="issue-disc";>
         
+    </p>
     </div>
-    </div>
-        <div id="request-list" class="tab-content fade">
-            
+        <div id="request-list" class="tab-content fade container">
+        {% for issue in user.issues.all %}
+            <div class="issue">
+                <h1 class="title">{{issue.subject.subject}}</h1>
+                <h3 class="description">{{issue.description}} </h3>
+                <h3 class="response">
+                    {{ issue.response }}
+                </h3>
+            </div>
+        {% endfor %}
         </div>
     </div>
     </div>

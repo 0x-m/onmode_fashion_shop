@@ -2,7 +2,7 @@ from django.db import models
 from shops.models import Shop
 from django.utils.translation import gettext_lazy as _
 from users.models import User
-from django.utils import timezone
+from django.utils import timezone, tree
 from orders.models import Order
 
 class Appeal(models.Model):
@@ -52,20 +52,11 @@ class IssuesSubject(models.Model):
         verbose_name_plural = _('Issue Subjects')
 
 class Issue(models.Model):
-    PENDING = 0
-    REJECTED = 1
-    ACCEPTED = 2
-    STATES = [
-        (PENDING, _('Pending')),
-        (ACCEPTED, _('Accepted'))
-        ,(REJECTED, _('Rejected'))
-    ]
     user = models.ForeignKey(verbose_name=_('User'),to=User, on_delete=models.CASCADE,related_name='issues')
     title = models.CharField(verbose_name=_('Title'),max_length=100)
     subject = models.ForeignKey(verbose_name=_('Subject'),to=IssuesSubject,on_delete=models.CASCADE, related_name='issues')
     description = models.CharField(verbose_name=_('Description'),max_length=2000)
-    state = models.PositiveIntegerField(verbose_name=_('State'),choices=STATES)
-    status = models.CharField(verbose_name=_('Status'),max_length=5000)
+    response = models.CharField(verbose_name=_('Response'),max_length=5000, blank=True,null=True)
     class Meta:
         verbose_name = _('Issue')
         verbose_name_plural = _('Issues')

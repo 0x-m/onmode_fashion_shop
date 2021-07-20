@@ -1,0 +1,29 @@
+<style>
+    .text-box{
+        margin-top: 1rem;
+    }
+
+</style>
+<div class="container" style="width: 80%;">
+    <p class="mt-1 field">
+        <label style="font-size: 0.8rem;" for="use_defaulta_address"> 
+            <input onchange="toggle_address_form();" id="use_default_address" type="checkbox" name="use_default_address">
+            برای خودم
+        </label>
+    </p>
+    <form id="address_form" class="field">
+      
+        <!-- <div id="address_form" class="field w-100"  >
+            <input type="text" class="text-box" placeholder="نام">
+            <input type="text" class="text-box" placeholder="نام خانوادگی">
+            <input type="text" class="text-box" placeholder="شماره تماس">
+            <input type="text" class="text-box" placeholder="استان">
+            <input type="text" class="text-box" placeholder="شهرستان">
+            <input type=" text" class="text-box" placeholder="شهر">
+            <textarea  class="text-box" placeholder="نشانی"></textarea>
+        </div> -->
+            {{ form.as_p }}
+    </form>
+    <button onclick="purchase();" style="margin-top: 1rem;" type="button" class="mb-1 w-100 btn btn-primary">پرداخت</button>
+
+</div>
