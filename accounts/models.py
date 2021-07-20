@@ -1,9 +1,14 @@
+from datetime import time
 from logging import setLogRecordFactory
 from typing import Iterable, Optional
+from django.core.validators import MaxLengthValidator
 from django.db import models
+from django.db.models.query_utils import select_related_descend
+from django.forms.widgets import NumberInput
 from users.models import User
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save
+from django.utils import timezone, tree
 import math
 
 class Account(models.Model):
@@ -57,10 +62,11 @@ class CheckoutRequest(models.Model):
     class Meta:
         verbose_name = _('Checkout request')
         verbose_name_plura = _('Checkout requests')
-    
-    account = models.ForeignKey(verbose_name=_('Account'),to=Account,on_delete=models.CASCADE,related_name='checkouts')
-    date_created = models.DateField(verbose_name=_('Date created'),auto_now=True)
-    amount = models.DecimalField(verbose_name=_('Amount'),max_digits=15,decimal_places=0)
+    applicant = models.ForeignKey(verbose_name=_('Applicant'),to=User,related_name='Checkouts', on_delete=models.CASCADE, null=True)
+    intendant = models.OneToOneField(verbose_name=_('Intendant'),to=User,related_name='intendant_checkouts', null=True, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
+    data_accomplished = models.DateTimeField(verbose_name=_('Accomplished date'), default=timezone.now)
+    amount = models.DecimalField(verbose_name=_('Amount'),max_digits=15,decimal_places=0,default=timezone.now)
     description = models.TextField(verbose_name=_('Description'),max_length=500,null=True)
     state = models.CharField(verbose_name=_('state'),choices=STATES,default='pending',max_length=20)
     status = models.TextField(verbose_name=_('status'),max_length=500, null=True)
@@ -68,7 +74,7 @@ class CheckoutRequest(models.Model):
     final_amount = models.DecimalField(verbose_name=_('Final Amount'), max_digits=15, decimal_places=0, default=0)
     
     def save(self,*arg, **kwargs):
-        self.fee = math.floor((self.account.user.fee / 100) * self.amount)
+        self.fee = math.floor((self.applicant.fee / 100) * self.amount)
         self.final_amount = self.amount - self.fee
         super().save(*arg, **kwargs)
         
@@ -76,13 +82,16 @@ class CheckoutRequest(models.Model):
         verbose_name = _('Checkout Request')
         verbose_name_plural = _('Checkout Requests')
     
-    def accept(self):
+    def accept(self,intendant:User):
         self.state = self.ACCEPTED
         #-------- othr actions------
-        self.account.withdraw(self.amount)
+        self.intendant = intendant #who verify this transaction
+        self.applicant.account.withdraw(self.amount)
         self.save()
     
     def reject(self,status=None):
+        if not self.state == self.ACCEPTED:
+            return
         self.state = self.REJECTED
         #--------other actions-------
         #----------------------------
@@ -95,15 +104,17 @@ class TransferTransaction(models.Model):
     PENDING = 'pending'
     COMMITTED = 'committed'
     ROLLBACKED = 'rollbacked'
+    REJECTED = 'rejected'
     STATES = [
         (PENDING,_('prepared')),
         (COMMITTED, _('committed')),
-        (ROLLBACKED, _('rollbacked'))
+        (ROLLBACKED, _('rollbacked')),
+        (REJECTED, _('rejected'))
     ]
-    
     debtor = models.ForeignKey(verbose_name=_('debtor'),to=Account,on_delete=models.CASCADE, related_name='debts')
     creditor = models.ForeignKey(verbose_name=_('creditor'),to=Account,on_delete=models.CASCADE, related_name='credits')
     date_created = models.DateTimeField(verbose_name=_('Date created'),auto_now_add=True)
+    data_accomplished = models.DateTimeField(verbose_name=('Accomplished date'),default=timezone.now)
     amount = models.DecimalField(verbose_name=_('Amount'),max_digits=15, decimal_places=0)
     state = models.CharField(verbose_name=_('State'),choices=STATES, default='pending',max_length=20)
 
@@ -117,15 +128,23 @@ class TransferTransaction(models.Model):
         self.debtor.withdraw(self.amount)
           
     def commit(self):
-        self.creditor.deposit(self.amount)
-        self.state = self.COMMITTED
-        self.save()
+        if self.state == self.PENDING:
+            self.creditor.deposit(self.amount)
+            self.state = self.COMMITTED
+            self.save()
+        
+    def reject(self):
+        if self.state == self.PENDING:
+            self.debtor.deposit(self.amount)
+            self.state == self.REJECTED
+            self.save()
     
     def rollback(self):
-        self.debtor.deposit(self.amount)
-        self.creditor.withdraw(self.amount)
-        self.state = self.ROLLBACKED
-        self.save()
+        if self.state == self.COMMITTED:
+            self.debtor.deposit(self.amount)
+            self.creditor.withdraw(self.amount)
+            self.state = self.ROLLBACKED
+            self.save()
 
     def save(self, **kwargs) -> None:
         self.__prepare()
@@ -162,8 +181,4 @@ class DepositTransaction(models.Model):
             self.save()
     
          
-
-
-    
-
 

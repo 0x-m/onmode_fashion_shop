@@ -1,6 +1,7 @@
 <style>
     .tab-item {
         font-size: 0.7rem !important;
+        padding: 0.2rem;
     }
     table{
         border-collapse: collapse;
@@ -76,13 +77,14 @@
 
 </style>
 <div class="container">
-    <div class="tab-container">
-        <div class="tab-items">
+    <div class="tab-container w-100">
+        <div style="display: flex;width:100%;justify-content:center" class="tab-items">
             <div data-tab="new-orders" onclick="select_tab();" class="tab-item">جدیدترین</div>
-            <div class="tab-item">تاییدی</div>
-            <div class="tab-item">ارسالی</div>
-            <div class="tab-item">دریافتی</div>
-            <div class="tab-item">بازگشتی</div>
+            <div data-tab="accepted-orders" onclick="select_tab();" class="tab-item">تاییدی</div>
+            <div data-tab="rejected-orders" onclick="select_tab();" class="tab-item">ردی</div>
+            <div data-tab="sent-orders" onclick="select_tab();" class="tab-item">ارسالی</div>
+            <div data-tab="recieved-orders" onclick="select_tab();" class="tab-item">دریافتی</div>
+            <div data-tab="returned-orders" onclick="select_tab();" class="tab-item">بازگشتی</div>
 
         </div>
         <div class="tab-contents">
@@ -91,68 +93,187 @@
                     <table>
                         <tr>
                             <th>شماره</th>
-                            <th>خریدار</th>
+                            {% if owner == 'shop' %}
+                                <th>خریدار</th>
+                            {% elif owner == 'user' %}
+                                <th>بوتیک</th>
+                            {% endif %}
                             <th>تعداد محصولات</th>
                             <th>قیمت کل</th>
-                            <th>وضعیت</th>
                             <th>جزئیات</th>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>علی علوی</td>
-                            <td>10</td>
-                            <td>12500ت</td>
-                            <td>تایید</td>
-                            <td>
-                               <span class="fa fa-paperclip more"></span>
-                            </td>
                         </tr>
                      {% for order in pending_orders %}
                         <tr>
                             <td>{{ order.id }}</td>
+                            {% if owner == 'shop' %}
                             <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                            {% elif owner == 'user' %}
+                            <td>{{ order.shop.name }}</td>
+                            {% endif %}
                             <td>{{ order.quantity }}</td>
                             <td>{{ order.discounted_total_price }}</td>
-                            <td>{{ order.state }}</td>
+                            <td>
+                                <span data-id="{{ order.id }}" onclick="show_order_detail();" class="fa fa-paperclip more"></span>
+                             </td>
                         </tr>
                      {% endfor %}
                     </table>
-                    <!-- <p style="font-size: 0.8rem;color:gray;margin:0.3rem;width:98%">
-                        <span style="float: left;padding:0.5rem;background-color:rgb(143, 143, 143);color:white">جمع کل: 8000تومان</span>
-                    </p> -->
-                    <!-- <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem">
-                        <span ">شماره سفارش: 258885</span>
-                        <br/>
-                        <span>نام خریدار: بوعذار</span>
-                        <br>
-                        <span>استان:فارس</span>
-                        <br>
-                        <span>شهرستان:شیراز</span>
-                        <br>
-                        <span>شهر:شیراز</span>
-                        <br>
-                        <span>نشانی:فلکه گاز/...</span>
-                        <br>
-                        <span>کد پستی:</span>
-                        <br>
-                        <span>تاریخ ثبت:29/8/00</span>
-                        <br />
-                        <div style="width: 100%;text-align:center">
-                            <span style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(255, 80, 80)">رد میکنم</span>
-                            <span style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">آماده میکنم</span>
-    
-                        </div>
-                    </p> -->
                 </div>
                
             </div>
-            <div class="tab-content">
+            <div id="accepted-orders" class="tab-content">
+                <table>
+                    <tr>
+                        <th>شماره</th>
+                        {% if owner == 'shop' %}
+                            <th>خریدار</th>
+                        {% elif owner == 'user' %}
+                            <th>بوتیک</th>
+                        {% endif %}
+                        <th>تعداد محصولات</th>
+                        <th>قیمت کل</th>
+                        <th>جزئیات</th>
+                    </tr>
+                 {% for order in accepted_orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        {% if owner == 'shop' %}
+                        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                        {% elif owner == 'user' %}
+                        <td>{{ order.shop.name }}</td>
+                        {% endif %}
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.discounted_total_price }}</td>
+                        <td>
+                            <span data-id="{{ order.id }}" onclick="show_order_detail();" class="fa fa-paperclip more"></span>
+                         </td>
+                    </tr>
+                 {% endfor %}
+                </table>
 
             </div>
-            <div class="tab-content">
+            <div id="rejected-orders" class="tab-content">
+                <table>
+                    <tr>
+                        <th>شماره</th>
+                        {% if owner == 'shop' %}
+                            <th>خریدار</th>
+                        {% elif owner == 'user' %}
+                            <th>بوتیک</th>
+                        {% endif %}
+                        <th>تعداد محصولات</th>
+                        <th>قیمت کل</th>
+                        <th>جزئیات</th>
+                    </tr>
+                 {% for order in rejected_orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        {% if owner == 'shop' %}
+                        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                        {% elif owner == 'user' %}
+                        <td>{{ order.shop.name }}</td>
+                        {% endif %}
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.discounted_total_price }}</td>
+                        <td>
+                            <span data-id="{{ order.id }}" onclick="show_order_detail();" class="fa fa-paperclip more"></span>
+                         </td>
+                    </tr>
+                 {% endfor %}
+                </table>
 
             </div>
-            <div class="tab-content">
+            <div id="sent-orders" class="tab-content">
+                <table>
+                    <tr>
+                        <th>شماره</th>
+                        {% if owner == 'shop' %}
+                            <th>خریدار</th>
+                        {% elif owner == 'user' %}
+                            <th>بوتیک</th>
+                        {% endif %}
+                        <th>تعداد محصولات</th>
+                        <th>قیمت کل</th>
+                        <th>جزئیات</th>
+                    </tr>
+                 {% for order in sent_orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        {% if owner == 'shop' %}
+                        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                        {% elif owner == 'user' %}
+                        <td>{{ order.shop.name }}</td>
+                        {% endif %}
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.discounted_total_price }}</td>
+                        <td>
+                            <span data-id="{{ order.id }}" onclick="show_order_detail();" class="fa fa-paperclip more"></span>
+                         </td>
+                    </tr>
+                 {% endfor %}
+                </table>
+
+            </div>
+            <div id="recieved-orders" class="tab-content">
+                <table>
+                    <tr>
+                        <th>شماره</th>
+                        {% if owner == 'shop' %}
+                            <th>خریدار</th>
+                        {% elif owner == 'user' %}
+                            <th>بوتیک</th>
+                        {% endif %}
+                        <th>تعداد محصولات</th>
+                        <th>قیمت کل</th>
+                        <th>جزئیات</th>
+                    </tr>
+                 {% for order in recieved_orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        {% if owner == 'shop' %}
+                        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                        {% elif owner == 'user' %}
+                        <td>{{ order.shop.name }}</td>
+                        {% endif %}
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.discounted_total_price }}</td>
+                        <td>
+                            <span data-id="{{ order.id }}" onclick="show_order_detail();" class="fa fa-paperclip more"></span>
+                         </td>
+                    </tr>
+                 {% endfor %}
+                </table>
+
+            </div>
+            <div id="returned-orders" class="tab-content">
+                <table>
+                    <tr>
+                        <th>شماره</th>
+                        {% if owner == 'shop' %}
+                            <th>خریدار</th>
+                        {% elif owner == 'user' %}
+                            <th>بوتیک</th>
+                        {% endif %}
+                        <th>تعداد محصولات</th>
+                        <th>قیمت کل</th>
+                        <th>جزئیات</th>
+                    </tr>
+                 {% for order in returned_orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        {% if owner == 'shop' %}
+                        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+                        {% elif owner == 'user' %}
+                        <td>{{ order.shop.name }}</td>
+                        {% endif %}
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.discounted_total_price }}</td>
+                        <td>
+                            <span data-id="{{ order.id }}" onclick="show_order_detail();" class="fa fa-paperclip more"></span>
+                         </td>
+                    </tr>
+                 {% endfor %}
+                </table>
 
             </div>
         </div>

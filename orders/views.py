@@ -1,10 +1,10 @@
 from coupons.models import Coupon
 from .form import AddressForm
-from os import stat, stat_result
+from os import RTLD_DEEPBIND, stat, stat_result
 
-from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed
 from .models import OrderList
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required, user_passes_test
 from cart.cart import Cart
@@ -103,24 +103,27 @@ def checkout(request:HttpRequest):
 
 @login_required        
 def get_shop_orders(request:HttpRequest):
-    if request.method == "POST":
-        if not request.uer.shop:
-            return HttpResponseBadRequest("shop not found")
-        orders = Order.objects.filter(shop=request.user.shop)
-        pending_orders = orders.filter(state=Order.PENDING)
-        accepted_orders = orders.filter(state=Order.ACCEPTED)
-        sent_orders = orders.filter(state=Order.SENT)
-        returned_orders = orders.filter(state=Order.RETURNED)
-        recieved_orders = orders.filter(state=Order.RECEIVED)
+    if not request.user.shop.first():
+        return HttpResponseBadRequest("shop not found")
+    orders = Order.objects.filter(shop=request.user.shop.first())
+    pending_orders = orders.filter(state=Order.PENDING)
+    accepted_orders = orders.filter(state=Order.ACCEPTED)
+    sent_orders = orders.filter(state=Order.SENT)
+    returned_orders = orders.filter(state=Order.RETURNED)
+    recieved_orders = orders.filter(state=Order.RECEIVED)
+    rejected_orders = orders.filter(state=Order.REJECTED)
+
+    
+    return render(request, 'orders/orders.html',{
+        'pending_orders': pending_orders,
+        'accepted_orders': accepted_orders,
+        'sent_orders': sent_orders,
+        'recieved_orders': recieved_orders,
+        'returned_orders': returned_orders,
+        'rejected_orders': rejected_orders,
+        'owner': 'shop'
         
-        return render(request, 'shop/orders.html',{
-            'pending_orders': pending_orders,
-            'accepted_orders': accepted_orders,
-            'sent_orders': sent_orders,
-            'recieved_orders': recieved_orders,
-            'returned_orders': returned_orders
-            
-        })
+    })
     
     
 @login_required    
@@ -128,6 +131,7 @@ def get_user_orders(request:HttpRequest):
     orders = Order.objects.filter(user=request.user)
     pending_orders = orders.filter(state=Order.PENDING)
     accepted_orders = orders.filter(state=Order.ACCEPTED)
+    rejected_orders = orders.filter(state=Order.REJECTED)
     sent_orders = orders.filter(state=Order.SENT)
     returned_orders = orders.filter(state=Order.RETURNED)
     recieved_orders = orders.filter(state=Order.RECEIVED)
@@ -137,11 +141,87 @@ def get_user_orders(request:HttpRequest):
     'accepted_orders': accepted_orders,
     'sent_orders': sent_orders,
     'recieved_orders': recieved_orders,
-    'returned_orders': returned_orders
+    'returned_orders': returned_orders,
+    'rejected_orders': rejected_orders,
+    'owner': 'user',
     
     })
     
         
+
+@login_required
+def accept_order(request:HttpRequest, order_id):
+    order = Order.objects.filter(id=order_id).first()
+    if not order:
+        return HttpResponseBadRequest('order not found...')
+    if not order.shop == request.user.shop.first():
+        return HttpResponseForbidden('you are not allowed...')
+    
+    if order.state == Order.PENDING:
+        order.accept()
+    return redirect('/orders/shop/' + order_id + '/')
+
+@login_required
+def reject_order(request:HttpRequest,order_id):
+    order = Order.objects.filter(id=order_id).first()
+    if not order:
+        return HttpResponseBadRequest('order not found...')
+    if not order.shop == request.user.shop.first():
+        return HttpResponseForbidden('you are not allowed...')
+    
+    if order.state == Order.PENDING:
+        order.reject()
+    return redirect('/orders/shop/' + order_id + '/')
+
+
+@login_required
+def cancell_order(request:HttpRequest, order_id):
+    order = Order.objects.filter(id=order_id).first()
+    if not order:
+        return HttpResponseBadRequest('order not found...')
+    if not order.order_list.user == request.user:
+        return HttpResponseForbidden('you are not allowed...')
+    
+    if order.state == Order.PENDING:
+        order.cancell()
+    return redirect('/orders/shop/' + order_id + '/')
+
+
+@login_required
+def send_tracking_code(request:HttpRequest, order_id):
+    order = Order.objects.filter(id=order_id).first()
+    if not order:
+        return HttpResponseBadRequest('order not found...')
+    if not order.shop == request.user.shop.first():
+        return HttpResponseForbidden('you are not allowed...')
+    
+    tracking_code = request.GET.get('tracking_code')
+    
+    if not tracking_code:
+        return HttpResponseBadRequest('invalid tracking code...')
+    
+    if order.state == Order.ACCEPTED:
+        order.tracking_code = tracking_code
+        order.save();
+    return redirect('/orders/shop/' + order_id + '/')
+
+
+@login_required
+def verify_recieve_order(request:HttpRequest,order_id):
+    order = Order.objects.filter(id=order_id).first()
+    if not order:
+        return HttpResponseBadRequest('order not found...')
+    if not order.order_list.user == request.user:
+        return HttpResponseForbidden('you are not allowed...')
+    
+    if order.state == Order.SENT:
+        order.recieve();
+    return redirect('/orders/shop/' + order_id + '/')
+
+
+        
+    
+
 
 
 @login_required

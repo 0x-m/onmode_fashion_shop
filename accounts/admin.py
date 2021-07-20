@@ -24,6 +24,6 @@ class CheckoutRequest(ModelAdmin):
     # def user(self, obj):
     #     return obj.account.user.phone_no
     
-    list_display = ['account', 'amount', 'state', 'status', 'date_created']
+    list_display = ['applicant', 'intendant','amount', 'state', 'status', 'date_created']
     readonly_fields = ['date_created']
 

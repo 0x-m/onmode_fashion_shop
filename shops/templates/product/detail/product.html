@@ -20,7 +20,6 @@
 
     .gallery .img {
         width: 100%;
-        max-height: 80vh;
      
     }
     .gallery .thumbs {
@@ -48,6 +47,8 @@
     .thumb-active {
         opacity: 1;
     }
+
+
 
  
     @media screen and (min-width: 1024px) {
@@ -156,6 +157,15 @@
 
     }
 
+    .col-6 {
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+    .row{
+        flex-direction: column;
+    }
+
    
     @media screen and (min-width:1024px) {
         .gallery {
@@ -169,6 +179,8 @@
         {
             flex-direction: row;
         }
+
+        
         .gallery .img {
             padding: 0.5rem;
         }
@@ -209,21 +221,19 @@
         {% include 'product/detail/buy.html' %}
     </div>
 </div>
-<div class="row new-products">
-    <div class="slideshow" id="show1">
-        <div class="tabs">
-            <div class="header">
-                <spa class="dot tab-item active" onclick="showSlide(0);">مشخصات محصول</spa>
-                <spa class="dot tab-item" onclick="showSlide(1);">نظرات</spa>
-            </div>
-            <div style="width: 100%;">
-                <div class="slide fade dis-block">
-                    {% include 'product/detail/specs.html' %}
-                </div>
-                <div class="slide fade">
-                    {% include 'product/detail/comments.html' %}
-                </div>
-            </div>
+<div class="row">
+    <div class="tab-container">
+        <div  class="tab-items">
+            <div data-tab="specs" onclick="select_tab();" class="tab-item">مشخصات</div>
+            <div data-tab="comments" onclick="select_tab();" class="tab=item">نظرات</div>
+        </div>
+    </div>
+    <div class="tab-contents">
+        <div class="tab-content" id="specs">
+            {% include 'product/detail/specs.html' %}
+        </div>
+        <div class="tab-content" id="comments">
+            {% include 'product/detail/comments.html' %}
         </div>
     </div>
 </div>

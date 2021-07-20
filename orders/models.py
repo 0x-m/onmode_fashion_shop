@@ -3,6 +3,7 @@ from math import prod
 from typing import Iterable, Optional
 from django.core.validators import MaxLengthValidator
 from django.db import models
+from django.db.models.query_utils import select_related_descend
 from django.db.models.signals import ModelSignal
 from django.forms.models import modelformset_factory
 from django.utils import timezone
@@ -79,10 +80,14 @@ class OrderList(models.Model):
         for o in self.orders.all():
             for i in o.items.all():
                 i.decrement_quantity()
+                
             transaction = TransferTransaction(debtor=self.user.account, 
                                               creditor= o.shop.seller.account,
                                               amount=self.total_price_after_applying_coupon)
             transaction.save()
+            o.transaction = transaction
+            o.save()
+            
         self.is_paid = True
         self.save()
 
@@ -127,18 +132,20 @@ class Order(models.Model):
     total_price = models.DecimalField(verbose_name=_('Total Price'),max_digits=10,decimal_places=0,default=0)
     discounted_total_price = models.DecimalField(verbose_name=_('Discounted total price'),max_digits=10,decimal_places=0,default=0)
     tracking_code = models.CharField(verbose_name=_('Tracking code'),max_length=30,null=True,blank=True)
+    date_accomplished = models.DateTimeField(verbose_name=_('Accomplished date'),default=timezone.now)
     state = models.CharField(verbose_name=_('State'),choices=STATES,default='pending', max_length=20)
     verify_sent = models.BooleanField(verbose_name=_('Verify sent'),default=False)
-    
+    transaction = models.ForeignKey(verbose_name=_('Transaction:id'),to=TransferTransaction,on_delete=models.CASCADE,related_name='orders', null=True)
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
+    
     
     def add_item(self,item):
         if  item in self.items.all():
             self.clearout_item(item)
              
-        self.order_list.clearout_order(self)
+        self.order_list.clearout_order(self) #zero first time!
         self.total_price += item.total_price
         self.discounted_total_price += item.discounted_total_price
         self.order_list.add_order(self)
@@ -157,32 +164,42 @@ class Order(models.Model):
         if self.items:
             self.discounted_total_price = sum(item.discounted_total_price for item in self.items.all())
     
-
+    def verify_tracking_code(self):
+        if self.tracking_code:
+            self.verify_sent == True
+            self.state = self.SENT
+            self.save()
             
         
     def accept(self): #seller accept 
-        self.state = self.ACCEPT
-        #----------- create account trasaction------------
-        self.save()
+        if self.state == self.PENDING:
+            self.state = self.ACCEPT
+            #----------- create account trasaction------------
+            self.save()
     
-    def sent(self, tracking_code):
-        #validating code--------------
-        self.state = self.SENT
-        self.save()
-        pass
-
+    def reject(self):
+        if self.state == self.PENDING:
+            if self.transaction:
+                self.transaction.reject()
+                self.state = self.REJECTED
+                self.save()
+    
     def receive(self):
-        self.state = self.RECEIVED
-        #------------ apply accounttransaction-----------------
-        self.save()
+        if self.transaction:
+            self.transaction.commit()
+            self.state == self.RECEIVED
+            self.date_accomplished = timezone.now()
+            self.save()
+
     
     def cancell(self):
-        self.state = self.CANCELLED
-        #-----------reverse apply accounttrasaction-------------
-        self.save()
+        if self.state == self.PENDING:
+            if self.transaction:
+                self.transaction.reject()
+                self.state == self.CANCELLED
+                self.save()
     
-    def issue_return(self):
-        pass
+
     
     def quantity(self):
         total = 0
@@ -192,8 +209,6 @@ class Order(models.Model):
         return total
             
             
-    
-        
 
 class OrderItem(models.Model):
     order = models.ForeignKey(verbose_name=_('Order'),to=Order,on_delete=models.CASCADE, related_name='items')
@@ -202,7 +217,6 @@ class OrderItem(models.Model):
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,default=0) #price of product
     color = models.ForeignKey(verbose_name=_('Color'),to=Color,on_delete=models.DO_NOTHING, null=True)
     size = models.ForeignKey(verbose_name=_('Size'),to=Size,on_delete=models.DO_NOTHING, null=True)
-    has_discount = models.BooleanField(verbose_name=_('Has discount'),default=False)
     discounted_price = models.DecimalField(verbose_name=_('Discounted Price'),max_digits=10,decimal_places=0,default=0) #discounted price
     total_price = models.DecimalField(verbose_name=_('Total price'),max_digits=10,decimal_places=0,default=0) # price * quantity
     discounted_total_price = models.DecimalField(verbose_name=_('Discounted total price'),max_digits=10,decimal_places=0,default=0)
@@ -213,29 +227,21 @@ class OrderItem(models.Model):
         verbose_name_plural = _('Order Items')
     
     def __set_price(self):
-        self.price = self.product.price
+        #self.price = self.product.price
         self.total_price = self.price * self.quantity
 
     def __apply_discount(self):
         dt = timezone.now()
-        discount = Discount.objects.filter(product=self.product).last(); #get the latest discount!
-        if discount:
-            if discount.is_valid():
-                self.has_discount = True
-                self.discount = discount
-                self.discounted_price = discount.get_discounted_price()
-            
-                if discount.quantity >= self.quantity:
-                    self.discounted_total_price = self.discounted_price * self.quantity
-                else:
-                    self.discounted_total_price = self.discounted_price * discount.quantity + self.price * (self.quantity - discount.quantity)
+        if self.discount:
+            self.discounted_price = self.discount.get_discounted_price()
+            if self.discount.quantity >= self.quantity:
+                self.discounted_total_price = self.discounted_price * self.quantity
+            else:
+                self.discounted_total_price = self.discounted_price * self.discount.quantity + self.price * (self.quantity - self.discount.quantity)
         else:
-            self.has_discount = False
-            self.discount = None
             self.total_price = self.price * self.quantity
             self.discounted_price = self.price
             self.discounted_total_price = self.total_price
-    
     
     
     
@@ -249,17 +255,17 @@ class OrderItem(models.Model):
         self.order.clearout_item(self)
         super().delete(**kwargs)
     
-    # @classmethod
-    # def post_create(cls, sender, instance, created, *args, **kwargs ):
-    #     if created:
-    #         print('orderitem created')
-    #         instance.__set_price()
-    #         instance.__apply_discount()
-    #         instance.order.add_item(instance)
-    #     else:
-    #         instance.order.clearout_item(instance)
-    #         instance.order.add_item(instance)
-    #     instance.save()
+    @classmethod
+    def post_create(cls, sender, instance, created, *args, **kwargs ):
+        if created:
+            print('orderitem created')
+            discount = Discount.objects.filter(product=instance)
+            if discount.is_valid():
+                instance.discount = discount
+                instance.save()
+            
+          
+       
     
     def decrement_quantity(self):
         if self.discount:
@@ -268,8 +274,7 @@ class OrderItem(models.Model):
             self.product.decrement_quantity(self.quantity)
     
 
-    
-# post_save.connect(OrderItem.post_create, sender = OrderItem)
+post_save.connect(OrderItem.post_create, sender = OrderItem)
 
     
    

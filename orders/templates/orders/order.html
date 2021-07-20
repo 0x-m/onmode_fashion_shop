@@ -75,8 +75,13 @@
     }
 
 </style>
-<div class="container">
-    <table>
+<div class="container centerized" style="width: 95%;">
+    {% if owner == 'user' %}
+        <span onclick="get_user_orders();" style="color: skyblue;cursor:pointer;font-size:0.9rem">بازگشت</span>
+    {% elif owner == 'shop' %}
+        <span onclick="get_shop_orders();" style="color: skyblue;cursor:pointer;font-size:0.9rem">بازگشت</span>
+    {% endif %}
+    <table style="margin-top: 1rem;">
         <tr>
             <th>نام</th>
             <th>سایز</th>
@@ -88,7 +93,7 @@
         </tr>
         {% for item in order.items.all %}
             <tr>
-                <td>{{item.product.name|truncatechar: 20 }}</td>
+                <td>{{item.product.name }}</td>
                 <td>{{ item.size}}</td>
                 <td>{{ item.color }}</td>
                 <td>{{ item.quantity }}</td>
@@ -100,20 +105,25 @@
                      ندارد
                     {% endif %}
                 </td>
-                <th>
+                <td>
                     {{item.discounted_total_price}}
-                </th>
+                </td>
             </tr>
         {% endfor %}
+
+       
     </table>
      <p style="font-size: 0.8rem;color:gray;margin:0.3rem;width:98%">
         <span style="float: left;padding:0.5rem;background-color:rgb(143, 143, 143);color:white">جمع کل: {{order.discounted_total_price}}</span>
+        <span style="float: right;padding:0.5rem;background-color:rgb(248, 95, 95);color:white">شماره سفارش: {{order.id}}</span>
     </p> 
-    <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem">
+    <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem;text-align:center">
         <span ">شماره سفارش: {{order.id}}</span>
+        <br/>
         <span>تاریخ ثبت:{{order.order_list.date_created}}</span>
+        <br/>
         {% if order.order_list.use_default_address %}
-        {% with order.user as vendee}
+        {% with order.user as vendee %}
             <span>نام خریدار: {{vendee.first_name}}&nbsp{{ vendee.last_name}}</span>
             <br>
             <span>استان:{{vendee.address.state}}</span>
@@ -122,9 +132,11 @@
             <br>
             <span>شهر:{{vendee.address.town}}</span>
             <br>
+            <span>کد پستی:{{ vendee.address.postal_code}}</span>
+            <br>
             <span>نشانی:{{vendee.address.description}}</span>
             <br>
-            <span>کد پستی:{{ vendee.address.postal_code}}</span>
+            <span>شماره تماس:{{vendee.phone_no}}</span>
             <br>
        {% endwith %}
         <br />
@@ -138,16 +150,17 @@
                 <br>
                 <span>شهر:{{address.town}}</span>
                 <br>
-                <span>نشانی:{{address.description}}</span>
-                <br>
                 <span>کد پستی:{{ address.postal_code}}</span>
                 <br>
+                <span>نشانی:{{address.description}}</span>
+                <br>
+                <span>شماره تماس:{{ address.phone_no }}</span>
+                <br>
+    
             {% endwith %}
         {% endif %}
        
-       
-  
-    {% if order.state == 'PENDING' %}
+    {% if order.state == 'pending' %}
 
         {% if owner == 'shop' %}
             <div style="width: 100%;text-align:center;margin-top:0.8rem">
@@ -160,7 +173,7 @@
             </div>
         {% endif %}
  
-    {% elif order.state == 'ACCEPTED' %}
+    {% elif order.state == 'accept' %}
         {% if owner == 'shop' %}
             <div style="width: 100%;text-align:center;margin-top:0.8rem">
                 <input type="text" class="text-box" placeholder="کد رهگیری">
@@ -171,50 +184,43 @@
                 <span style="width: 100%;text-align:center;color:white;background-color:green">تایید شده</span>
             </div>
         {% endif %}
-        {% elif order.stae == 'REJECTED' %}
-            <div style="width: 100%;text-align:center;margin-top:0.8rem">
-                <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">ردشده</span>
-            </div>
-        {% endif %}
-    {% elif order.state == 'RETUNRED' %}
+    {% elif order.state == 'returned' %}
         <div style="width: 100%;text-align:center;margin-top:0.8rem">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">بازگشتی</span>
         </div>
-    {% elif order.state == 'CANCELLLED' %}
+    {% elif order.state == 'cancelled' %}
         <div style="width: 100%;text-align:center;margin-top:0.8rem">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">لغو شده</span>
         </div>
-    {% elif order.state == 'SENT' %}
-      {% if owner == 'shop' %}
-        <div style="width: 100%;text-align:center;margin-top:0.8rem">
-            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">ارسال شده</span>
-        </div>
-      {% elif owner == 'user' %}
-      <div style="width: 100%;text-align:center;margin-top:0.8rem">
-        <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">ارسال شده/span>
-      </div>
-        {% if order.verify_sent %}
-            <div style="width: 100%;text-align:center;margin-top:0.8rem">
-                <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">دریافت کردم</span>
-            </div>
+    {% elif order.state == 'sent' %}
+        {% if owner == 'shop' %}
+            {% if order.verify_sent %}
+                <div style="width: 100%;text-align:center;margin-top:0.8rem">
+                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">کد رهگیری ثبت شده است</span>
+                </div>
+            {% else %}
+                <div style="width: 100%;text-align:center;margin-top:0.8rem">
+                    <input id="tracking_code" type="text" class="text-box" placeholder="کد رهگیری">
+                    <button style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">ثبت</button>
+                </div>
+            {% endif %}
+        {% elif owner == 'user' %}
+            {% if order.verify_sent %}
+                <div style="width: 100%;text-align:center;margin-top:0.8rem">
+                    <button onclick="" class="btn btn-primary">دریافت کردم</button>
+                </div>
+            {% else  %}  
+                <div style="width: 100%;text-align:center;margin-top:0.8rem">
+                    <span style="width: 100%;text-align:center;color:white;background-color:green">ارسال شده</span>
+                </div>
+            {% endif %}
         {% endif %}
-      {% endif %}
-    {% else %}
-    {% if owner == 'shop' %}
-        <div style="width: 100%;text-align:center;margin-top:0.8rem">
-            <input type="text" class="text-box" placeholder="کد رهگیری">
-            <button style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">ثبت</button>
-        </div>
-    {% elif owner == 'user' %}
-        <div style="width: 100%;text-align:center;margin-top:0.8rem">
-            <span style="width: 100%;text-align:center;color:white;background-color:green">تایید شده</span>
-        </div>
-    {% endif %}
-    {% elif order.stae == 'REJECTED' %}
+
+    {% elif order.state == 'rejected' %}
         <div style="width: 100%;text-align:center;margin-top:0.8rem">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">ردشده</span>
         </div>
-    {% endif %}
+    {% else %}
         <div style="width: 100%;text-align:center;margin-top:0.8rem">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">دریافت شده</span>
         </div>

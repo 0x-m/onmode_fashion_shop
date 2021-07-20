@@ -1148,12 +1148,103 @@ function get_user_orders(){
     });
 }
 
-function order_accepted(){}
-function order_rejected(){}
-function order_sent(){}
-function order_cancelled() {}
-function order_received() {}
-function issue_order_return() {}
+function get_shop_orders(){
+    console.log('ordes...');    
+    event.stopPropagation();
+    showSidebox();
+    start_waiting();
+    fetch('/orders/shop/',{
+        method: "GET"
+    }).then((res) => {
+        
+        res.text().then((txt)=>{
+            end_waiting();
+            set_view(txt);
+        }
+        );
+    });
+}
+function show_order_detail(){
+    console.log('dssdsd');
+    const id = event.target.dataset['id'];
+    fetch('/orders/user/detail/' + id + '/',{
+        method: "GET"
+
+    }).then((response) =>{
+        
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
+function accept_order(){
+    const order_id = event.target.dataset['id'];
+    start_waiting();
+    fetch('/orders/accept/' + order_id + '/',{
+        method: 'GET'
+    }).then((response) => {
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+function reject_order(){
+    const order_id = event.target.dataset['id'];
+    start_waiting();
+    fetch('/orders/reject/' + order_id + '/',{
+        method: 'GET'
+    }).then((response) => {
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+function cancell_order(){
+    const order_id = event.target.dataset['id'];
+    start_waiting();
+    fetch('/orders/cancell/' + order_id + '/',{
+        method: 'GET'
+    }).then((response) => {
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    });
+}
+function recieve_order() {
+    const order_id = event.target.dataset['id'];
+    start_waiting();
+    fetch('/orders/recieve/' + order_id + '/',{
+        method: 'GET'
+    }).then((response) => {
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    });
+}
+
+function send_tracking_code(){
+    const order_id = event.target.dataset['id'];
+    const tracking_code = document.getElementById('tracking_code').value
+    start_waiting();
+    fetch('/orders/tracking_code/' + order_id + '/' + "?tracking_code=" + tracking_code ,{
+        method: 'GET',
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        }
+    }).then((response) => {
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
 /*********************COMMENTS******************* */
 
 function get_comments(){
