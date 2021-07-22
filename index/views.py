@@ -46,3 +46,6 @@ def get_province_cities(request:HttpRequest):
 
 def rules(request:HttpRequest):
     return render(request, 'rules.html')
+
+def restricted(request:HttpRequest,*args):
+    return render(request,'registration/code_expiration.html')

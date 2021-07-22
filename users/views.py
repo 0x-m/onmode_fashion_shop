@@ -1,5 +1,8 @@
+
+from datetime import time
 from sys import getcheckinterval
 from django import http
+import django
 from django.contrib.sessions.backends.base import SessionBase
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import Select
@@ -14,7 +17,9 @@ from .models import User, Address
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from index.utils import get_cities, get_provinces
-
+import secrets
+from django.utils import timezone
+from ratelimit.decorators import ratelimit
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
 # f_handller = logging.FileHandler('logs/users.log','a')
@@ -28,8 +33,13 @@ logger = logging.getLogger(__name__)
 #-----------helpers-------------------------------------
 class HttpResponseUnprocessableEntity(HttpResponse):
     status_code = HTTPStatus.UNPROCESSABLE_ENTITY #422
+    
+def generate_code():
+    alphbet = '0123456789'
+    code = ''.join(secrets.choice(alphbet)for i in range(6))
+    return code
         
-
+@ratelimit(key='ip',rate='10/m',block=True)
 def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
@@ -41,8 +51,8 @@ def enrollment(request:HttpRequest):
             phone_no = form.cleaned_data['phone_no']
             request.session['phone_no'] = phone_no
             request.session['verified'] = 'False'
-            secret = pyotp.random_base32()
-            request.session['secret'] = secret
+            # secret = pyotp.random_base32()
+            # request.session['secret'] = secret
             request.session.save()
             logger.info("phone_no is saved into session")
         else:
@@ -57,13 +67,17 @@ def enrollment(request:HttpRequest):
             })
         else: #use does not exist
             
-            totp = pyotp.TOTP(secret, interval=120)
-            
-            verification_code = totp.now()
+            #totp = pyotp.TOTP(secret, interval=120)
+            verification_code = generate_code();
+            request.session['verification_code'] = verification_code
+            expire = timezone.now() + timezone.timedelta(seconds=10)
+            request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
+            request.session.save()
             #send otp via sms
+            
             is_sent  = True
             if is_sent:
-                #goto setpassword 
+                
                 return render(request, 'registration/verification.html',
                               {'code':verification_code })
             else:
@@ -86,11 +100,20 @@ def verification(request:HttpRequest):
                 return HttpResponseBadRequest("no phone number")
             
             #validate code
-            secret = request.session.get('secret')
-            print(secret)
-            totp  = pyotp.TOTP(secret,interval=120)
-            if not totp.verify(code):
+            # secret = request.session.get('secret')
+            # print(secret)
+            # totp  = pyotp.TOTP(secret,interval=120)
+            verification_code = request.session.get('verification_code')
+            dt = timezone.now().replace(tzinfo=None)
+            expire = timezone.datetime.strptime(request.session.get('expire_date'),'%Y-%m-%d %H:%M:%S.%f')
+            print(expire,"\n",dt)
+
+            if expire < dt:
+                return render(request, 'registration/code_expiration.html')
+            
+            if not verification_code == code.strip():
                 return HttpResponseBadRequest("expired or invalid code")
+            
             request.session['verified'] = 'True'
             request.session.save()
             return render(request, 'registration/password.html')
@@ -102,7 +125,6 @@ def verification(request:HttpRequest):
 
 def set_password(request:HttpRequest):
     if request.method == 'POST':
-        
         verified = request.session.get('verified')
         print('verified: ',verified)
         if not verified or verified != 'True':

@@ -856,6 +856,7 @@ function verify_code(){
         }
 
         if(xhttp.status == 200){
+            end_waiting()
             set_view(xhttp.responseText);
         }
     }
