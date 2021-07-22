@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from index.utils import get_cities, get_provinces
 import secrets
 from django.utils import timezone
-from ratelimit.decorators import ratelimit
+# from ratelimit.decorators import ratelimit
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
 # f_handller = logging.FileHandler('logs/users.log','a')
@@ -39,7 +39,7 @@ def generate_code():
     code = ''.join(secrets.choice(alphbet)for i in range(6))
     return code
         
-@ratelimit(key='ip',rate='10/m',block=True)
+# @ratelimit(key='ip',rate='10/m',block=True)
 def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
