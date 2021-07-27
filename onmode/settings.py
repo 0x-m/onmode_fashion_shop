@@ -3,6 +3,8 @@
 from pathlib import Path
 from posixpath import join
 import os
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,10 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-klg*(0#3t#0%ddpkjfy#6ebv0%i@p+v6rsml8v+_lt!9*stupf'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG',cast=bool)
 
 ALLOWED_HOSTS = ['onmode.herokuapp.com','localhost']
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'discounts',
     'issues_and_requests',
     'messaging',
+    'reviews'
 ]
 
 MIDDLEWARE = [
@@ -70,7 +73,7 @@ ROOT_URLCONF = 'onmode.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

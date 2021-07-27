@@ -1,3 +1,4 @@
+from reviews.models import Comment
 from typing import ClassVar
 from django.db.models.query import RawQuerySet
 from django.forms import forms
@@ -33,6 +34,7 @@ def add_product(request:HttpRequest):
     if request.method == "POST":
         form = AddProductForm(request.POST)
         print(request.POST.get('keywords'))
+        print(request.POST.get('description'))
         if form.is_valid():
             new_values = {
                 'shop': shop,
@@ -221,6 +223,8 @@ def get_all_products(request:HttpRequest):
 def filter(request:HttpRequest,shop_name=None):
     
     filter_form = FilterForm(request.GET)
+    discounted_only = request.POST.get('discounted')
+    print(request.POST.get('discounted'))
     if filter_form.is_valid():
         shop = Shop.objects.filter(name=shop_name).first()
         categories = filter_form.cleaned_data['categories']
@@ -229,7 +233,6 @@ def filter(request:HttpRequest,shop_name=None):
         colors = filter_form.cleaned_data['colors']
         types = filter_form.cleaned_data['types']
         subtypes = filter_form.cleaned_data['subtypes']
-        discounted_only = filter_form.cleaned_data['discounted']
         order_by = filter_form.cleaned_data['order_by']
         order_kind = filter_form.cleaned_data['order_kind']
         price_from = filter_form.cleaned_data['price_from']
@@ -248,8 +251,7 @@ def filter(request:HttpRequest,shop_name=None):
                             price__lte=price_to,
                             price__gte=price_from).distinct().order_by(order_by)
     
-        print("prod_num: ",len(products))
-        print(products.query)
+        print("number:", len(products))
         if shop:
             products &= Product.objects.filter(shop=shop).distinct().all()
         if discounted_only:
@@ -320,8 +322,13 @@ def search(request:HttpRequest, pg):
 
 def product_detail(request:HttpRequest, product_id):
     product = get_object_or_404(Product,id=product_id,is_active=True)
+    comments = Comment.objects.filter(product=product)
+    user_comment = comments.filter(user=request.user)
+    
     return render(request, 'product/detail/product.html',{
-        'product':product
+        'product':product,
+        'comments': comments,
+        'user_comment': user_comment
     })
     
 def get_discounted_products(request:HttpRequest):

@@ -101,7 +101,9 @@ function  command(url, then = ()=>{}, error = ()=>{}){
    
 }
 
-/********************CART******************** */
+//-------------------------------------------------------------------------------
+//------------------------------------CART---------------------------------------
+//-------------------------------------------------------------------------------
 function get_cart(){   
    showSidebox();
    start_waiting();
@@ -144,27 +146,18 @@ function remove_from_cart(){
     set_confirmation_dialog(msg, ()=>{
 
         toggle_confirmation_dialog(); 
-        command("/cart/remove/" + product_id + "/", (data) => {
-            start_waiting();
-            resp = JSON.stringify(data.responseText);
-            const num =  document.getElementById("card-num");
-            const q = parseInt(num.innerText) - 1;
-            num.innerText = q; //q;
-            t.disabled = false;
-            get_cart();
-        })
-        // fetch("/cart/remove/" + product_id + "/",{
-        //     header: {
-        //         "content-type": ""
-        //     }
-        // }).then((resp) => {
+        fetch("/cart/remove/" + product_id + "/",{
+           method: "GET"
+        }).then((resp) => {
 
-        //     resp.json().then((data)=>{
-        //         document.getElementById("cart-num").innerText = data["num"];
-        //         t.disabled = false;
-        //         get_cart()
-        //     })
-        // })
+            resp.json().then((data)=>{
+                document.getElementById("card-num").innerText = data["num"];
+                document.getElementById("total_price").innerText = data["total"];
+                item.remove();
+                t.disabled = false;
+                //get_cart()
+            })
+        })
        
         
     }, () =>{
@@ -172,8 +165,6 @@ function remove_from_cart(){
     });
     
 }
-
-function update_cart(){}
 
 function change_product_color(product_id=null,color_id=null){
 
@@ -190,6 +181,7 @@ function change_product_color(product_id=null,color_id=null){
         
     }
 }
+
 function change_product_size(){
     const obj = event.target;
     if (obj.classList.contains("size")){
@@ -219,9 +211,6 @@ function increment_product(){
 
 }
 
-
-
-
 function decrement_product(){
     const product_id = event.target.dataset["id"];
     command("/cart/decrement/" + product_id + "/", (data)=> {
@@ -231,6 +220,46 @@ function decrement_product(){
         document.getElementById("card-num").innerText = resp['num'];
     })
 }
+
+function apply_coupon(){
+    const coupon_code = document.getElementById("coupon-code").value;
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            end_waiting();
+            resp = JSON.parse(xhttp.responseText);
+            document.getElementById("total-price").innerHTML = resp["total"];
+        }
+        if(xhttp.status == 400){
+            end_waiting();
+            console.log('ssss')
+            msg = "کوپن نامعتبر"
+            set_error(msg,2000,()=>{});
+        }
+    }
+
+    xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
+    xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+    start_waiting();
+    xhttp.send();
+}
+function checkout_cart(){
+    start_waiting();
+    fetch('/orders/checkout/',{
+        method: 'GET'
+    }).then((response) =>{
+
+        response.text().then((txt)=>{
+            end_waiting();
+            set_view(txt);
+        })
+
+    })
+}
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
 
 
 function make_issue(){
@@ -268,49 +297,6 @@ function change_issue_help(){
     console.log("sddsdsf")
     const id = document.getElementById("subject").value;
     document.getElementById("issue-disc").innerHTML = document.getElementById("help-"+id).innerHTML;
-}
-
-function apply_coupon(){
-    console.log("dsfsfs")
-    const coupon_code = document.getElementById("coupon-code").value;
-    // const rx = new RegExp('^[0-9A-za-z]{6}$');
-    // if(!rx.test(coupon_code)){
-    //     msg = "کوپن نامعتبر"
-    //     set_error(msg,2000);
-    //     return
-    // }
-
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = () =>{
-        if(xhttp.status == 200){
-            end_waiting();
-            get_cart();
-        }
-        if(xhttp.status == 400){
-            end_waiting();
-            console.log('ssss')
-            msg = "کوپن نامعتبر"
-            set_error(msg,2000,()=>{});
-        }
-    }
-
-    xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
-    xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
-    start_waiting();
-    xhttp.send();
-}
-function checkout_cart(){
-    start_waiting();
-    fetch('/orders/checkout/',{
-        method: 'GET'
-    }).then((response) =>{
-
-        response.text().then((txt)=>{
-            end_waiting();
-            set_view(txt);
-        })
-
-    })
 }
 
 /********************************************* */
@@ -404,7 +390,7 @@ function get_selecteds(name, single){
         }
     }
     if(single && selecteds == ""){
-        return "0"
+        return items[0].dataset["id"];
     }
     if (selecteds == ""){
         selecteds = all;
@@ -427,11 +413,19 @@ function validate_field(rx){
 
 function get_attrs(){
     const _attrs = document.getElementById("attr-list").children;
-    let attrs = new Object();
+    let attrs = new Map();
+    
     for (let i=1; i < _attrs.length; ++i){
         key_value = _attrs[i].children[0].innerHTML.split(':');
-        attrs[key_value[0]] = key_value[1];
+        // attrs[key_value[0]] = key_value[1];
+        attrs.set(key_value[0], key_value[1]);
     }
+
+    console.log(attrs.keys.length)
+    if(attrs.keys.length == 0){
+        attrs["مخشصات"] = "ندارد"
+    }
+    console.log(attrs);
     return JSON.stringify(attrs);
 }
 
@@ -484,11 +478,11 @@ function prepare_product_info(command){
         errors.push("نام محصول را وارد کنید");
 
     }
-    let rx = new RegExp('^[0-9]{4,7}$');
+    let rx = new RegExp('^[1-9][0-9]{3,6}$');
     if (!rx.test(price)){
         errors.push("قیمت باید بین 1000 تا 10 میلیون تومان باشد");
     }
-    rx = new RegExp('^[0-9]{1,3}$')
+    rx = new RegExp('^[1-9][0-9]{0,2}$')
     if(!rx.test(quantity)){
         errors.push("تعداد باید بین 1 تا 999 باشد");
     }
@@ -666,14 +660,14 @@ function remove_product(){
 
             if(xhttp.status == 200){
                 end_waiting();
-                const sucess = document.getElementById("sucessful-edit").innerHTML;
-                set_view(sucess);
+                const success = document.getElementById("sucessful-edit").innerHTML;
+                set_view(success);
                 product.remove();
-                
                 end_waiting();
             }
         }
-        confirmation_dialog.classList.remove("show");
+        // confirmation_dialog.classList.remove("show");
+        toggle_confirmation_dialog();
         xhttp.open("GET","/product/remove/" + product_id);
         
         start_waiting();
@@ -681,15 +675,9 @@ function remove_product(){
         
 
     }, () => {
-        confirmation_dialog.classList.remove("show");
+        // confirmation_dialog.classList.remove("show");
+        toggle_confirmation_dialog();
     })
-
-    
-
-
-
-
-
 }
 function changeimg(){
     const num = event.target.dataset['num'];
@@ -722,7 +710,6 @@ function changeimg(){
     xhttp.send(data);
     
 }
-
 
 /********************************************* */
 
@@ -972,36 +959,11 @@ function edit_profile(){
     }
     start_waiting();
     xhttp.send(data);
-
-
-    // const sucess = document.getElementById("sucessful-edit").innerHTML;
-    // set_view(sucess);
-    // fetch("/users/profile/", 
-    // {
-    //     method: "POST",
-    //     headers: {
-    //         "X-CSRFToken": getCookie("csrftoken")
-    //     },
-    //     body: data
-
-        
-    // }).then((res)=>{
-    //     if(res.status == 200){
-           
-    //     }
-    //     res.text().then(()=>{
-    //         const sucess = document.getElementById("sucessful-edit").innerHTML;
-    //         set_view(sucess);
-    //     })
-      
-    // })
 }
 
 /************************************************ */
 
 function get_cities(){
-    console.log("dsfsdfsdfds")
-
     const province_name = event.target.value;
     let province_id = null
     const provinces = document.getElementById("provinces").getElementsByTagName("option");
@@ -1180,6 +1142,20 @@ function show_order_detail(){
     })
 }
 
+function show_shop_order_detail(){
+    const id = event.target.dataset['id'];
+    fetch('/orders/shop/detail/' + id + '/',{
+        method: "GET"
+
+    }).then((response) =>{
+        
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
 function accept_order(){
     const order_id = event.target.dataset['id'];
     start_waiting();
@@ -1253,6 +1229,29 @@ function get_comments(){
 }
 
 function leave_comment(){
+    const title = document.getElementById("comment-title").value;
+    const body = document.getElementById("comment-body").value;
+    console.log(title,body)
+    const product_id = event.target.dataset['id'];
+   
+    if(title != "" && body != ""){
+
+        const xhttp = new XMLHttpRequest()
+        const data = new FormData();
+        data.append("comment_title",title);
+        data.append("comment_body", body);
+        xhttp.onload = ()=>{
+
+            if( xhttp.status == 200){
+                showSidebox();
+                set_view(xhttp.responseText);
+            }
+        }
+        xhttp.open("POST","/comments/product/" + product_id + "/leave/" );
+        xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        xhttp.send(data);
+       
+    }
 
 }
 /************************************************** */

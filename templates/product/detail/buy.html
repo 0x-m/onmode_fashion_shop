@@ -1,0 +1,63 @@
+<p style="text-align:center;font-size:1.5rem">
+    {{ product.name }}
+</p>
+<p style="text-align:center;font-size:1rem">
+    {% with product.discounts.last as discount %}
+        {% if discount.is_valid %}
+            <span style="text-decoration:line-through;color:rgb(170, 170, 170)">{{item.product.price}}</span>
+            <span style="color:red">{{ discount.get_discounted_price }}</span>
+            <span>تومان</span>
+        {% else %}
+                <span style="color:rgb(170, 170, 170)">{{product.price}}</span>
+                <span>تومان</span>
+
+        {% endif %}
+    {% endwith %}
+</p>
+<p style="color:rgb(158, 158, 158);text-align:center;font-size:0.8rem;margin-top:-0.2rem">
+   {{ product.shop.first.title }}
+</p>
+<div style="padding: 0.5rem;">    
+    <span style="font-size: 0.7rem;font-weight:bold">سایر توضیحات:</span>
+    <p style="width: 100%;font-size:0.7rem;word-break:break-all;">
+      {{ product.description }}
+    </p>
+</div>   
+<div style="display:flex;flex-direction:column;align-items:center;">
+    <p style="font-size:0.8rem">رنگ دلخواه را انتخاب کنید:</p>
+    <div onclick="select_color()" class="inline-list" >
+        <div class="color" style="background-color: red;"></div>
+        <div class="color" style="background-color: green;"></div>
+        <div class="color" style="background-color: yellow;"></div>
+        <div class="color" style="background-color: black;"></div>
+        <div class="color" style="background-color: rgb(233, 230, 230);"></div>
+    </div>
+    <p style="font-size:0.8rem">سایز دلخواه را انتخاب کنید:</p>
+    <div onclick="select_size();" class="inline-list">
+        <div class="size">X</div>
+        <div class="size">XL</div>
+        <div class="size">S</div>
+        <div class="size">M</div>
+        <div class="size">XL</div>
+    </div>
+    <p style="font-size:0.8rem">تعداد:</p>
+    <div class="number-box">
+        <span onclick="increment();" class="inc">&plus;</span>
+        <input onkeypress="sentinel();" id="num1" type="text" value="1" class="text" disabled>
+        <span onclick="decrement();" class="dec">&minus;</span>
+    </div>
+    <p>
+        {% if user.shop.first != product.shop %}
+            <button data-id="{{ product.id }}" onclick="add_to_cart();this.disabled=true;" class="send-btn">افزودن به لیست خرید</button>
+            <button data-id="{{ product.id }}" onclick="add_to_favourites();this.disabled=true;" class="send-btn">
+                <span class="fa fa-heart"></span>
+            </button>
+        {%endif %}
+      
+    </p>
+    <p style="font-size: 0.6rem;">
+        ارسال به :
+        {{product.shop.post_destinatinos}}
+
+    </p>
+</div>

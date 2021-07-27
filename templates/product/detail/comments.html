@@ -1,0 +1,27 @@
+<div class="comments">
+    <div class="comment-box"  style="border-bottom: none;margin-bottom:1rem">
+        <input type="text" name="comment_body" id="comment-title" class="text-box" style="margin-bottom: 0.3rem;font-size:0.8rem;" value="{{user_comment.title}}" placeholder="عنوان">
+        <textarea rows="5" id="comment-body" name="comment_body" class="text-box" style="resize: vertical;font-size:0.8rem" placeholder="نظر شما">{{user_comment.body}}</textarea>
+        <button data-id="{{ product.id }}" onclick="leave_comment();" type="button" class="btn btn-primary " style="margin-top: 0.3rem;">ثبت</button>
+    </div>
+    {% for comment in comments %}
+        <div class="comment">
+            <p style="font-size: 1rem;color:black">{{ comment.title }}</p>
+            <p style="margin-top: -0.5rem;font-size:0.7rem;color:gray">{{ comment.user.first_name }}</p>
+        
+            <p class="text" >
+               {{ comment.body }}
+            </p>
+            <span class="date">
+                تاریخ:
+                {{ comment.date_published}}
+            </span>
+        </div>
+    {% endfor %}
+   
+</div>
+<div class="pagination" style="margin-top: 1rem;">
+    <a href="#" class="active-page">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+</div>

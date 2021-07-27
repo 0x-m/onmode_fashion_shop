@@ -46,9 +46,9 @@ class AddProductForm(forms.Form):
     colors = IntegerCSVFields()
     sizes = IntegerCSVFields()
     name = forms.CharField(max_length=120)
-    description = forms.CharField(max_length=500)
+    description = forms.CharField(max_length=500,empty_value="بدون توضیحات")
     quantity = forms.IntegerField()
-    keywords = forms.CharField(max_length=200)
+    keywords = forms.CharField(max_length=200,empty_value="NO keywords")
     attrs = JsonField()
     price = forms.IntegerField()
     
@@ -120,7 +120,6 @@ class FilterForm(forms.Form):
     colors = IntegerCSVFields()
     sizes = IntegerCSVFields()
     brands = IntegerCSVFields()
-    discounted = forms.BooleanField()
     order_by = forms.CharField(max_length=20)
     order_kind = forms.CharField(max_length=20) 
     

@@ -1,0 +1,87 @@
+
+<style>
+    .error{
+        border-bottom-color: red;
+    }
+    .field{
+        margin-top: 0.8rem;
+    }
+    .tab-items{
+        display: flex;
+        justify-content: center;
+    }
+</style>
+<div class="container" style="width:90%;">
+    <div class="mt-1 txt-center">
+        <span class="fa fa-user-circle txt-center" style="font-size: 6rem;color:rgba(150, 150, 150, 0.8)"></span>
+        <br/>
+        <p style="padding:0.5rem;">
+            <span style="font-size: 1.1rem;color:rgb(68, 68, 68)">{{ user.phone_no}}</span>
+        </p>
+
+    </div>
+    <form style="padding: 0;width:100%" id="personal_info">
+        <p  class="field">
+            <label class="caption" for="first_name">نام: </label>
+            <input name="first_name"  id="first_name" class="text-box" type="text" placeholder="نام" value="{{user.first_name}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="last_name">نام خانوادگی: </label>
+            <input  id="last_name" name="last_name" class="text-box" type="text" placeholder="نام خانوادگی" value="{{ user.last_name }}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="last_name">جنسیت: </label>
+            <div class="row" style="justify-content: center;flex-direction:row">
+                <label>مرد<input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}></label>
+                <label style="margin-right: 1rem;">زن<input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}></label>
+    
+            </div>
+        </p>
+        <p class="field">
+            <label class="caption" for="email">ایمیل: </label>
+            <input onblur="validate_email();" name="email" id="email" class="text-box" type="email" placeholder="ایمیل" value="{{user.email}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="merchan_card">شماره کارت: </label>
+            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text-box" type="text" placeholder="شماره کارت" value="{{user.merchan_card}}" />
+        </p>
+               
+              
+        <p class="field">
+            <label class="caption" for="state">استان: </label>
+            <input onblur="get_cities();validate_province_and_city();"  list="provinces" name="state"  id="state" class="text-box" type="text" placeholder="استان" value="{{user.address.state}}" />
+        </p>
+        <datalist  id="provinces">
+            {% for province in provinces %}
+                    <option  data-id="{{province.id}}" value="{{province.name}}"></option>
+            {% endfor %}
+        </datalist>
+
+        <p class="field">
+            <label class="caption" for="city">شهرستان : </label>
+            <input onblur="validate_province_and_city();" autoComplete="off" list="cities" name="city"  id="city" class="text-box" type="text" placeholder="شهرستان" value=" {{user.address.city}}" />
+            <datalist id="cities">
+                <option value=" "></option>
+            </datalist>
+            
+        </p>
+        <p class="field">
+            <label class="caption" for="town">شهر: </label>
+            <input name="town"  id="town" class="text-box" type="text" placeholder="شهر" value="{{user.address.town}}" />
+        </p>
+        <p class="field">
+            <label class="caption" for="postal_code">کد پستی: </label>
+            <input  id="postal_code" name="postal_code" class="text-box" type="text" placeholder="کد پستی" value="{{user.address.postal_code}}" />
+        </p>
+        <p class="field">
+            <label for="description" class="caption">نشانی: </label>
+            <textarea name="description" id="description" rows="5" placeholder="نشانی" class="text-box" style="resize:vertical;"  >{{user.address.description}}</textarea>
+        </p>
+    </form>
+    <p class="row" style="flex-direction: row;justify-content:space-around">
+        <button style="width:40%" class="btn btn-success" onclick="edit_profile();">ثبت</button>
+        <button style="width:40%" class="btn btn-primary" onclick="get_enrollment_form();">لغو</button>
+    </p>
+
+</div>
+

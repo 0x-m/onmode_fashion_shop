@@ -95,25 +95,30 @@ function prevSlide() {
    console.log("num of" + slides.length);
    const dots = ss.getElementsByClassName('dot');
    let curr_slide = parseInt(sessionStorage.getItem(ss.id));
-   
    if (n >= slides.length) { 
        curr_slide = 0; 
+       prev_slide = slides.length - 1;
      }
    else if (n < 0) { 
        curr_slide = slides.length - 1;
+       prev_slide = 0
      }
    else {
        curr_slide = n;
+       prev_slide = slides.length - 1;
+     
    }
 
    var i = 0;
    for (; i < slides.length; ++i) 
    {
-       slides[i].classList.remove("dis-block");
+       slides[i].classList.remove("show-sl");
        dots[i].classList.remove("active");
    }
 
-   slides[curr_slide].classList.add("dis-block");
+
+   console.log("prev:",prev_slide,"curr:",curr_slide);
+   slides[curr_slide].classList.add("show-sl");
    dots[curr_slide].classList.add("active");
    sessionStorage.setItem(ss.id,curr_slide.toString());
    console.log(sessionStorage.getItem(ss.id),"session");
@@ -136,7 +141,7 @@ function autoslideshow(){
     setTimeout(autoslideshow, 3000);
 }
 
-window.addEventListener('load',()=>{
+document.addEventListener('load',()=>{
    
 })
 
@@ -147,12 +152,14 @@ window.addEventListener('load',()=>{
  }
  //----------------------------------------------------------------------------
 
-var slider = document.getElementById("price-slider");
-var val = document.getElementById("slider-val");
-val.innerHTML = parseInt(slider.value) * 1000 + "  تومان";
-slider.oninput= function() {
-    val.innerHTML = parseInt(this.value) * 1000 + "  تومان";
-};
+ function change_price(){
+
+    var slider = event.target
+    var val = document.getElementById("slider-val");
+    val.innerHTML = parseInt(slider.value)  + "  تومان";
+    
+
+}
 
 function listboxSelect(){
     var item = event.target;

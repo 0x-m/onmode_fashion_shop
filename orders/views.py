@@ -103,6 +103,7 @@ def checkout(request:HttpRequest):
 
 @login_required        
 def get_shop_orders(request:HttpRequest):
+    print('ssshop')
     if not request.user.shop.first():
         return HttpResponseBadRequest("shop not found")
     orders = Order.objects.filter(shop=request.user.shop.first())
@@ -188,7 +189,7 @@ def cancell_order(request:HttpRequest, order_id):
 
 
 @login_required
-def send_tracking_code(request:HttpRequest, order_id):
+def register_tracking_code(request:HttpRequest, order_id):
     order = Order.objects.filter(id=order_id).first()
     if not order:
         return HttpResponseBadRequest('order not found...')
@@ -236,6 +237,7 @@ def get_user_order_detail(request:HttpRequest, order_id):
     
 @login_required
 def get_shop_order_detail(request:HttpRequest, order_id):
+    print('shop order detial....')
     order = Order.objects.filter(id=order_id).first();
     if not order:
         return HttpResponseBadRequest('Invalid order id....')

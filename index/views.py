@@ -9,7 +9,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 
 def home(request:HttpRequest):
 
-    return render(request, 'home/home.html')
+    return render(request, 'index/home/home.html')
 
 
 def aboutUs(request:HttpRequest):

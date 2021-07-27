@@ -1,13 +1,13 @@
 from datetime import time
 from logging import setLogRecordFactory
 from typing import Iterable, Optional
-from django.core.validators import MaxLengthValidator
+from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.query_utils import select_related_descend
 from django.forms.widgets import NumberInput
 from users.models import User
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import post_save
+from django.db.models.signals import ModelSignal, post_save
 from django.utils import timezone, tree
 import math
 

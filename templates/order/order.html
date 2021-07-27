@@ -1,0 +1,237 @@
+<style>
+    .tab-item {
+        font-size: 0.7rem !important;
+    }
+    table{
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        padding: 0.4rem;
+        font-size: 0.7rem;
+        border-bottom: 1px solid rgb(226, 226, 226);
+    }
+    th{
+        background-color: rgb(240, 240, 240);
+        padding: 0.5rem;
+        color: rgb(54, 54, 54);
+    }
+    tr{
+        background-color: rgba(249,249,249,0.9);
+        color: black;
+        padding: 15px;
+        height: 10vw;
+        margin: 0.5rem;
+    }
+    tr:nth-child(even){
+        background-color: white;
+    }
+
+    tfoot {
+        background-color: #efefef;
+    }
+
+    .order {
+        margin-top: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgb(226, 226, 226);
+    }
+
+    .more {
+        color: gray;
+        cursor: pointer;
+    }
+    .more:hover{
+        color: black;
+    }
+
+    .accepted {
+        background-color: rgba(131, 247, 131,0.5) !important;
+    }
+    .rejcted { 
+        background-color: #fbfbfb !important;
+    }
+    .sent { 
+        background-color: skyblue !important;
+    }
+    .recieved { 
+        background-color: green !important;
+    }
+    .cancelled { 
+        background-color: #efefef;
+    }
+
+    @media screen and (min-width: 576px) {
+        tr {
+            height: 4vw;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        tr {
+            height: 2vw;
+        }
+    }
+
+    .box{
+        display: flex;
+        
+        justify-content: center;
+        width: 100%;
+    }
+
+</style>
+<div class="container centerized" style="width: 95%;">
+    {% if owner == 'user' %}
+        <span onclick="get_user_orders();" style="color: skyblue;cursor:pointer;font-size:0.9rem">بازگشت</span>
+    {% elif owner == 'shop' %}
+        <span onclick="get_shop_orders();" style="color: skyblue;cursor:pointer;font-size:0.9rem">بازگشت</span>
+    {% endif %}
+    <table style="margin-top: 1rem;">
+        <tr>
+            <th>نام</th>
+            <th>سایز</th>
+            <th>رنگ</th>
+            <th>تعداد</th>
+            <th>قیمت</th>
+            <th>تخفیف</th>
+            <th>قیمت نهایی</th>
+        </tr>
+        {% for item in order.items.all %}
+            <tr>
+                <td>{{item.product.name }}</td>
+                <td>{{ item.size}}</td>
+                <td>{{ item.color }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>
+                    {% if item.discount %}
+                        {{ item.discount.percent }}%
+                    {% else %}
+                     ندارد
+                    {% endif %}
+                </td>
+                <td>
+                    {{item.discounted_total_price}}
+                </td>
+            </tr>
+        {% endfor %}
+
+       
+    </table>
+     <p style="font-size: 0.8rem;color:gray;margin:0.3rem;width:98%">
+        <span style="float: left;padding:0.5rem;background-color:rgb(143, 143, 143);color:white">جمع کل: {{order.discounted_total_price}}</span>
+        <span style="float: right;padding:0.5rem;background-color:rgb(248, 95, 95);color:white">شماره سفارش: {{order.id}}</span>
+    </p> 
+    <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem;text-align:center">
+        <span ">شماره سفارش: {{order.id}}</span>
+        <br/>
+        <span>تاریخ ثبت:{{order.order_list.date_created}}</span>
+        <br/>
+        {% if order.order_list.use_default_address %}
+        {% with order.user as vendee %}
+            <span>نام خریدار: {{vendee.first_name}}&nbsp{{ vendee.last_name}}</span>
+            <br>
+            <span>استان:{{vendee.address.state}}</span>
+            <br>
+            <span>شهرستان:{{vendee.address.city}}</span>
+            <br>
+            <span>شهر:{{vendee.address.town}}</span>
+            <br>
+            <span>کد پستی:{{ vendee.address.postal_code}}</span>
+            <br>
+            <span>نشانی:{{vendee.address.description}}</span>
+            <br>
+            <span>شماره تماس:{{vendee.phone_no}}</span>
+            <br>
+       {% endwith %}
+        <br />
+        {% else %}
+            {% with order.order_list.address as address %}
+                <span>نام خریدار: {{address.first_name}}&nbsp{{ address.last_name}}</span>
+                <br>
+                <span>استان:{{address.address.state}}</span>
+                <br>
+                <span>شهرستان:{{address.city}}</span>
+                <br>
+                <span>شهر:{{address.town}}</span>
+                <br>
+                <span>کد پستی:{{ address.postal_code}}</span>
+                <br>
+                <span>نشانی:{{address.description}}</span>
+                <br>
+                <span>شماره تماس:{{ address.phone_no }}</span>
+                <br>
+    
+            {% endwith %}
+        {% endif %}
+    {% if order.state == 'pending' %}
+
+        {% if owner == 'shop' %}
+            <div class="box">
+                <button onclick="reject_order();" class="btn btn-primart">رد میکنم</button>
+                <button onclick="accept_order();" class="btn btn-success">آماده میکنم</button>
+            </div>
+        {% elif owner == 'user' %}
+            <div class="box">
+                <button onclick="cancell_order();" class="btn btn-primary">کنسل میکنم</button>
+            </div>
+        {% endif %}
+ 
+    {% elif order.state == 'accept' %}
+        {% if owner == 'shop' %}
+            <div class="box">
+                <input type="text" class="text-box" placeholder="کد رهگیری">
+                <button onclick="send_tracking_code" class="btn btn-primary">ثبت</button>
+                <span style="font-size: 0.8rem;color:red">
+                    {{ order.tracking_code_status }}
+                </span>
+            </div>
+        {% elif owner == 'user' %}
+            <div class="box">
+                <span style="width: 100%;text-align:center;color:white;background-color:green">تایید شده</span>
+            </div>
+        {% endif %}
+    {% elif order.state == 'returned' %}
+        <div class="box">
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">بازگشتی</span>
+        </div>
+    {% elif order.state == 'cancelled' %}
+        <div class="box">
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">لغو شده</span>
+        </div>
+    {% elif order.state == 'sent' %}
+        {% if owner == 'shop' %}
+            {% if order.verify_sent %}
+                <div class="box">
+                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">کد رهگیری ثبت شده است</span>
+                </div>
+            {% else %}
+                <div class="box">
+                    <input id="tracking_code" type="text" class="text-box" placeholder="کد رهگیری">
+                    <button onclick="send_tracking_code();" style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">ثبت</button>
+                </div>
+            {% endif %}
+        {% elif owner == 'user' %}
+            {% if order.verify_sent %}
+                <div class="box">
+                    <button  onclick="recieve_order();" class="btn btn-primary">دریافت کردم</button>
+                </div>
+            {% else  %}  
+                <div class="box">
+                    <span style="width: 100%;text-align:center;color:white;background-color:green">ارسال شده</span>
+                </div>
+            {% endif %}
+        {% endif %}
+
+    {% elif order.state == 'rejected' %}
+        <div class="box">
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">ردشده</span>
+        </div>
+    {% else %}
+        <div class="box">
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">دریافت شده</span>
+        </div>
+    {% endif %}
+</div>

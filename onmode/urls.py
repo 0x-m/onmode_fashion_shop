@@ -13,11 +13,12 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('payments/', include('payments.urls', namespace='payments')),
     path('messages/', include('messaging.urls', namespace='messaging')),
-    path('orders/',include('orders.urls',namespace='orders')),
+    path('comments/', include('reviews.urls', namespace='comments')),
     path('', include('index.urls', namespace='index')),
     path('', include('shops.urls', namespace='shops')),
     path('', include('accounts.urls', namespace='accounts')),
     path('',include('issues_and_requests.urls', namespace='issues')),
+    path('',include('orders.urls',namespace='orders')),
 
 ] #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

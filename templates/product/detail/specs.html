@@ -1,0 +1,10 @@
+<div style="display: flex;flex-direction:column;padding:0.5rem">
+    {% for key,value in product.attrs.items %}
+        <div  style="margin:0.2rem;padding: 0.5rem;width:90%;background-color:#fcfcfc">
+            <span style="font-size: 0.8rem;">{{ key }}:</span>
+            <span style="font-size: 0.8rem;">{{ value }}</span>
+        </div>
+    {% endfor %}
+   
+    
+</div>
