@@ -24,7 +24,8 @@ class ShopAdmin(ModelAdmin):
 
 @admin.register(Product)
 class ProductCustomAdmin(ModelAdmin):
-    list_display = ['shop','name', 'quantity']
+    list_display = ['shop','name', 'quantity', 'is_active']
+    list_editable = ['is_active']
     readonly_fields = ['date_created']
    
     

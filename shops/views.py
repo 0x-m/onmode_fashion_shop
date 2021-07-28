@@ -170,20 +170,26 @@ def change_image(request: HttpRequest):
         return HttpResponseBadRequest("id or image was not provided")
     return HttpResponseNotAllowed(['POST'])
             
-def get_products_of_shop(reqest:HttpRequest, shop_name):  
-
+def get_products_of_shop(request:HttpRequest, shop_name):  
+    
     shop = get_object_or_404(Shop, name=shop_name, is_active=True)
     products = Product.objects.filter(shop=shop, is_active=True).order_by('-date_created')
-    paginator = Paginator(products, 20)
-    pg_number = reqest.GET.get('pg')
+    print(len(products), shop.name)
+    paginator = Paginator(products, 20, allow_empty_first_page=True)
+    pg_number = request.GET.get('pg')
+    print("page_number:",pg_number)
+    print(paginator.num_pages)
     try:
         page = paginator.get_page(pg_number)
+        print("get_page", page)
     except PageNotAnInteger:
         page = paginator.get_page(1)
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
-    page = paginator.get_page(pg_number)
-    return render(reqest, 'shop/shop.html', {
+    except:
+        print("error")
+     
+    return render(request, 'shop/shop.html', {
         'page': page,
         'shop': shop,
         'brands': Brand.objects.all(),
@@ -194,6 +200,7 @@ def get_products_of_shop(reqest:HttpRequest, shop_name):
         'types': Type.objects.all(),
         
     })
+  
         
     
 
@@ -226,7 +233,6 @@ def filter(request:HttpRequest,shop_name=None):
     discounted_only = request.POST.get('discounted')
     print(request.POST.get('discounted'))
     if filter_form.is_valid():
-        shop = Shop.objects.filter(name=shop_name).first()
         categories = filter_form.cleaned_data['categories']
         brands = filter_form.cleaned_data['brands']
         sizes  = filter_form.cleaned_data['sizes']
@@ -242,7 +248,7 @@ def filter(request:HttpRequest,shop_name=None):
         if order_kind == 'desc':
             order_by = '-' + order_by
         
-        products = Product.objects.filter(type__id__in =types,
+        products = Product.objects.filter(type__id__in =types,is_active=True,
                            subtype__id__in=subtypes,
                             categories__id__in=categories,
                             brand__id__in=brands,
@@ -252,8 +258,12 @@ def filter(request:HttpRequest,shop_name=None):
                             price__gte=price_from).distinct().order_by(order_by)
     
         print("number:", len(products))
-        if shop:
-            products &= Product.objects.filter(shop=shop).distinct().all()
+        shop = None
+        if shop_name:
+            shop = Shop.objects.filter(name=shop_name).first()
+            print(shop.name)
+            if shop:
+                products &= Product.objects.filter(shop=shop).distinct().all()
         if discounted_only:
             dt = timezone.now()
             products &= Product.objects.filter( discounts__is_active=True,

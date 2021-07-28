@@ -25,30 +25,26 @@
 </div>   
 <div style="display:flex;flex-direction:column;align-items:center;">
     <p style="font-size:0.8rem">رنگ دلخواه را انتخاب کنید:</p>
-    <div onclick="select_color()" class="inline-list" >
-        <div class="color" style="background-color: red;"></div>
-        <div class="color" style="background-color: green;"></div>
-        <div class="color" style="background-color: yellow;"></div>
-        <div class="color" style="background-color: black;"></div>
-        <div class="color" style="background-color: rgb(233, 230, 230);"></div>
+    <div id="product-colors" onclick="select_color()" class="inline-list" >
+      {% for color in product.colors.all %}
+         <div data-id="{{ color.id }}"  class="color {% if forloop.first %} select-color{% endif %}" style="background-color:{{ color.code }}"></div>
+      {% endfor %}
     </div>
     <p style="font-size:0.8rem">سایز دلخواه را انتخاب کنید:</p>
-    <div onclick="select_size();" class="inline-list">
-        <div class="size">X</div>
-        <div class="size">XL</div>
-        <div class="size">S</div>
-        <div class="size">M</div>
-        <div class="size">XL</div>
+    <div id="product-sizes" onclick="select_size();" class="inline-list">
+       {% for size in product.sizes.all %}
+            <div data-id="{{size.id}}" class="size {% if forloop.first %} select-size{% endif %}">{{ size.code }}</div>
+       {% endfor %}
     </div>
     <p style="font-size:0.8rem">تعداد:</p>
     <div class="number-box">
         <span onclick="increment();" class="inc">&plus;</span>
-        <input onkeypress="sentinel();" id="num1" type="text" value="1" class="text" disabled>
+        <input onkeypress="sentinel();" id="product-quantity" data-id="{{ product.id }}" type="text" value="1" class="text" disabled>
         <span onclick="decrement();" class="dec">&minus;</span>
     </div>
     <p>
         {% if user.shop.first != product.shop %}
-            <button data-id="{{ product.id }}" onclick="add_to_cart();this.disabled=true;" class="send-btn">افزودن به لیست خرید</button>
+            <button data-id="{{ product.id }}" onclick="add_to_cart_in_detail_page();this.disabled=true;" class="send-btn">افزودن به لیست خرید</button>
             <button data-id="{{ product.id }}" onclick="add_to_favourites();this.disabled=true;" class="send-btn">
                 <span class="fa fa-heart"></span>
             </button>

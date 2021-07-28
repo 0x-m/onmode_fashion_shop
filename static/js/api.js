@@ -25,6 +25,8 @@ function set_error(msg, timeout, after){
     after();
 }
 
+
+
 function set_confirmation_dialog(msg, accept, reject){
     confirmation_dialog = document.getElementById("confirmation-dialog");
     document.getElementById("confirm-msg").innerText = msg
@@ -123,7 +125,7 @@ function add_to_cart(){
     event.preventDefault()
     event.target.disabled = true;
     const product_id = event.target.dataset["id"];
-    command("/cart/add/" + product_id + "/");
+   // command("/cart/add/" + product_id + "/");
     fetch("/cart/add/" + product_id + "/").then((response) => {
         if(response.ok){
             response.json().then((t) =>{
@@ -136,6 +138,29 @@ function add_to_cart(){
 
 
 }
+
+
+function add_to_cart_in_detail_page(){
+    const color = document.querySelector("#product-colors>.color.select-color").dataset["id"];
+    const size = document.querySelector("#product-sizes>.size.select-size").dataset["id"];
+    const product_id = event.target.dataset['id'];
+    const quantity = document.getElementById("product-quantity").value
+    console.log(color, size, quantity);
+    event.preventDefault()
+    event.target.disabled = true;
+    fetch("/cart/add/" + product_id + "/" + "?q="+ quantity + "&color="+color+"&size="+size).then((response) => {
+        if(response.ok){
+            response.json().then((t) =>{
+                const num =  document.getElementById("card-num");
+                num.innerText = t['cart_num']
+            })
+        }
+    })
+    event.target.disabled = false;
+
+
+}
+
 function remove_from_cart(){
     const t = event.target;
     t.disabled = true;
@@ -154,6 +179,9 @@ function remove_from_cart(){
                 document.getElementById("card-num").innerText = data["num"];
                 document.getElementById("total_price").innerText = data["total"];
                 item.remove();
+                if (data["num"] == "0"){
+                    document.getElementById("cart-summary").remove();
+                }
                 t.disabled = false;
                 //get_cart()
             })
@@ -223,6 +251,9 @@ function decrement_product(){
 
 function apply_coupon(){
     const coupon_code = document.getElementById("coupon-code").value;
+    if (coupon_code.toString().length != 6) {
+        return;
+    }
     const xhttp = new XMLHttpRequest();
     xhttp.onload = () =>{
         if(xhttp.status == 200){

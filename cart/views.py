@@ -1,4 +1,5 @@
 from math import prod
+from os import closerange
 from product_attributes.models import Color, Size
 from django.db.models.fields.related_descriptors import ReverseManyToOneDescriptor
 from coupons.models import Coupon
@@ -16,7 +17,8 @@ from .cart import Cart
 def add(request:HttpRequest, product_id):
     product = Product.objects.filter(id=product_id).first()
     qunatity = request.GET.get('q',1)
-    
+    color = request.GET.get('color')
+    size = request.GET.get('size')
     if not product:
         return HttpResponseBadRequest("product is not found")
     if product.shop == request.user.shop.first():
@@ -26,10 +28,25 @@ def add(request:HttpRequest, product_id):
             qunatity = int(qunatity)
         except:
             qunatity = 1
-        
+   
     cart = Cart(request)
     cart.add(product.id,qunatity)
-    
+    if size and color:
+        try:
+            color = int(color)
+            color = Color.objects.get(id=color)
+            size = int(size)
+            size = Size.objects.get(id=size)
+            cart.choose_color(product_id=product.id,color=color.code,color_id=color.id)
+            cart.choose_size(product.id, size.code, size.id)
+        except:
+            return HttpResponseBadRequest("size or color does not defiend")
+    else:
+        color = Color.objects.first()
+        sizes = Size.objects.first()
+        cart.choose_color(product_id=product.id,color=color.code,color_id=color.id)
+        cart.choose_size(product.id, size.code, size.id)
+        
     return JsonResponse({'cart_num': len(cart)})
 
 
