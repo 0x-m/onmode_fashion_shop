@@ -104,7 +104,7 @@ class UserModelAdmin(ModelAdminJalaliMixin,UserAdmin):
     def get_joined_date(self, obj):
         return datetime2jalali(obj.date_joined).strftime('%y/%m/%d  %H:%M:%S')
     get_joined_date.short_description = 'تاریخ ایجاد کاربر'
-    get_joined_date.adim_orde_field = 'date_join'
+    get_joined_date.admin_orde_field = 'date_join'
     
 admin.site.register(User,UserModelAdmin)
 

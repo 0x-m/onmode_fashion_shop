@@ -772,11 +772,23 @@ function make_appeal_for_boutique(){
     const description = document.getElementById("description").value
     data.append("page_name", page_name)
     data.append("description", description)
-    load_view("/appeal/register/", "POST",data, (x)=>{
-        if(x.status == 200){
-            console.log("successsfull");
+    const xhttp = new XMLHttpRequest();
+
+    xhttp.onload = ()=>
+    {
+        if (xhttp.status == 200){
+            end_waiting();
+            set_view(xhttp.responseText);
         }
-    })
+    }
+
+    xhttp.open("POST", '/appeal/register/');
+    xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
+    start_waiting()
+    xhttp.send(data);
+
+
+
        
 }
 /*******************REGISTRATION**************** */

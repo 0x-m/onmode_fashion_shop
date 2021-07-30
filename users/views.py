@@ -70,7 +70,7 @@ def enrollment(request:HttpRequest):
             #totp = pyotp.TOTP(secret, interval=120)
             verification_code = generate_code();
             request.session['verification_code'] = verification_code
-            expire = timezone.now() + timezone.timedelta(seconds=10)
+            expire = timezone.now() + timezone.timedelta(seconds=120)
             request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
             request.session.save()
             #send otp via sms

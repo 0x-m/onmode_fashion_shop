@@ -93,8 +93,8 @@ class Type(models.Model):
         verbose_name = _('Type')
         verbose_name_plural = _('Types')
 
-    # def __str__(self) -> str:
-    #     return str(self.name)
+    def __str__(self) -> str:
+        return str(self.name)
     
 #product subtype: sport shoes, classic bag,...
 class SubType(models.Model):

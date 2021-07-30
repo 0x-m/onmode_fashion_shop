@@ -76,5 +76,10 @@ class Coupon(models.Model):
             price_after_discount = 0
             
         return price_after_discount
+    
+    def __str__(self) -> str:
+        if self.type == self.PERCENT:
+            return self.PERCENT + ":" + str(self.percent)
+        return self.AMOUNT + ":" + self.amount
 
 post_save.connect(Coupon.post_create, sender=Coupon)

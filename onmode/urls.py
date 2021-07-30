@@ -1,5 +1,6 @@
 
 
+from shops import urls
 from os import name
 from django.contrib import admin
 from django.urls import path, include
@@ -7,6 +8,7 @@ from django.conf.urls.static import static
 from django.conf  import Settings, settings
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('favourites/', include('favourites.urls', namespace='favourites')),

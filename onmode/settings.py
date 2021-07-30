@@ -22,9 +22,9 @@ ALLOWED_HOSTS = ['onmode.herokuapp.com','localhost']
 
 
 # Application definition
-
+#'django.contrib.admin'
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'apps.MyAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

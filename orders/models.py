@@ -30,6 +30,10 @@ class OrderAddress(models.Model):
         verbose_name = _('Order Address')
         verbose_name_plural = _('Order Adresses')
 
+    def __str__(self) -> str:
+        return self.first_name + " " + self.last_name   +"/" + self.state + "/" + self.city 
+    
+
 class OrderList(models.Model):
     ULTIMATE = 'ultimate'
     EXPRESS = 'express'
@@ -103,8 +107,9 @@ class OrderList(models.Model):
         self.total_price += order.total_price
         self.total_price_after_discount += order.discounted_total_price
         self.save()
-  
-    
+        
+    def __str__(self) -> str:
+        return _("Order List: ") + str(self.id)
 
 class Order(models.Model):
     PENDING = 'pending'
@@ -208,6 +213,10 @@ class Order(models.Model):
             for i in self.items.all():
                 total += i.quantity
         return total
+      
+    def __str__(self) -> str:
+        return _("order number: ") + str(self.id)
+
             
             
 
