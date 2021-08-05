@@ -1,21 +1,33 @@
 {% load static %}
 <div class="rail" style="justify-content: center;">
-   
-    <div class="product">
-        <img src="{% static 'img/img1/product-4.jpg' %}" class="img" />
-        <div class="container-col">
-            <p class="title" style="margin-top: -0.1em;">لباس من مدل </p>
-            
-            <p style="text-align: center; margin-top:-0.3em;font-size:0.8rem">
-                <span style="color: red;font-weight:bold;">4000</span>&nbsp;&nbsp;
-                <span style="text-decoration:line-through;color:gray;">100000</span>
+   {% for product in related_products %}
+        <div id="product-{{ product.id }}" class="product">
+            <a href="{{ product.get_absolute_url }}" style="text-decoration:none">
+                {% if product.images.first.image %}
+                    <img src="{{ product.images.first.image.url }}" class="img" />
+                {% else %}
+                    <img src="{% static 'img/img1/noimg.jpg' %}" class="img" />
+                {% endif %}
+            </a>
+            <h1 class="name">{{ product.name }}</h1>
+            <p class="price">
+                {% if product.discounts.last.is_valid %}
+                    <span style="color: red;font-weight:bold;">{{product.discounts.last.get_discounted_price}}تومان</span>&nbsp;&nbsp;
+                    <span style="text-decoration:line-through;color:gray;">{{product.price}}تومان</span>
+                    <p class="badge" style="background-color:rgb(245, 56, 56)">{{ product.discounts.last.percent }}%</p>
+                {% else %}
+                    <span style="color:gray;">{{product.price}}تومان</span>
+                {% endif %}
             </p>
-            <p style="text-align: center;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:-0.2rem">
-            
-                <span class="fa fa-shopping-basket btn-tiny" ></span>
-                <span class="fa fa-heart btn-tiny"></span>
+            <p class="action-bar">
+                {% if user.shop.first.id == product.shop.id %}
+                <button data-id="{{product.id}}" style="color: rgb(104, 104, 104);" onclick="get_edit_product();" class="fa fa-pencil action-btn"></button>
+                <button data-id="{{product.id}}" style="color: rgb(255, 108, 108);" onclick="remove_product();" class="fa fa-trash-o action-btn"></button>
+            {% else %}
+                <button data-id="{{ product.id }}" class="fa fa-shopping-bag action-btn" style="color: yellowgreen;" onclick="this.classList.add('explode');add_to_cart();this.disabled=true;" ></button>
+                <button data-id="{{ product.id }}" class="fa fa-heart action-btn" style="color: red;" onclick="this.classList.add('explode');add_to_favourites();this.disabled=true;"></button>
+            {% endif %}
             </p>
-            <p class="badge" style="background-color:green">15%</p>
-        </div>
-    </div>
+        </div>  
+   {% endfor %}
  </div>

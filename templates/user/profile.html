@@ -21,35 +21,33 @@
 
     </div>
     <form style="padding: 0;width:100%" id="personal_info">
-        <p  class="field">
-            <label class="caption" for="first_name">نام: </label>
-            <input name="first_name"  id="first_name" class="text-box" type="text" placeholder="نام" value="{{user.first_name}}" />
-        </p>
-        <p class="field">
-            <label class="caption" for="last_name">نام خانوادگی: </label>
-            <input  id="last_name" name="last_name" class="text-box" type="text" placeholder="نام خانوادگی" value="{{ user.last_name }}" />
-        </p>
-        <p class="field">
-            <label class="caption" for="last_name">جنسیت: </label>
-            <div class="row" style="justify-content: center;flex-direction:row">
-                <label>مرد<input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}></label>
-                <label style="margin-right: 1rem;">زن<input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}></label>
-    
-            </div>
-        </p>
-        <p class="field">
-            <label class="caption" for="email">ایمیل: </label>
-            <input onblur="validate_email();" name="email" id="email" class="text-box" type="email" placeholder="ایمیل" value="{{user.email}}" />
-        </p>
-        <p class="field">
-            <label class="caption" for="merchan_card">شماره کارت: </label>
-            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text-box" type="text" placeholder="شماره کارت" value="{{user.merchan_card}}" />
-        </p>
-               
-              
-        <p class="field">
-            <label class="caption" for="state">استان: </label>
-            <input onblur="get_cities();validate_province_and_city();"  list="provinces" name="state"  id="state" class="text-box" type="text" placeholder="استان" value="{{user.address.state}}" />
+        <div  class="txt-box">
+            <input name="first_name" class="text"  id="first_name"  type="text"  value="{{user.first_name}}" required />
+            <label class="holder">نام </label>
+        </div>
+        <div class="txt-box">
+            <input class="text"   id="last_name" name="last_name"  type="text"  value="{{ user.last_name }}" required />
+            <label class="holder" >نام خانوادگی</label>
+        </div>
+        <div class="txt-box">
+            <input class="text"  onblur="validate_email();" name="email" id="email" type="email"  value="{{user.email}}" required />
+            <label class="holder" >ایمیل</label>
+        </div>
+        <div class="txt-box">
+            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text" type="text"  value="{{user.merchan_card}}" required />
+            <label class="holder">شماره کارت: </label>
+        </div>
+        <div style="display:inline-flex;justify-content:space-between;align-items:center;margin-top:1rem;width:100%;">
+            <label style="font-size: 0.8rem;text-align:right;">جنسیت: </label>
+            <label class="radio-box">مرد<input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}></label>
+            <label class="radio-box" style="margin-right: 1rem;">زن<input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}></label>
+        </div>
+        <div style="width: 100%;margin-top:3rem;border:1px solid gray;position:relative">
+            <span style="position:absolute;left:40%;top:-1rem;padding:0.5rem;background-color:white">آدرس</span>
+        </div>
+        <p class="txt-box">
+            <input onblur="get_cities();validate_province_and_city();"  list="provinces" name="state"  id="state" class="text" type="text" value="{{user.address.state}}" required/>
+            <label class="holder" for="state">استان</label>
         </p>
         <datalist  id="provinces">
             {% for province in provinces %}
@@ -57,25 +55,24 @@
             {% endfor %}
         </datalist>
 
-        <p class="field">
-            <label class="caption" for="city">شهرستان : </label>
-            <input onblur="validate_province_and_city();" autoComplete="off" list="cities" name="city"  id="city" class="text-box" type="text" placeholder="شهرستان" value=" {{user.address.city}}" />
+        <p class="txt-box">
+            <input onblur="validate_province_and_city();" autoComplete="off" list="cities" name="city"  id="city" class="text" type="text"  value=" {{user.address.city}}" required />
+            <label class="holder" >شهرستان</label>
             <datalist id="cities">
                 <option value=" "></option>
-            </datalist>
-            
+            </datalist> 
         </p>
-        <p class="field">
-            <label class="caption" for="town">شهر: </label>
-            <input name="town"  id="town" class="text-box" type="text" placeholder="شهر" value="{{user.address.town}}" />
+        <p class="txt-box">
+            <input name="town"  id="town" class="text" type="text"  value="{{user.address.town}}" required/>
+            <label class="holder">شهر</label>
         </p>
-        <p class="field">
-            <label class="caption" for="postal_code">کد پستی: </label>
-            <input  id="postal_code" name="postal_code" class="text-box" type="text" placeholder="کد پستی" value="{{user.address.postal_code}}" />
+        <p class="txt-box">
+            <input  id="postal_code" name="postal_code" class="text" type="text"  value="{{user.address.postal_code}}" required/>
+            <label class="holder">کد پستی</label>
         </p>
-        <p class="field">
-            <label for="description" class="caption">نشانی: </label>
-            <textarea name="description" id="description" rows="5" placeholder="نشانی" class="text-box" style="resize:vertical;"  >{{user.address.description}}</textarea>
+        <p class="txt-box">
+            <textarea name="description" id="description" rows="5"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
+            <label class="holder">نشانی</label>
         </p>
     </form>
     <p class="row" style="flex-direction: row;justify-content:space-around">

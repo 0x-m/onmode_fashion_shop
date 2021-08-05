@@ -1,69 +1,60 @@
-<style>
-    .container {
-        align-items: center;
-        justify-content: flex-start;
-        padding: 0.7rem;
-        width: 97%;
-        
-    }
-  
-</style>
-<div class="container">
-        <form enctype="multipart/form-data" id="shop_form" class="w-100">
-        <p class="field">
-            <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
-            <label style="width: 100%;text-align:center;font-size:1rem" class="caption" for="fname">http://www.onmode.ir/{{ user.shop.first.name }}</label>
+
+<div class="container" style="width: 90%;">
+    <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
+    <label style="width: 100%;text-align:center;font-size:1rem" 
+           class="caption" for="fname">http://www.onmode.ir/{{ user.shop.first.name }}</label>
+    <form enctype="multipart/form-data" id="shop_form" class="w-100">
+        <p class="txt-box">
+            <input name="title" id="fname"  class="text" type="text" value="{{ user.shop.first.title }}" required>
+            <label class="holder">عنوان</label>
         </p>
-        <p class="field">
-            <label class="caption" for="fname">عنوان</label>
-            <input name="title"   id="fname"  class="text-box" type="text" value="{{ user.shop.first.title }}" placeholder="عنوان بوتیک" >
-        </p>
-        <p class="field">
-            <label class="caption" for="fname">شماره تلفن</label>
-            <input name="shop_phone"   id="fname"  class="text-box" type="text" placeholder="شماره تلفن" value="{{ user.shop.first.shop_phone }}" >
-        </p>
-        <p class="field">
-            <label class="caption" for="fname">درباره بوتیک</label>
-            <textarea name="description" rows="5"  id="fname" class="text-box" type="text" placeholder="درباره بوتیک">{{user.shop.first.description}}</textarea>
-        </p>
-        <p class="field">
-            <label class="caption" for="fname">آدرس بوتیک</label>
-            <textarea name="address" rows="5"  id="fname" class="text-box" type="text"  placeholder="آدرس بوتیک" >{{user.shop.first.address}}</textarea>
-        </p>
-        <p class="mt-1 field">
-            <label style="cursor: pointer;">
-                <span class="fa fa-image"></span>
-                <span class="fz-small">لوگو</span>
-                 <input onchange="document.getElementById('img-logo').innerText=this.files[0].name;" name="logo" type="file" style="position: fixed;top:-100px;" placeholder="لوگو" multiple>
-                 <span id="img-logo" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت باشد</span>
-             </label>
-        </p>
-        <p class="mt-1 field">
-            <label style="cursor: pointer;">
-                <span class="fa fa-image"></span>
-                <span class="fz-small">بنر</span>
-                 <input onchange="document.getElementById('img-banner').innerText=this.files[0].name;"  name="banner" type="file" style="position: fixed;top:-100px;" placeholder="بنر" multiple>
-                 <span id="img-banner" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم بنر کمتر از 300 کیلوبایت باشد</span>
-             </label>
-        </p>
-        <p class="field" style="margin-top: 1rem;">
-            <label class="caption" for="fname">ارسال پستی به </label>
-            <label style="font-size: 0.8rem;">سراسر ایران
-                <input onclick="toggle_state_list();" type="checkbox" name="overall" value="true">
-            </label>
-            <div class="list-box" style="background-color: white;width:100%">
-                <input data-target="states" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">
-                <div id="states" onclick="listboxSelect();" class="items">
-                    {% for province in provinces %}
-                        <div class="item  {% if province.name in post_destinations %}selected{% endif %}">
-                            {{province.name}}
-                            <span class="{% if province.name in post_destinations %}show{% endif %}"  style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                        </div>
-                    {% endfor %}
-           
+    <p class="txt-box">
+        <input name="shop_phone"   id="fname"  class="text" type="text" value="{{ user.shop.first.shop_phone }}"  required>
+        <label class="holder">شماره تلفن</label>
+    </p>
+    <p class="txt-box">
+        <textarea name="description" rows="5"  id="fname" class="text" type="text" required>{{user.shop.first.description}}</textarea>
+        <label class="holder">درباره بوتیک</label>
+    </p>
+    <p class="txt-box">
+        <textarea name="address" rows="5"  id="fname" class="text" type="text"  required >{{user.shop.first.address}}</textarea>
+        <label class="holder">آدرس بوتیک</label>
+    </p>
+    <div style="cursor: pointer;width:100%;padding:0.5rem;border:1px dashed gray;text-align:center">
+        <label style="cursor: pointer;"> 
+            <input onchange="document.getElementById('img-logo').innerText=this.files[0].name;" name="logo" type="file" style="position: fixed;top:-100px;" >
+            <span class="fa fa-image"></span>
+            <span class="fz-small">لوگو</span>
+            <span id="img-logo" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت باشد</span>
+        </label>
+    </div>
+
+    <div style="margin-top:1rem;cursor: pointer;width:100%;padding:0.5rem;border:1px dashed gray;text-align:center">
+        <label style="cursor: pointer;">
+            <span class="fa fa-image"></span>
+            <span class="fz-small">بنر</span>
+            <input onchange="document.getElementById('img-banner').innerText=this.files[0].name;"  name="banner" type="file" style="position: fixed;top:-100px;" placeholder="بنر" multiple>
+            <span id="img-banner" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم بنر کمتر از 300 کیلوبایت باشد</span>
+        </label>
+    </div>
+    
+    <label style="font-size: 0.8rem;color:gray;margin-top:1rem;display:block">ارسال پستی به : </label>
+    <div style="display: inline-flex;justify-content:space-between;width:101%;align-items:center;margin-top:1rem">
+        <label style="font-size: 0.8rem;">سراسر ایران</label>
+        <input onclick="toggle_state_list();" type="checkbox" class="switch" name="overall" value="true">
+    </div>
+    <div class="list-box" style="background-color: white;width:100%;margin-top:0.5rem">
+        <input data-target="states" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">
+        <div id="states" onclick="listboxSelect();" class="items">
+            {% for province in provinces %}
+                <div class="item  {% if province.name in post_destinations %}selected{% endif %}">
+                    {{province.name}}
+                    <span class="{% if province.name in post_destinations %}show{% endif %}"  style="float: left;display:none;font-size:1.2rem">&#10003;</span>
                 </div>
-            </div>
-        </p>
+            {% endfor %}
+    
+        </div>
+    </div>
     </form>
     <p class="row" style="flex-direction: row;justify-content:space-around;margin-bottom:2rem">
         <button style="width:40%" class="btn btn-success" onclick="edit_shop();">ثبت</button>

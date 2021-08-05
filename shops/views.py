@@ -333,12 +333,23 @@ def search(request:HttpRequest, pg):
 def product_detail(request:HttpRequest, product_id):
     product = get_object_or_404(Product,id=product_id,is_active=True)
     comments = Comment.objects.filter(product=product)
+    paginator = Paginator(comments, 20)
+    page_no = request.GET.get('pg');
+    try:
+        page = paginator.get_page(page_no)
+    except PageNotAnInteger:
+        page = paginator.get_page(1)
+    except EmptyPage:
+        page = paginator.get_page(paginator.num_pages)
+        
+
     user_comment = comments.filter(user=request.user)
-    
+    related_products = Product.objects.filter(type=product.type)[:10]
     return render(request, 'product/detail/product.html',{
         'product':product,
-        'comments': comments,
-        'user_comment': user_comment
+        'page': page,
+        'user_comment': user_comment,
+        'related_products':related_products
     })
     
 def get_discounted_products(request:HttpRequest):
