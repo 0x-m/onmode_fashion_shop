@@ -269,7 +269,7 @@ fz-small{
 
 
 /*-------------checkbox-----------------*/
-input[type="checkbox"].switch{
+.switch{
     font-size: 30px;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -287,13 +287,13 @@ input[type="checkbox"].switch{
     }
     
  
-    input[type="checkbox"].switch:after{
+   .switch:after{
     position: absolute;
     content: "";
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    background: gray;
+    background: lightgray;
     transform-origin: center,center;
     -webkit-transform: scale(.7);
     transform: scale(.7);
@@ -303,8 +303,12 @@ input[type="checkbox"].switch{
     transition: all .2s ease-in-out;
     }
     
-    input[type="checkbox"].switch:checked:after{
-    left: 1.4rem;
+    .switch:checked:after{
+        left: 1.4rem;
+        background-color: rgb(92, 92, 92);
+    }
+    .switch:checked {
+        border-color: gray;
     }
 
 /***********************************************/
