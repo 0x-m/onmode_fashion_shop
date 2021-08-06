@@ -1142,7 +1142,7 @@ function get_user_orders(){
     event.stopPropagation();
     showSidebox();
     start_waiting();
-    fetch('/orders/user/',{
+    fetch('/user/orders/',{
         method: "GET"
     }).then((res) => {
         
@@ -1159,7 +1159,7 @@ function get_shop_orders(){
     event.stopPropagation();
     showSidebox();
     start_waiting();
-    fetch('/orders/shop/',{
+    fetch('/shop/orders/',{
         method: "GET"
     }).then((res) => {
         
@@ -1173,7 +1173,7 @@ function get_shop_orders(){
 function show_order_detail(){
     console.log('dssdsd');
     const id = event.target.dataset['id'];
-    fetch('/orders/user/detail/' + id + '/',{
+    fetch(`/user/order/${order_id}/detail/` ,{
         method: "GET"
 
     }).then((response) =>{
@@ -1187,7 +1187,7 @@ function show_order_detail(){
 
 function show_shop_order_detail(){
     const id = event.target.dataset['id'];
-    fetch('/orders/shop/detail/' + id + '/',{
+    fetch(`/shop/order/<order_id>/detail/` + id + '/',{
         method: "GET"
 
     }).then((response) =>{
@@ -1202,7 +1202,7 @@ function show_shop_order_detail(){
 function accept_order(){
     const order_id = event.target.dataset['id'];
     start_waiting();
-    fetch('/orders/accept/' + order_id + '/',{
+    fetch(`/shop/order/${order_id}/accept/`,{
         method: 'GET'
     }).then((response) => {
         response.text().then((txt) => {
@@ -1214,7 +1214,7 @@ function accept_order(){
 function reject_order(){
     const order_id = event.target.dataset['id'];
     start_waiting();
-    fetch('/orders/reject/' + order_id + '/',{
+    fetch(`/shop/order/${order_id}/reject/`,{
         method: 'GET'
     }).then((response) => {
         response.text().then((txt) => {
@@ -1226,7 +1226,7 @@ function reject_order(){
 function cancell_order(){
     const order_id = event.target.dataset['id'];
     start_waiting();
-    fetch('/orders/cancell/' + order_id + '/',{
+    fetch(`/user/order/${order_id}/cancell/` ,{
         method: 'GET'
     }).then((response) => {
         response.text().then((txt) => {
@@ -1238,7 +1238,7 @@ function cancell_order(){
 function recieve_order() {
     const order_id = event.target.dataset['id'];
     start_waiting();
-    fetch('/orders/recieve/' + order_id + '/',{
+    fetch(`/user/order/${order_id}/verify/`,{
         method: 'GET'
     }).then((response) => {
         response.text().then((txt) => {
