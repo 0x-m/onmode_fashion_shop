@@ -1109,12 +1109,12 @@ class Product extends HTMLElement {
         const a1 = this.querySelector('#a1');
         const a2 = this.querySelector('#a2');
         if (this.editable) {
-            console.log('editable');
+           
             a1.addEventListener('click', this._remove);
             a2.addEventListener('click', this._edit)
         }
         else {
-            console.log('normal..');
+          
             a1.addEventListener('click', this._addToCart);
             a2.addEventListener('click', this._addToFavs)
         }
@@ -1201,10 +1201,7 @@ class Product extends HTMLElement {
     }
 
     _render() {
-        console.log(this.title, this.badge, this.price, this.discountedprice)
         const parts = this.querySelectorAll('.link, .preview, .name, .realprice, .offprice, .badge');
-        console.log(parts);
-        console.log('------------');
         parts[0].setAttribute('href',this.link);
         parts[1].src = this.preview;
         parts[2].textContent = this.title;
@@ -1212,7 +1209,6 @@ class Product extends HTMLElement {
         parts[4].textContent = this.discountedprice;
         parts[5].classList.add(this.badgeclass);
         parts[5].textContent = this.badge;
-
         this._toggleEditable();
         this._toggleCartAction();
         this._toggleFavAction();

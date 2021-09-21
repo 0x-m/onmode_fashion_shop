@@ -1,0 +1,25 @@
+<style>
+    .ava {
+        margin: 0.5rem;
+        
+    }
+
+    @media screen and (max-width: 400px) {
+        .md {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<p>
+    بهترین بوتیکها
+</p>
+<div class="container horizontal justify-center md" style="flex-wrap: wrap;width:50%;margin: 1rem auto;">
+    {% for i in lss %}
+    <a class="ava" href="#">
+        <img loading="lazy" src="https://i.pravatar.cc/150?img={{ i }}" style="width: 64px; height:64px">
+    </a>
+    {% endfor %}
+  
+  
+</div>
