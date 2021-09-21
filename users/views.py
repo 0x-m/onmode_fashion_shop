@@ -1,18 +1,11 @@
 
-from datetime import time
-from sys import getcheckinterval
-from django import http
-import django
-from django.contrib.sessions.backends.base import SessionBase
-from django.forms.models import inlineformset_factory
-from django.forms.widgets import Select
+
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
-from django.shortcuts import render, resolve_url
+from django.shortcuts import render
 from django.http import HttpRequest, request
 from http import HTTPStatus
 import logging
 from .forms import *
-import pyotp
 from .models import User, Address
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
