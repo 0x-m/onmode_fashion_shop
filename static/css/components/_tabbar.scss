@@ -1,10 +1,14 @@
 
 .tab-container {
     margin: 0;
+    width: 95%;
+    margin: 0.5rem auto;
+
 
     .tab-items {
         display: flex;
         margin-top: 2rem;
+        font-size: 0.8rem;
 
         .tab-item {
             display: inline-flex;
@@ -16,10 +20,11 @@
             border-bottom: 1.2px solid transparent;
             margin-left: 0.5rem;
 
-            &:hover, &.selected {
+            &:hover, &.tab-item-selected {
                 border-bottom-color: gray;
                 color: black;
             }
+  
         }
 
     }
@@ -35,6 +40,11 @@
             &--show {
                 display: block;
             }
+        }
+
+
+        .tab-show-content {
+            display: block !important;
         }
     }
 }

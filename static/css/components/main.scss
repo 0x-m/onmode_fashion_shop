@@ -1,3 +1,4 @@
+
 @use './_variables';
 @use './_breakpoints';
 @use './_button';
@@ -5,6 +6,7 @@
 @use './_footer';
 @use './_gallery';
 @use './_icon';
+@use './tabbar';
 @use './_layouts';
 @use './_listbox';
 @use './_logo';
@@ -16,3 +18,4 @@
 @use './shop';
 @use  './checkout';
 @use  './navbar';
+

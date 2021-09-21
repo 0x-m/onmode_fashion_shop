@@ -1384,3 +1384,24 @@ class CustomText extends HTMLElement {
 }
 
 customElements.define('custom-text', CustomText);
+
+
+function select_tab(){
+    const target = event.target;
+    if (target.classList.contains('tab-item')){
+        const tab_id = target.dataset['tab'];
+        console.log(tab_id);
+        const items = target.parentNode.children;
+        for (let i = 0; i < items.length; ++i){
+            items[i].classList.remove('tab-item-selected');
+        }
+        const contents = target.parentNode.parentNode.getElementsByClassName('tab-contents')[0].children;
+        for (let i=0; i < contents.length; ++i){
+            contents[i].classList.remove('tab-show-content');
+        }
+        target.classList.add('tab-item-selected');
+        document.getElementById(tab_id).classList.add('tab-show-content');
+
+    }
+
+}
