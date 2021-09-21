@@ -1,0 +1,35 @@
+
+.search-box {
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    height: 0;
+    transition: 0.4s;
+    border-bottom: 1px solid #efefef;
+
+    .text {
+        width: 100%;
+        outline:  none;
+        font-size: 2rem;
+        color: gray;
+        background-color: white;
+        padding-right: 1rem;
+    }
+
+    .close-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        padding: 1em;
+        cursor: pointer;
+        color: gray;
+        background-color: rgb(255, 255, 255)   ;
+    }
+    &--show {
+        height: 12vh;
+    }
+
+}

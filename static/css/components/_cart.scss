@@ -1,0 +1,138 @@
+
+.cart {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin: 0.5rem auto;
+
+    .cart-item {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        padding-bottom: 0.3rem;
+        border-bottom: 1px solid #cecece;
+        margin-top: 0.5rem;
+
+        .detail {
+            width: calc(100% - 0.5rem - 96px);
+            margin-right: 0.5rem;
+            position: relative;
+            .price {
+                font-size: 0.7rem;
+                right: 100px;
+                padding: 0.2rem;
+                color: rgb(255, 255, 255);
+                background-color: rgb(102, 102, 102);
+                text-align: center;
+            }
+    
+            .title {
+                font-size: 1rem;
+                color: #888;
+                margin-top: 0;
+                font-weight: normal;
+            }
+    
+            .description {
+                font-size: 0.7rem;
+                color: rgb(173, 173, 173);
+                padding: 0 0.5rem 0 0.2rem;
+                word-wrap: break-word;
+                line-height: 1rem;
+                width: 80%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin-top: 0;
+
+            }
+            .boutique {
+                color: #a0a0a0;
+                font-size: 0.7rem;
+               
+                margin-top: -0.5rem;
+            }
+        }
+        
+        .preview {
+            width: 100%;
+            max-width: 96px;
+            object-fit: contain;
+            border-radius: 1px;
+        }
+
+        .action {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+            & combo-box {
+                width: 25%;
+                margin-right: 0.5rem;
+                margin-top: -1rem;
+                display: inline-block;
+                font-size: 0.6rem;
+            }
+
+            & combo-box::part(selectedBox) {
+                border: none;
+                border-bottom: none;
+                padding: 0;
+                min-height: 25px;
+                max-height: 25px;
+                overflow: hidden !important;
+            }
+        }
+
+        .quantity{
+            width: 70px;
+            position: absolute;
+            bottom: 0.7rem;
+            right: 13px;
+        }
+
+        .remove::after {
+            content: "×";
+            position: absolute;
+            top: 5px;
+            left: 3px;
+            width: 16px;
+            height: 16px;
+            font-size: 1.1rem;
+            font-weight: 10;
+            cursor: pointer;
+            color: #9c9c9c;
+            font-weight: 10;
+            
+        }
+
+        .out_of_stock {
+            position: absolute;
+            top: 8px;
+            left: 25px;
+            background-color: rgb(216, 28, 22);
+            font-size: 0.6rem;
+            color: white;
+            padding: 0.2rem;
+            visibility: hidden;
+            
+            &.pinned {
+                visibility: visible;
+            }
+        }
+
+        
+    }
+
+}
+
+.circ {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+
+}

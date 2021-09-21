@@ -1,0 +1,30 @@
+
+.btn {
+    outline: none;
+    text-align: center;
+    border: 1px solid #efefef;
+    border-radius: 1px;
+    color: #666;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    background-color: white;
+    cursor: pointer;
+
+    &:active {
+        transform: translate(3%, 3%);
+    }
+
+}
+
+.cta {
+    border: 1.5px solid #aaa;
+    width: 80%;
+    margin: 10px;
+    font-size: 1.2rem;
+    transition: 0.5s;
+}
+
+.cta:active {
+    transform: translate(2%, 3%);
+}
+

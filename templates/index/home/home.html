@@ -3,14 +3,12 @@
 {% load static %}
 {% block title %}ضفحه اصلی {% endblock %}
 {% block dependencies %}
-<link rel="stylesheet" href="{% static 'css/glide.core.min.css' %}">
-<script src="{% static 'js/glide.min.js' %}"></script>
-<link rel="stylesheet" href="{% static 'css/glide.theme.min.css' %}"> 
-
 
 {% endblock %}
+
 {% block content %}
 {% include 'index/home/slideshow.html' %}
+{% comment %}
 {% include 'index/home/categories.html' %}
 {% include 'index/home/new_products.html' %}
 {% include 'index/home/discounted_products.html' %} 
@@ -18,13 +16,11 @@
 {% include 'index/home/stack.html' %}
 {% include 'index/home/specs.html' %}
 {% include 'index/home/advert.html' %} 
+{% endcomment %}
 {% endblock %}
 
 {% block body %}
 <script>
-    new Glide('.glide',{
-        autoplay: 2000
-    }).mount()
-  
+    
 </script>
 {% endblock %}

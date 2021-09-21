@@ -1,0 +1,15 @@
+$breakpoints: (
+    cellphone : 320px,
+    phablet: 576px,
+    tablet: 678px,
+    desktop : 960px,
+    desktop--md : 1200px,
+    desktop--lg: 1960px,
+    desktop-xl: 2048px
+);
+
+@mixin respond($bp) {
+   @media screen and (min-width: map.get(($breakpoints, $bp))) {
+        @content       
+   }
+}

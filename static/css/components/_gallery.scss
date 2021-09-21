@@ -1,0 +1,34 @@
+
+.gallery {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: unset;
+
+    .preview {
+        flex: 70%;
+        width: 100%;
+        height: auto;
+    }
+
+    .thumbs {
+        flex: 30%;
+        display: flex;
+        justify-content: center;
+       
+        .thumbs {
+            width: 64px;
+            height: 64px;
+            border: 1px solid gray;
+            opacity: 0.6;
+            transform: 0.3s;
+            
+
+            &:hover, &--active {
+                opacity: 1;
+            }
+
+        }
+    }
+}

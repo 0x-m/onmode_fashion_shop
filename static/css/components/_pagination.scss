@@ -1,0 +1,35 @@
+
+.pagination {
+    margin: 1rem auto;
+    width: 95%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .page-item {
+        text-decoration: none;
+        appearance: none;
+        padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+        border: 1px solid #efefef;
+        font-size: 0.9rem;
+        cursor: pointer;
+        color: #333;
+        text-align: center;
+
+        &:hover {
+            border-color: #333;
+        }
+
+        &:active {
+            transform: translate(5%, 5%);
+        }
+
+        &--active {
+            background-color: #777;
+            color: white;
+        }
+    }
+
+}
+

@@ -1,0 +1,19 @@
+
+.container {
+    display: flex;
+    
+    &.horizontal {
+        flex-direction: row;
+    }
+    &.vertical {
+        flex-direction: column;
+    }
+    &.justify-center {
+        justify-content: center;
+    }
+
+    &.align-items {
+        align-items: center;
+    }
+}
+

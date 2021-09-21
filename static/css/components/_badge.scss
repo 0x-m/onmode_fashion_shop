@@ -1,0 +1,25 @@
+
+.badge {
+    position: absolute;
+    padding: 0.3rem;
+    font-size: 0.7rem;
+    color: white;
+    &-red {
+        background-color: red !important;
+    }
+    &-green {
+        background-color: green !important;
+    }
+    &-dark {
+        background-color: #333 !important; 
+    }
+    &-top-left {
+        top: -1%;
+        left: 3%;
+    }
+
+    &.hide {
+        visibility: hidden;
+    }
+
+}
