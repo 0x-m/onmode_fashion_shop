@@ -1,7 +1,25 @@
 
 .shop-banner {
     width: 100%;
-    height: 25vh;
+    height: 25vh !important;
+}
+
+@media screen and (min-width: 576px) {
+    .shop-banner {
+        height: 30vh !important;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .shop-banner {
+        height: 40vh !important;
+    }
+}
+
+@media screen and (min-width: 996px) {
+    .shop-banner {
+        height: 45vh !important;
+    }
 }
 
 .shop-logo {
@@ -25,10 +43,9 @@
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 10000;
+    z-index: 100;
     padding-bottom: 0.5rem;
-    width: 95%;
-    margin: 0 auto;
+    width: 100%;
     background-color: white;
     height: 37px;
     

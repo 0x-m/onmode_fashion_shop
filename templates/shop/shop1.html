@@ -1,0 +1,260 @@
+{% extends 'index/base.html' %}
+{% load static %}
+{% block title %}{{shop.name}}{% endblock %}
+{% block content %}
+<style>
+    .description{
+        padding-top: 3rem;
+        background-color: #fbfbfb;
+        word-wrap: break-word;
+        line-break: loose;
+        white-space: pre-line;
+
+    }
+    .banner {
+        width: 100%;
+        border-bottom: 1px solid lightgray;
+    }
+    .shop-logo {
+        position: absolute;
+        bottom: -12.5vw;
+        background-color: white;
+        left: 37.5vw;
+        width: 25vw;
+        height: 25vw;
+        border-radius: 50%;
+        border: 1px solid lightgray;
+        padding: 0.2rem;
+    }
+    .filter-btn{
+        float: right;
+        margin-right: 1rem;
+        border-radius: 2px;
+        background-color: #f34545;
+        padding: 0.5rem;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        bottom: -1rem;
+    }
+
+    .filter-container {
+        flex :25%;
+        display: block;
+        z-index: 5000;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 0vw;
+        height: 100vh;
+        overflow-y: auto;
+        transition:  0.5s;
+        box-shadow: 1px 0px 5px rgb(175, 175, 175);
+
+    }
+    .show-filter{
+        width: 80vw;
+    }
+    .product {
+        min-width: 40vw;
+        justify-self: flex-start;
+        max-width: 40vw;
+        background-color: white;
+        
+    }
+
+    .img{
+        max-width: 240px;
+        max-height: 360px;
+    }
+
+    .remove{
+        display: block;
+    }
+  
+    .main-container {
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content:center;
+        align-items:flex-start;
+        gap:1rem;
+        padding: 0.5rem;
+        background-color: rgb(255, 255, 255)
+    }
+
+   
+
+    .filter-box {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding: 0.5rem;
+        width: 98%;
+        background-color: white;
+        transition: 0.5s;
+
+    }
+   
+   
+    @media screen and (min-width:576px) {
+        .product {
+            min-width: 20vw;
+            max-width: 20vw;
+        }
+        .shop-logo {
+            bottom: -7.5vw;
+            left: 42.5vw;
+            width: 15vw;
+            height: 15vw;
+        }
+        
+    }
+    @media screen and (min-width:768px) {
+        .shop-logo {
+            position: absolute;
+            bottom: -7.5vw;
+            left: 42.5vw;
+            width: 15vw;
+            height: 15vw;
+
+        }
+        .product{
+            min-width: 20vw;
+            max-width: 20vw;
+        }
+      .show-filter{
+          width: 50vw;
+      }
+      
+    }
+
+   
+
+    @media screen and (min-width: 1024px) {
+        .shop-logo {
+            position: absolute;
+            bottom: -5vw;
+            background-color: white;
+            left: 45vw;
+            width: 10vw;
+            height: 10vw;
+            border-radius: 50%;
+            border: 1px solid lightgray;
+            padding: 0.2rem;
+        }
+
+        .filter-container {
+            flex: 40%;
+            position: relative;
+            box-shadow: none;
+            margin-right: 1rem;
+            padding: 1rem;
+            height: auto;
+            overflow-y: hidden;
+
+           
+        }
+       .row{
+           flex-direction: row;
+       }
+        .filter-box{
+            border-left: 1px solid rgb(179, 179, 179);
+
+        }
+        .color {
+            min-width: 24px;
+            min-height: 24px;
+        }
+        .size {
+            font-size: 1.3rem;
+        }
+        .select-size {
+            font-size: 1.5rem;
+            opacity: 1;
+        }
+       
+        .product {
+            min-width: 16vw;
+            max-width: 16vw;
+        }
+       
+        .remove {
+            display: none;
+        }
+   
+    }
+
+
+</style>
+<div style="position: relative;" class="row">
+    {% if shop.logo %}
+    <img src="{{ shop.logo.url }}" class="shop-logo">
+    {%endif %}
+    {% if shop.banner %}
+    <img src="{{ shop.banner.url }}" class="banner">
+    {% endif %}
+    <span class="fa fa-search filter-btn remove" onclick="showfilter();">
+        <span style="font-size:0.8rem">جستجو</span>
+    </span>    
+</div>
+<div class="row description">
+  <div style="flex: 20%;display:flex;flex-direction:column;">
+    <p style="font-size: 0.8rem;text-align:center;width:100%">
+        {{ shop.description }}
+    </p>
+    <p style="font-size: 0.9rem;text-align:center;width:100%">
+        فروشنده:  {{shop.seller.first_name}}&nbsp; {{ shop.seller.last_name }}
+    </p>
+  </div>
+</div>
+
+<div class="row">
+    <aside style="margin-right: -1rem;" id="filter-container" class="filter-container">
+        <div class="filter-box">
+            <span class="fa fa-times remove" style="color:red;position:absolute;left:2%;top:1%;cursor:pointer" onclick="showfilter();"></span>
+            <form onsubmit="filter_product();" action="{% url 'shops:shop_filter' shop_name=shop.name  %}" method="GET">
+                {% include 'product/filter.html' %}
+            </form>
+        </div>
+    </aside>
+    <section style="height:min-content" class="main-container">
+        {% include 'product/list.html' %}
+    </section>
+</div>
+
+<div class="pagination">    
+    {% if page.has_previous %}
+     <a href="?pg={{page.previous_page_number}}">&laquo;</a>
+    {% endif %}
+    <a href="?pg=1">ابتدا</a>
+     
+    {% for p in page.paginator.page_range %}
+        <a href="?pg={{p}}" class="{% if page.number == p %}active-page{% endif %}">{{ p }}</a>
+    {% endfor %}
+         <a href="?pg={{page.paginator.num_pages }}">انتها</a>
+    {% if page.has_next %}
+     <a href="?pg={{page.next_page_number}}">&raquo;</a>
+    {% endif %}
+ </div>
+<div class="row" style="margin-top: 2rem;justify-content:center">
+    <p style="text-align:center;border-bottom:2px solid red;padding:0.5rem">
+        پرفروش ترینهای بوتیک
+    </p>
+</div>
+
+<div class="rail" style="overflow:inherit;z-index:-1;">
+    {% for product in top_products %}
+      
+    {% endfor %}
+   
+</div>
+
+<script>
+    function showfilter(){
+        document.getElementById("filter-container").classList.toggle("show-filter");
+    }
+</script>
+{% endblock %}

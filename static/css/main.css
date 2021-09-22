@@ -36,6 +36,7 @@
   height: 100%;
   z-index: 50;
   background-color: white;
+  box-shadow: 1px 2px 4px #aaa;
   transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .drawer .header {
@@ -67,6 +68,7 @@
   flex: 85%;
   background-color: white;
   overflow: auto;
+  position: relative;
 }
 .drawer .footer {
   bottom: 0;
@@ -77,7 +79,31 @@
 }
 
 .drawer-open {
-  width: 30%;
+  width: 100% !important;
+}
+
+@media screen and (min-width: 576px) {
+  .drawer-open {
+    width: 90% !important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .drawer-open {
+    width: 60% !important;
+  }
+}
+@media screen and (min-width: 996px) {
+  .drawer-open {
+    width: 70% !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .drawer-open {
+    width: 30% !important;
+  }
+}
+.no-scroll {
+  overflow: hidden;
 }
 
 .footer {
@@ -221,7 +247,7 @@ body, html {
   position: absolute;
   box-shadow: 1px 1px 2px #efefef;
   justify-content: flex-start;
-  z-index: 20;
+  z-index: 200;
   background-color: white;
 }
 .mega-menu .mega-menu-item {
@@ -366,6 +392,14 @@ body, html {
 
 .shadow-light {
   box-shadow: 1px 2px 3px #efefee;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
 }
 
 .product {
@@ -522,9 +556,24 @@ body, html {
 
 .shop-banner {
   width: 100%;
-  height: 25vh;
+  height: 25vh !important;
 }
 
+@media screen and (min-width: 576px) {
+  .shop-banner {
+    height: 30vh !important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .shop-banner {
+    height: 40vh !important;
+  }
+}
+@media screen and (min-width: 996px) {
+  .shop-banner {
+    height: 45vh !important;
+  }
+}
 .shop-logo {
   width: 64px;
 }
@@ -545,10 +594,9 @@ body, html {
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 10000;
+  z-index: 100;
   padding-bottom: 0.5rem;
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
   background-color: white;
   height: 37px;
 }
@@ -701,6 +749,63 @@ body, html {
   .sticky-md {
     padding-bottom: 0.3rem;
     position: relative;
+  }
+}
+.pagination {
+  margin: 1rem auto;
+  width: 95%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination .page-item {
+  text-decoration: none;
+  appearance: none;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+  margin-left: 0.3rem;
+  border: 1px solid #efefef;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #333;
+  text-align: center;
+}
+.pagination .page-item:hover {
+  border-color: #777;
+}
+.pagination .page-item:active {
+  transform: translate(5%, 5%);
+}
+.pagination .page-item--active {
+  background-color: #777;
+  color: white;
+}
+
+.loader {
+  background-blend-mode: difference;
+  border: 2px solid #efefef;
+  border-top: 2px solid #777;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+.loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(100, 100, 100, 0.5);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

@@ -11,6 +11,7 @@
         text-decoration: none;
         appearance: none;
         padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+        margin-left: 0.3rem;
         border: 1px solid #efefef;
         font-size: 0.9rem;
         cursor: pointer;
@@ -18,7 +19,7 @@
         text-align: center;
 
         &:hover {
-            border-color: #333;
+            border-color: #777;
         }
 
         &:active {

@@ -1414,3 +1414,19 @@ function showMegaMenu() {
      document.getElementById('megamenu').style.display = 'none';
      el.classList.remove('cc');
  }
+
+
+function openDrawer() {
+    const d = document.getElementById('drawer');
+    d.open();
+
+    d.showLoader();
+
+}
+
+function zaa() {
+    const d = document.getElementById('drawer');
+    d.open();
+    d.hideLoader();
+
+}

@@ -1,0 +1,24 @@
+         
+.loader {
+    background-blend-mode:difference;
+    border: 2px solid #efefef;
+    border-top: 2px solid #777;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    width:24px;
+    height: 24px;
+    animation: spin 1s linear infinite ;
+}
+
+.loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: rgba(100,100,100,0.5);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
