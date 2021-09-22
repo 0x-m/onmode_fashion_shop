@@ -1,6 +1,7 @@
 
 .btn {
     outline: none;
+    display: block;
     text-align: center;
     border: 1px solid #efefef;
     border-radius: 1px;
@@ -17,14 +18,40 @@
 }
 
 .cta {
-    border: 1.5px solid #aaa;
+    border: 1.5px solid #666;
+    color: #222;
+    background-color: #444;
+    color: white;
     width: 80%;
     margin: 10px;
     font-size: 1.2rem;
-    transition: 0.5s;
+    transition: 0.2s;
+
+    &:hover {
+        background-color: #222;
+    }
 }
 
-.cta:active {
-    transform: translate(2%, 3%);
+
+.btn-tiny {
+    margin: 7px;
+    position: relative;
+    float: right;
+    outline: none;
+    appearance: none;
+    border: 1px solid #efefef;
+    background-color: white;
+    cursor: pointer;
+    max-width: 80px;
+    padding: 0.5rem;
+    overflow: hidden;
+      
 }
 
+.btn-tiny:hover {
+    background-color: rgba(240,240,240,0.3);
+}
+
+.btn-tiny:active{
+    transform: translate(2%,3%);
+}

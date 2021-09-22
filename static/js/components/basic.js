@@ -1258,28 +1258,25 @@ customElements.define('om-product', Product);
 const textboxTemplate = document.createElement('template');
 textboxTemplate.innerHTML = `
     <style>
-        :host {
-            position: relative;
-            display:block;
-        }
+       :host{
+           display:block;
+           position: relative;
+       }
         #container {
-            position: relative;
-            width:100%;
-
+            width: 100%;            
         }
-        input[type="text"] {
+        .inp {
             outline: none;
-            border: 1px solid rgba(240,240,240,0.9);
-            border-radius: 2px;
+            border: 1px solid rgba(210,210,210,0.9);
+            border-radius: 1px;
             appearance: none;
             color: #777;
-            position: relative;
             padding: 0.6rem;
-            width: 95%;
+            width: 92%;
 
         }
 
-        input[type="text"] + span {
+        .inp + span {
             position: absolute;
             color:lightgray;
             top:50%;
@@ -1290,11 +1287,11 @@ textboxTemplate.innerHTML = `
             margin-right:0.2rem;
 
         }
-        input[type="text"]:focus {
+        .inp:focus {
             border-color: gray !important;
         }
 
-        input[type="text"]:focus-within + span, .top {
+        .inp:focus-within + span, .top {
             top: -2% !important;
             font-size: 0.8rem;
             background-color: white !important;
@@ -1319,7 +1316,7 @@ textboxTemplate.innerHTML = `
         
     </style>
     <div id='container'>
-        <input part="input" id="input" type="text">
+        <input part="input" id="input" class="inp" type="text">
         <span part="placeholder" id="placeholder"></span>
     </div>
     <span class="error" id="error"></span>
@@ -1339,9 +1336,17 @@ class CustomText extends HTMLElement {
         else if (dir == 'rtl') {
             pholder.style.right = '6px';
         }
-      
+
        const text = shadowRoot.querySelector('#input');
        this._text = text;
+
+       if (this.password){
+            text.type = 'password';    
+       }
+
+       if(this.autocomplete) {
+           text.setAttribute('autocomplete', 'new-password');
+       }
        pholder.textContent = this.getAttribute('placeholder');
        
         text.addEventListener('blur', (e) => {
@@ -1356,6 +1361,15 @@ class CustomText extends HTMLElement {
 
     }
 
+    get password() {
+        const val = this.getAttribute('password');
+        return (val === '') || (val === 'true');
+    }
+
+    get autocomplete() {
+        const val = this.getAttribute('autocomplete');
+        return (val === '') || (val === 'true');
+    }
     get text() {
         return this._text.textContent;
     }
@@ -1418,14 +1432,13 @@ function showMegaMenu() {
 
 function openDrawer() {
     const d = document.getElementById('drawer');
-    fetch("/cart/",{
+    fetch("/test/",{
         header :{
             'content-type':'application/x-www-form-urlencoded'
         }
     }).then((res) => {
         res.text().then((r)=>{
             d.setContent(r);
-            
         })
     })
     d.open();

@@ -7,6 +7,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 import json
 from django.http import JsonResponse, HttpResponseBadRequest
 
+
+def tss(request: HttpRequest):
+    return render(request, 'registration/login.html');
+
+
 def home(request:HttpRequest):
 
     return render(request, 'index/home/home.html', context= {

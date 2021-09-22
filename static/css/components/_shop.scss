@@ -4,6 +4,20 @@
     height: 25vh !important;
 }
 
+.shop-products {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width:95%;
+    padding: 0.3rem;
+    min-height: 5vh;
+    margin: 0.2rem auto;
+
+
+}
+
+
 @media screen and (min-width: 576px) {
     .shop-banner {
         height: 30vh !important;

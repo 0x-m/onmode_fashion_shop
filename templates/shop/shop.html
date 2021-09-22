@@ -1,61 +1,6 @@
 {% extends 'index/base.html' %}
 {% load static %}
 {% block content %}
-<style>
-    .container {
-        width: 100%;
-        margin-top: 0.5rem;
-        display: flex;
-        flex-direction: column;
-
-        
-    }
-
-    .filter {
-        margin: 7px;
-        position: relative;
-        float: left;
-    }
-
-
-    .products {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        width:95%;
-        padding: 0.3rem;
-        min-height: 5vh;
-        margin: 0.2rem auto;
-
-
-    }
-
-
-.btn-tiny {
-    margin: 7px;
-    position: relative;
-    float: right;
-    outline: none;
-    appearance: none;
-    border: 1px solid #efefef;
-    background-color: white;
-    cursor: pointer;
-    max-width: 80px;
-    padding: 0.5rem;
-    overflow: hidden;
-      
-}
-
-.btn-tiny:hover {
-    background-color: rgba(240,240,240,0.3);
-}
-
-.btn-tiny:active{
-    transform: translate(2%,3%);
-}
-
-</style>
 
  <!----------------BANNER------------>
 <image-field  class="shop-banner">
@@ -67,8 +12,7 @@
     </div>
 </image-field>
 
-<div class="container">
-    <!------------LOGO AND DETAILS------>
+<div class="container vertical w-100 mt-05">
     <div class="shop-action">
         <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0" class="btn-tiny">فیلتر</button>
         <button style="margin-right:3px" class="btn-tiny">
@@ -76,10 +20,12 @@
         </button>
         <button style="min-width:128px;background-color:rgb(255, 57, 57);color:white" class="btn-tiny">محصول جدید</button>
     </div>
+
     <!----------------TOP PRODUCTS-------->
 
-    <!---------------PRODUCTS----------->
-    <div class="products">
+    <! ----------------------------------->
+   
+    <div class="shop-products">
         <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
         <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
         <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>

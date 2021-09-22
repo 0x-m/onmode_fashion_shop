@@ -1,0 +1,19 @@
+
+<div class="container centerized" style="width: 70%;">
+    <p style="font-size: 0.8rem;">
+        کد ارسال شده را وارد کنید
+    </p>
+    <div class="txt-box w-100">
+        <input type="text" class="text" id="code" name="code" required>
+        <label class="holder">کد تایید</label>
+    </div>
+    <button  class="btn btn-primary fz-bg mt-1 w-100" onclick="verify_code();" >تایید</button>
+    <p id="error" style="color: red;" class="fz-tiny"></p>
+    <p class="fz-small txt-center" >
+        عضویت در آنمد به منزله پذیرفتن تمامی <a href="#">قوانین </a>آنمد میابشد
+    </p>
+    <p>
+        {{ code}}
+    </p>
+</div>
+

@@ -4,15 +4,16 @@ textboxTemplate.innerHTML = `
         :host {
             position: relative;
             display:block;
+            width:100%;
         }
         #container {
             position: relative;
-            width:100%;
+            width:90%;
 
         }
         input[type="text"] {
             outline: none;
-            border: 1px solid rgba(240,240,240,0.9);
+            border: 1px solid rgba(210,210,210,0.9);
             border-radius: 2px;
             appearance: none;
             color: #777;

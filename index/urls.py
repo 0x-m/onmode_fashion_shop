@@ -11,5 +11,6 @@ urlpatterns = [
     path('contactus', views.contactUs, name='contactus'),
     path('rules/',views.rules, name='rules'),
     path('cities/', views.get_province_cities, name='get_cities'),
-    path('rules', views.rules, name='rules')
+    path('rules', views.rules, name='rules'),
+    path('test/', views.tss),
 ]
