@@ -1,20 +1,24 @@
 {% load static %}
-
+<div  style="display: flex;justify-content:center;margin-top:2rem;">
+   <p style="border-bottom:1px solid gray;padding:0.5rem 0.8rem 0.5rem 0.8rem"">
+       کالکشن برگزیده
+   </p>
+</div>
 <div class="pure-g" style="width: 85%;margin:0.5rem auto;">
     <div class="pure-u-3-5">
         <div  class="pure-g">
             <div  class="pure-u-1-2">
-                <img src="{% static 'img/collection/square-1.jpg' %}" style="width: 99%;">
-                <img src="{% static 'img/collection/square-2.jpg' %}" style="width: 99%;">
+                <img loading="lazy" src="{% static 'img/collection/square-1.jpg' %}" style="width: 99%;">
+                <img loading="lazy" src="{% static 'img/collection/square-2.jpg' %}" style="width: 99%;">
 
             </div>
             <div  class="pure-u-1-2">
-                <img src="{% static 'img/collection/square-3.jpg' %}" style="width: 99%;">
+                <img loading="lazy" src="{% static 'img/collection/square-3.jpg' %}" style="width: 99%;">
                 <img src="{% static 'img/collection/square-4.jpg' %}" style="width: 99%;">
             </div>
         </div>
     </div>
     <div  class="pure-u-2-5">
-        <img src="{% static 'img/collection/tall-4.jpg' %}" style="width: 100%;">
+        <img loading="lazy" src="{% static 'img/collection/tall-4.jpg' %}" style="width: 99.5%;">
     </div>
 </div>

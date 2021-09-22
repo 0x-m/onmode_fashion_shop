@@ -10,7 +10,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 def home(request:HttpRequest):
 
     return render(request, 'index/home/home.html', context= {
-        'lss': range(60)
+        'lss': range(50)
     })
 
 

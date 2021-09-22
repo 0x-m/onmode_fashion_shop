@@ -4,6 +4,26 @@
         
     }
 
+    .cc {
+        text-decoration: none;
+        text-align: center;
+        padding: 0.7rem;
+        color: #111;
+       
+        border: 1px solid #333;
+        width: 150px;
+        transition: 0.2s;
+    }
+
+    .cc:hover {
+        background-color: #111;
+        color: white;
+    }
+
+    .cc:active {
+        transform: translate(3%,3%);
+    }
+
     @media screen and (max-width: 400px) {
         .md {
             width: 100% !important;
@@ -11,15 +31,18 @@
     }
 </style>
 
-<p>
-    بهترین بوتیکها
-</p>
-<div class="container horizontal justify-center md" style="flex-wrap: wrap;width:50%;margin: 1rem auto;">
+<div  style="display: flex;justify-content:center;margin-top:2rem;">
+    <p style="border-bottom:1px solid gray;padding:0.5rem 0.8rem 0.5rem 0.8rem"">
+        برترین بوتیکها
+    </p>
+</div>
+<div class="container horizontal justify-center md" style="flex-wrap: wrap;width:60%;margin: 1rem auto;">
     {% for i in lss %}
     <a class="ava" href="#">
         <img loading="lazy" src="https://i.pravatar.cc/150?img={{ i }}" style="width: 64px; height:64px">
     </a>
     {% endfor %}
-  
-  
+</div>
+<div style="display: flex;justify-content:center;margin-top:0.5rem;margin-bottom:1.5rem">
+    <a href="#" class="cc">به ما بپیوندید !</a>
 </div>

@@ -2,13 +2,13 @@
 
 <style>
     .linkTo {
-
-        display: flex;
+        position: relative;
         width: 95%;
         margin: 0.2rem auto;
+        margin-left: 1rem;
+        display: flex;
         justify-content: flex-end;
         align-items: center;
-        margin-left: 1rem;
     }
 
      .ll {
@@ -19,20 +19,24 @@
         border: 1px solid gray;
         color: rgb(102, 102, 102);
         font-size: 1rem;
-        width: 132px;
-        text-align: center;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        width: 150px;
     }
+@media screen and (max-width:480px) {
+    .w-100-md {
+        width: 100%;
+        
 
+    }
+}
 
 </style>
 
 <p class="caption" style="margin-top: 2rem;margin-bottom:1rem;text-align:center;font-size:1.5rem;color:gray">
     جدیدترینها
 </p>
-<div style="margin-top: -0.5rem;" class="row">
+<div style="margin-top: -0.5rem;" class="w-100-md">
     <div class="tab-container" >
         <div  onclick="select_tab();" class="tab-items" style="justify-content: center;">
             <div data-tab="new-1" class="tab-item tab-item-selected">
@@ -52,9 +56,11 @@
             <div id="new-1" class="tab-content scale-up tab-show-content">
                 <p class="linkTo">
                     <a href="#" class="ll">
-                        <span>مشاهده همه</span>
-                        <ion-icon style="font-size:1.5rem" name="arrow-forward-circle-outline"></ion-icon>
+                        <span style="flex: 80%;display:block;">مشاهده همه</span>
+                        <ion-icon style="font-size:1.5rem;display:block;flex:10%" name="arrow-forward-circle-outline"></ion-icon>
+
                     </a>
+
                 </p> 
               <div class="container horizontal justify-center" style="padding: 0.5rem;flex-wrap:wrap">
                 <om-product title="my prod" link="/" badge="15%" badgeclass="badge-red" discounted editable discountedprice="1520" price="450" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>

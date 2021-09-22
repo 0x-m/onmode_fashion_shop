@@ -1,6 +1,6 @@
 
 .footer {
-    background-color: #fbfbfb;
+    background-color: #222;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,11 +11,11 @@
     
     font-size: 0.9rem;
     display: inline-block;
-    color: rgb(122, 122, 122);
+    color: rgb(255, 255, 255);
     cursor: pointer;
     text-align: center;
     padding: 0.5rem;
 }
 .foo-item:hover{
-    color: black;
+    color: #efefef;
 }
