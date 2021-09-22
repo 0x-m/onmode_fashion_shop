@@ -15,10 +15,10 @@
         display: flex;
         flex-direction: column;
         line-height: 0.1rem;
-        width: 100%;
+        width: 90%;
     }
 
-    .list .list-item {
+     .list-item {
         background-color: transparent;
         position: relative;
         cursor: pointer;
@@ -26,14 +26,14 @@
         font-size: 0.8rem;
         border-bottom: 1px solid rgb(243, 243, 243);
     }
-    .list .list-item:hover{
+     .list-item:hover{
         background-color: rgb(240, 240, 240);
     }
 
 </style>
-<div  class="list">
+<div  class="container vertical" style="text-align: center;">
         <div class="mt-1  txt-center">
-            <span class="fa fa-user-circle txt-center" style="font-size: 5rem;color:rgba(150, 150, 150, 0.8)"></span>
+            <ion-icon name="person-outline"   style="font-size: 10rem;color:rgba(150, 150, 150, 0.8);margin:0.5rem auto;--ionicon-stroke-width: 12px;"></ion-icon>
             <br/>
             <p style="padding:0.8rem;">
                 <span style="font-size: 1.1rem;color:rgb(150, 150, 150)">{{ user.phone_no}}</span>

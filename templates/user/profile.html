@@ -1,84 +1,23 @@
-
-<style>
-    .error{
-        border-bottom-color: red;
-    }
-    .field{
-        margin-top: 0.8rem;
-    }
-    .tab-items{
-        display: flex;
-        justify-content: center;
-    }
-</style>
-<div class="container" style="width:90%;">
-    <div class="mt-1 txt-center">
-        <span class="fa fa-user-circle txt-center" style="font-size: 6rem;color:rgba(150, 150, 150, 0.8)"></span>
-        <br/>
-        <p style="padding:0.5rem;">
-            <span style="font-size: 1.1rem;color:rgb(68, 68, 68)">{{ user.phone_no}}</span>
-        </p>
-
-    </div>
-    <form style="padding: 0;width:100%" id="personal_info">
-        <div  class="txt-box">
-            <input name="first_name" class="text"  id="first_name"  type="text"  value="{{user.first_name}}" required />
-            <label class="holder">نام </label>
+  <div class="container vertical" style="width:90%;text-align:center;margin:0.5rem auto;">
+        <custom-text id="fname" name="fname" style="margin-top: 0.5rem;" placeholder="نام" dir="rtl" ></custom-text>
+        <custom-text id="lname" name="lname" style="margin-top: 0.5rem;" placeholder="نام خانوادگی" dir="rtl" ></custom-text>
+        <custom-text id="fname" name="fname" style="margin-top: 0.5rem;" placeholder="ایمیل" dir="rtl" ></custom-text>
+        <custom-text id="fname" name="fname" style="margin-top: 0.5rem;" placeholder="شماره کارت" dir="rtl" ></custom-text>
+        <div class="container horizontal" style="margin-top: 0.5rem;">
+            <combo-box  style="margin-left: 0.5rem;width:50%;font-size:0.7rem" placeholder="استان">
+                <combo-box-item caption="تهران"></combo-box-item>
+            </combo-box>
+            <combo-box style="width:50%;font-size:0.7rem" placeholder="شهرستان">
+                <combo-box-item caption="تهران"></combo-box-item>
+                <combo-box-item caption="تهران"></combo-box-item>
+                <combo-box-item caption="تهران"></combo-box-item>
+                <combo-box-item caption="تهران"></combo-box-item>
+                <combo-box-item caption="تهران"></combo-box-item>
+                <combo-box-item caption="تهران"></combo-box-item>
+            </combo-box>
         </div>
-        <div class="txt-box">
-            <input class="text"   id="last_name" name="last_name"  type="text"  value="{{ user.last_name }}" required />
-            <label class="holder" >نام خانوادگی</label>
-        </div>
-        <div class="txt-box">
-            <input class="text"  onblur="validate_email();" name="email" id="email" type="email"  value="{{user.email}}" required />
-            <label class="holder" >ایمیل</label>
-        </div>
-        <div class="txt-box">
-            <input onblur="validate_card();" name="merchan_card" id="merchan_card" class="text" type="text"  value="{{user.merchan_card}}" required />
-            <label class="holder">شماره کارت: </label>
-        </div>
-        <div style="display:inline-flex;justify-content:space-between;align-items:center;margin-top:1rem;width:100%;">
-            <label style="font-size: 0.8rem;text-align:right;">جنسیت: </label>
-            <label class="radio-box">مرد<input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}></label>
-            <label class="radio-box" style="margin-right: 1rem;">زن<input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}></label>
-        </div>
-        <div style="width: 100%;margin-top:3rem;border:1px solid gray;position:relative">
-            <span style="position:absolute;left:40%;top:-1rem;padding:0.5rem;background-color:white">آدرس</span>
-        </div>
-        <p class="txt-box">
-            <input onblur="get_cities();validate_province_and_city();"  list="provinces" name="state"  id="state" class="text" type="text" value="{{user.address.state}}" required/>
-            <label class="holder" for="state">استان</label>
-        </p>
-        <datalist  id="provinces">
-            {% for province in provinces %}
-                    <option  data-id="{{province.id}}" value="{{province.name}}"></option>
-            {% endfor %}
-        </datalist>
-
-        <p class="txt-box">
-            <input onblur="validate_province_and_city();" autoComplete="off" list="cities" name="city"  id="city" class="text" type="text"  value=" {{user.address.city}}" required />
-            <label class="holder" >شهرستان</label>
-            <datalist id="cities">
-                <option value=" "></option>
-            </datalist> 
-        </p>
-        <p class="txt-box">
-            <input name="town"  id="town" class="text" type="text"  value="{{user.address.town}}" required/>
-            <label class="holder">شهر</label>
-        </p>
-        <p class="txt-box">
-            <input  id="postal_code" name="postal_code" class="text" type="text"  value="{{user.address.postal_code}}" required/>
-            <label class="holder">کد پستی</label>
-        </p>
-        <p class="txt-box">
-            <textarea name="description" id="description" rows="5"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
-            <label class="holder">نشانی</label>
-        </p>
-    </form>
-    <p class="row" style="flex-direction: row;justify-content:space-around">
-        <button style="width:40%" class="btn btn-success" onclick="edit_profile();">ثبت</button>
-        <button style="width:40%" class="btn btn-primary" onclick="get_enrollment_form();">لغو</button>
-    </p>
-
+        <custom-text id="fname" name="fname" style="margin-top: 0.5rem;" placeholder="شهر" dir="rtl" ></custom-text>
+        <custom-text id="fname" name="fname" style="margin-top: 0.5rem;" placeholder="کدپستی" dir="rtl" ></custom-text>
+        <textarea rows="8" style="margin-top: 1rem;width:97%" placeholder="نشانی دقیق"></textarea>
+        <button class="btn cta" style="width: 100%;margin-top:0.7rem;margin-right:0">ثبت</button>
 </div>
-
