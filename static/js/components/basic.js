@@ -1401,3 +1401,16 @@ function select_tab(){
     }
 
 }
+
+function showMegaMenu() {
+    event.stopPropagation();
+    event.target.classList.add('cc');
+    document.getElementById('megamenu').style.display = 'flex';
+
+ }
+
+ function closeMegaMenu() {
+     const el = document.getElementById('prods');
+     document.getElementById('megamenu').style.display = 'none';
+     el.classList.remove('cc');
+ }
