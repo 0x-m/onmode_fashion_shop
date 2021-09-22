@@ -1418,9 +1418,17 @@ function showMegaMenu() {
 
 function openDrawer() {
     const d = document.getElementById('drawer');
+    fetch("/cart/",{
+        header :{
+            'content-type':'application/x-www-form-urlencoded'
+        }
+    }).then((res) => {
+        res.text().then((r)=>{
+            d.setContent(r);
+            
+        })
+    })
     d.open();
-
-    d.showLoader();
 
 }
 

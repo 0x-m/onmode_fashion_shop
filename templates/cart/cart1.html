@@ -1,0 +1,506 @@
+{% load static %}
+<style>
+
+/*.cart-item {
+    padding: 0.1rem;
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(245,245,245,0.8);
+    position: relative;
+    border-radius: 1px;
+    margin-top: 0.5rem;
+    width: 95%;
+}
+
+.color{
+    padding: 0.5rem;
+    max-width: 16px;
+    max-height: 16px;
+}
+.size { 
+    font-size: 1.2rem;
+}
+.inline-list{
+    justify-content: center;
+}
+.cart-item .img{
+    flex: 40%;
+    max-width: 22vw;
+
+}
+.cart-item .catalog {
+    flex: 60%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.2rem;
+    padding-top: -0.5rem;
+    align-items: center;
+
+}
+
+.number-box{
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.35rem;
+    background-color: rgba(253,253,253,0.8);
+}
+
+@media screen and (min-width:576px) {
+    .number-box {
+        max-width: 8vw;
+    }
+    .color{
+        max-width: 16px;
+        max-height: 16px;
+    }
+    .size{
+        font-size: 0.9rem;
+    }
+
+    .cart-item .img{
+        flex: 40%;
+        max-width: 12vw;
+        
+    
+    }
+}
+
+.action {
+    cursor: pointer;
+}
+
+.action-click{
+    animation-name: scaleupdown;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+
+
+@keyframes scaleupdown {
+    0% { transform: scale(1.1,1.1);opacity: 1;}
+    25% { transform: scale(1.5,1.5);opacity: 0.9;}
+    50% { transform: scale(1.7,1.7);opacity: 0.5;}
+    75% { transform: scale(2,2);opacity: 0.3;}
+    100% { transform: scale(1,1);opacity: 0.1;}
+    
+}
+
+
+@media screen and (min-width: 768px) {
+    .number-box {
+        max-width: 6vw;
+    }
+    .color{
+        max-width: 12px;
+        max-height: 12px;
+    }
+    .size{
+        font-size: 0.7rem;
+    }
+
+    .cart-item .img{
+        flex: 40%;
+        max-width: 7vw;
+    }
+    
+    .number-box {
+        right: 0.5rem;
+    }
+}
+*/
+
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    
+}
+
+.cart-item .remove-product {
+    color: red;
+    position: absolute;
+    top: 30%;
+    left: 2%;
+    cursor: pointer;
+
+}
+
+.cart-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    
+    
+}
+
+.cart-item {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+    padding: 0.2rem;
+    padding-bottom: 0.6rem;
+    margin-top: 1.2rem;
+    position: relative;
+
+
+}
+
+.cart-list .cart-item:first-child{
+    margin-top: -0.2rem;
+}
+
+
+
+
+.text-box::placeholder {
+   color: lightgrey;
+}
+
+.cart-item .img{
+    width: 25vw ;
+    border-radius: 4px;
+}
+
+.cart-list .cart-item:first-child{
+    margin-top: 1.8rem;
+}
+
+
+.summary {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+
+}
+
+
+.color {
+   border-radius: 50%;
+   padding: 0.5rem;
+   margin-right: 0.5rem;
+   max-width: 24px;
+   max-height: 24px;
+   width: 16px;
+   cursor: pointer;
+   height: 16px;
+   opacity: 0.6;
+}
+
+.size {
+   cursor: pointer;
+   margin-right: 0.5rem;
+}
+
+.color:hover{
+   opacity: 1;
+}
+
+.inline-list .color:first-child {
+   margin-right: 0.1rem;
+}
+
+.dropbtn {
+   padding: 0.2rem;
+   cursor: pointer;
+   background-color: orange;
+}
+
+.dropdown .dropbtn:hover{
+background-color: rgb(45, 123, 190) !important;
+}
+.dropdown {
+   padding: 0.5rem;
+   position: relative;
+   display: inline-block;
+}
+
+.dropdown-menu {
+   display: none;
+   padding: 0.5rem;
+   
+   position: absolute;
+   z-index: 1500;
+   background-color: rgb(255, 255, 255);
+   border-radius: 4px;
+   border: 1px solid rgb(218, 218, 218);
+
+}
+
+
+.dropdown:hover .dropdown-menu {
+   display: block !important;
+}
+
+
+.coupon-box {
+    width: 80%;
+    border: 1px solid rgb(233, 233, 233);
+    border-radius: 1px;
+    height: 5vh;
+    display: flex;
+ }
+ .coupon-box .text {
+    outline: none;
+    border: none;
+    height: 100%;
+    padding-right: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 0 1px 1px 0;
+    flex: 70%;
+    width: 70%;
+ }
+ .coupon-box .text::placeholder{
+    color: lightgray;
+ }
+ .coupon-box:hover, .coupon-box:focus-within {
+    color: gray;
+    border-color: rgb(190, 190, 190);
+ }
+ .coupon-box .btn-a{
+    width: 20%;
+    height: 100%;
+    border: none;
+    border-radius: 1px 0 0 1px;
+    flex: 20%;
+    text-align: center;
+    background-color: rgb(201, 201, 201);
+    color: white;
+    cursor: pointer;
+ }
+ .coupon-box .btn-a:hover {
+    background-color: rgb(36, 201, 49);
+ }
+
+
+@media screen and (min-width:698px) {
+
+ 
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 10vw;
+    }
+    .number-box {
+        max-width: 10vw;
+    }
+
+    .coupon-box{
+        width: 80%;
+        height: 4vh;
+    }
+    
+
+}
+
+
+
+
+@media screen and (min-width:698px)  and (orientation:landscape) {
+
+   
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 10vw;
+    }
+    .number-box {
+        max-width: 10vw;
+    }
+    
+
+}
+@media screen and (min-width:996px) {
+
+  
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 7vw;
+    }
+    .number-box {
+        max-width: 5vw;
+    }
+    
+    .coupon-box{
+        width: 80%;
+        height: 5vh;
+    }
+
+}
+
+@media screen and (min-width:996px) and (orientation:landscape) {
+
+    
+    .cart-list:first-child{
+        margin-top: 0.1rem;
+    }
+
+    .cart-item .img{
+        width: 7vw;
+    }
+    .number-box {
+        max-width: 7vw;
+    }
+    
+    .coupon-box{
+        width: 80%;
+        height: 5vh;
+    }
+
+}
+
+</style>
+
+{% if cart.is_empty %}
+    <div  class="centerized w-100 txt-center ">
+        <span class="fa fa-shopping-bag " style="color: rgba(255, 160, 160, 0.5);font-size:7rem;"></span>
+        <p  class="w-100 txt-center" style="color: rgb(145, 145, 145);">
+            سبد خرید شما خالیست!
+        </p>
+    </div>
+{% else %}
+<!-- <div class="container w-100" style="padding-top: 0.5rem;">
+    {% for item in cart %}
+    <div class="cart-item" >
+        <img src="{% static 'img/img1/product-1.jpg' %}" class="img">
+        <div class="catalog" style="align-items: flex-start;">
+                <span style="margin-top:0.5rem">{{ item.product.name|truncatechars:50 }}</span>
+                <span  style="margin-top:0.5rem;font-size:0.8rem">نام بوتیک:{{ item.product.shop.name }}</span>
+            {% with item.product.discounts.last as discount %}
+               <div style="margin-top: 0.3rem;font-size:0.7rem">
+                {% if discount.is_valid %}
+                <span style="text-decoration:line-through;color:rgb(170, 170, 170)">{{item.product.price}}تومان</span>
+                <span style="color:red">{{ discount.get_discounted_price }}تومان</span>
+                
+                {% else %}
+                    <span  style="color:rgb(63, 63, 63);">{{item.product.price}}تومان</span>
+                {% endif %}
+               </div>
+            {% endwith %}
+                <div data-id="{{ item.product.id }}"  onclick="select_color();change_product_color();" onclic class="inline-list" style="margin-top:0.5rem;justify-self:center;width:100%" >
+                   {% for color in item.product.colors.all %}
+                        <div data-id="{{ color.id }}" class="color {% if color.id == item.color %}{% endif %}" style="background-color: {{ color.code}};"></div>
+                   {% endfor %}
+                </div>
+                <div data-id="{{ product.id }}" onclick="select_size();change_product_size();" style="margin-top:0.5rem;justify-self:center;width:100%" class="inline-list">
+                  {% for size in item.product.sizes.all %}
+                        <div data-id="{{ size.id }}" class="{% if size.id == item.size %}select-size{% endif %}size">{{size.code}}</div>
+                  {% endfor %}
+                </div>
+            
+
+            <div  class="number-box">
+                <span onclick="increment();increment_product();" data-id="{{item.product.id}}" class="inc">&plus;</span>
+                <input onkeypress="sentinel();" id="num1" type="text" value="{{item.quantity}}" class="text" disabled>
+                <span onclick="decrement();decrement_product();" data-id="{{item.product.id}}" class="dec">&minus;</span>
+            </div>
+            <div style="position: absolute;top:0.3rem;left:0.5rem">
+                <span data-id="{{ item.product.id }}" class="fa fa-heart action" onclick="add_to_favourites();this.classList.add('action-click');" style="color: rgb(241, 79, 79);font-size:1rem;margin-left:0.5rem"></span>
+                <span data-id="{{ item.product.id }}" onclick="remove_from_cart();" class="fa fa-trash action" style="color: rgb(248, 21, 21);font-size:1rem;"></span>
+
+            </div>
+        
+        </div>
+       
+    </div>
+    {% endfor %}
+  
+</div>  -->
+<div class="cart-container">
+    <div class="cart-list">
+        {% for item in cart %}
+        <div class="cart-item">
+            <span data-id="{{item.product.id}}" onclick="remove_from_cart();" class="fa fa-trash-o remove-product"></span>
+            <img src="{% static 'img/img1/product-4.jpg' %}" class="img">
+            <div   style="margin-top:-0.7em;margin-right: 0.5rem;font-size:0.7rem;line-height:0.8rem">
+                <p>
+                    {{ item.product.name }}
+                </p>
+                <p style="margin-top:-0.5rem">
+                    <div id=""  style="margin-right:-0.5rem"  class="dropdown">
+                        <span  onclick="open_drop()" data-toggle="c-{{item.product.id}}" style="background-color: {{item.color}};" class="fa fa-caret-down dropbtn">
+                            &nbsp;
+                            رنگ
+                        </span>
+                        <div id="c-{{item.product.id}}"  class="dropdown-menu">
+                            <div data-id="{{ item.product.id }}"  onclick="change_product_color();" class="inline-list">
+                                {% for color in item.product.colors.all %}
+                                    <div class="color" data-id="{{color.id}}" style="background-color: {{color.code}};"></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown"  style="margin-right: -1rem;">
+                        <span onclick="open_drop()" style="background-color: black;color:white" data-toggle="s-{{item.product.id}}" class="fa fa-caret-down dropbtn">
+                            &nbsp;
+                            {{ item.size }}
+                        </span>
+                        <div  id="s-{{item.product.id}}" class="dropdown-menu">
+                            <div data-id="{{ item.product.id }}" onclick="change_product_size();" class="inline-list">
+                               {% for size in item.product.sizes.all %}
+                                    <div data-id="{{ size.id }}" class="size ">{{size.code}}</div>
+                               {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p>
+                    {% with item.product.discounts.last as discount %}
+                        {% if discount.is_valid %}
+                            <span style="text-decoration:line-through;color:rgb(170, 170, 170)">{{item.product.price}}</span>
+                            <span style="color:red">{{ discount.get_discounted_price }}</span>
+                            <span>تومان</span>
+                        {% else %}
+                             <span style="color:rgb(170, 170, 170)">{{item.product.price}}</span>
+                             <span>تومان</span>
+
+                        {% endif %}
+                    {% endwith %}
+                </p>
+            </div>
+            <div style="background-color:white;border-bottom:1px solid gray;width:100%;margin-top:1rem">
+                <div style="position:absolute;bottom:-0.5rem;left:40%;background-color:white" class="number-box">
+                    <span onclick="increment();increment_product();" data-id="{{item.product.id}}" class="inc">&plus;</span>
+                    <input onkeypress="sentinel();" id="num1" type="text" value="{{item.quantity}}" class="text" disabled>
+                    <span onclick="decrement();decrement_product();" data-id="{{item.product.id}}" class="dec">&minus;</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="cart-summary" style="width:100%;margin-top: 2rem;display:flex;flex-direction:column;align-items:center" class="summary">
+        <p>
+            تعداد اقلام:{{ cart|length }}
+        </p>
+        <p style="font-size: 1.3rem;color:rgb(119, 119, 119);margin-top:0rem">
+           جمع کل:
+           <span id="total_price">{{ cart.get_total_price }}</span>
+            تومان
+        </p>
+       {% if cart.coupon %}
+            <span style="color:green;font-size:0.8rem">کوپن {{cart.coupon.code}}  فعال است</span>
+        {% else %}
+        <div class="coupon-box" style="width: 90%;">
+            <input id="coupon-code" style="padding: 0.8rem;" type="text" class="text">
+            <button onclick="apply_coupon();" class="btn-a">اعمال</button>
+        </div>
+       {% endif %}
+        <input onclick="checkout_cart();" class="btn btn-primary" style="padding: 0.8rem;width:90%;margin-top:1rem" type="button" value="خرید" />
+    </div>
+</div>
+
+{% endif %}
+
