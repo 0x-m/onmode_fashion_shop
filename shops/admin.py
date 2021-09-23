@@ -15,8 +15,8 @@ class ProductInline(admin.TabularInline):
 
 @admin.register(Shop)
 class ShopAdmin(ModelAdmin):
-    # fields = ['name','title','seller','shop_phone','address', 'date_created']
-    readonly_fields = ['date_created']
+    # fields = ['id','name','title','seller','shop_phone','address', 'date_created']
+    readonly_fields = ['id','date_created']
     list_display = ['name','seller','is_active', 'date_created']
     list_editable = ['is_active']
     list_filter = ['is_active']
@@ -39,7 +39,7 @@ class ProductCustomAdmin(ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    list_display = ['name', 'is_active']
+    list_display = ['id','name', 'is_active']
 
 @admin.register(Type)
 class TypeAdmin(ModelAdmin):

@@ -180,7 +180,7 @@
   opacity: 1;
 }
 
-/* .icon {
+.icon {
   font-size: 1.1em;
   color: #aaa;
   margin-left: 0.5em;
@@ -189,7 +189,7 @@
 }
 .icon:hover {
   color: #777;
-} */
+}
 
 .tab-container {
   margin: 0;
@@ -506,7 +506,7 @@ body, html {
 .favourites {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 95%;
   margin-top: 1rem;
 }
 .favourites .fav-item {
@@ -750,18 +750,18 @@ body, html {
 .navbar .nav .nav-item:hover {
   border-bottom-color: gray;
 }
-.navbar .nav .iconn {
+.navbar .nav .icon {
   font-size: 1.7em;
   color: #aaa;
   --ionicon-stroke-width: 24px;
-  margin-left: 0.5em;
-  padding: 0.0em;
+  margin-left: 0.5rem;
+  padding: 0.2rem;
   cursor: pointer;
 }
-.navbar .nav .iconn:hover {
+.navbar .nav .icon:hover {
   color: black;
 }
-.nav-md {
+.navbar .nav .nav-md {
   display: none;
 }
 
