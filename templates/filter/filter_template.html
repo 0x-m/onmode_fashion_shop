@@ -1,0 +1,4 @@
+{% load static %}
+{% for product in products %}
+    <om-product pid="{{product.id}}" title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
+{% endfor %}
