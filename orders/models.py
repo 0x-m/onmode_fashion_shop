@@ -222,7 +222,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(verbose_name=_('Order'),to=Order,on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(verbose_name=_('Product'),to=Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(verbose_name=_('Product'),to=Product, on_delete=models.CASCADE,related_name='sales')
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,default=0) #price of product
     color = models.ForeignKey(verbose_name=_('Color'),to=Color,on_delete=models.DO_NOTHING, null=True)

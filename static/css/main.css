@@ -275,7 +275,8 @@ body, html {
   z-index: 200;
   background-color: white;
 }
-.mega-menu .mega-menu-item {
+
+.mega-menu-item {
   display: flex;
   list-style-type: none;
   flex-direction: column;
@@ -283,14 +284,6 @@ body, html {
   justify-content: flex-start;
   flex-wrap: wrap;
   flex-grow: 1;
-}
-.mega-menu .mega-menu-item li {
-  font-size: 0.8rem;
-  color: gray;
-  cursor: pointer;
-  padding: 0.3rem;
-  padding-right: 0.5rem;
-  margin-top: 0.5rem;
 }
 
 .mega-menu-item li {

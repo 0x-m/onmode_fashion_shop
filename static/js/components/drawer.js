@@ -73,6 +73,10 @@ class Drawer extends HTMLElement {
     setContent(val) {
         this.querySelector('.content').innerHTML = val;
     }
+    setcc(val) {
+        
+        this.querySelector('.content').replaceChildren(val);
+    }
 
     addHeader(val) {
         this.querySelector('.header').appendChild = val;
