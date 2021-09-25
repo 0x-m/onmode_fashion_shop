@@ -1,7 +1,7 @@
 
 
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpRequest, request
 from http import HTTPStatus
 import logging
@@ -178,7 +178,7 @@ def login_user(request:HttpRequest):
 @login_required
 def logout_user(request:HttpRequest):
     logout(request)
-    return render(request, "registration/phone.html")
+    return redirect('index:home')
 
 
 def dashboard(request:HttpRequest):
