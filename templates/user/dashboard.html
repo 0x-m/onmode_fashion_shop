@@ -25,6 +25,7 @@
         color: rgb(87, 87, 87);
         font-size: 0.8rem;
         border-bottom: 1px solid rgb(243, 243, 243);
+        padding: 0.5rem;
     }
      .list-item:hover{
         background-color: rgb(240, 240, 240);
@@ -32,15 +33,14 @@
 
 </style>
 <div  class="container vertical" style="text-align: center;">
-        <div class="mt-1  txt-center">
-            <ion-icon name="person-outline"   style="font-size: 10rem;color:rgba(150, 150, 150, 0.8);margin:0.5rem auto;--ionicon-stroke-width: 12px;"></ion-icon>
-            <br/>
-            <p style="padding:0.8rem;">
-                <span style="font-size: 1.1rem;color:rgb(150, 150, 150)">{{ user.phone_no}}</span>
-            </p>
+        <div class="txt-center">
+            <ion-icon name="person-outline"   style="font-size: 7rem;color:rgba(150, 150, 150, 0.8);margin:0.5rem auto;--ionicon-stroke-width: 12px;"></ion-icon>
+            <span style="font-size: 1.2rem;color:rgb(150, 150, 150);display:block;margin-top:0.0rem">{{ user.phone_no}}</span>
+            <span style="font-size: 0.7rem;color:rgb(150, 150, 150);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>
+
         </div>
-        <div class="list-item">
-            <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column">
+        <div style="margin-top: 0.5rem;padding:0.5rem" class="list-item">
+            <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column;padding:0.5rem">
                 <p style="text-align:center;">موجودی حساب</p> 
                 <p style="color: rgb(133, 133, 133);font-size:1.5rem;text-align:center">
                     25800
@@ -49,10 +49,10 @@
             </div>
         </div>
 
-        <div class="list-item">
-            <div style="display: flex;font-size:0.5em">
-                <button onclick="deposit_request();" style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-primary">افزایش موجودی</button>
-                <button onclick="checkout_request();" style="width: 50%;border-radius:0;font-size:0.8rem" class="btn btn-success">تسویه حساب</button>
+        <div class="list-item" style="background-color: white;">
+            <div style="display: flex;font-size:0.5em;justify-content:space-between">
+                <button onclick="deposit_request();" style="width: 48%;border-radius:0;font-size:0.8rem" class="btn btn-primary">افزایش موجودی</button>
+                <button onclick="checkout_request();" style="width: 48%;border-radius:0;font-size:0.8rem" class="btn btn-success">تسویه حساب</button>
             </div>
         </div>
 
@@ -66,7 +66,12 @@
                 سفارشهای من
             </p>
         </div>
-              <div class="list-item">
+        <div  class="list-item">
+            <p onclick="get_user_orders();" style="padding: 0.5rem;">
+               لیست علاقه مندی
+            </p>
+        </div>
+            <div class="list-item">
                 <p onclick="make_issue();" style="padding: 0.5rem;">
                    درخواستها
                 </p>
@@ -75,7 +80,7 @@
                   <p style="padding: 0.5rem;" >
                      پیامها
                   </p>
-                  <span class="badge">4</span>
+                  <span class="badge"style="top:25%;left:5px">4</span>
               </div>
               
               {% if user.is_seller %}
@@ -129,9 +134,13 @@
              </div>
             {% endif %}
             <div class="list-item">
-                <button onclick="logout();"  style="border-radius:0;width: 100%;" class="btn btn-primary" >
-                    <span  class="fa fa-sign-out"></span>
-                    خروج
-                </button>
+                <p onclick="make_issue();" style="padding: 0.5rem;">
+                   درخواست ایجاد بوتیک
+                </p>
+            </div>
+            <div onclick="get_messages();" class="list-item" style="background-color: rgb(247, 59, 59);">
+                <p style="padding: 0.5rem;color:white" >
+                   خروج
+                </p>
             </div>
 </div>

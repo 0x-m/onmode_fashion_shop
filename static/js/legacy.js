@@ -2,7 +2,6 @@ function open_cart() {
     const d = document.getElementById('drawer');
     d.showLoader();
     d.open();
-    setTimeout(function () {},10000);
     fetch("/cart",{
         header :{
             'content-type':'application/x-www-form-urlencoded'
@@ -12,12 +11,25 @@ function open_cart() {
             d.hideLoader();
             d.setContent(r);
         })
-    })
+    });
    
 }
 
 function checkout_cart() {
-    console.log('checkout...');
+    const d = document.getElementById('drawer');
+    d.showLoader();
+    d.open();
+    fetch("/cart/checkout",{
+        header :{
+            'content-type':'application/x-www-form-urlencoded'
+        }
+    }).then((res) => {
+        res.text().then((r)=>{
+            d.hideLoader();
+            d.setContent(r);
+        })
+    });
+   
 }
 
 function checkout() {
@@ -37,7 +49,20 @@ function open_search() {
 }
 
 function open_dashboard() {
-    console.log('dahsboard...')
+    const d = document.getElementById('drawer');
+    d.showLoader();
+    d.open();
+    fetch("users/dashboard",{
+        header :{
+            'content-type':'application/x-www-form-urlencoded'
+        }
+    }).then((res) => {
+        res.text().then((r)=>{
+            d.hideLoader();
+            d.setContent(r);
+        })
+    });
+   
 }
 
 function open_favourites() {    
