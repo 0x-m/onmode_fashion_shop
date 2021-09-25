@@ -70,7 +70,6 @@ def enrollment(request:HttpRequest):
             
             is_sent  = True
             if is_sent:
-                
                 return render(request, 'registration/verification.html',
                               {'code':verification_code })
             else:
@@ -80,7 +79,19 @@ def enrollment(request:HttpRequest):
     return render(request, 'registration/phone.html')
             
             
-            
+def reset_password(request: HttpRequest):
+    request.session['reset_password'] = 'True'
+    #generate code---------------
+    verification_code = generate_code();
+    request.session['verification_code'] = verification_code
+    expire = timezone.now() + timezone.timedelta(seconds=120)
+    request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
+    request.session.save()
+    #-----------------------------
+    #send code via sms
+    
+    
+    return render(request, 'registration/verification.html');            
 
 def verification(request:HttpRequest):
     if request.method == 'POST':
@@ -106,10 +117,17 @@ def verification(request:HttpRequest):
             
             if not verification_code == code.strip():
                 return HttpResponseBadRequest("expired or invalid code")
-            
+            ##-------new-------------------------------
+            if(request.session.get('reset_password') == 'True'):
+                request.session['reset_verified'] = 'True'
+            #------------------------------------------
+                
             request.session['verified'] = 'True'
             request.session.save()
-            return render(request, 'registration/password.html')
+            user_does_exists = User.objects.filter(phone_no=phone_no).count();
+            return render(request, 'registration/password.html', {
+                user_does_exists: (user_does_exists == 1)
+            })
         else:
             return HttpResponseUnprocessableEntity("invalid code")
     #get
@@ -130,8 +148,13 @@ def set_password(request:HttpRequest):
             
             password = form.cleaned_data['password']
             user = User.objects.filter(phone_no=phone_no).first()
+            reset_verified = request.session.get('reset_verified')
             if not user:
                 user = User(phone_no=phone_no)
+            else:
+                if not reset_verified == 'True':
+                    return HttpResponseBadRequest('malicious attempt..!');
+                
             user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
             user.set_password(password)
             user.save()
