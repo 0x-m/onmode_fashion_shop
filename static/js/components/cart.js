@@ -43,8 +43,23 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var cartItemTemplate = document.createElement('template');
-cartItemTemplate.innerHTML = "   \n    <img class=\"preview\" style=\"width:96px\" />\n    <span class=\"remove\"></span>\n    <span class=\"out_of_stock\">\u0646\u0627\u0645\u0648\u062C\u0648\u062F</span>\n    <number-box initial=\"1\" class=\"quantity\"></number-box>\n\n    <div class=\"detail\">\n        <h3 class=\"title\"></h3>\n        <h5 class=\"boutique\"></h5>\n        <p class=\"description\"></p>\n        <span class=\"price\"></span>\n        <div class=\"action\">\n            <combo-box id=\"colors\" placeholder=\"\u0631\u0646\u06AF\">\n            </combo-box>\n            <combo-box id=\"sizes\" placeholder=\"\u0633\u0627\u06CC\u0632\"></combo-box>\n        </div>\n    </div>\n    \n";
+cartItemTemplate.innerHTML = "   \n    <img class=\"preview\" style=\"width:96px\" />\n    <span class=\"remove\"></span>\n    <span class=\"cart-badge\"></span>\n    <number-box initial=\"1\" class=\"quantity\"></number-box>\n\n    <div class=\"detail\">\n        <h3 class=\"title\"></h3>\n        <h5 class=\"boutique\"></h5>\n        <p class=\"description\"></p>\n        <span class=\"price\"></span>\n        <span class=\"discounted_price\"></span>\n        <div class=\"action\">\n            <combo-box id=\"colors\" placeholder=\"\u0631\u0646\u06AF\">\n            </combo-box>\n            <combo-box id=\"sizes\" placeholder=\"\u0633\u0627\u06CC\u0632\"></combo-box>\n        </div>\n    </div>\n    \n";
 var CartItem = /** @class */ (function (_super) {
     __extends(CartItem, _super);
     function CartItem() {
@@ -53,7 +68,6 @@ var CartItem = /** @class */ (function (_super) {
         // this.attachShadow({ mode: 'open' });
         _this.appendChild(cartItemTemplate.content.cloneNode(true));
         _this._pid = (_a = parseInt(_this.getAttribute('pid'))) !== null && _a !== void 0 ? _a : -1;
-        _this._slider = _this.querySelector('.slider');
         _this.className = 'cart-item';
         return _this;
     }
@@ -66,13 +80,15 @@ var CartItem = /** @class */ (function (_super) {
     // attributeChangedCallback(name: string, oldval: string, newval: string){
     // }
     CartItem.prototype._render = function () {
-        var parts = this.querySelectorAll('.preview, .title, .boutique, .description, .price');
+        var parts = this.querySelectorAll('.preview, .cart-badge, .title, .boutique, .description, .price, .discounted_price');
         parts[0].src = this.preview;
-        parts[1].textContent = this.title;
-        parts[2].textContent = this.boutique;
-        parts[3].textContent = this.description;
-        parts[4].textContent = this.price;
-        this.toggleStock();
+        parts[1].textContent = this.badge;
+        parts[2].textContent = this.title;
+        parts[3].textContent = this.boutique;
+        parts[4].textContent = this.description;
+        parts[5].textContent = this.price;
+        parts[6].textContent = this.discounted_price;
+        this.toggleBage();
         if (this.noteditable)
             this.querySelector('.action').classList.add('hide');
         var color_box = this.querySelector('#colors');
@@ -128,6 +144,13 @@ var CartItem = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(CartItem.prototype, "badge", {
+        get: function () {
+            return this.getAttribute('badge');
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(CartItem.prototype, "boutique", {
         get: function () {
             return this.getAttribute('boutique');
@@ -138,6 +161,13 @@ var CartItem = /** @class */ (function (_super) {
     Object.defineProperty(CartItem.prototype, "price", {
         get: function () {
             return this.getAttribute('price');
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CartItem.prototype, "discounted_price", {
+        get: function () {
+            return this.getAttribute('discounted_price');
         },
         enumerable: false,
         configurable: true
@@ -173,6 +203,15 @@ var CartItem = /** @class */ (function (_super) {
         }
         else {
             label.classList.remove('pinned');
+        }
+    };
+    CartItem.prototype.toggleBage = function () {
+        var bg = this.querySelector('.cart-badge');
+        if (this.badge !== '') {
+            bg.classList.add('pinned');
+        }
+        else {
+            bg.classList.remove('pinned');
         }
     };
     CartItem.prototype.decodeColors = function (code) {

@@ -1,25 +1,36 @@
 {% load static %}
 <div class="cart">
+    {% if cart.is_empty %}
+
+    {% endif %}
     {% for item in cart %}
     <cart-item pid="{{item.product.id}}"
-            title="{{item.product.name}}"
-            boutique="رازی" 
+            title="{{item.product.name|truncatechars:50}}"
+            boutique="{{item.product.shop.name}}" 
             price="{{item.product.price}}تومن" 
-            description="مناسب برای تمام فصول دارای انواغ رنگها گر سبسنبس بسیبس سبdddddddddddddddddddsfsdfsfسیبیسبیسبیسبیسبسبسبیس" 
-            preview="{% static 'img/sampleproduct/product-1.jpg' %}" 
-            colors="1:آبی:#0000ff,2:قرمز:#ff0000" 
-            sizes="1:X,2:XXL" 
+            description="{{ itme.product.description }}" 
+            preview="{{ item.product.images.first.image.url }}" 
+            colors="{{ item.colors }}" 
+            sizes="{{ item.sizes }}" 
+            {% if item.product.has_valid_discount %}
+            discounted
+            discounted_price={{item.discounted_price }}
+            {% endif %}
             outofstock="true">
     </cart-item>
 {% endfor %}
-    <cart-item pid="{{item.product.id}}"
-            title="{{item.product.name}}"
+
+    <cart-item pid="10"
+            title="بسیبسبسبیس"
             boutique="رازی" 
-            price="{{item.product.price}}تومن" 
+            price="1000 تومن" 
             description="مناسب برای تمام فصول دارای انواغ رنگها گر سبسنبس بسیبس سبdddddddddddddddddddsfsdfsfسیبیسبیسبیسبیسبسبسبیس" 
             preview="{% static 'img/sampleproduct/product-1.jpg' %}" 
-            colors="1:آبی:#0000ff,2:قرمز:#ff0000" 
-            sizes="1:X,2:XXL" 
+            colors="1:blue:#0000ff" 
+            sizes="1:X,2:XX"
+            discounted_price = "5000 تومن"
+            badge="ناموجود"
             outofstock="true">
     </cart-item>
+
 </div>

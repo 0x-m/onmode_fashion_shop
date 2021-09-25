@@ -1,4 +1,6 @@
 from math import log, prod
+
+from django.db.models.query import QuerySet
 from product_attributes.models import Color
 from shops.models import Product
 from django.http import HttpRequest
@@ -171,6 +173,28 @@ class Cart():
         self.session.modified = True
         self.session.save()
         
+        
+    #------------helpers-----------------
+    def encode_colors(product: Product):
+        colors = product.colors.all();
+        code:str = ''
+        for color in colors:
+            code += f'{color.id}:{color.code}:{color.name},'
+
+        return code[:len(code) - 1]
+        
+    
+    def encode_sizes(product: Product):
+        sizes = product.sizes.all()
+        code:str = ''
+        for size in sizes:
+            code += f'{size.id}:{size.code},'
+        return code[:len(code) - 1]
+    
+    
+    def check_for_valid_discount(product: Product):
+        return product.discounts.all().last.is_valid()
+    
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in =product_ids)
@@ -182,6 +206,9 @@ class Cart():
             cart[id]['discounted_price'] = self.__get_total_price_per_item(product)
             cart[id]['total'] = cart[id]['discounted_price'] * int(cart[id]['quantity'])
             cart[id]['is_available'] = product.is_available()
+            cart[id].colors = self.encode_colors(product)
+            cart[id].sizes = self.encode_sizes(product)
+            cart[id].has_valid_discount = self.check_for_valid_discount(product)
             yield cart[id]
     
     def __len__(self):

@@ -1,0 +1,322 @@
+{% extends 'index/base.html' %}
+{% load static %}
+
+{% block title %}کارت{% endblock%}
+{% block content %}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items:flex-start;
+        justify-content: flex-start;
+        width:80%; 
+        margin: 2rem auto;
+    }
+    custom-text {
+        
+        width: 100%;
+        margin-top: 0.8rem;
+        font-size: 0.8rem;
+    }
+    .my-address {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 98%;
+
+    }
+    combo-box {
+        margin-top: 0.5rem;
+        width: 47.5%;
+        font-size: 0.8rem;
+        display: inline-block;
+    }
+    .adds{
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        
+        
+    }
+
+    .txt {
+        outline: none;
+        border: 1px solid #efefef;
+        margin-top: 0.5rem;
+        width: 100%;
+        resize: vertical;
+        padding: 0.2rem;
+    }
+    .txt::placeholder {
+        color:#aaa;
+    }
+
+    .summary{
+        display: flex;
+        
+
+    }
+    .coupon {
+        
+        margin-top: 1rem;
+        width: 100%;
+        
+    }
+    .coupon input[type="text"] {
+        appearance: none;
+        outline: none;
+        border: 1px solid #efefef;
+        padding: 0.7rem;
+        font-size: 1.1rem;
+        color: gray;
+        width: 78%;
+    }
+    .app {
+        appearance: none;
+        outline: none;
+        border: 1px solid #efefef;
+        font-size: 1rem;
+        cursor: pointer;
+        float: left;
+        padding: 0.7rem 0 0.7rem 0;
+        width: 20%;
+
+    }
+    .total {
+        width: 100%;
+        min-height: 10vh;
+        border: 1px solid #eee;
+        background-color: #222;
+        color: white;
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        vertical-align: middle;
+        text-align: center;
+        
+
+    }
+
+    .action {
+        text-align: center;
+        margin-top: 2rem;
+        
+    }
+
+    .cta {
+        outline: none;
+        border: 1.5px solid rgb(19, 177, 19);
+        cursor: pointer;
+        background-color: white;
+        padding: 0.5rem;
+        width: 80%;
+        margin: 10px;
+        font-size: 1.2rem;
+        text-align: center;
+        transition: 0.5s;
+        
+    }
+    .cta:active {
+        transform: translate(2%,3%);                
+    }
+
+    table {
+        width: 95%;
+        font-size: 0.9rem;
+        text-align: center;
+        margin: 0.5rem auto;
+        border-collapse: collapse;
+    }
+
+    th {
+        background-color: #a7a7a7;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+        color: white;
+    }
+    tr {
+        background-color: #fff;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    tr:nth-child(even) {
+        background-color: rgba(240,240,240,0.5);
+    }
+
+    td {
+        padding: 0.5rem;
+    }
+
+    .img {
+        width: 48px;;
+    }
+    .cont {
+        display: flex;
+        width: 80%;
+        margin: 2rem auto;
+    }
+
+    .co {
+        background-color: rgb(240, 90, 90);
+        color: white;
+        padding: 0.6rem;
+    }
+
+    @media screen and (max-width: 360px) {
+        .cont {
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        th {
+            font-size: 0.8rem;
+        }
+        tr {
+            font-size: 0.6rem;
+        }
+        
+        td {
+            padding: 0.3rem;
+        }
+        
+        .cart-checkout {
+            width: 95%;
+            margin: 0.5rem auto;
+        }
+        
+    }
+</style>
+
+<div class="cont" >
+    <div class="cart-summary">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>تصویر</th>
+                    <th>نام</th>
+                    <th>بوتیک</th>
+                    <th>تعداد</th>
+                    <th>قیمت</th>
+                    <th>جمع کل</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/sampleproduct/product-4.jpg' %}" class="img">
+                    </td>
+                    <td>بوتیک زیبا</td>
+                    <td>بسیبسیب</td>
+                    <td>12</td>
+                    <td>6500تومان</td>
+                    <td>48000تومان</td>
+
+                </tr>
+              
+                <tr>
+                    <td>
+                        <img src="{% static 'img/sampleproduct/product-1.jpg' %}" class="img"">
+                    </td>
+                    <td>بوتیک زیبا</td>
+                    <td>بسیبسیب</td>
+                    <td>12</td>
+                    <td>6500تومان</td>
+                    <td>48000تومان</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/sampleproduct/product-2.jpg' %}" class="img"">
+                    </td>
+                    <td>بوتیک زیبا</td>
+                    <td>بسیبسیب</td>
+                    <td>12</td>
+                    <td>6500تومان</td>
+                    <td>48000تومان</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/sampleproduct/product-3.jpg' %}" class="img"">
+                    </td>
+                    <td>بوتیک زیبا</td>
+                    <td>بسیبسیب</td>
+                    <td>12</td>
+                    <td>6500تومان</td>
+                    <td>48000تومان</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/sampleproduct/product-1.jpg' %}" class="img"">
+                    </td>
+                    <td>بوتیک زیبا</td>
+                    <td>بسیبسیب</td>
+                    <td>12</td>
+                    <td>6500تومان</td>
+                    <td>48000تومان</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/sampleproduct/product-1.jpg' %}" class="img"">
+                    </td>
+                    <td>بوتیک زیبا</td>
+                    <td>بسیبسیب</td>
+                    <td>12</td>
+                    <td>6500تومان</td>
+                    <td>48000تومان</td>
+
+                </tr>
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+        </table>
+    </div>
+    <div class="cart-checkout">
+        <div class="my-address">
+            <span style="font-size: 0.8rem;color:#555">آدرس خودم</span>
+            <om-switch style="transform: scale(0.9,0.9);margin-left:-4px"></om-switch>
+        </div>
+        <custom-text  placeholder="نام"></custom-text>
+        <custom-text placeholder="شماره همراه"></custom-text>
+        <div class="adds">
+            <combo-box placeholder="استان">
+                <combo-box-item caption="تهران" value="1"></combo-box-item>  
+                <combo-box-item caption="فارس" value="1"></combo-box-item> 
+                <combo-box-item caption="اصفهان" value="1"></combo-box-item>
+                <combo-box-item caption="قم" value="1"></combo-box-item>
+                <combo-box-item caption="گیلن" value="1"></combo-box-item> 
+            </combo-box>
+            <combo-box style="margin-right: 0.5rem;"  placeholder="شهرستان">
+                <combo-box-item caption="تهران" value="1"></combo-box-item>  
+                <combo-box-item caption="فارس" value="1"></combo-box-item> 
+                <combo-box-item caption="اصفهان" value="1"></combo-box-item>
+                <combo-box-item caption="قم" value="1"></combo-box-item>
+                <combo-box-item caption="گیلن" value="1"></combo-box-item> 
+            </combo-box>
+        </div>
+        <custom-text placeholder="کدپستی"></custom-text>
+        <textarea rows="5" class="txt" placeholder="نشانی کامل"></textarea>
+        <section class="total">
+            <span >
+            مبلغ قابل پرداخت: 80000 تومان
+            </span>  
+        </section>
+        <section  class="coupon">
+            <input class="coupon-txt" type="text" placeholder="کد تخفیف" />
+            <button class="app">اعمال</button>
+        </section>
+        <button class="btn co" style="width:100%;margin-top:0.5rem">پرداخت</button>
+        
+    </div>
+</div>
+
+{% endblock%}

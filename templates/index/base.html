@@ -13,8 +13,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
         <script src="{% static 'js/components/basic.js' %}" defer></script>
         <script src="{% static 'js/components/drawer.js' %}" defer></script>
+        <script src="{% static 'js/components/cart.js' %}" defer></script>
         <script src="{% static 'js/main.js' %}"></script>
         <script src="{% static 'js/api.js' %}" ></script>
+        <script src="{% static 'js/legacy.js' %}" defer></script>
         <style>
             body {
                 scroll-snap-type: y mandatory;
@@ -50,6 +52,9 @@
                 }).mount();
               
             } );
+            document.addEventListener('click', () => {
+                closeMegaMenu();
+            })
         </script>
         <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
         <link rel="preconnect" href="https://fonts.googleapis.com">

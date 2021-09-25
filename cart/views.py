@@ -107,7 +107,7 @@ def apply_coupon(request:HttpRequest, code):
 
 @login_required
 def checkout(request:HttpRequest):
-    pass
+    return render(request, 'cart/checkout.html');
 
 def cart_list(request:HttpRequest):
     return render(request, 'cart/cart.html',{

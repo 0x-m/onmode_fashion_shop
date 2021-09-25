@@ -3,7 +3,7 @@ const cartItemTemplate = document.createElement('template');
 cartItemTemplate.innerHTML = `   
     <img class="preview" style="width:96px" />
     <span class="remove"></span>
-    <span class="out_of_stock">ناموجود</span>
+    <span class="cart-badge"></span>
     <number-box initial="1" class="quantity"></number-box>
 
     <div class="detail">
@@ -11,6 +11,7 @@ cartItemTemplate.innerHTML = `
         <h5 class="boutique"></h5>
         <p class="description"></p>
         <span class="price"></span>
+        <span class="discounted_price"></span>
         <div class="action">
             <combo-box id="colors" placeholder="رنگ">
             </combo-box>
@@ -40,7 +41,6 @@ class CartItem extends HTMLElement {
        // this.attachShadow({ mode: 'open' });
         this.appendChild(cartItemTemplate.content.cloneNode(true));
         this._pid =  parseInt(this.getAttribute('pid')) ?? -1;
-        this._slider = this.querySelector('.slider');
         this.className = 'cart-item';
 
     }
@@ -58,15 +58,17 @@ class CartItem extends HTMLElement {
 
 
     private _render() {
-       const parts = this.querySelectorAll('.preview, .title, .boutique, .description, .price');
+       const parts = this.querySelectorAll('.preview, .cart-badge, .title, .boutique, .description, .price, .discounted_price');
        
        (parts[0] as HTMLImageElement)!.src = this.preview;
-       (parts[1] as HTMLHeadingElement)!.textContent = this.title;
-       (parts[2] as HTMLHeadingElement)!.textContent = this.boutique;
-       (parts[3] as HTMLParagraphElement)!.textContent = this.description;
-       (parts[4] as HTMLSpanElement)!.textContent = this.price;
+       (parts[1] as HTMLSpanElement)!.textContent = this.badge;       
+       (parts[2] as HTMLHeadingElement)!.textContent = this.title;
+       (parts[3] as HTMLHeadingElement)!.textContent = this.boutique;
+       (parts[4] as HTMLParagraphElement)!.textContent = this.description;
+       (parts[5] as HTMLSpanElement)!.textContent = this.price;
+       (parts[6] as HTMLSpanElement)!.textContent = this.discounted_price;
 
-       this.toggleStock();
+       this.toggleBage()
 
        if (this.noteditable)
         this.querySelector('.action').classList.add('hide');
@@ -124,12 +126,19 @@ class CartItem extends HTMLElement {
        return this.getAttribute('title');
     }
 
+    get badge() {
+        return this.getAttribute('badge');
+    }
     get boutique(): string {
         return this.getAttribute('boutique');
     }
 
     get price(): string {
         return this.getAttribute('price');
+    }
+
+    get discounted_price(): string {
+        return this.getAttribute('discounted_price');
     }
 
     get description(): string {
@@ -155,6 +164,16 @@ class CartItem extends HTMLElement {
         }
         else {
             label.classList.remove('pinned');
+        }
+    }
+
+    private toggleBage() {
+        const bg = this.querySelector('.cart-badge');
+        if (this.badge !== '') {
+            bg.classList.add('pinned');
+        }
+        else{
+            bg.classList.remove('pinned');
         }
     }
     private decodeColors(code: string): Array<Color> {
