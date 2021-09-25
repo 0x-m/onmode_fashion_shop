@@ -180,8 +180,10 @@ def logout_user(request:HttpRequest):
     logout(request)
     return render(request, "registration/phone.html")
 
-@login_required
+
 def dashboard(request:HttpRequest):
+    if not request.user.is_authenticated:
+        return enrollment(request);
     return render(request,'user/dashboard.html')
 
 @login_required
