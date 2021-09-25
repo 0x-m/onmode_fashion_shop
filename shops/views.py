@@ -339,9 +339,10 @@ def product_detail(request:HttpRequest, product_id):
         page = paginator.get_page(1)
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
-        
-
-    user_comment = comments.filter(user=request.user)
+    
+    user_comment = Comment();
+    if not request.user.is_anonymous:
+        user_comment = comments.filter(user=request.user)
     related_products = Product.objects.filter(type=product.type)[:10]
     return render(request, 'product/detail/product.html',{
         'product':product,

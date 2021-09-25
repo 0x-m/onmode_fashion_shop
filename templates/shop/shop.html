@@ -3,7 +3,7 @@
 {% block content %}
 
  <!----------------BANNER------------>
-<image-field  class="shop-banner">
+<image-field {% if shop.banner  %}initial="{{shop.banner.url}}"{% endif %}  class="shop-banner">
     <div slot="placeholder">
         <div style="display: flex;justify-content:center; align-items:center">
         <ion-icon style="font-size:2rem;color:#efefef" name="camera-outline"></ion-icon>
@@ -26,19 +26,37 @@
     <! ----------------------------------->
    
     <div class="shop-products">
-        <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-        <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-        <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
+        {% for product in page.object_list %}
+        <om-product title="my aaa" 
+                    pid="{{product.id}}"
+                    link="{{ product.get_absolute_url }}"
+                    price="2500 تومان" 
+                    discountedprice="4500 تومان" 
+                    {% if product.images.first.image %}
+                    preview="{{ product.images.first.image.url }}"
+                    {% endif %}
+                    >
+        </om-product>
+
+        {% endfor %}
         <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
     </div>
 
-    <div class="pagination">
-        <a class="page-item">1</a>
-        <a class="page-item">2</a>
-        <a class="page-item">3</a>
-        <a class="page-item">4</a>
-        <a class="page-item">111</a>
-    </div>
+    <div class="pagination">    
+        {% if page.has_previous %}
+         <a class="page-item" href="?pg={{page.previous_page_number}}">&laquo;</a>
+        {% endif %}
+        <a class="page-item" href="?pg=1">ابتدا</a>
+         
+        {% for p in page.paginator.page_range %}
+            <a class="page-item" href="?pg={{p}}" class="{% if page.number == p %}active-page{% endif %}">{{ p }}</a>
+        {% endfor %}
+             <a href="?pg={{page.paginator.num_pages }}">انتها</a>
+        {% if page.has_next %}
+         <a class="page-item" href="?pg={{page.next_page_number}}">&raquo;</a>
+        {% endif %}
+     </div>
+
 </div>
 
 <template id="filter_box">

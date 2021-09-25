@@ -93,7 +93,7 @@ function load_view(url, method='get', payload={}, error=function(){}) {
 }
 
 function open_cart() {
-   load_view('/cart');
+   load_view('/cart/');
 }
 
 function checkout_cart() {
@@ -117,11 +117,11 @@ function open_search() {
 }
 
 function open_dashboard() {
-    load_view('users/dashboard');
+    load_view('/users/dashboard');
 }
 
 function open_favourites() {    
-    load_view('favourites/');
+    load_view('/favourites/');
 }
 
 function open_mobile_menu() {
@@ -231,25 +231,10 @@ function set_password(){
         return;
     }
     load_view('/users/set_password/', 'post', "password=" + password.trim() + "&confirm=" + confirm.trim());
-    console.log('....')
-    // data.append("password", password);
-    // data.append("confirm", confirm);
-    // if(validate_password()){
-    // //    load_view("/users/set_password/", "POST", data, true);
-    //     const xhttp = new XMLHttpRequest()
-    //     xhttp.onload = () =>{
+}
 
-    //         if(xhttp.status == 200){
-    //             get_profile();
-    //         }
-    //     }
-    //     xhttp.open("POST","users/set_password/")
-    //     xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    //     xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    //     start_waiting();
-    //     xhttp.send("password=" + password.trim() + "&confirm=" + confirm.trim());
-    
-    // }
+function reset_password() {
+    load_view('/users/reset_password/')
 }
 
 

@@ -129,7 +129,7 @@ class Product extends HTMLElement {
         const parts = this.querySelectorAll('.link, .preview, .name, .realprice, .offprice, .badge');
         console.log(parts);
         console.log('------------');
-        parts[0].setAttribute('href',this.link);
+        parts[0].href=this.link;
         parts[1].src = this.preview;
         parts[2].textContent = this.title;
         parts[3].textContent = this.price;

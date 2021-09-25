@@ -1,5 +1,6 @@
 
 
+from functools import cached_property
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, request
@@ -37,7 +38,7 @@ def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
         return render(request, 'user/dashboard.html')
-    logger.error("phone no:",request.POST.get('phone_no'))
+
     if request.method == 'POST':
         form = PhoenForm(request.POST)
         if form.is_valid():
@@ -80,6 +81,10 @@ def enrollment(request:HttpRequest):
             
             
 def reset_password(request: HttpRequest):
+    phone_no = request.session.get('phone_no')
+    if not phone_no:
+        return HttpResponseBadRequest('malicious attempt!...')
+    
     request.session['reset_password'] = 'True'
     #generate code---------------
     verification_code = generate_code();
@@ -89,9 +94,8 @@ def reset_password(request: HttpRequest):
     request.session.save()
     #-----------------------------
     #send code via sms
-    
-    
-    return render(request, 'registration/verification.html');            
+    #-----------------------------
+    return render(request, 'registration/verification.html', {'code': verification_code, 'phone_no': phone_no});            
 
 def verification(request:HttpRequest):
     if request.method == 'POST':
@@ -125,8 +129,9 @@ def verification(request:HttpRequest):
             request.session['verified'] = 'True'
             request.session.save()
             user_does_exists = User.objects.filter(phone_no=phone_no).count();
+            print(user_does_exists == 1 ,'user exists.....')
             return render(request, 'registration/password.html', {
-                user_does_exists: (user_does_exists == 1)
+                "user_does_exists": (user_does_exists == 1)
             })
         else:
             return HttpResponseUnprocessableEntity("invalid code")
@@ -153,7 +158,8 @@ def set_password(request:HttpRequest):
                 user = User(phone_no=phone_no)
             else:
                 if not reset_verified == 'True':
-                    return HttpResponseBadRequest('malicious attempt..!');
+                    return HttpResponseBadRequest('malicious attempt..!')
+
                 
             user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
             user.set_password(password)
@@ -162,10 +168,11 @@ def set_password(request:HttpRequest):
             login(request, user)
             del request.session['phone_no']
             del request.session['verified']
+            del request.session['reset_verified']
+
             return render(request,'user/dashboard.html')
         else:
             return HttpResponseUnprocessableEntity(form.errors)
-
     return HttpResponseNotAllowed(['POST'])
 
 
