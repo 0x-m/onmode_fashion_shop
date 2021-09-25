@@ -15,12 +15,12 @@ def tss(request: HttpRequest):
 def home(request:HttpRequest):
 
     return render(request, 'index/home/home.html', context= {
-        'lss': range(50)
+        'lss': range(30)
     })
 
 
 def aboutUs(request:HttpRequest):
-    pass
+    return render(request, 'index/aboutus.html');
 
 def rules(request:HttpRequest):
     pass

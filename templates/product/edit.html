@@ -25,7 +25,7 @@
         padding: 0.5rem;
         margin-top: 0.5rem;
         position: relative;
-        background-color: #efefef;
+        background-color: #f1f1f1;
     }
 
     .attr-list .attr .close {
@@ -65,21 +65,21 @@
     }
 
 </style>
-<div class="container" style="width:90%">
+<div class="container vertical" style="position: relative;width:90%;margin:1rem auto;justify-content:center; align-items:center">
     <input type="hidden" value="{{ product.id }}" id="id" name="id" >
-    <div class="txt-box w-100">
+    <div class="txt-box w-100 mt-1">
         <input  id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
         <label class="holder">نام محصول</label>
     </div>
-    <div class="txt-box w-100">
+    <div class="txt-box w-100 mt-1">
         <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price" value="{{ product.name }}" name="price" type="text" class="text" required>
         <label class="holder">قیمت</label>
     </div>
-    <div class="txt-box w-100">
+    <div class="txt-box w-100 mt-1">
         <input onblur="validate_field('^[1-9][0-9]{0,2}$');" value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
         <label class="holder">تعداد</label>
     </div>
-    <div  class="mt-1 w-100 list-box" style="background-color: white;margin-top:2rem">
+    <div  class="list-box mt-1 w-100 " style="background-color: white;">
         <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
         <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
            {% for type in types %}

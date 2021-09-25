@@ -52,13 +52,13 @@
 }
 
 .drawer {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   width: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   z-index: 800;
   background-color: white;
   box-shadow: 1px 2px 4px #aaa;
@@ -246,9 +246,10 @@
   align-items: center;
 }
 
-body, html {
+*, body, html {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -413,11 +414,11 @@ body, html {
 }
 
 .w-100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .h-100 {
-  height: 100%;
+  height: 100% !important;
 }
 
 .product {
@@ -434,13 +435,13 @@ body, html {
 }
 .product .name {
   margin-top: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #444;
   text-align: center;
 }
 .product .price {
   text-align: center;
-  margin-top: -0.2rem;
+  margin-top: 0.7rem;
   font-size: 0.8rem;
 }
 .product .price .realprice {
@@ -456,7 +457,7 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: -0.5rem auto;
+  margin: 0.5rem auto;
   margin-bottom: 0.3rem;
   background-color: white;
   width: 80%;
@@ -954,6 +955,152 @@ body, html {
   height: 12px;
   border-radius: 50%;
   display: block;
+}
+
+.txt-box {
+  border: 1px solid lightgray;
+  padding: 0.2rem;
+  position: relative;
+}
+
+.txt-box .text {
+  outline: none;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: gray;
+  width: 100%;
+}
+
+.holder {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translate(0, -50%);
+  color: lightgray;
+  padding: 0.2rem;
+  background-color: transparent;
+  transition: 0.2s;
+  cursor: text;
+  display: block;
+  pointer-events: none;
+}
+
+.txt-box .text:focus ~ .holder,
+.txt-box .text:valid ~ .holder {
+  top: 0;
+  font-size: 0.8rem;
+  background-color: white;
+  color: gray;
+}
+
+.list-box {
+  width: 80%;
+  padding: 0;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+}
+
+.list-box .filter {
+  outline: none;
+  border: none;
+  color: #4d4d4d;
+  font-size: 0.8em;
+  width: 100%;
+  padding: 0.5em;
+  padding-right: 0.6em;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.list-box .filter::placeholder {
+  color: #444444;
+}
+
+.list-box .items {
+  overflow-y: auto;
+  width: 100%;
+  padding: 0em;
+  max-height: 20vh;
+  border-radius: 0px;
+}
+
+.list-box .items > .item {
+  margin-top: 0.1em;
+  font-size: 0.9em;
+  color: #979292;
+  border-radius: 0px;
+  padding: 0.6em;
+  position: relative;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.selected {
+  background-color: whitesmoke;
+}
+
+.checked {
+  display: block !important;
+}
+
+.inline-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.color {
+  border-radius: 50%;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  max-width: 24px;
+  max-height: 24px;
+  width: 16px;
+  cursor: pointer;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.size {
+  cursor: pointer;
+  margin-right: 0.7rem;
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.select-color {
+  opacity: 1;
+  transform: scale(1.2, 1.2);
+}
+
+.select-size {
+  font-size: 1.1rem;
+  opacity: 1;
+}
+
+.text-box {
+  outline: none;
+  padding: 0.6rem;
+  color: #ccc;
+  border: 1px solid #efefef;
+  border-radius: 1px;
+}
+
+.text-box:hover, .text-box:focus {
+  color: #aaa;
+  border-color: #ccc;
+  border-width: 1.3px;
+}
+
+.text-box:focus::placeholder {
+  transform: scale(0.2, 0.2);
+}
+
+.text-box::placeholder {
+  color: #a7a7a7;
+}
+
+.text-box:disabled {
+  background-color: #f7f7f7;
 }
 
 /*# sourceMappingURL=main.css.map */

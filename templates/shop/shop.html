@@ -14,11 +14,11 @@
 
 <div class="container vertical w-100 mt-05">
     <div class="shop-action">
-        <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0" class="btn-tiny">فیلتر</button>
+        <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0" onclick="show_filter();" class="btn-tiny">فیلتر</button>
         <button style="margin-right:3px" class="btn-tiny">
             ?
         </button>
-        <button style="min-width:128px;background-color:rgb(255, 57, 57);color:white" class="btn-tiny">محصول جدید</button>
+        <button style="min-width:128px;background-color:rgb(255, 57, 57);color:white" class="btn-tiny" onclick="zaa();">محصول جدید</button>
     </div>
 
     <!----------------TOP PRODUCTS-------->
@@ -40,5 +40,11 @@
         <a class="page-item">111</a>
     </div>
 </div>
+
+<template id="filter_box">
+    <form onsubmit="filter_product();" action="{% url 'shops:shop_filter' shop_name=shop.name  %}" method="GET">
+        {% include 'product/filter.html' %}
+    </form>
+</template>
 
 {% endblock %}

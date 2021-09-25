@@ -18,8 +18,6 @@ from index.utils import get_provinces
 from .forms import AddProductForm, FilterForm, ShopInfoForm
 from django.contrib.staticfiles.storage import staticfiles_storage
 
-
-
 @login_required
 def check_for_shop_name(request:HttpRequest, shop_name):
     res = Shop.objects.filter(name=shop_name).exists()

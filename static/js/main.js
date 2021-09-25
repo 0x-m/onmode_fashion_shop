@@ -58,11 +58,11 @@ function prevent_close(){
       dropdowns[i].classList.remove("show");
   }
 
-  const sidebox = document.getElementById("side-box");
-  if(sidebox.classList.contains("side-box-show")){
-      closeSidebox();
+//   const sidebox = document.getElementById("side-box");
+//   if(sidebox.classList.contains("side-box-show")){
+//       closeSidebox();
 
-  }
+//   }
 
 });
 
@@ -375,3 +375,9 @@ function select_tab(){
 
 }
 
+function show_filter() {
+    const d = document.getElementById('drawer');
+    const c = document.getElementById('filter_box');
+    d.setcc(c.content.cloneNode(true));
+    d.open();
+}

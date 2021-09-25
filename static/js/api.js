@@ -1,5 +1,4 @@
 
-
 function getCookie(name){
     let cookieValue = null;
     if(document.cookie && document.cookie != ''){
@@ -408,6 +407,7 @@ function get_add_product_form(){
 
 
 function get_selecteds(name, single){
+    console.log('aaaa');
     const items = document.getElementById(name).children;
     let selecteds = ""
     let all = ""
@@ -540,11 +540,12 @@ function prepare_product_info(command){
     if( errors.length !=0){
         let msg = ""
         for (let i=0; i < errors.length; ++i){
-            msg += errors[i] + "\r\n\r\n";
+            msg += errors[i] + "<br/>";
         }
-        set_error(msg,5000,()=>{
+        // set_error(msg,5000,()=>{
 
-        })
+        // })
+        document.getElementById('drawer').setContent(msg);
         return null;
     }
 
@@ -578,9 +579,11 @@ function add_product(command){
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
     xhttp.onload = () =>{
         if(xhttp.status == 200){
-            const sucess = document.getElementById("sucessful-edit").innerHTML;
-            set_view(sucess);
-            end_waiting();
+            // const sucess = document.getElementById("sucessful-edit").innerHTML;
+            const d = document.getElementById('drawer');
+            d.hideLoader();
+            d.setContent('success');
+            
         }
         // if(xhttp.status == 400){
         //     const msg = "لطفا اطلاعات خواسته شده را به درستی وارد کنید"
@@ -588,7 +591,7 @@ function add_product(command){
         // }
     }
     if (data){
-        start_waiting();
+        document.getElementById('drawer').showLoader();
         xhttp.send(data);
     }
   
