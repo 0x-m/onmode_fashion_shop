@@ -70,6 +70,8 @@ class Drawer extends HTMLElement {
         overlay.remove();
     }
 
+
+
     setContent(val) {
         this.querySelector('.content').innerHTML = val;
     }

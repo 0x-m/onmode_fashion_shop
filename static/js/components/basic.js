@@ -1925,23 +1925,6 @@ function showMegaMenu() {
  }
 
 
-function openDrawer() {
-    const d = document.getElementById('drawer');
-    // fetch("/test/",{
-    //     header :{
-    //         'content-type':'application/x-www-form-urlencoded'
-    //     }
-    // }).then((res) => {
-    //     res.text().then((r)=>{
-    //         d.setContent(r);
-    //     })
-    // })
-    const s = document.getElementById('mobile_menu');
-    d.setcc(s.content.cloneNode(true));
-    d.open();
-
-}
-
 function zaa() { 
     const d = document.getElementById('drawer');
 

@@ -16,12 +16,12 @@ class PhoenForm(forms.Form):
 class SetPasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, min_length=8)
     confirm = forms.CharField(widget=forms.PasswordInput, min_length=8)
-    
     def clean_password(self):
-        password = self.data['password']
-        if password == self.data['confirm']:
+        password = self.data.get('password')
+        print(password, self.data.get('confirm'))
+        print('-------' *10)
+        if password== self.data.get('confirm'):
             return password
-          
         else:
             msg  = "incorrect password confiramtion"
             

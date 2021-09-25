@@ -119,10 +119,9 @@ def verification(request:HttpRequest):
 def set_password(request:HttpRequest):
     if request.method == 'POST':
         verified = request.session.get('verified')
-        print('verified: ',verified)
         if not verified or verified != 'True':
             return HttpResponseBadRequest("unauthenticated attempt")
-       
+        
         form = SetPasswordForm(request.POST)
         if form.is_valid():
             phone_no = request.session.get('phone_no')
@@ -130,7 +129,6 @@ def set_password(request:HttpRequest):
                 return HttpResponseBadRequest("phone no is not set")
             
             password = form.cleaned_data['password']
-            print(password)
             user = User.objects.filter(phone_no=phone_no).first()
             if not user:
                 user = User(phone_no=phone_no)

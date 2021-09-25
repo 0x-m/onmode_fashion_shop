@@ -1,7 +1,10 @@
 <div class="position--center" style="width: 70%;">
-    <custom-text style="width:92%" placeholder="کد تایید"></custom-text>
-    <button class="btn cta" dir="rtl" style="margin:0.5rem auto;width:100%;">تایید</button>
+    <custom-text id="verification_code" style="width:100%" placeholder="کد تایید"></custom-text>
+    <button onclick="verify_code();" class="btn cta" dir="rtl" style="margin:0.5rem auto;width:100%;">تایید</button>
     <p class="font-size--sm w-100 " style="text-align: center;">
         کد تایید را دریافت نکرده اید؟<a href="#"> ارسال مجدد</a>
+    </p>
+    <p>
+        {{ code }}
     </p>
 </div>

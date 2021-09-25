@@ -36,6 +36,7 @@ class User(AbstractUser):
     merchan_card = models.CharField(verbose_name=_('Merchand Card'),max_length=16,blank=True, null=True)
     user_code = models.CharField(verbose_name=_('User Code'),max_length=20)
     points = models.PositiveIntegerField(verbose_name=_('Points'),default=0)
+    referral_coe = models.CharField(max_length=20,verbose_name=_('Referral Code'), blank=True, null=True)
     fee = models.PositiveIntegerField(verbose_name=_('Fee'),validators=[
         MinValueValidator(0),
         MaxValueValidator(100)

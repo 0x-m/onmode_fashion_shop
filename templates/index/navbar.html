@@ -11,14 +11,14 @@
    </div>
    
    <div class="nav" style="flex:10%;display:flex;justify-content:flex-end;align-items:center;">
-       <ion-icon id="ass" onclick="asd();"  name="search-outline" class="icon"></ion-icon>
+       <ion-icon id="ass" onclick="seterr();"  name="search-outline" class="icon"></ion-icon>
        {% if user.is_authenticated %}
             <ion-icon  onclick="open_dashboard();" name="person-outline" class="icon"></ion-icon>
             <ion-icon name="cart-outline" onclick="open_cart();" class="icon"></ion-icon>
        {% else %}
              <button onclick="open_dashboard()" class="btn" style="margin-left: 0.5rem;font-size:0.8rem">عضویت / ورود</button>
        {% endif %}
-       <ion-icon name="menu-outline" onclick="openDrawer();"  class="icon vi"></ion-icon>
+       <ion-icon name="menu-outline" onclick="open_mobile_menu();"  class="icon vi"></ion-icon>
    </div>
 </nav>
 {% include 'index/home/megamenu.html' %}
