@@ -101,7 +101,7 @@ class CustomText extends HTMLElement {
     }
 
     get text() {
-        return this._text.textContent;
+        return this._text.value;
     }
 
     get placeholder() {

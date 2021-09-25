@@ -67,7 +67,7 @@
             </p>
         </div>
         <div  class="list-item">
-            <p onclick="get_user_orders();" style="padding: 0.5rem;">
+            <p onclick="open_favourites();" style="padding: 0.5rem;">
                لیست علاقه مندی
             </p>
         </div>
@@ -138,9 +138,9 @@
                    درخواست ایجاد بوتیک
                 </p>
             </div>
-            <div onclick="get_messages();" class="list-item" style="background-color: rgb(247, 59, 59);">
-                <p style="padding: 0.5rem;color:white" >
-                   <a style="text-decoration: none;color:white" href="{% url 'users:logout' %}">خروج</a> 
-                </p>
+            <div  class="list-item" style="background-color: rgb(247, 59, 59);">
+                <a href="{% url 'users:logout' %}"  style="padding: 0.5rem;color:white;display:block;text-decoration:none;" >
+                    خروج
+                </a>
             </div>
 </div>

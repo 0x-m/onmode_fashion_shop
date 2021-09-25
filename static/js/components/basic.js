@@ -1509,7 +1509,7 @@ class CustomText extends HTMLElement {
         return (val === '') || (val === 'true');
     }
     get text() {
-        return this._text.textContent;
+        return this._text.value;
     }
 
     get placeholder() {
