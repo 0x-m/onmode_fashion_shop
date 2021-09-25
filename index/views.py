@@ -9,7 +9,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 
 
 def tss(request: HttpRequest):
-    return render(request, 'favourites/favourites.html');
+    return render(request, 'registration/password.html');
 
 
 def home(request:HttpRequest):
