@@ -180,17 +180,22 @@ function show_search_page(){
 
 
 function login(){
-    var  d = new XMLHttpRequest()
-    const password = document.getElementById("password").value;
-    const data = new FormData()
-    data.append("password", password);
-    load_view("/users/login/","POST",data,(x)=>{
-        if(x.status == 422 || x.status == 400){
-            const msg = "رمز عبور اشتباه است"
-            set_error(msg ,1500,()=>{});
-            toggle_waiting();
+    const pass = document.getElementById('password');
+    // var  d = new XMLHttpRequest()
+    // const password = document.getElementById("password").value;
+    // const data = new FormData()
+    // data.append("password", password);
+    // load_view("/users/login/","POST",data,(x)=>{
+    //     if(x.status == 422 || x.status == 400){
+    //         const msg = "رمز عبور اشتباه است"
+    //         set_error(msg ,1500,()=>{});
+    //         toggle_waiting();
 
-        }
+    //     }
+    // });
+    load_view('/users/login/', 'post',"password=" + pass.text, function() {
+        document.getElementById('drawer').hideLoader();
+        pass.error('رمز عبور نادرست میباشد.');
     });
 }
 
