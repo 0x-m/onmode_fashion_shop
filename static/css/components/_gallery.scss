@@ -2,7 +2,7 @@
 .gallery {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     align-items: center;
     width: 100%;
@@ -16,18 +16,19 @@
         width: 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-direction: row;
        
         .thumb {
             max-width: 64px;
-            border: 1px solid gray;
-            opacity: 0.6;
-            transform: 0.3s;
+            border: 1px solid #adadad;
+            opacity: 0.2;   
+            transform: 0.5s;
             margin: 0.2rem;
+            cursor: pointer;
             margin-left: .2rem;
             margin-right: 0.2rem;
             
-
             &:hover, &--active {
                 opacity: 1;
             }

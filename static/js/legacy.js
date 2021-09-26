@@ -259,3 +259,23 @@ function seterr() {
     d.setError('ffff');
     d.open();
 }
+
+function fetchComment() {
+    const pid = 1;
+    const xr = new XMLHttpRequest();
+    const cbox = document.getElementById('comment-box');
+
+    xr.onload = function() {
+        if (xr.status == 200) {
+            cbox.appendChild(xr.responseText);
+            //remove comment-button
+        }
+    };
+
+    xr.open('get','');
+    xr.send();
+}
+
+function add_comment() {
+    //comment
+}

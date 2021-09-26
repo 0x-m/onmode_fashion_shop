@@ -1,0 +1,100 @@
+
+<style>
+    .pure-g [class *= "pure-u"] {
+        /* Set your content font stack here: */
+        font-family: sans-serif;
+        line-height: 1rem;
+        letter-spacing: normal;
+    }
+</style>
+    <div class="pure-g" style="width: 85%;margin:1rem auto;">
+        <div class="purge-u-1-1 pure-u-md-1-2">
+            <div class="gallery">
+                {% comment %}
+                    {% if product.images.first.image %}
+                        <img class="gallery-preview" src="{{product.images.first.image.url}}" style="width: 100%;">
+                    {% else %}
+                        <img class="gallery-preview" src="{% static 'img/res/noimg.jpg' %}" style="width: 100%;">
+                    {% endif %}
+                {% endcomment %}
+
+                <img class="gallery-preview" src="{% static 'img/sampleproduct/product-1.jpg'%}" />
+                <div class="thumbs">
+                    <img src="{% static 'img/sampleproduct/product-1.jpg'%}" class="thumb thumb--active">
+                    <img src="{% static 'img/sampleproduct/product-2.jpg'%}" class="thumb">
+                    <img src="{% static 'img/sampleproduct/product-3.jpg'%}" class="thumb">
+                    <img src="{% static 'img/sampleproduct/product-4.jpg'%}" class="thumb">
+                    <img src="{% static 'img/sampleproduct/product-4.jpg'%}" class="thumb">
+
+                    {% comment %}
+                        {% for item in product.images.all %}
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" class="thumb {% if forloop.counter0 == 0 %} thumb-active{% endif %}" />
+                            {% else %}
+                                <img src="{% static 'img/img1/noimg.jpg' %}" class="thumb {% if forloop.counter0 == 0 %} thumb--active{% endif %}" />
+                            {% endif %}
+                        {% endfor %}
+                    {% endcomment %}
+                </div>
+            </div>
+        </div>
+        <div class="purge-u-1-1 pure-u-md-1-2">
+            <div class="container vertical product-detail">
+                <h3 class="product-title">محصول من</h3>
+                <div class="product-status" >
+                    <p style="justify-self: flex-start;text-align:center;display:flex;justify-content:center;align-items:center;padding:0.5rem">
+                        <ion-icon style="color: #777;font-size:1.1rem" name="chatbubbles-outline"></ion-icon>  
+                        <span style="font-size: 0.8rem;font-weight:10;color:#777;margin-right:0.3rem">12</span>
+                    </p>
+                    <p style="justify-self: flex-start;text-align:center;display:flex;justify-content:center;align-items:center;padding:0.5rem">
+                        <ion-icon style="color: #777;font-size:1.1rem" name="heart-outline"></ion-icon>  
+                        <span style="font-size: 0.8rem;font-weight:10;color:#777;margin-right:0.3rem">12</span>
+                    </p>
+                    <span style="font-size: 0.8rem;font-weight:10;color:#777;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:#333;color:#fff">27%</span>
+                </div>
+              
+                <p class="product-description">
+                    خوبه اروزنه بسسببیسسسسسسسسسسسس
+                    بسبسبسبسبسبسبسبسبسبسببسیببببببببب
+                    بسبسبسبسبسب یسسسسسسسسسسسسسسب
+                    خوبه اروزنه بسسببسیییییییییی
+                    بسبسبسبسبسبسبسبسبسبسببسییییییییییییییییی
+                    بسبسبسبسبسب  سیبببببببببببببببب  
+                </p>   
+                <div class="product-prices">
+                    <span class="product-price">25000 تومان</span>
+                    <span class="product-discounted-price">1500 تومن</span>    
+                </div>
+                <h4 class="product-boutique" >نام بوتیک: بوتیک من</h4>
+                <p style="color: #666;font-size:0.7rem;margin-top:0.5rem">
+                    ارسال رایگان: دارد
+                </p>
+                <p style="color:#666;font-size: 0.7rem;margin-top:0.5rem">
+               امکان ارسال به استانهای: یزد کرمان تهران بوشهر 
+                </p>
+                <div class="product-options">
+                    <combo-box placeholder="سایز"></combo-box>
+                    <combo-box style="margin-right: 0.5rem;" placeholder="رنگ"></combo-box>
+                </div>
+                <div class="product-actions">
+                    <button class="btn cta" style="width: 50%;margin:0rem auto;">میخرم</button>
+                </div>
+            </div>
+        </div> 
+        <div class="pure-u-1-1 pure-u-md-1-1">
+            <div class="tab-container" style="margin: 0rem auto;width:85%">
+                <div class="tab-items" style="width: 100%;justify-content:center;align-items:center;">
+                    <div data-tab="specs" style="font-size:0.8rem" class="tab-item">مشخصات محصول</div>
+                    <div data-tab="comments" style="font-size:0.8rem" class="tab-item">نظرات</div>
+                </div>
+                <div class="tab-contents">
+                    <div id="specs" class="tab-content">
+
+                    </div>
+                    <div id="comments" class="tab-content">
+
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>

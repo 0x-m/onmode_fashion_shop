@@ -1,8 +1,8 @@
 .product-detail {
-    width: 90%;
+    width: 95%;
     margin: 1rem auto;
     .product-title {
-        margin: 1rem 0.5rem auto;
+        margin: 1.2rem 0.5rem auto;
         font-size: 1.3rem;
         font-weight: 50;
         color: #333;
@@ -17,34 +17,35 @@
     
 }
     .product-boutique {
-        margin-top: 1rem;
-        font-size: 0.9rem;
+        margin-top: 1.5rem;
+        font-size: 0.7rem;
         color: #555;
         font-weight: 50;
     }
 
     .product-prices {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        width: 70%;
+        width: 100%;
         margin: 0.7rem auto;
     }
     .product-price {
         margin-top: 0.5rem;
-        font-size: 0.8rem;
+        margin-left: 0.8rem;
+        font-size: 0.9rem;
         font-weight: 50;
         padding: 0.3rem;
-        color: #fff;
-        background-color: #666;
+        color: rgb(121, 121, 121);
+        text-decoration: line-through;
+
     }
 
     .product-discounted-price {
         margin-top: 0.5rem;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         font-weight: 50;
-        color: #fff;
-        background-color: rgb(240, 66, 66);
+        color: rgb(255, 78, 78);
         padding: 0.3rem;
 
     }
@@ -53,7 +54,7 @@
         width: 95%;
         text-align: right;
         
-        margin: 1rem auto;
+        margin: 1.5rem auto;
         color: #777;
         font-size: 0.8rem;
     }
@@ -61,12 +62,13 @@
     .product-options {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        width: 90%;
+        width: 100%;
         margin: 1rem auto;
         combo-box {
-            width: 45%;
+            width: 30%;
+            
         }
     }
 
@@ -80,6 +82,6 @@
 
 @media screen and (min-width: 640px) {
     .product-detail {
-        width: 95%;
+        width: 100%;
     }
 }
