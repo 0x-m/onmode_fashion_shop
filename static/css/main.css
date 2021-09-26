@@ -3,7 +3,7 @@
   outline: none;
   display: block;
   text-align: center;
-  border: 1px solid #efefef;
+  border: 1px solid #efeffe;
   border-radius: 1px;
   color: #666;
   padding: 0.5rem;
@@ -13,6 +13,9 @@
 }
 .btn:active {
   transform: translate(3%, 3%);
+}
+.btn:hover {
+  border-color: #666;
 }
 
 .cta {
@@ -157,29 +160,41 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  flex-grow: unset;
-}
-.gallery .preview {
-  flex: 70%;
+  align-items: center;
   width: 100%;
-  height: auto;
+}
+.gallery .gallery-preview {
+  width: 100%;
 }
 .gallery .thumbs {
-  flex: 30%;
+  width: 100%;
   display: flex;
   justify-content: center;
+  flex-direction: row;
 }
-.gallery .thumbs .thumbs {
-  width: 64px;
-  height: 64px;
+.gallery .thumbs .thumb {
+  max-width: 64px;
   border: 1px solid gray;
   opacity: 0.6;
   transform: 0.3s;
+  margin: 0.2rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
 }
-.gallery .thumbs .thumbs:hover, .gallery .thumbs .thumbs--active {
+.gallery .thumbs .thumb:hover, .gallery .thumbs .thumb--active {
   opacity: 1;
 }
 
+@media screen and (min-width: 640px) {
+  .gallery {
+    width: 80%;
+    flex-direction: row;
+  }
+  .gallery .thumbs {
+    flex-direction: column;
+    width: 20%;
+  }
+}
 .icon {
   font-size: 1.1em;
   color: #aaa;
@@ -254,8 +269,8 @@
 
 .logo {
   font-family: "Open Sans Condensed", sans-serif;
-  font-family: "Quicksand", sans-serif;
-  font-family: "Vibes", cursive;
+  font-family: "Quicksand", sans-serif !important;
+  font-family: "Vibes", cursive !important;
   font-size: 3.1rem;
   user-select: none;
   color: rgba(150, 150, 150, 0.5);
@@ -312,11 +327,12 @@
 .badge {
   position: absolute;
   padding: 0.3rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: white;
+  text-align: center;
 }
 .badge-red {
-  background-color: red !important;
+  background-color: #f14646 !important;
 }
 .badge-green {
   background-color: green !important;
@@ -325,7 +341,7 @@
   background-color: #333 !important;
 }
 .badge-top-left {
-  top: -1%;
+  top: 1%;
   left: 3%;
 }
 .badge.hide {
@@ -1113,6 +1129,84 @@
 
 .text-box:disabled {
   background-color: #f7f7f7;
+}
+
+.product-detail {
+  width: 90%;
+  margin: 1rem auto;
+}
+.product-detail .product-title {
+  margin: 1rem 0.5rem auto;
+  font-size: 1.3rem;
+  font-weight: 50;
+  color: #333;
+  text-align: center;
+}
+.product-detail .product-status {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  display: flex;
+  position: relative;
+}
+.product-detail .product-boutique {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 50;
+}
+.product-detail .product-prices {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  margin: 0.7rem auto;
+}
+.product-detail .product-price {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 50;
+  padding: 0.3rem;
+  color: #fff;
+  background-color: #666;
+}
+.product-detail .product-discounted-price {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 50;
+  color: #fff;
+  background-color: #f04242;
+  padding: 0.3rem;
+}
+.product-detail .product-description {
+  width: 95%;
+  text-align: right;
+  margin: 1rem auto;
+  color: #777;
+  font-size: 0.8rem;
+}
+.product-detail .product-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 1rem auto;
+}
+.product-detail .product-options combo-box {
+  width: 45%;
+}
+.product-detail .product-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media screen and (min-width: 640px) {
+  .product-detail {
+    width: 95%;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */

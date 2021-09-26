@@ -4,7 +4,7 @@
 <html dir="rtl">
     <head>
         <title>{% block title %}{% endblock %}</title>
-        <meta charset="utf-8" />
+        <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script type="application/javascript" src="{% static 'js/api.js' %}"></script>
         <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
@@ -17,24 +17,18 @@
         <script src="{% static 'js/main.js' %}"></script>
         <script  src="{% static 'js/legacy.js' %}" >
         </script>
+        <link href="//db.onlinewebfonts.com/c/5c53f1a72f61b5b51e2ea79a22ebc38b?family=IRANSansWeb(FaNum)" rel="stylesheet" type="text/css"/>
         <style>
-            body {
-                scroll-snap-type: y mandatory;
-                
-            }
-            .sec {
-                width: 100%;
-                height: 100vh;
-                scroll-snap-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
-        </style>
-        {% block dependencies %}
+            @font-face {font-family: IRANSansWeb; src: url("//db.onlinewebfonts.com/t/5c53f1a72f61b5b51e2ea79a22ebc38b.eot"); src: url("//db.onlinewebfonts.com/t/5c53f1a72f61b5b51e2ea79a22ebc38b.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/5c53f1a72f61b5b51e2ea79a22ebc38b.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/5c53f1a72f61b5b51e2ea79a22ebc38b.woff") format("woff"), url("//db.onlinewebfonts.com/t/5c53f1a72f61b5b51e2ea79a22ebc38b.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/5c53f1a72f61b5b51e2ea79a22ebc38b.svg#IRANSansWeb(FaNum)") format("svg"); }
 
-        {% endblock %}
+            *, html,body {
+                font-family: IRANSansWeb !important;
+            }
+            
+            
+
+        </style>
+ 
         <script>
             document.addEventListener( 'DOMContentLoaded', function () {
                 new Splide( '.splide' ).mount();
@@ -70,7 +64,7 @@
             
             {% endblock %}
 
-            {% include 'index/footer.html' %}
+        {% include 'index/footer.html' %}
         </div>
         <my-drawer id="drawer"></my-drawer>
         {% include 'index/home/mobile_menu.html' %}
@@ -79,7 +73,7 @@
 
       <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+   
     </body>
 
 </html>

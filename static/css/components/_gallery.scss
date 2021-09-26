@@ -4,25 +4,28 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    flex-grow: unset;
+    align-items: center;
+    width: 100%;
 
-    .preview {
-        flex: 70%;
+    .gallery-preview {
         width: 100%;
-        height: auto;
+        
     }
 
     .thumbs {
-        flex: 30%;
+        width: 100%;
         display: flex;
         justify-content: center;
+        flex-direction: row;
        
-        .thumbs {
-            width: 64px;
-            height: 64px;
+        .thumb {
+            max-width: 64px;
             border: 1px solid gray;
             opacity: 0.6;
             transform: 0.3s;
+            margin: 0.2rem;
+            margin-left: .2rem;
+            margin-right: 0.2rem;
             
 
             &:hover, &--active {
@@ -31,4 +34,16 @@
 
         }
     }
+}
+
+@media screen and (min-width: 640px) {
+    .gallery {
+        width: 80%;
+        flex-direction: row;
+        .thumbs {
+            flex-direction: column;
+            width: 20%;
+        }
+    }
+
 }

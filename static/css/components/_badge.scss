@@ -2,10 +2,11 @@
 .badge {
     position: absolute;
     padding: 0.3rem;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     color: white;
+    text-align: center;
     &-red {
-        background-color: red !important;
+        background-color: rgb(241, 70, 70) !important;
     }
     &-green {
         background-color: green !important;
@@ -14,7 +15,7 @@
         background-color: #333 !important; 
     }
     &-top-left {
-        top: -1%;
+        top: 1%;
         left: 3%;
     }
 

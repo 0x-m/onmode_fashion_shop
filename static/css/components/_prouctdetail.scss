@@ -1,0 +1,85 @@
+.product-detail {
+    width: 90%;
+    margin: 1rem auto;
+    .product-title {
+        margin: 1rem 0.5rem auto;
+        font-size: 1.3rem;
+        font-weight: 50;
+        color: #333;
+        text-align: center;
+    }
+.product-status {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    position: relative;
+    
+}
+    .product-boutique {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #555;
+        font-weight: 50;
+    }
+
+    .product-prices {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 70%;
+        margin: 0.7rem auto;
+    }
+    .product-price {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 50;
+        padding: 0.3rem;
+        color: #fff;
+        background-color: #666;
+    }
+
+    .product-discounted-price {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 50;
+        color: #fff;
+        background-color: rgb(240, 66, 66);
+        padding: 0.3rem;
+
+    }
+
+    .product-description {
+        width: 95%;
+        text-align: right;
+        
+        margin: 1rem auto;
+        color: #777;
+        font-size: 0.8rem;
+    }
+
+    .product-options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        margin: 1rem auto;
+        combo-box {
+            width: 45%;
+        }
+    }
+
+    .product-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width: 640px) {
+    .product-detail {
+        width: 95%;
+    }
+}

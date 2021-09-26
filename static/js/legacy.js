@@ -39,7 +39,7 @@ function getCookie(name){
 }
 
 
-function load_view(url, method='get', payload={}, error=function(){}) {
+function load_view(url, method='get', payload={},success=function(){}, error=function(){}) {
     console.log('load view...')
     const d = document.getElementById('drawer');
     d.showLoader();
@@ -52,6 +52,7 @@ function load_view(url, method='get', payload={}, error=function(){}) {
                 if (status === 200) {
                     d.hideLoader();
                     d.setContent(resp);
+                    success();
                 }   
                 else {
                     //handle error....
@@ -67,6 +68,7 @@ function load_view(url, method='get', payload={}, error=function(){}) {
                 if (status === 200){
                     d.hideLoader();
                     d.setContent(resp);
+                    success();
                 }
                 else {
                     //handle error
@@ -193,10 +195,13 @@ function login(){
 
     //     }
     // });
-    load_view('/users/login/', 'post',"password=" + pass.text, function() {
+    load_view('/users/login/', 'post',"password=" + pass.text,success= function() {
+        location.reload();
+    } ,error=function() {
         document.getElementById('drawer').hideLoader();
         pass.error('رمز عبور نادرست میباشد.');
     });
+    
 }
 
 
