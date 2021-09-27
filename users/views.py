@@ -195,7 +195,7 @@ def login_user(request:HttpRequest):
                 if request.session.get('verified'):
                     del request.session['verified']
                 request.session.save()
-                return render(request, 'user/dashboard.html')
+                return redirect('index:home');
             else:
                 return HttpResponseBadRequest("incorrect password...try again")
             

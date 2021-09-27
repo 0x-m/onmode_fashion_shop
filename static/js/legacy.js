@@ -209,11 +209,11 @@ function show_search_page(){
 
 function login(){
     const pass = document.getElementById('password');
-    load_view('/users/login/', 'post',"password=" + pass.text,success= function() {
-        location.reload();
-    } ,error=function() {
-        document.getElementById('drawer').hideLoader();
-        pass.error('رمز عبور نادرست میباشد.');
+    get('/users/login/', 'post',"password=" + pass.text, function(resp, status) {
+        if (status !== 200) {
+            document.getElementById('drawer').hideLoader();
+            pass.error('رمز عبور نادرست میباشد.');
+        }
     });
     
 }
