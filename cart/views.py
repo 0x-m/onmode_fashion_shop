@@ -30,7 +30,7 @@ def add(request:HttpRequest, product_id):
             qunatity = 1
    
     cart = Cart(request)
-    cart.add(product.id,qunatity)
+    cart.add(product.id, qunatity)
     if size and color:
         try:
             color = int(color)
@@ -43,7 +43,7 @@ def add(request:HttpRequest, product_id):
             return HttpResponseBadRequest("size or color does not defiend")
     else:
         color = Color.objects.first()
-        sizes = Size.objects.first()
+        size = Size.objects.first()
         cart.choose_color(product_id=product.id,color=color.code,color_id=color.id)
         cart.choose_size(product.id, size.code, size.id)
         

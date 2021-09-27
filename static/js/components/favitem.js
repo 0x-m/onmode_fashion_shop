@@ -21,6 +21,8 @@ class FavouriteItem extends HTMLElement {
     constructor() {
         super();
         this.appendChild(favTemplate.content.cloneNode(true));
+        this._addToCart = this._addToCart.bind(this);
+        this._remove = this._remove.bind(this);
     }
 
     connectedCallback() {
@@ -48,6 +50,10 @@ class FavouriteItem extends HTMLElement {
     get title() {   
         return this.getAttribute('title');
 
+    }
+
+    get pid() {
+        return this.getAttribute('pid');
     }
 
     get description() {
@@ -81,8 +87,6 @@ class FavouriteItem extends HTMLElement {
         parts[3].textContent = this.boutique;
         parts[4].textContent = this.description;
         parts[5].textContent = this.price;
-        
-
         this._hideBage();
         this._hideCartIcon();   
 
@@ -100,11 +104,15 @@ class FavouriteItem extends HTMLElement {
         }
     }
     _addToCart() {
-        console.log('add to cart');
+       get('/cart/add/' + this.pid + '/', function(resp, status) {
+           if (status === 200)
+                update_cart_badge('increment');
+        });
     }
 
     _remove() {
-        console.log('remove...');
+        get('/favourites/remove/' + this.pid + '/');
+        this.remove();
     }
 
 

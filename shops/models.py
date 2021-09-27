@@ -166,8 +166,7 @@ class Product(models.Model):
     def is_available(self):
         return (self.quantity > 0) and (self.is_active)
     
-    def has_valid_discount(self):
-        return self.discounts.all().last.is_valid()
+
     
     
 class ProductImage(models.Model):

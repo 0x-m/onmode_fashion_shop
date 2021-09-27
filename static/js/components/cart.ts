@@ -4,7 +4,7 @@ cartItemTemplate.innerHTML = `
     <img class="preview" style="width:96px" />
     <span class="remove"></span>
     <span class="cart-badge"></span>
-    <number-box initial="1" class="quantity"></number-box>
+    <number-box class="quantity"></number-box>
 
     <div class="detail">
         <h3 class="title"></h3>
@@ -35,7 +35,7 @@ interface Size {
 class CartItem extends HTMLElement {
 
     private _pid: number;
-    private _slider:HTMLDivElement;
+
     constructor() {
         super();
        // this.attachShadow({ mode: 'open' });
@@ -50,12 +50,13 @@ class CartItem extends HTMLElement {
         this._remove_from_server = this._remove_from_server.bind(this);
         this._render();
         this.querySelector('.remove').addEventListener('click', this._remove);
+        const quant = this.querySelector('.quantity');
+        quant.setAttribute('value', this.quantity ?? "1");
+        quant.addEventListener('onincrement', () => { get('/cart/add/' + this._pid + '/', function(){update_cart_badge('increment')});});
+        quant.addEventListener('ondecrement', ()=> { get('/cart/remove/' + this._pid + '/', function() {update_cart_badge('decrement')});});
+        this.querySelector('#colors').addEventListener('onselectedchange', () => { get('/cart/set_color/?product_id=' + this.pid + '&color_id=' + this.selected_color ); });
+        this.querySelector('#sizes').addEventListener('onselectedchange', () => { get('/cart/set_size/?product_id=' + this.pid + '&size_id=' + this.selected_size ); })
     }
-
-    // attributeChangedCallback(name: string, oldval: string, newval: string){
-
-    // }
-
 
     private _render() {
        const parts = this.querySelectorAll('.preview, .cart-badge, .title, .boutique, .description, .price, .discounted_price');
@@ -78,10 +79,8 @@ class CartItem extends HTMLElement {
        color_box.appendChild(this._prepareColors());
        size_box.appendChild(this._prepareSizes());
 
-      
-
-
     }
+
 
     private _prepareColors(): DocumentFragment{
         const frag = document.createDocumentFragment();
@@ -116,11 +115,13 @@ class CartItem extends HTMLElement {
         return ( (val === '') || (val === 'true') );
     }
 
+    get quantity() {
+        return this.getAttribute('quantity');
+    }
 
     get pid(): number {
         return parseInt(this.getAttribute('pid'));
     }
-
 
     get title(): string {
        return this.getAttribute('title');
@@ -154,6 +155,21 @@ class CartItem extends HTMLElement {
         return (val === '') || (val === 'true');
     }
 
+    get selected_color() {
+        const selected  = this.querySelector('#colors').selectedItems;
+        if (selected){
+            return selected[0];
+        }
+        return '';
+    }
+
+    get selected_size() {
+        const selected  = this.querySelector('#sizes').selectedItems;
+        if (selected){
+            return selected[0];
+        }
+        return '';
+    }
     private toggleStock() {
 
         const label = this.querySelector('.out_of_stock');
@@ -233,7 +249,9 @@ class CartItem extends HTMLElement {
     private _seteSize() {
 
     }
-    private _setQuantity() {}
+    private _setQuantity() {
+
+    }
 
     public updateServer() {
         this._setColor();

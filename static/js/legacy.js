@@ -1,7 +1,8 @@
 
 
-function get(url, callback) {
+function get(url, callback= function(a, b){}) {
     const xr = new XMLHttpRequest();
+
     xr.onload = function() {
         callback(xr.responseText, xr.status);
     };
@@ -106,13 +107,37 @@ function checkout() {
 
 }
 
-function increment_cart_badge() {
-    console.log('increment...');
+function add_product(product_id) {
+    load_view('/product/add/');
 }
 
-function decrement_cart_badge() {
-    console.log('decrement....');
+function update_cart_badge(cmd, val=0) {
+    const cart_badge = document.getElementById('cart-num-badge');
+    let count_string = cart_badge.innerText;
+    if (count_string === '99+') {
+        return;
+    }
+
+    let count = parseInt(count_string);
+    switch(cmd) {
+        case 'increment':
+            cart_badge.innerText = (count + 1 > 99) ? "99+" : count + 1;
+            break;
+        case 'decrement':
+            cart_badge.innerText = (count - 1 >= 0) ? count - 1 : 0;
+            break;
+        case 'add':
+            const res = count + parseInt(val);
+            cart_badge.innerText = (res  > 99) ? "99+" : res;
+            break;
+        case 'subtract':
+            const ress = count - parseInt(val);
+            cart_badge.innerText = (ress >= 0) ? res : 0;
+            break;
+    }
 }
+
+
 
 function open_search() {
     console.log('search...');
@@ -125,6 +150,7 @@ function open_dashboard() {
 function open_favourites() {    
     load_view('/favourites/');
 }
+
 
 function open_mobile_menu() {
     const d = document.getElementById('drawer');
@@ -183,18 +209,6 @@ function show_search_page(){
 
 function login(){
     const pass = document.getElementById('password');
-    // var  d = new XMLHttpRequest()
-    // const password = document.getElementById("password").value;
-    // const data = new FormData()
-    // data.append("password", password);
-    // load_view("/users/login/","POST",data,(x)=>{
-    //     if(x.status == 422 || x.status == 400){
-    //         const msg = "رمز عبور اشتباه است"
-    //         set_error(msg ,1500,()=>{});
-    //         toggle_waiting();
-
-    //     }
-    // });
     load_view('/users/login/', 'post',"password=" + pass.text,success= function() {
         location.reload();
     } ,error=function() {
@@ -253,13 +267,6 @@ function get_profile(){
     load_view("/users/profile/","GET", null,false);
 }
 
-
-function seterr() {
-    const d = document.getElementById('drawer');
-    d.setError('ffff');
-    d.open();
-}
-
 function fetchComment() {
     const pid = 1;
     const xr = new XMLHttpRequest();
@@ -279,3 +286,6 @@ function fetchComment() {
 function add_comment() {
     //comment
 }
+
+
+

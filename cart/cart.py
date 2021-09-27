@@ -55,8 +55,13 @@ class Cart():
             } 
             self.save()
             logger.info("session saved...product with %s and q:%s" % (product_id, self.cart[id]['quantity']))
+        else:
+            self.cart[id] = {
+                'quantity': int(self.cart[id]['quantity']) + 1
+            }
     
     def choose_color(self, product_id, color, color_id):
+        print('change color...');
         logger.info('change color issued for product: %s' % product_id)
         id = str(product_id)
         if id in self.cart.keys():
@@ -175,16 +180,16 @@ class Cart():
         
         
     #------------helpers-----------------
-    def encode_colors(product: Product):
+    def encode_colors(self, product: Product):
         colors = product.colors.all();
         code:str = ''
         for color in colors:
-            code += f'{color.id}:{color.code}:{color.name},'
+            code += f'{color.id}:{color.name}:{color.code},'
 
         return code[:len(code) - 1]
         
     
-    def encode_sizes(product: Product):
+    def encode_sizes(self, product: Product):
         sizes = product.sizes.all()
         code:str = ''
         for size in sizes:
@@ -192,8 +197,13 @@ class Cart():
         return code[:len(code) - 1]
     
     
-    def check_for_valid_discount(product: Product):
-        return product.discounts.all().last.is_valid()
+    def check_for_valid_discount(self,product: Product):
+        disc =  product.discounts.all().last()
+        print (type(disc))
+        if disc:
+            if disc.is_valid():
+                return True
+        return False
     
     def __iter__(self):
         product_ids = self.cart.keys()
@@ -206,9 +216,9 @@ class Cart():
             cart[id]['discounted_price'] = self.__get_total_price_per_item(product)
             cart[id]['total'] = cart[id]['discounted_price'] * int(cart[id]['quantity'])
             cart[id]['is_available'] = product.is_available()
-            cart[id].colors = self.encode_colors(product)
-            cart[id].sizes = self.encode_sizes(product)
-            cart[id].has_valid_discount = self.check_for_valid_discount(product)
+            cart[id]['colors'] = self.encode_colors(product)
+            cart[id]['sizes'] = self.encode_sizes(product)
+            cart[id]['has_valid_discount'] = self.check_for_valid_discount(product)
             yield cart[id]
     
     def __len__(self):

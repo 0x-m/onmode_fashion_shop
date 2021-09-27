@@ -56,8 +56,19 @@ class Drawer extends HTMLElement {
     close() {
         this.drawer.classList.remove('drawer-open');
         this.status = 'closed';
+        this._clear();
         document.body.classList.remove('no-scroll');
 
+    }
+
+    _clear() {
+        this.querySelector('.content').innerHTML = '';
+        this.querySelector('.footer').innerHTML = '';
+        const h = this.querySelector('.header');
+        if (h.children.length == 2){
+            h.children[1].remove();
+        }
+       
     }
 
     showLoader() {

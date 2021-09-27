@@ -14,7 +14,13 @@
        <ion-icon id="ass" onclick="seterr();"  name="search-outline" class="icon"></ion-icon>
        {% if user.is_authenticated %}
             <ion-icon  onclick="open_dashboard();" name="person-outline" class="icon"></ion-icon>
-            <ion-icon name="cart-outline" onclick="open_cart();" class="icon"></ion-icon>
+            <div style="position: relative;">
+                <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
+                </ion-icon>
+                <span id="cart-num-badge"  style="border-radius:3px;position: absolute;top:2px;right:0;background:rgb(255, 52, 52);color:white;font-size:0.6rem;padding:0.3rem 0.2rem 0.1rem 0.2rem">{{ cart|length }}</span>
+            </div>
+
+
        {% else %}
              <button onclick="open_dashboard()" class="btn" style="margin-left: 0.5rem;font-size:0.8rem">عضویت / ورود</button>
        {% endif %}

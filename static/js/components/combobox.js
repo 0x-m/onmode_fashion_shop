@@ -85,12 +85,12 @@ class ComboBoxItem extends HTMLElement {
         this.shadowRoot.appendChild(itemTemplate.content.cloneNode(true));
         this.shadowRoot.querySelector('#caption').textContent = this.getAttribute('caption');
 
+
     }
 
     attributeChangedCallback(name, oldval, newval) {
         if ( oldval === newval)
             return;
-        console.log(newval, typeof newval)
         switch(name) {
             case 'selected':
                 const container = this.shadowRoot.querySelector('#container');
@@ -248,6 +248,12 @@ class ComboBox extends HTMLElement {
         this._deselectItem = this._deselectItem.bind(this);
         this._onSelectedBoxClick = this._onSelectedBoxClick.bind(this);
         this._itemsBox.addEventListener('click', this._selectItem);
+        this.selectedChangedEvent = new CustomEvent('onselectedchange', {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+        });
+        
 
 
     }
@@ -267,7 +273,6 @@ class ComboBox extends HTMLElement {
     connectedCallback () {
         this._selectedBox.addEventListener('click', this._onSelectedBoxClick);
         document.addEventListener('click', (e) => { 
-            console.log('clic:', e.target.id)
             if(e.target.tagName.toLowerCase() !== 'combo-box-item'){
                 this.close();
             }
@@ -294,8 +299,6 @@ class ComboBox extends HTMLElement {
                     item.setAttribute('id', 'item-' + i);
                 }
             });
-            console.log('in slot change....');
-            console.log(this);
 
         }
 
@@ -335,20 +338,19 @@ class ComboBox extends HTMLElement {
         }
     }
     _selectItem(e) {
-        console.log('select item...')
         if(e.target.tagName.toLowerCase() === 'combo-box-item'){
             this._clearPlaceholder();
             const selectedItems = this.shadowRoot.querySelector('#selectedItems');
             if(e.target.selected === true){
-                console.log('already selected');
                 return;
             }
             if(!this.multiple){
                 const selectedCount = this.selectedItems.length;
                 selectedItems.replaceChildren(e.target.cloneNode(true));
                 this._clearAll();
-
                 e.target.selected = true;
+                this.dispatchEvent(this.selectedChangedEvent);
+                console.log('event dispatched...');
                 this.close();
             }
             else {
@@ -358,13 +360,11 @@ class ComboBox extends HTMLElement {
                 selectedItems.appendChild(item);
                 e.target.selected = true;
             }
-
+            
         }
     }
 
     _clearAll() {
-        console.log('clear....');
-        console.log(this._items);
         this._items.forEach( item => {
             item.selected = false;
         });

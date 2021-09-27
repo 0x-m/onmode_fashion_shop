@@ -1,36 +1,38 @@
 {% load static %}
 <div class="cart">
     {% if cart.is_empty %}
-
+        !سبد شما خالیست
+    {% else %}
+        {% for item in cart %}
+            <cart-item pid="{{item.product.id}}"
+                    title="{{item.product.name|truncatechars:50}}"
+                    boutique="{{item.product.shop.name}}" 
+                    price="{{item.product.price}}تومن" 
+                    description="{{ itme.product.description }}" 
+                    preview="{{ item.product.images.first.image.url }}" 
+                    colors="{{ item.colors }}" 
+                    sizes="{{ item.sizes }}" 
+                    quantity="{{item.quantity}}"
+                    {% if item.product.has_valid_discount %}
+                    discounted
+                    discounted_price={{item.discounted_price }}
+                    {% endif %}
+                    outofstock="true">
+            </cart-item>
+        {% endfor %}
+        <div class="container vertical mt-1  w-100" style="justify-content: center;align-items:center;background:#efefef;padding:0.5rem">
+            <p style="font-size: 0.7rem;">
+                تعداد اقلام:{{ cart|length }}
+            </p>
+            <p style="font-size: 1rem;color:#444;margin-top:0.6rem">
+               جمع کل:
+               <span id="total_price">{{ cart.get_total_price }}</span>
+                تومان
+            </p>
+            <a style="display: block;text-decoration:none;" href="{% url 'cart:checkout' %}" class="btn cta">خرید</a>
+        </div>
     {% endif %}
-    {% for item in cart %}
-    <cart-item pid="{{item.product.id}}"
-            title="{{item.product.name|truncatechars:50}}"
-            boutique="{{item.product.shop.name}}" 
-            price="{{item.product.price}}تومن" 
-            description="{{ itme.product.description }}" 
-            preview="{{ item.product.images.first.image.url }}" 
-            colors="{{ item.colors }}" 
-            sizes="{{ item.sizes }}" 
-            {% if item.product.has_valid_discount %}
-            discounted
-            discounted_price={{item.discounted_price }}
-            {% endif %}
-            outofstock="true">
-    </cart-item>
-{% endfor %}
+  
 
-    <cart-item pid="10"
-            title="بسیبسبسبیس"
-            boutique="رازی" 
-            price="1000 تومن" 
-            description="مناسب برای تمام فصول دارای انواغ رنگها گر سبسنبس بسیبس سبdddddddddddddddddddsfsdfsfسیبیسبیسبیسبیسبسبسبیس" 
-            preview="{% static 'img/sampleproduct/product-1.jpg' %}" 
-            colors="1:blue:#0000ff" 
-            sizes="1:X,2:XX"
-            discounted_price = "5000 تومن"
-            badge="ناموجود"
-            outofstock="true">
-    </cart-item>
 
 </div>

@@ -46,8 +46,21 @@ numbox_template.innerHTML = `
 `;
 
 class NumberBox extends HTMLElement {
+
+    static get observedAttributes() {
+        return  ['value'];
+    }
+
     get value() {
-        return this._value;
+        return parseInt(this._value);
+    }
+
+    set value(val) {
+        this.setAttribute('value', val);
+    }
+
+    get maxValue() {
+        return parseInt(this.getAttribute('maxValue') ?? 100);
     }
 
     constructor() {
@@ -56,9 +69,19 @@ class NumberBox extends HTMLElement {
         this.shadowRoot.appendChild(numbox_template.content.cloneNode(true));
         this._increment = this._increment.bind(this);
         this._decrement = this._decrement.bind(this);
-        let initial = this.getAttribute('initial');
-        initial = parseInt(initial);
-        this._value = initial > 0 ? initial : 1;
+        this._value = this.value ?? 1;
+
+        this.incrementEvent = new CustomEvent('onincrement', {
+            bubbles: true,
+            cancelable: true,
+            composed: true
+        });
+
+        this.decrementEvent = new CustomEvent('ondecrement', {
+            bubbles: true,
+            cancelable: true,
+            composed: true
+        });
 
     }
 
@@ -68,21 +91,32 @@ class NumberBox extends HTMLElement {
         this._numDisplay = this.shadowRoot.querySelector('#num');
         btn_inc.addEventListener('click', this._increment);
         btn_dec.addEventListener('click', this._decrement);
-        this._updateDisplay();
     }
 
-    _updateDisplay() {
-        this._numDisplay.textContent = this._value;
+    attributeChangedCallback(name, oldval, newval) {
+        if (newval === oldval) {
+            return;
+        }
+        switch(name){
+            case 'value':
+                const v = parseInt(newval);
+                if (v <= this.maxValue){
+                    this.shadowRoot.querySelector('#num').textContent = newval;
+                    this._value = newval;
+                }
+            break;
+        }
     }
+
     _increment() {
-        this._value++;
-        this._updateDisplay();
+        this.setAttribute('value', ++this.value);
+        this.dispatchEvent(this.incrementEvent);
     }
 
     _decrement() {
         if (this._value > 1){
-            this._value--;
-            this._updateDisplay();
+            this.setAttribute('value', --this.value);
+            this.dispatchEvent(this.decrementEvent);
         }
         else {
             console.error('out of range...')

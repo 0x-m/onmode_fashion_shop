@@ -25,9 +25,9 @@
 
     <! ----------------------------------->
    
-    <div class="shop-products">
+    <div  class="shop-products">
         {% for product in page.object_list %}
-        <om-product title="my aaa" 
+        <om-product title="{{ product.name }}" 
                     pid="{{product.id}}"
                     link="{{ product.get_absolute_url }}"
                     price="2500 تومان" 

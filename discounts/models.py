@@ -34,8 +34,6 @@ class Discount(models.Model):
         #if self.is_valid(): #dont check validity!....so its possible to use this function generally
         off =  self.product.price * decimal.Decimal(self.percent / 100.0)
         off = round(off)
-        print(off, self.product.price)
-        print(self.product.price - off)
         return self.product.price - off
     
     def decrement_quantity(self, n):

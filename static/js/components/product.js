@@ -26,6 +26,22 @@ class Product extends HTMLElement {
     constructor() {
         super();
         this.appendChild(product_template.content.cloneNode(true));
+        this.addToCartEvent = new CustomEvent('addtocart', {
+            bubbles: true,
+            cancelable: false,
+            composed: true
+        });
+        this.addToFavouriteEvent = new CustomEvent('addtofavourite', {
+            bubbles: true,
+            cancelable: false,
+            composed: true
+        });
+        this._addToCart = this._addToCart.bind(this);
+        this._addToFavs = this._addToFavs.bind(this);
+        this._command = this._command.bind(this);
+        this._edit = this._edit.bind(this);
+        this._remove = this._remove.bind(this);
+
     }
 
     connectedCallback() {
@@ -33,12 +49,12 @@ class Product extends HTMLElement {
         const a1 = this.querySelector('#a1');
         const a2 = this.querySelector('#a2');
         if (this.editable) {
-            console.log('editable');
+           
             a1.addEventListener('click', this._remove);
             a2.addEventListener('click', this._edit)
         }
         else {
-            console.log('normal..');
+           
             a1.addEventListener('click', this._addToCart);
             a2.addEventListener('click', this._addToFavs)
         }
@@ -106,29 +122,71 @@ class Product extends HTMLElement {
         const val = this.getAttribute('infavs');
         return (val === '') || (val === 'true');
     }
-
+    
+    _command(cmd) {
+        console.log('ccc..........');
+        if (!(cmd === 'add' || cmd === 'remove' || cmd === 'edit'))
+            return;
+        console.log('command issued...');
+        const xr = new XMLHttpRequest();
+        xr.onload = function() {
+            if (xr.status == 200)
+            {
+                const cartnum =document.getElementById('cart-num-badge');
+                let num = cartnum.textContent;
+                if (num == '')
+                    num = 0;
+                if (cmd == 'add'){
+                    if (num < 99)
+                        num = parseInt(num) + 1;
+                    else
+                        num = "+99";
+                }
+                else if(cmd == 'remove'){
+                    if (num >= 1)
+                        num = parseInt(num) - 1;
+                }
+                cartnum.textContent = num;
+            }
+            console.log('onload for xhr..')
+        }
+        if (cmd == 'add') {
+            get('/cart/add/' + this.pid + '/');
+            
+        }
+        else if (cmd == 'remove'){
+            xr.open('get', '/cart/remove/' + this.pid + '/');
+        }
+        else if (cmd == 'edit'){
+            console.log('edit');
+        }
+        xr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+        xr.send();
+       
+    }
     
     _addToCart() {
-        console.log('add to cart');
+        get('/cart/add/' + this.pid + '/', function(resp, status) {
+            update_cart_badge('increment');
+        });
     }
 
     _addToFavs() {
-        console.log('add to favs');
+        get('/favourites/add/' + this.pid + '/', function(resp, status) {
+
+        });
     }
 
     _edit() {
-        console.log('edit....')
+        load_view('/product/eidt/' + this.pid + '/');
     }
 
     _remove() {
-        console.log('remove..');
+        get('/product/remove/' + this.pid + '/');
     }
 
     _render() {
-        console.log(this.title, this.badge, this.price, this.discountedprice)
         const parts = this.querySelectorAll('.link, .preview, .name, .realprice, .offprice, .badge');
-        console.log(parts);
-        console.log('------------');
         parts[0].href=this.link;
         parts[1].src = this.preview;
         parts[2].textContent = this.title;
