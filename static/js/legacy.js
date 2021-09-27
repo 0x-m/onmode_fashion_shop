@@ -132,7 +132,7 @@ function update_cart_badge(cmd, val=0) {
             break;
         case 'subtract':
             const ress = count - parseInt(val);
-            cart_badge.innerText = (ress >= 0) ? res : 0;
+            cart_badge.innerText = (ress >= 0) ? ress : 0;
             break;
     }
 }

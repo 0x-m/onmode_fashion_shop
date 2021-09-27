@@ -43,21 +43,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var cartItemTemplate = document.createElement('template');
 cartItemTemplate.innerHTML = "   \n    <img class=\"preview\" style=\"width:96px\" />\n    <span class=\"remove\"></span>\n    <span class=\"cart-badge\"></span>\n    <number-box class=\"quantity\"></number-box>\n\n    <div class=\"detail\">\n        <h3 class=\"title\"></h3>\n        <h5 class=\"boutique\"></h5>\n        <p class=\"description\"></p>\n        <span class=\"price\"></span>\n        <span class=\"discounted_price\"></span>\n        <div class=\"action\">\n            <combo-box id=\"colors\" placeholder=\"\u0631\u0646\u06AF\">\n            </combo-box>\n            <combo-box id=\"sizes\" placeholder=\"\u0633\u0627\u06CC\u0632\"></combo-box>\n        </div>\n    </div>\n    \n";
 var CartItem = /** @class */ (function (_super) {
@@ -82,8 +67,8 @@ var CartItem = /** @class */ (function (_super) {
         quant.setAttribute('value', (_a = this.quantity) !== null && _a !== void 0 ? _a : "1");
         quant.addEventListener('onincrement', function () { get('/cart/add/' + _this._pid + '/', function () { update_cart_badge('increment'); }); });
         quant.addEventListener('ondecrement', function () { get('/cart/remove/' + _this._pid + '/', function () { update_cart_badge('decrement'); }); });
-        this.querySelector('#colors').addEventListener('onselectedchange', function () { get('/cart/set_color/?product_id=' + _this.pid + '&color_id=' + _this.selected_color ); });
-        this.querySelector('#sizes').addEventListener('onselectedchange', function () { get('/cart/set_size/?product_id=' + _this.pid + '&size_id=' + _this.selected_size ); });
+        this.querySelector('#colors').addEventListener('onselectedchange', function () { get('/cart/set_color/?product_id=' + _this.pid + '&color_id=' + _this.selected_color); });
+        this.querySelector('#sizes').addEventListener('onselectedchange', function () { get('/cart/set_size/?product_id=' + _this.pid + '&size_id=' + _this.selected_size); });
     };
     CartItem.prototype._render = function () {
         var parts = this.querySelectorAll('.preview, .cart-badge, .title, .boutique, .description, .price, .discounted_price');
@@ -312,12 +297,16 @@ var CartItem = /** @class */ (function (_super) {
         this._setQuantity();
     };
     CartItem.prototype._remove_from_server = function () {
-        console.log('remove from server');
     };
-    CartItem.prototype._remove = function () {
-        console.log('remove issued...');
-        this._remove_from_server();
-        this.remove();
+    CartItem.prototype._remove = function (e) {
+        get('/cart/remove/' + this.pid + '/', (function (a) {
+            return function (resp, status) {
+                if (status === 200) {
+                    update_cart_badge('subtract', a.quantity);
+                    a.remove();
+                }
+            };
+        })(this));
     };
     return CartItem;
 }(HTMLElement));

@@ -260,12 +260,19 @@ class CartItem extends HTMLElement {
     }
 
     private _remove_from_server() {
-        console.log('remove from server');
+       
     }
-    private _remove() {
-        console.log('remove issued...');
-        this._remove_from_server();
-        this.remove();
+    private _remove(e: Event) {
+
+        get('/cart/remove/' + this.pid + '/', (function(a) {
+          return function(resp, status){
+            if (status === 200){
+                update_cart_badge('subtract',a.quantity);
+                a.remove();
+            }
+        }})(this));
+      
+        
     }
 }
 
