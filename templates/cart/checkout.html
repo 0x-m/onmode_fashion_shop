@@ -207,73 +207,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <img src="{% static 'img/sampleproduct/product-4.jpg' %}" class="img">
-                    </td>
-                    <td>بوتیک زیبا</td>
-                    <td>بسیبسیب</td>
-                    <td>12</td>
-                    <td>6500تومان</td>
-                    <td>48000تومان</td>
-
-                </tr>
-              
-                <tr>
-                    <td>
-                        <img src="{% static 'img/sampleproduct/product-1.jpg' %}" class="img"">
-                    </td>
-                    <td>بوتیک زیبا</td>
-                    <td>بسیبسیب</td>
-                    <td>12</td>
-                    <td>6500تومان</td>
-                    <td>48000تومان</td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <img src="{% static 'img/sampleproduct/product-2.jpg' %}" class="img"">
-                    </td>
-                    <td>بوتیک زیبا</td>
-                    <td>بسیبسیب</td>
-                    <td>12</td>
-                    <td>6500تومان</td>
-                    <td>48000تومان</td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <img src="{% static 'img/sampleproduct/product-3.jpg' %}" class="img"">
-                    </td>
-                    <td>بوتیک زیبا</td>
-                    <td>بسیبسیب</td>
-                    <td>12</td>
-                    <td>6500تومان</td>
-                    <td>48000تومان</td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <img src="{% static 'img/sampleproduct/product-1.jpg' %}" class="img"">
-                    </td>
-                    <td>بوتیک زیبا</td>
-                    <td>بسیبسیب</td>
-                    <td>12</td>
-                    <td>6500تومان</td>
-                    <td>48000تومان</td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <img src="{% static 'img/sampleproduct/product-1.jpg' %}" class="img"">
-                    </td>
-                    <td>بوتیک زیبا</td>
-                    <td>بسیبسیب</td>
-                    <td>12</td>
-                    <td>6500تومان</td>
-                    <td>48000تومان</td>
-
-                </tr>
+                {% for item in cart %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.product.images.first.image.url }}" class="img">
+                        </td>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.shop.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>
+                            {% if item.has_valid_discount %}
+                                <span style="font-size:0.6rem;text-decoration:line-through;" >{{item.price}}تومن</span>
+                                <br />
+                                <span style="color: red;display:block;margin-top:0.3rem;font-size:0.7rem">{{item.discounted_price}}تومن</span>
+                            {% else %}
+                                <span style="font-size:0.8rem">{{item.price}}تومن</span>
+                            {% endif %}
+                        </td>
+                        <td>{{item.total}}</td>
+                    </tr>
+                {% endfor %}
+ 
             </tbody>
             <tfoot>
 
