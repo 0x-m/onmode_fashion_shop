@@ -1,0 +1,5 @@
+{% for comment in page.object_list %}
+    <om-comment author="{{comment.user.first_name }}" body="{{ comment,body }}" date="{{ comment.date_published }}"></om-comment>
+{% endfor %}
+<input type="hidden" value="{{ page.paginator.num_pages }}" id="total_num_of_page" />
+<input type="hidden" value="{{ page.paginator.number }}" id="current_page" />

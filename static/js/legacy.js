@@ -1,6 +1,6 @@
 
 
-function get(url, callback= function(a, b){}) {
+function get(url, callback= function(){}) {
     const xr = new XMLHttpRequest();
 
     xr.onload = function() {
@@ -99,12 +99,8 @@ function open_cart() {
    load_view('/cart/');
 }
 
-function checkout_cart() {
-
-}
-
 function checkout() {
-
+ //
 }
 
 function add_product(product_id) {
@@ -205,12 +201,15 @@ function show_search_page(){
     
 }
 
-
-
 function login(){
     const pass = document.getElementById('password');
-    get('/users/login/', 'post',"password=" + pass.text, function(resp, status) {
+    post('/users/login/',"password=" + pass.text, function(resp, status) {
+        if (status == 200) {
+            document.getElementById('drawer').setContent('در حال انتقال....');
+            window.open('/', "_self");
+        }
         if (status !== 200) {
+            console.log('errr.....post');
             document.getElementById('drawer').hideLoader();
             pass.error('رمز عبور نادرست میباشد.');
         }
@@ -261,12 +260,11 @@ function reset_password() {
     load_view('/users/reset_password/')
 }
 
-
-
 function get_profile(){
     load_view("/users/profile/","GET", null,false);
 }
 
+let num_of_comment_pages = 0;
 function fetchComment() {
     const pid = 1;
     const xr = new XMLHttpRequest();
@@ -279,12 +277,48 @@ function fetchComment() {
         }
     };
 
-    xr.open('get','');
+    xr.open('get','/product/comments/' + pid + '/');
     xr.send();
 }
 
 function add_comment() {
-    //comment
+    const comment_body = document.getElementById('comment-body');
+    if (comment_body.value.trim() == ''){
+        alert('نظر خود را بنویسید...')
+        return;
+    }
+    const pid = document.getElementById('product_id').value;
+    const author = document.getElementById('author').value;
+    const btn = document.getElementById('comment-submit');
+    btn.setAttribute('disabled', true);
+    const lod = document.createElement('div');
+    lod.className='loader';
+    const btn_txt = btn.textContent;
+    lod.style = 'width:16px;height:16px;margin:0 auto;'
+    btn.replaceChildren(lod);
+
+    const data = new FormData();
+    data.append('comment_body', comment_body.value);
+    data.append('comment_title', 'no');
+    post('/comments/product/' + pid + '/leave/','comment_body=' + comment_body.value + '&comment_title='+ 'no', function(resp, status) {
+        if (status != 200){
+            const bb  = document.getElementById('comment-submit');
+            alert('خطا در ارسال نظر...');
+            bb.replaceChildren(btn_txt);
+            bb.setAttribute('disabled', false);
+            return;
+        }
+        const com = document.createElement('om-comment');
+        com.setAttribute('author', author );
+        com.setAttribute('body', comment_body.value);
+        com.setAttribute('date', 'اکنون...');
+        const cbox = document.getElementById('comment-box');
+        const btn = document.getElementById('comment-submit');
+        cbox.insertBefore(com, cbox.firstChild);
+        comment_body.remove();
+        btn.remove();
+
+    });
 }
 
 

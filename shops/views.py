@@ -341,9 +341,10 @@ def product_detail(request:HttpRequest, product_id):
         page = paginator.get_page(paginator.num_pages)
     
     user_comment = Comment();
-    if not request.user.is_anonymous:
-        user_comment = comments.filter(user=request.user)
+    if request.user.is_authenticated:
+        user_comment = comments.filter(user=request.user).first();
     related_products = Product.objects.filter(type=product.type)[:10]
+    print(user_comment, '---------------------')
     return render(request, 'product/detail/product.html',{
         'product':product,
         'page': page,

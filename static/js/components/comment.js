@@ -12,6 +12,10 @@ commentTemplat.innerHTML = `
 class Comment extends HTMLElement {
     constructor() {
         super();
+        
+    }
+    
+    connectedCallback() {
         this.appendChild(commentTemplat.content.cloneNode(true));
         this._render();
     }

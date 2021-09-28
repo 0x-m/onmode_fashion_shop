@@ -12,6 +12,8 @@ from .models import Comment
 
 def get_product_comments(request:HttpRequest, product_id):
     comments = Comment.objects.filter(product__id=product_id)
+    d = HttpResponse('')
+
     if comments:
         paginator = Paginator(comments,20)
         page = request.GET('pg')
@@ -20,6 +22,7 @@ def get_product_comments(request:HttpRequest, product_id):
         return render(request,'review/comments.html',{
             'comments': paginator.page(page)
         })
+        
     
 
 @login_required
@@ -32,15 +35,13 @@ def leave_comment(request:HttpRequest, product_id):
         form = CommentForm(request.POST)
         print(request.POST)
         if form.is_valid():
-            title = form.cleaned_data['comment_title']
             body = form.cleaned_data['comment_body']
             try:
                 comment = Comment.objects.get(user=request.user, product=product)
-                comment.title = title
                 comment.body = body
                 comment.save()
             except Comment.DoesNotExist:
-                comment = Comment(user=request.user,product=product,title=title,body=body)
+                comment = Comment(user=request.user,product=product, body=body)
                 comment.save()
 
             return HttpResponse("successfully registered")

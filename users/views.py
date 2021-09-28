@@ -170,7 +170,7 @@ def set_password(request:HttpRequest):
             del request.session['verified']
             del request.session['reset_verified']
 
-            return render(request,'user/dashboard.html')
+            return redirect('index:home')
         else:
             return HttpResponseUnprocessableEntity(form.errors)
     return HttpResponseNotAllowed(['POST'])

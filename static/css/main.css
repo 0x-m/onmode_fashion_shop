@@ -18,6 +18,7 @@
   border-color: #666;
 }
 
+
 .cta {
   border: 1.5px solid #666;
   color: #222;
@@ -31,6 +32,7 @@
 .cta:hover {
   background-color: #222;
 }
+
 
 .btn-tiny {
   margin: 7px;
