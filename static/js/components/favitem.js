@@ -100,7 +100,7 @@ class FavouriteItem extends HTMLElement {
 
     _hideBage() {
         if (!this.badge) {
-            this.querySelector('.badge').classList.add('hide');
+            this.querySelector('.fav-badge').classList.add('hide');
         }
     }
     _addToCart() {
@@ -113,6 +113,7 @@ class FavouriteItem extends HTMLElement {
     _remove() {
         get('/favourites/remove/' + this.pid + '/');
         this.remove();
+        console.log('remove issued..')
     }
 
 

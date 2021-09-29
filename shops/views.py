@@ -384,13 +384,15 @@ def edit_shop(request:HttpRequest):
     if not request.user.shop.first():
         return HttpResponseBadRequest("you have no shop...!")
     
-    print(request.FILES.get('logo'))
     shop = request.user.shop.first()
+    print(request.POST.get('post_destinations'),'dessss.......')
+    print(request.POST.get('title'),'title::............:')
+    post_destinations = '';
+    if shop.post_destinations:
+        post_destinations = shop.post_destinations.split(',')
 
-    print()
-    post_destinations = shop.post_destinatinos.split(',')
-    print(post_destinations)
     if request.method == "POST":
+       
         form = ShopInfoForm(request.POST, instance=shop)
         banner = request.FILES.get('banner')
         logo = request.FILES.get('logo')
@@ -405,7 +407,9 @@ def edit_shop(request:HttpRequest):
             shop.save()
             return HttpResponse("edited successfully")
         else:
+            print(form.errors)
             return HttpResponseBadRequest("Invalid inputs..")
+            
     return render(request, 'shop/edit_shop.html',{
         'provinces': get_provinces(),
         'post_destinations': post_destinations

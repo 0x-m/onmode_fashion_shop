@@ -1097,7 +1097,7 @@ function deposit_request(){
 function get_edit_shop_form(){
     load_view("/shop/edit/","GET",null);
 }
-
+``
 function edit_shop(){
     const shop_form = document.querySelector("#shop_form");
     const data = new FormData(shop_form);

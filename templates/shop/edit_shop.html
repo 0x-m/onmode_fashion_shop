@@ -1,26 +1,26 @@
 
-<div class="container" style="width: 90%;">
-    <label class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
-    <label style="width: 100%;text-align:center;font-size:1rem" 
-           class="caption" for="fname">http://www.onmode.ir/{{ user.shop.first.name }}</label>
+<div class="container vertical" style="width: 85%;margin:1rem auto;">
+    <label style="font-size: 0.8rem;" class="caption" for="fname">نشانی اینترنتی بوتیک:</label>
+    <label style="width: 100%;text-align:center;font-size:1rem;font-size:0.8rem" 
+           class="caption mt-1" for="fname">https://www.onmode.ir/{{ user.shop.first.name }}</label>
     <form enctype="multipart/form-data" id="shop_form" class="w-100">
-        <p class="txt-box">
-            <input name="title" id="fname"  class="text" type="text" value="{{ user.shop.first.title }}" required>
+        <p class="txt-box mt-1">
+            <input name="title" id="fname"  class="text" type="text" value="{% if user.shop.first.title is not None %}{{ user.shop.first.title }}{% endif %}" required>
             <label class="holder">عنوان</label>
         </p>
-    <p class="txt-box">
-        <input name="shop_phone"   id="fname"  class="text" type="text" value="{{ user.shop.first.shop_phone }}"  required>
+    <p class="txt-box mt-1">
+        <input name="shop_phone"   id="fname"  class="text" type="text" value="{% if user.shop.first.shop_phone is not None %}{{ user.shop.first.shop_phone }}{% endif %}"  required>
         <label class="holder">شماره تلفن</label>
     </p>
-    <p class="txt-box">
-        <textarea name="description" rows="5"  id="fname" class="text" type="text" required>{{user.shop.first.description}}</textarea>
+    <p class="txt-box mt-1">
+        <textarea name="description" rows="5"  id="fname" class="text" type="text" required>{% if user.shop.first.description is not None %}{{user.shop.first.description}}{% endif %}</textarea>
         <label class="holder">درباره بوتیک</label>
     </p>
-    <p class="txt-box">
-        <textarea name="address" rows="5"  id="fname" class="text" type="text"  required >{{user.shop.first.address}}</textarea>
+    <p class="txt-box mt-1">
+        <textarea name="address" rows="5"  id="fname" class="text" type="text"  required >{% if user.shop.first.address is not None %}{{user.shop.first.address}}{% endif %}</textarea>
         <label class="holder">آدرس بوتیک</label>
     </p>
-    <div style="cursor: pointer;width:100%;padding:0.5rem;border:1px dashed gray;text-align:center">
+    <div style="cursor: pointer;width:100%;padding:0.5rem;border:1px dashed gray;text-align:center;margin-top: 1rem;">
         <label style="cursor: pointer;"> 
             <input onchange="document.getElementById('img-logo').innerText=this.files[0].name;" name="logo" type="file" style="position: fixed;top:-100px;" >
             <span class="fa fa-image"></span>
@@ -38,10 +38,10 @@
         </label>
     </div>
     
-    <label style="font-size: 0.8rem;color:gray;margin-top:1rem;display:block">ارسال پستی به : </label>
+    <label style="font-size: 0.8rem;color:gray;margin-top:1rem;display:block;margin-top:1rem">ارسال پستی به : </label>
     <div style="display: inline-flex;justify-content:space-between;width:101%;align-items:center;margin-top:1rem">
         <label style="font-size: 0.8rem;">سراسر ایران</label>
-        <input onclick="toggle_state_list();" type="checkbox" class="switch" name="overall" value="true">
+        <input onclick="toggle_state_list();" type="checkbox" class="switch" name="overall" id="overall" value="true">
     </div>
     <div class="list-box" style="background-color: white;width:100%;margin-top:0.5rem">
         <input data-target="states" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">
@@ -52,12 +52,11 @@
                     <span class="{% if province.name in post_destinations %}show{% endif %}"  style="float: left;display:none;font-size:1.2rem">&#10003;</span>
                 </div>
             {% endfor %}
-    
         </div>
     </div>
     </form>
-    <p class="row" style="flex-direction: row;justify-content:space-around;margin-bottom:2rem">
-        <button style="width:40%" class="btn btn-success" onclick="edit_shop();">ثبت</button>
-        <button style="width:40%" class="btn btn-primary" onclick="get_enrollment_form();">لغو</button>
+    <p class="container horizontal mt-1" style="justify-content:space-between;margin-bottom:2rem">
+        <button style="width:45%" class="btn" onclick="edit_shop();">ثبت</button>
+        <button style="width:45%" class="btn" onclick="get_enrollment_form();">لغو</button>
     </p>
 </div>

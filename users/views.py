@@ -168,9 +168,10 @@ def set_password(request:HttpRequest):
             login(request, user)
             del request.session['phone_no']
             del request.session['verified']
-            del request.session['reset_verified']
+            if request.session.get('reset_verified'):
+                del request.session['reset_verified']
 
-            return redirect('index:home')
+            return render(request, 'user/dashboard.html');
         else:
             return HttpResponseUnprocessableEntity(form.errors)
     return HttpResponseNotAllowed(['POST'])
@@ -195,7 +196,7 @@ def login_user(request:HttpRequest):
                 if request.session.get('verified'):
                     del request.session['verified']
                 request.session.save()
-                return redirect('index:home');
+                return render(request, 'user/dashboard.html');
             else:
                 return HttpResponseBadRequest("incorrect password...try again")
             

@@ -170,7 +170,7 @@ class FilterForm(forms.Form):
 class ShopInfoForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ['title','description','address','shop_phone','post_destinatinos' ]
+        fields = ['title','description','address','shop_phone','post_destinations']
         
     
     

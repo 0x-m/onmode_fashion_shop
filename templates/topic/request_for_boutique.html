@@ -1,14 +1,43 @@
 <div class="position--center" style="width: 70%;">
-    <p class="w-100 " style="text-align: center;font-size:0.9rem">
-        <span style="color:#888;cursor:pointer;" >نام بوتیک به انگلیسی را وارد نمایید</span>
-    </p>
-    <custom-text id="boutique-name" style="width: 100%;margin-top:0.5rem;font-size:0.8rem" placeholder="YourBoutiqueName"></custom-text>
+    {% if appeal %}
+    {% if appeal.state == 'pending' %}
+        <p class="w-100 position--cener">
+            درخواست شما ثبت شده است و در انتظار تایید مباشد
+        </p>
+    {% endif %}
+    {% if appeal.state == 'Accepted' %}
+        <div class="position--cener">
+            <p>
+                درخواست شما پذیرفته شده و بوتیک شما آماده است
+            </p>
+        </div>
+    {% endif %}
 
-    <button class="btn cta" dir="rtl" style="margin:0.7rem auto;width:100%;display:block">ثبت</button>
-    <p class="w-100 " style="text-align: center;font-size:0.9rem;margin-top:0.5rem">
-        <span style="color:rgb(241, 72, 72);font-size:0.7rem" >
-           استفاده از علایم (,;/?~`'"[]{}*&^%$#@!=+-()<>) در نام بوتیک مجاز نمیباشد
-        </span>
-    </p>
-    
+    {% if appeal.state == 'rejected' %}
+        <div class="position--cener">
+            <p>
+                درخواست شما رد شده است
+            </p>
+            <p>
+                علت:
+                {{appeal.status}}
+            </p>
+        </div>
+    {% endif %}
+{% else %}
+   
+<p class="w-100 " style="text-align: center;font-size:0.9rem">
+    <span style="color:#888;cursor:pointer;" >نام صفحه بوتیک به انگلیسی را وارد نمایید</span>
+</p>
+<custom-text id="page_name" style="width: 100%;margin-top:0.5rem;font-size:0.8rem" placeholder="YourBoutiqueName"></custom-text>
+
+<button class="btn cta" dir="rtl" onclick="make_appeal_for_boutique();" style="margin:0.7rem auto;width:100%;display:block">ثبت</button>
+<p class="w-100 " style="text-align: center;font-size:0.9rem;margin-top:0.5rem">
+    <span style="color:rgb(241, 72, 72);font-size:0.7rem" >
+       استفاده از علایم (,;/?~`'"[]{}*&^%$#@!=+-()<>) در نام بوتیک مجاز نمیباشد
+    </span>
+</p>
+
+{% endif %}
+
 </div>

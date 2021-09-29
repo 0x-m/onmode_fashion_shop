@@ -3,7 +3,7 @@ const drawerTemplate = document.createElement('template');
 drawerTemplate.innerHTML = `
 
     <template id="loading">
-        <div id="overlay"  class="container horizontal justify-content align-items w-100 h-100 loader-overlay">
+        <div id="overlay"  class="container horizontal justify-content align-items loader-overlay">
             <div class="loader position--center"></div>
         </div>
     </template>
@@ -11,7 +11,7 @@ drawerTemplate.innerHTML = `
         <div class="header">
             <span class="close"></span>
         </div>
-        <div class="content">
+        <div class="content" >
         </div>
         <div class="footer">
         </div>
@@ -73,12 +73,21 @@ class Drawer extends HTMLElement {
 
     showLoader() {
        const loaderTemp = this.querySelector('#loading');
+       this.querySelector('.content').scroll({
+           top: 0,
+           behavior:"smooth"
+       });
        this.querySelector('.content').appendChild(loaderTemp.content.cloneNode(true));
+       this.querySelector('.content').style.overflow = 'hidden';
+       
     }
 
     hideLoader() {
         const overlay = this.querySelector('#overlay');
-        overlay.remove();
+        if (overlay){
+            overlay.remove();
+        }
+        this.querySelector('.content').style.overflow = 'auto';
     }
 
 

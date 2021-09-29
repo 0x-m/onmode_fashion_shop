@@ -29,7 +29,8 @@ class Shop(models.Model):
     banner = models.ImageField(verbose_name=_('Banner'),blank=True, null=True,upload_to=generate_path)
     is_active = models.BooleanField(default=True,verbose_name=_('active'))
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
-    post_destinatinos = models.CharField(verbose_name=_('Postal Destinations'),max_length=1000,null=True)
+    post_destinations = models.CharField(verbose_name=_('Postal Destinations'),max_length=1000, null=True, blank=True)
+    convers_all_states = models.BooleanField(default=False, blank=True)
     
     class Meta:
         verbose_name = _('Shop')

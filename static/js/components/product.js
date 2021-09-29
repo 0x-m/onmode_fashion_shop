@@ -178,7 +178,7 @@ class Product extends HTMLElement {
     }
 
     _edit() {
-        load_view('/product/eidt/' + this.pid + '/');
+        load_view('/product/edit/' + this.pid + '/');
     }
 
     _remove() {

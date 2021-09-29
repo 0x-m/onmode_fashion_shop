@@ -35,9 +35,10 @@
         left: 2%;
     }
 
-    .thumb {
+    .i-thumb {
         max-width: 48px;
         max-height: 48px;
+        cursor:pointer;
         
     }
 
@@ -145,8 +146,8 @@
     <div style="display: flex;justify-content:center;margin-top:0.5rem" class="w-100 thumbs">
        {% for item in product.images.all %}
         <label>
-            <img data-id="{{item.id}}" id="img-{{item.id}}"  src="{% if item.image %} {{item.image.url}}{% else %}{% static 'img/img1/noimg.jpg' %}{% endif %}" class="thumb" />
-            <input data-num="{{ forloop.counter }}" data-img="img-{{item.id}}" onchange="changeimg();" type="file" id="img-1" name="image" style="position: fixed;top:-100px">
+            <img data-id="{{item.id}}" id="img-{{item.id}}"  src="{% if item.image %} {{item.image.url}}{% else %}{% static 'img/sampleproduct/noimage.png' %}{% endif %}" class="i-thumb" style="margin-left: 0.3rem;" />
+            <input data-num="{{ forloop.counter }}" data-img="img-{{item.id}}" onchange="changeimg();" type="file" accept=".jpg,.png,.gif,.webp,.tiff" id="img-1" name="image" style="position: fixed;top:-100px">
         </label>
        {% endfor %}
         

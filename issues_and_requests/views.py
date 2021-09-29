@@ -30,7 +30,7 @@ def make_appeal(request:HttpRequest):
         appeal.save()
         return HttpResponse("an appeal is registered")
   
-    return render(request, 'issues_requests/appeal.html', {
+    return render(request, 'topic/request_for_boutique.html', {
         'appeal': appeal
     })
     

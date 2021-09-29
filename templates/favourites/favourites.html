@@ -1,15 +1,28 @@
 {% load static %}
-{% if favourites and user.is_authenticated %}
-    {% for item in favourites %}
-        
-    {% endfor %}
-{% endif %}
+
 <div class="favourites" style="width: 95%;margin:1rem auto;">
-    <fav-item preview="{% static 'img/sampleproduct/product-3.jpg' %}" 
-                title="لباس خوشکله" 
-                boutique="خربوت" 
-                description="عجب چیز خوبی" 
-                price="5000$" badge="ناماجود">
-   </fav-item>
+    {% if favourites and user.is_authenticated %}
+    {% for item in favourites %}
+        <fav-item preview="{{ item.product.images.first.image.url }}" 
+                  pid="{{ item.product.id }}"
+                  link="{{ item.product.get_aboslute_url }}"
+                  title="{{ item.product.name }}" 
+                  boutique="{{ item.product.shop.name }}" 
+                  description="{{ item.product.description|truncatechars:50 }}" 
+                  price="{{ item.product.price }}تومن" 
+                  {% if not item.product.quantity %}
+                  badge="ناماجود"
+                  {% endif %}
+                  {% if item.product.has_valid_discount %}
+                    badge="{{item.product.discounts.latest.percent}}%"
+                  {% endif %}
+                  >
+        </fav-item>
+    {% endfor %}
+
+{% else %}
+    لیست شما خالیست
+{% endif %}
+ 
 
 </div>

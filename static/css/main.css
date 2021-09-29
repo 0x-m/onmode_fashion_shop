@@ -18,7 +18,6 @@
   border-color: #666;
 }
 
-
 .cta {
   border: 1.5px solid #666;
   color: #222;
@@ -32,7 +31,6 @@
 .cta:hover {
   background-color: #222;
 }
-
 
 .btn-tiny {
   margin: 7px;
@@ -847,6 +845,9 @@
   top: 0;
   left: 0;
   z-index: 1000;
+  height: 100%;
+  min-height: 100%;
+  width: 100% !important;
   background-color: rgba(100, 100, 100, 0.5);
 }
 

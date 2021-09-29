@@ -3,7 +3,7 @@
 {% block content %}
 
  <!----------------BANNER------------>
-<image-field {% if shop.banner  %}initial="{{shop.banner.url}}"{% endif %}  class="shop-banner">
+<image-field {% if shop.banner  %}initial="{{shop.banner.url}}"{% endif %}  class="shop-banner" disabled>
     <div slot="placeholder">
         <div style="display: flex;justify-content:center; align-items:center">
         <ion-icon style="font-size:2rem;color:#efefef" name="camera-outline"></ion-icon>
@@ -13,12 +13,15 @@
 </image-field>
 
 <div class="container vertical w-100 mt-05">
-    <div class="shop-action">
-        <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0" onclick="show_filter();" class="btn-tiny">فیلتر</button>
-        <button style="margin-right:3px" class="btn-tiny">
-            ?
+    <div class="shop-action" style="padding-bottom: 0.3rem;">
+        <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem" onclick="show_filter();" class="btn-tiny">فیلتر</button>
+        {{shop.}}
+        {% if user.shop.first.id == shop.id %}
+        <button onclick="get_edit_shop_form();" style="min-width: 125px;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem;margin-left:0.3rem" class="btn-tiny">
+            ویرایش بوتیک
         </button>
-        <button style="min-width:128px;background-color:rgb(255, 57, 57);color:white" class="btn-tiny" onclick="zaa();">محصول جدید</button>
+        <button style="min-width:128px;background-color:rgb(255, 57, 57);font-size:0.8rem;color:white;margin-right:0px;" class="btn-tiny" onclick="get_add_product_view();">محصول جدید</button>
+        {% endif %}
     </div>
 
     <!----------------TOP PRODUCTS-------->
@@ -30,10 +33,15 @@
         <om-product title="{{ product.name }}" 
                     pid="{{product.id}}"
                     link="{{ product.get_absolute_url }}"
-                    price="2500 تومان" 
-                    discountedprice="4500 تومان" 
+                    price="{{product.price}} تومان" 
+                    {%if product.discounts.last.is_valid  %}
+                    discountedprice="{{product.discounts.last.get_discounted_price }}تومان" 
+                    {% endif %}
                     {% if product.images.first.image %}
                     preview="{{ product.images.first.image.url }}"
+                    {% endif %}
+                    {% if product.shop.id == user.shop.first.id %}
+                    editable
                     {% endif %}
                     >
         </om-product>
