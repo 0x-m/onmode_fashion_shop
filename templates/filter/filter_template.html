@@ -1,4 +1,20 @@
 {% load static %}
 {% for product in products %}
-    <om-product pid="{{product.id}}" title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
+    <om-product title="{{ product.name }}" 
+        pid="{{product.id}}"
+        link="{{ product.get_absolute_url }}"
+        price="{{product.price}} تومان" 
+        {%if product.discounts.last.is_valid  %}
+        discountedprice="{{product.discounts.last.get_discounted_price }}تومان" 
+        {% endif %}
+        {% if product.images.first.image %}
+        preview="{{ product.images.first.image.url }}"
+        {% else %}
+        preview = "http://placehold.jp/e8e8e8/404040/270x360.png?text=%D8%B9%DA%A9%D8%B3%20%D9%86%D8%AF%D8%A7%D8%B1%D8%AF&css=%7B%22font-size%22%3A%22%2014px%22%2C%22background%22%3A%22%20%23efefef%22%7D"
+        {% endif %}
+        {% if product.shop.id == user.shop.first.id %}
+        editable
+        {% endif %}
+    >
+    </om-product>
 {% endfor %}

@@ -7,6 +7,7 @@ from django.db.models import Count, Q
 register = template.Library()
 #--------------helper---------------
 def to_int_list(str_list: str):
+    print(str_list)
     return [int(i) for i in str_list.split(',')]
 
 @register.inclusion_tag('filter/filter_template.html')
