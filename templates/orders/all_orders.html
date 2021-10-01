@@ -1,0 +1,144 @@
+{% extends 'index/base.html' %}
+{% load static %}
+
+
+{% block content%}
+<style>
+    .tab-item {
+        font-size: 0.7rem !important;
+        padding: 0.2rem;
+    }
+    table{
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1rem auto;
+        text-align: center;
+        padding: 0.4rem;
+        font-size: 0.7rem;
+        border-bottom: 1px solid rgb(226, 226, 226);
+    }
+    @media screen and (min-width: 698px)  {
+        table {
+            width: 85%;
+        }
+    }
+    th{
+        background-color: rgb(240, 240, 240);
+        padding: 0.5rem;
+        color: rgb(54, 54, 54);
+    }
+    tr{
+        background-color: rgba(249,249,249,0.9);
+        color: black;
+        padding: 15px;
+        height: 10vw;
+        margin: 0.5rem;
+    }
+    tr:nth-child(even){
+        background-color: white;
+    }
+
+    tfoot {
+        background-color: #efefef;
+    }
+
+    .order {
+        margin-top: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgb(226, 226, 226);
+    }
+
+    .more {
+        color: gray;
+        cursor: pointer;
+    }
+    .more:hover{
+        color: black;
+    }
+
+    .accepted {
+        background-color: rgba(131, 247, 131,0.5) !important;
+    }
+    .rejcted { 
+        background-color: #fbfbfb !important;
+    }
+    .sent { 
+        background-color: skyblue !important;
+    }
+    .recieved { 
+        background-color: green !important;
+    }
+    .cancelled { 
+        background-color: #efefef;
+    }
+
+    combo-box::part(selectedBox) {
+        padding: 0.5rem !important;
+      
+    }
+    combo-box::part(selectedBox):hover {
+        border: 1px solid #777;
+      
+    }
+    @media screen and (min-width: 576px) {
+        tr {
+            height: 4vw;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        tr {
+            height: 2vw;
+        }
+    }
+
+</style>
+<div class="container horizontal" style="justify-content:flex-end;width: 85%;margin:2rem auto;">
+    <combo-box placeholder="جدیدترین" style="width:30%;">
+        <combo-box-item caption="aaa"></combo-box-item>
+        <combo-box-item caption="aaa"></combo-box-item>
+        <combo-box-item caption="aaa"></combo-box-item>
+        <combo-box-item caption="aaa"></combo-box-item>
+        <combo-box-item caption="aaa"></combo-box-item>
+
+    </combo-box>
+    <button class="btn" style="margin-right: 0.5rem;font-size:0.8rem">فیلتر</button>
+</div> 
+<table>
+    <tr>
+        <th>شماره</th>
+        {% if owner == 'shop' %}
+            <th>خریدار</th>
+        {% elif owner == 'user' %}
+            <th>بوتیک</th>
+        {% endif %}
+        <th>تعداد محصولات</th>
+        <th>قیمت کل</th>
+        <th>جزئیات</th>
+    </tr>
+ {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        {% if owner == 'shop' %}
+        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+        {% elif owner == 'user' %}
+        <td>{{ order.shop.name }}</td>
+        {% endif %}
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.discounted_total_price }}</td>
+        <td>
+            {% if owner == 'user' %}
+            <span data-id="{{ order.id }}" onclick="show_order_detail();" >مشاهده</span>
+            {% elif owner == 'shop' %}
+            <span data-id="{{ order.id }}" onclick="show_shop_order_detail();">مشاهده</span>
+            {% endif %}                         </td>
+    </tr>
+ {% endfor %}
+</table>
+
+<div class="pagination">
+
+</div>
+{% endblock %}

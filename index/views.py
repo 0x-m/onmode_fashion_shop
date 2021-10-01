@@ -6,10 +6,15 @@ from .utils import *
 from django.contrib.auth.decorators import login_required, user_passes_test
 import json
 from django.http import JsonResponse, HttpResponseBadRequest
+from orders.models import Order
 
 
 def tss(request: HttpRequest):
-    return render(request, 'product/edit2.html');
+    orders = Order.objects.all()
+    
+    return render(request, 'orders/all_orders.html', {
+            'orders': orders
+        });
 
 
 def home(request:HttpRequest):

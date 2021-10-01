@@ -2,68 +2,6 @@
 
 
 
-class Switch extends HTMLElement {
-    get checked() {
-        return this._checkbox.checked;
-    }
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.innerHTML = `
-            <style>
-                #checkbox {
-                    font-size: 30px;
-                    -webkit-appearance: none;
-                    -moz-appearance: none;
-                    appearance: none;
-                    width: 3rem;
-                    height: 1.5rem;
-                    background: transparent;
-                    border: 1px solid lightgray;
-                    border-radius: 3em;
-                    position: relative;
-                    cursor: pointer;
-                    outline: none;
-                    -webkit-transition: all .2s ease-in-out;
-                    transition: all .2s ease-in-out;
-                }
-                #checkbox:after {
-                    position: absolute;
-                    content: "";
-                    width: 1.5rem;
-                    height: 1.5rem;
-                    border-radius: 50%;
-                    background: lightgray;
-                    transform-origin: center,center;
-                    -webkit-transform: scale(.7);
-                    transform: scale(.7);
-                    left: 0;
-                    top: -1px;
-                    -webkit-transition: all .2s ease-in-out;
-                    transition: all .2s ease-in-out;
-                }
-                #checkbox:checked:after{
-                    left: 1.4rem;
-                    background-color: rgb(92, 92, 92);
-                }
-                #checkbox:checked {
-                    border-color: gray;
-                }
-            </style>
-
-            <input type="checkbox" id="checkbox">
-        `;
-        this._checkbox = this.shadowRoot.getElementById('checkbox');
-        this._checkbox.checked = this.hasAttribute('checked') ? true : false;
-        if (this.hasAttribute('onchange')) {
-            console.log('hooked');
-            this._checkbox.addEventListener('change', eval(this.getAttribute('onchange')));
-        }
-    }
-}
-
-customElements.define('om-switch', Switch);
-
 
 const Itemtemplate = document.createElement('template');
 Itemtemplate.innerHTML = `

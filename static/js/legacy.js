@@ -719,3 +719,228 @@ function make_appeal_for_boutique(){
    
 }
 //----------------------------------------------------
+
+function show_order_detail(){
+    console.log('dssdsd');
+    const id = event.target.dataset['id'];
+    fetch(`/user/order/${order_id}/detail/` ,{
+        method: "GET"
+
+    }).then((response) =>{
+        
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
+function show_shop_order_detail(){
+    const id = event.target.dataset['id'];
+    fetch(`/shop/order/<order_id>/detail/` + id + '/',{
+        method: "GET"
+
+    }).then((response) =>{
+        
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
+function is_valid_email(email){
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+
+function is_valid_card(card_num){
+
+    card_num = String(card_num);
+    const rx = new RegExp("^[0-9]{16}$");
+    if (card_num != "" && rx.test(card_num)){
+        let sum = 0;
+        let pattern = "2121212121212121";
+        for (let i=0;i < card_num.length; i++){
+          let p = parseInt(card_num[i],10) * parseInt(pattern[i],10)
+          if (p > 9){
+              p -=9;
+          }
+          sum +=p;
+        }
+        
+        return (sum % 10 == 0);
+    }
+    return false;
+}
+
+
+function cvt_fa_No_2_en(str){
+    const cvt_map = {
+        '۰': '0', 
+        '۱': '1', 
+        '۲': '2', 
+        '۳': '3', 
+        '۴': '4', 
+        '۵': '5', 
+        '۶': '6', 
+        '۷': '7', 
+        '۸': '8', 
+        '۹': '9',
+        '' : '0',
+        '١' : '1',
+        '٢' : '2',
+        '٣' : '3',
+        '٤' : '4',
+        '٥' : '5',
+        '٦' : '6',
+        '٧' : '7',
+        '٨' : '8',
+        '٩' : '9',
+
+    };
+    let newstr = '';
+    for (let i=0; i < str.length; ++i){
+        newstr += cvt_map[str[i]];
+    }
+    
+    return (newstr.length > 0 ? newstr: str);
+
+}
+
+function edit_profile(){
+    form = document.getElementById("personal_info");
+    const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
+    const email = document.getElementById("profile-email").value;
+    const card = document.getElementById("profile-merchan_card").value;
+    const errors = new Array()
+    if(! is_valid_email(email)){
+        errors.push('ایمیل نامعتبر است');
+    }
+    if(!is_valid_card(card)){
+        errors.push('شماره کارت نامعتبر است');
+    }
+    if(!validate_province_and_city()){
+        const msg  = "استان و شهرستان انتخابی مغایرت دارند";
+        errors.push(msg);
+    }
+
+    if (data.get('first_name').trim() === '' || data.get('last_name').trim() === ''){
+        errors.push('لطفا نام و نام خانوادگی خود را وارد کیند');
+    }
+
+
+    if( errors.length !=0){
+
+        //--------ul of errors-------------------------
+        const frag = document.createDocumentFragment();
+        for (let i=0; i < errors.length; ++i){
+            // msg += errors[i] + "<br/>";
+            let li = document.createElement('li');
+            li.innerHTML = errors[i];
+            frag.appendChild(li)
+        }
+        const err_list = document.createElement('ul');
+        err_list.appendChild(frag);
+        //----------------------------------------------
+
+        //-------------------fetch drawer---------------
+        const drawer = document.getElementById('drawer');
+        const prevcontent = drawer.innerHTML;
+        //-----------------------------------------------
+
+        const err_container = document.createElement('div');
+        err_container.className = 'container vertical position--center';
+        err_container.style = 'color:red;font-size:0.9rem;line-height: 1.3rem;'
+        err_container.appendChild(err_list); //append error list to err_container**
+
+        const backbtn = document.createElement('button'); //back to add product button
+        backbtn.className = 'btn cta mt-1 ';
+        backbtn.style = "font-size:0.8rem";
+        backbtn.textContent = "بازگشت"
+        err_container.appendChild(backbtn); //append backbutton to err_container
+        drawer.setcc(err_container); //replace drawer content with a given node (err_container)
+
+        //handle go back to add product------------------------------
+        backbtn.addEventListener('click', (function (drawer, val) {
+            return function() {
+                drawer.setContent(val);
+                //ex: try to keeping text contents of add product view...
+            }
+        })(drawer,prevcontent)); 
+        //-----------------------------------------------------------
+
+        return; //data were corrupted so, nothing will return (endpoint_1 of prepare_product_info)
+    }
+
+    const xhttp = new XMLHttpRequest()
+    xhttp.open("POST", "/users/profile/");
+    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            document.getElementById('drawer').setContent('successfully edited');
+        }
+    }
+    xhttp.send(data);
+}
+
+
+function get_cities(){
+    const province_name = event.target.value;
+    let province_id = null
+    const provinces = document.getElementById("provinces").getElementsByTagName("option");
+    
+    for (let i=0; i < provinces.length; ++i){
+        if(provinces[i].value.trim() == province_name.trim()){
+            province_id = provinces[i].dataset["id"];
+            break;
+        }
+    }
+
+
+    if (province_id != null && province_id != ""){
+        fetch("/cities/" + "?province_id=" + province_id ,{
+            header:{
+                "Content-type":"applicatin/json"
+            }
+        }).then((res) => {
+            res.json().then((data)=> {
+                const cities = document.getElementById("cities");
+                const fragment = document.createDocumentFragment();
+
+                cities.innerHTML = "";
+        
+                for(let i=0; i< data['cities'].length; ++i){
+                    let option  = document.createElement("option");
+                    option.value = data['cities'][i];
+                    fragment.appendChild(option);
+                }
+                cities.appendChild(fragment);
+            })
+        })
+    }
+
+}
+
+function validate_province_and_city(){
+    const province = document.getElementById("profile-state");
+    const city = document.getElementById("profile-city");
+    const provinces = document.getElementById("provinces").getElementsByTagName("option");
+    const cities = document.getElementById("cities").getElementsByTagName("option");
+    let is_provinace = false , is_city = false;
+    for (let i=0; i < provinces.length; ++i){
+        if (provinces[i].value.trim() == province.value.trim()){
+            is_provinace = true
+            break;
+        }
+    }
+    for (let j=0; j < cities.length; ++j){
+        if(cities[j].value.trim() == city.value.trim()){
+            is_city = true
+            break;
+        }
+    }
+    console.log(is_city);
+    return is_city && is_provinace;
+}

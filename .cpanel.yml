@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    -export DEPLOYPATH=/home/onmode/public_html
+    -/bin/python3 manage.py runserver
