@@ -1,3 +1,4 @@
+{% load jalali_tags %}
 <style>
     .tab-item {
         font-size: 0.7rem !important;
@@ -5,6 +6,7 @@
     table{
         border-collapse: collapse;
         width: 100%;
+        margin: 1rem auto;
         text-align: center;
         padding: 0.4rem;
         font-size: 0.7rem;
@@ -82,12 +84,8 @@
     }
 
 </style>
-<div class="container vertical" style="width: 95%;">
-    {% if owner == 'user' %}
-        <span onclick="get_user_orders();" style="color: skyblue;cursor:pointer;font-size:0.9rem">بازگشت</span>
-    {% elif owner == 'shop' %}
-        <span onclick="get_shop_orders();" style="color: skyblue;cursor:pointer;font-size:0.9rem">بازگشت</span>
-    {% endif %}
+<div class="container vertical" style="width: 95%;margin:1rem auto;">
+ 
     <table style="margin-top: 1rem;">
         <tr>
             <th>نام</th>
@@ -120,50 +118,83 @@
 
        
     </table>
-     <p style="font-size: 0.8rem;color:gray;margin:0.3rem;width:98%">
-        <span style="float: left;padding:0.5rem;background-color:rgb(143, 143, 143);color:white">جمع کل: {{order.discounted_total_price}}</span>
-        <span style="float: right;padding:0.5rem;background-color:rgb(248, 95, 95);color:white">شماره سفارش: {{order.id}}</span>
+    <p style="padding:0.7rem; margin:0.5rem auto;width:100%;background:#777; color:white;">
+        جمع کل: {{order.discounted_total_price}}
     </p> 
-    <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem;text-align:center">
-        <span ">شماره سفارش: {{order.id}}</span>
-        <br/>
-        <span>تاریخ ثبت:{{order.order_list.date_created}}</span>
-        <br/>
+    <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem;text-align: right">
+        <span style=font-size:0.7rem;font-weight:bold;background:#666;color:white;padding:0.5rem;float:left;">شماره سفارش: {{order.id}}</span>
+    </p>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>تاریخ ثبت:</p>
+            <p>{{order.order_list.date_created | to_jalali:'%y/%m/%d'}}</p>
+        </div>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>نام بوتیک</p>
+            <p>{{order.shop.name}}</p>
+        </div>
         {% if order.order_list.use_default_address %}
         {% with order.user as vendee %}
-            <span>نام خریدار: {{vendee.first_name}}&nbsp{{ vendee.last_name}}</span>
-            <br>
-            <span>استان:{{vendee.address.state}}</span>
-            <br>
-            <span>شهرستان:{{vendee.address.city}}</span>
-            <br>
-            <span>شهر:{{vendee.address.town}}</span>
-            <br>
-            <span>کد پستی:{{ vendee.address.postal_code}}</span>
-            <br>
-            <span>نشانی:{{vendee.address.description}}</span>
-            <br>
-            <span>شماره تماس:{{vendee.phone_no}}</span>
-            <br>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>نام خریدار:</p>
+            <span>{{vendee.first_name}}&nbsp{{ vendee.last_name}}</span>
+        </div>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>استان:</p>
+            <span>{{vendee.address.state}}</span>
+        </div>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>شهرستان:</p>
+            <span>{{vendee.address.city}}</span>
+        </div>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>شهر:</p>
+            <span>{{vendee.address.town}}</span>
+        </div>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>کدپستی:</p>
+            <span>{{ vendee.address.postal_code}}</span>
+        </div>
+        <div class="container vertical mt-1" style="width: 100%;font-size:0.8rem">
+            <p >نشانی:</p>
+            <p style="width: 85%;margin:0.8rem auto;color:#555;text-align:justify;text-justify:distribute;font-size:0.7rem" >{{vendee.address.description}}</p>
+        </div>
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+            <p>شماره تماس:</p>
+            <span>{{vendee.phone_no}}</span>
+        </div>
        {% endwith %}
         <br />
         {% else %}
             {% with order.order_list.address as address %}
-                <span>نام خریدار: {{address.first_name}}&nbsp{{ address.last_name}}</span>
-                <br>
-                <span>استان:{{address.address.state}}</span>
-                <br>
-                <span>شهرستان:{{address.city}}</span>
-                <br>
-                <span>شهر:{{address.town}}</span>
-                <br>
-                <span>کد پستی:{{ address.postal_code}}</span>
-                <br>
-                <span>نشانی:{{address.description}}</span>
-                <br>
-                <span>شماره تماس:{{ address.phone_no }}</span>
-                <br>
-    
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+                <p>نام خریدار:</p>
+                <span>{{address.first_name}}&nbsp{{ address.last_name}}</span>
+            </div>
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+                <p>استان:</p>
+                <span>{{address.address.state}}</span>
+            </div>
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+                <p>شهرستان:</p>
+                <span>{{address.city}}</span>
+            </div>
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+                <p>شهر:</p>
+                <span>{{address.town}}</span>
+            </div>
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+                <p>کدپستی:</p>
+                <span>{{ address.postal_code}}</span>
+            </div>
+            <div class="container vertical mt-1" style="width: 100%;font-size:0.8rem">
+                <p >نشانی:</p>
+                <p style="width: 85%;margin:0.8rem auto;color:#555;text-align:justify;text-justify:distribute;font-size:0.7rem" >{{address.description}}</p>
+            </div>
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+                <p>شماره تماس:</p>
+                <span>{{ address.phone_no }}</span>
+            </div>
+              
             {% endwith %}
         {% endif %}
     {% if order.state == 'pending' %}
@@ -190,22 +221,22 @@
             </div>
         {% elif owner == 'user' %}
             <div class="box">
-                <span style="width: 100%;text-align:center;color:white;background-color:green">تایید شده</span>
+                <span style="width: 100%;text-align:center;color:white;background-color:green;padding:0.5rem">تایید شده</span>
             </div>
         {% endif %}
     {% elif order.state == 'returned' %}
         <div class="box">
-            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">بازگشتی</span>
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55);padding:0.5rem">بازگشتی</span>
         </div>
     {% elif order.state == 'cancelled' %}
         <div class="box">
-            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">لغو شده</span>
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55);padding:0.5rem">لغو شده</span>
         </div>
     {% elif order.state == 'sent' %}
         {% if owner == 'shop' %}
             {% if order.verify_sent %}
                 <div class="box">
-                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55)">کد رهگیری ثبت شده است</span>
+                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55);padding:0.5rem">کد رهگیری ثبت شده است</span>
                 </div>
             {% else %}
                 <div class="box">
@@ -220,18 +251,18 @@
                 </div>
             {% else  %}  
                 <div class="box">
-                    <span style="width: 100%;text-align:center;color:white;background-color:green">ارسال شده</span>
+                    <span style="width: 100%;text-align:center;color:white;background-color:green;padding:0.5rem">ارسال شده</span>
                 </div>
             {% endif %}
         {% endif %}
 
     {% elif order.state == 'rejected' %}
         <div class="box">
-            <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">ردشده</span>
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89);padding:0.5rem">ردشده</span>
         </div>
     {% else %}
         <div class="box">
-            <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89)">دریافت شده</span>
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(105, 194, 253);padding:0.5rem">دریافت شده</span>
         </div>
     {% endif %}
 </div>

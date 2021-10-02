@@ -39,14 +39,25 @@
             <span style="font-size: 0.7rem;color:rgb(150, 150, 150);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>
 
         </div>
-        <div style="margin-top: 0.5rem;padding:0.5rem" class="list-item">
-            <div style="background-color: rgba(249, 249, 249,0.8);display:flex;flex-direction:column;padding:0.5rem">
-                <p style="text-align:center;">موجودی حساب</p> 
-                <p style="color: rgb(133, 133, 133);font-size:1.5rem;text-align:center">
-                    25800
-                    <span style="font-size: 0.8rem;color:darkcyan">تومان</span>
+        <p style="text-align:center;margin-top:1rem;font-size:0.9rem">موجودی حساب</p> 
+        <div style="margin-top: 0.5rem;padding:0.5rem">
+            <div class="container horizontal" style="width: 100;">
+                <div class="container vertical" style="flex:50%;padding:0.5rem">
+                    <p style="text-align:center;">موجودی حساب</p> 
+                    <p style="color: rgb(133, 133, 133);font-size:1.1rem;text-align:center">
+                        {{ user.account.get_credits }}
+                        <span style="font-size: 0.8rem;color:darkcyan">تومان</span>
                     </p>
+                </div>
+                <div class="container vertical" style="flex:50%;background:rgb(225, 255, 225);padding:0.5rem">
+                        <p style="text-align:center;">قابل برداشت</p> 
+                        <p style="color: rgb(133, 133, 133);font-size:1.1rem;text-align:center">
+                            {{ user.account.balance }}
+                            <span style="font-size: 0.8rem;color:darkcyan">تومان</span>
+                        </p>
+                </div>
             </div>
+          
         </div>
 
         <div class="list-item" style="background-color: white;">
@@ -71,17 +82,13 @@
                لیست علاقه مندی
             </p>
         </div>
-            <div class="list-item">
-                <p onclick="make_issue();" style="padding: 0.5rem;">
-                   درخواستها
-                </p>
-            </div>
-              <div onclick="get_messages();" class="list-item">
-                  <p style="padding: 0.5rem;" >
-                     پیامها
-                  </p>
-                  <span class="badge"style="top:25%;left:5px">4</span>
-              </div>
+
+        <div onclick="get_messages();" class="list-item">
+            <p style="padding: 0.5rem;" >
+                پیامها
+            </p>
+            <span class="badge"style="top:25%;left:5px">4</span>
+        </div>
               
             {% if user.is_seller %}
                 {% if user.shop.first.is_active %}

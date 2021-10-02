@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import ModelSignal, post_save
 from django.utils import timezone, tree
 import math
-
+from django.db.models.aggregates import Sum
 class Account(models.Model):
     user = models.OneToOneField(verbose_name=_('User'),to=User,on_delete=models.CASCADE,related_name='account')
     balance = models.DecimalField(verbose_name=_('Balance'),max_digits=15,decimal_places=0,default=0)
@@ -43,6 +43,12 @@ class Account(models.Model):
             acc = Account(user=instance)
             acc.save()
             
+    @property
+    def get_credits(self):
+        if len(self.credits.all()):
+            c = self.credits.all().aggregate(Sum('amount'))
+            return c
+        return 0
         
 
 post_save.connect(Account.create_account_for_user, sender=User)

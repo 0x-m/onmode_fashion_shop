@@ -248,13 +248,13 @@
         </div>         
          <textarea rows="5" class="txt" placeholder="نشانی کامل"></textarea>
         <section class="total">
-            <span >
+            <span id="total_sum" >
             مبلغ پرداختی: {{cart.get_total_price}}
             </span>  
         </section>
         <section  class="coupon">
-            <input class="coupon-txt" type="text" placeholder="کد تخفیف" />
-            <button class="app">اعمال</button>
+            <input class="coupon-txt" type="text" id="coupon-code" placeholder="کد تخفیف" />
+            <button onclick="apply_coupon();" class="app">اعمال</button>
         </section>
         <button class="btn co" style="width:100%;margin-top:0.5rem">پرداخت</button> 
     </div>

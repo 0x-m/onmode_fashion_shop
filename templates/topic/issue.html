@@ -1,0 +1,124 @@
+{% extends 'index/base.html' %}
+{% load static %}
+{% block title%}{% endblock %}
+{% block content %}
+
+<style>
+
+    .issue{
+        display: flex;
+        flex-direction: column;
+        padding: 0.2rem;
+        border-radius: 2px;
+        margin-top: 1rem;
+        width: 100%;
+        border-bottom: 1px solid gray;
+
+    }
+
+    .issue .title{
+        font-size: 0.8rem;
+        margin-right: 0.3rem;
+        font-style: italic;
+
+    }
+
+    .issue .description {
+        margin-top: 0.2rem;
+        font-size: 0.7rem;
+        width: 100%;
+        padding: 0.5rem;
+        color: gray;
+
+    }
+
+    .issue .response {
+        padding: 0.5rem;
+        margin-top: 0.2rem;
+        font-size: 0.7rem;
+        background-color: #efefef;
+        width: 100%;
+    }
+
+
+    combo-box {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+    combo-box::part(selectedBox) {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        
+    }
+    textarea {
+        padding: 0.3rem;
+        border:1px solid #efefef;
+        width: 100%;
+        
+    }
+    textarea::placeholder {
+        color: #efefef;
+    }
+
+</style>
+<div id="aboutus" class="container vertical" style="scroll-snap-type:proximity;width: 100%;min-height:100vh;background:rgb(255, 255, 255);">
+    <div class="pure-g">
+        <div class="pure-u-1-1 pure-u-md-1-2">
+            <img src="{% static 'img/collection/square-2.jpg' %}" style="width: 100%;height:100%">
+        </div>
+        <div class="pure-u-1-1 pure-u-md-1-2">
+            <div id="issue-box" class="container vertical" style="justify-content: center; align-items:center;width:80%;height:100%;margin:1rem auto;">
+                {% if user.is_authenticated %}
+                <div class="tab-container" >
+                    <div onclick="select_tab();" class="tab-items" style="justify-content: center;">
+                        <div data-tab="new-issue" class="tab-item tab-item-selected">
+                            شکایت جدید
+                        </div>
+                        <div data-tab="issues" class="tab-item">
+                            لیست شکایات
+                        </div>
+                    </div>
+                    <div class="tab-contents">
+                        <div id="new-issue" class="tab-content tab-show-content">
+                            <div class="container vertical" style="justify-content: center;align-items:center">
+                                <combo-box id="issue-subject" placeholder="موضوع" >
+                                    {% for subject in subjects %}
+                                        <combo-box-item style="width: 100%;" 
+                                        value="{{ subject.id }}" 
+                                        caption="{{subject.subject}}"></combo-box-item>
+                                    {% endfor %}
+                                </combo-box>
+                                <textarea rows="8" id="issue-description" placeholder="توضیحات"></textarea>
+                                <button onclick="send_issue();" class="btn cta" style="width: 50%;font-size:0.8rem">ثبت</button>                 
+                            </div>
+                        </div>
+                        <div class="tab-content" id="issues">
+                            <div class="container vertical" >
+                                {% for issue in user.issues.all %}
+                                    <div class="issue">
+                                        <h1 class="title">{{issue.subject.subject}}</h1>
+                                        <h3 class="description">{{issue.description}} </h3>
+                                        <h3 class="response">
+                                            {% if issue.response is not None%}
+                                                {{ issue.response }}
+                                            {% else %}
+                                                بررسی نشده
+                                            {% endif%}
+                                        </h3>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <p> 
+                        به منظور ثبت شکایت لطفا به حساب کاربری خود در سایت وارد شوید.
+                    </p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

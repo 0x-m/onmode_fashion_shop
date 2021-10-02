@@ -53,7 +53,7 @@ class IssuesSubject(models.Model):
 
 class Issue(models.Model):
     user = models.ForeignKey(verbose_name=_('User'),to=User, on_delete=models.CASCADE,related_name='issues')
-    title = models.CharField(verbose_name=_('Title'),max_length=100)
+    title = models.CharField(verbose_name=_('Title'),max_length=100, blank=True)
     subject = models.ForeignKey(verbose_name=_('Subject'),to=IssuesSubject,on_delete=models.CASCADE, related_name='issues')
     description = models.CharField(verbose_name=_('Description'),max_length=2000)
     response = models.CharField(verbose_name=_('Response'),max_length=5000, blank=True,null=True)

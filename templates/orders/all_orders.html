@@ -1,4 +1,5 @@
 {% extends 'index/base.html' %}
+{% load jalali_tags %}
 {% load static %}
 
 
@@ -74,13 +75,36 @@
         background-color: #efefef;
     }
 
+    combo-box {
+        width: 45%;
+    }
+
+    @media screen and (min-width: 576px) {
+        combo-box {
+            width: 35%;
+        }
+    
+    }
+
+    @media screen and (min-width: 698px) {
+        combo-box {
+            width: 30%;
+        }
+    
+    }
+
     combo-box::part(selectedBox) {
         padding: 0.5rem !important;
+        font-size: 0.8rem;
       
     }
     combo-box::part(selectedBox):hover {
         border: 1px solid #777;
       
+    }
+
+    combo-box-item {
+        font-size: 0.8rem;
     }
     @media screen and (min-width: 576px) {
         tr {
@@ -96,15 +120,21 @@
 
 </style>
 <div class="container horizontal" style="justify-content:flex-end;width: 85%;margin:2rem auto;">
-    <combo-box placeholder="جدیدترین" style="width:30%;">
-        <combo-box-item caption="aaa"></combo-box-item>
-        <combo-box-item caption="aaa"></combo-box-item>
-        <combo-box-item caption="aaa"></combo-box-item>
-        <combo-box-item caption="aaa"></combo-box-item>
-        <combo-box-item caption="aaa"></combo-box-item>
-
+    <combo-box id="order-status" placeholder="جدیدترین">
+        <combo-box-item style="width: 100%;"  caption="درحال بررسی" value="pending"></combo-box-item>
+        <combo-box-item style="width: 100%;" caption="تایید شده" value="accept"></combo-box-item>
+        <combo-box-item style="width: 100%;" caption="رد شده" value="rejected"></combo-box-item>
+        <combo-box-item style="width: 100%;" caption="ارسال شده" value="sent"></combo-box-item>
+        <combo-box-item style="width: 100%;" caption="بازگشتی" value="returned"></combo-box-item>
+        <combo-box-item style="width: 100%;" caption="دریافت شده" value="received"></combo-box-item>
     </combo-box>
-    <button class="btn" style="margin-right: 0.5rem;font-size:0.8rem">فیلتر</button>
+    <button  class="btn" 
+    {% if owner == 'user' %}
+        onclick="filter_user_orders();"
+    {% else %}
+        onclick="filter_shop_orders();"
+    {% endif %}
+    style="margin-right: 0.5rem;font-size:0.8rem">فیلتر</button>
 </div> 
 <table>
     <tr>
@@ -116,6 +146,7 @@
         {% endif %}
         <th>تعداد محصولات</th>
         <th>قیمت کل</th>
+        <th>تاریخ ایجاد</th>
         <th>جزئیات</th>
     </tr>
  {% for order in orders %}
@@ -128,6 +159,7 @@
         {% endif %}
         <td>{{ order.quantity }}</td>
         <td>{{ order.discounted_total_price }}</td>
+        <td>{{order.date_created|to_jalali:'%y/%m/%d' }}</td>
         <td>
             {% if owner == 'user' %}
             <span data-id="{{ order.id }}" onclick="show_order_detail();" >مشاهده</span>

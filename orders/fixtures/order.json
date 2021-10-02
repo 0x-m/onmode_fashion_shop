@@ -15,7 +15,7 @@
         "model": "orders.Order",
         "pk":2,
         "fields": {
-            "order_list": 2,
+            "order_list": 1,
             "shop": 3,
             "user": 2,
             "total_price": 15000,
@@ -27,7 +27,7 @@
         "model": "orders.Order",
         "pk":3,
         "fields": {
-            "order_list": 2,
+            "order_list": 1,
             "shop": 1,
             "user": 3,
             "total_price": 45600,
@@ -39,7 +39,7 @@
         "model": "orders.Order",
         "pk":4,
         "fields": {
-            "order_list": 2,
+            "order_list": 1,
             "shop": 2,
             "user": 1,
             "total_price": 69000,

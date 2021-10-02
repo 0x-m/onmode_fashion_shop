@@ -14,4 +14,4 @@ class AppealforBoutiqueForm(forms.Form):
 class IssueForm(forms.ModelForm):
     class Meta:
         model=Issue
-        fields= ['subject', 'title', 'description']
+        fields= ['subject', 'description']

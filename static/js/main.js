@@ -15,9 +15,6 @@ function openCombobox(){
 
 //----------------------------------------------  
 
-
-
-
 function comboboxSelectItem()
 {
      var dropdown = event.currentTarget;

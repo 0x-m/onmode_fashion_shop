@@ -1,6 +1,6 @@
 from django.core.validators import ip_address_validator_map
 from django.http.response import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
 from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required
 from .models import Appeal, Issue, IssuesSubject
@@ -35,17 +35,26 @@ def make_appeal(request:HttpRequest):
     })
     
 
-@login_required
 def make_issue(request:HttpRequest):
     if request.method == "POST":
+        if request.user.is_anonymous:
+            return
+        
         form = IssueForm(request.POST)
         if form.is_valid():
             issue = form.save(commit=False)
             issue.user = request.user
             issue.save()
             return HttpResponse('issue was registerd successfully')
-    subjects = IssuesSubject.objects.all()
+        else:
+            return HttpResponseBadRequest('invalid inputs')
 
-    return render(request,'issues_requests/issue.html',{
-        'subjects': subjects
+        
+    subjects = IssuesSubject.objects.all()
+    return render(request,'topic/issue.html',{
+        'subjects': subjects,
+   
     })
+
+def issue_page(request: HttpResponse):
+    return render(request, 'topic/issue.html')

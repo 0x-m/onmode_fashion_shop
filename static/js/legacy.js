@@ -15,7 +15,7 @@ function get(url, callback= function(){}) {
 
 function post(url, payload, callback) {
     const xr = new XMLHttpRequest();
-    xr.onreadystatechange = function() {
+    xr.onload = function() {
         callback(xr.responseText, xr.status);
     };
     xr.open('post', url);
@@ -67,13 +67,13 @@ function load_view(url, method='get', payload={},success=function(){}, error=fun
         post(url, payload, (function(obj) {
             return function(resp, status){
                 if (status === 200){
-                    d.hideLoader();
-                    d.setContent(resp);
+                    obj.hideLoader();
+                    obj.setContent(resp);
                     success();
                 }
                 else {
-                   d.hideLoader();
-                    error();
+                   obj.hideLoader();
+                   error();
                 }
             };
         })(d));
@@ -536,6 +536,7 @@ function login(){
 
     }, error=function() {
         document.getElementById('password').error('رمز عبور اشتباه است');
+        document.getElementById('drawer').hideLoader();
     })
     
 }
@@ -886,6 +887,61 @@ function edit_profile(){
 }
 
 
+function apply_coupon(){
+    console.log('apply.....');
+    const coupon_code = document.getElementById("coupon-code").value;
+    if (coupon_code.toString().length != 6) {
+        alert('wrong');
+        return;
+    }
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+          
+            alert('success')
+            resp = JSON.parse(xhttp.responseText);
+            document.getElementById("total-sum").innerHTML = 'مبلغ' + resp["total"] + 'تومان' ;
+        }
+        if(xhttp.status == 400){
+           alert('کوپن نامعتبر')
+        }
+    }
+
+    xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
+    xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+    xhttp.send();
+}
+
+function show_order_detail(){
+    const id = event.target.dataset['id'];
+
+    fetch(`/user/order/${id}/detail/` ,{
+        method: "GET"
+
+    }).then((response) =>{
+        response.text().then((txt) => {
+            document.getElementById('drawer').setContent(txt);
+            
+        })
+    })
+    document.getElementById('drawer').open();
+}
+
+function show_shop_order_detail(){
+    const id = event.target.dataset['id'];
+    fetch(`/shop/order/<order_id>/detail/` + id + '/',{
+        method: "GET"
+
+    }).then((response) =>{
+        
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
+
 function get_cities(){
     const province_name = event.target.value;
     let province_id = null
@@ -943,4 +999,57 @@ function validate_province_and_city(){
     }
     console.log(is_city);
     return is_city && is_provinace;
+}
+
+function send_issue(){
+    const subject_id = document.getElementById('issue-subject').selectedItems;
+    const btn = event.target;
+    const description = document.getElementById('issue-description');
+    if (subject_id.length != 1){
+        alert('لطفا موضوع را انتخاب کنید')
+    }
+    if (description.value.trim() === ''){
+        alert('توضیحات خالیست')
+    }
+    const prev_txt = btn.innerText;
+    const lod = document.createElement('div');
+    lod.className='loader';
+    const btn_txt = btn.textContent;
+    lod.style = 'width:16px;height:16px;margin:0 auto;'
+    btn.replaceChildren(lod);
+    
+
+    post('/issue/register/', 'subject=' + subject_id + '&description=' + description.value, 
+        function(resp, status) {
+            console.log(status,'.....')
+        if ( status === 200){
+            btn.disabled = true;
+            btn.replaceChildren('شکایت ثبت شد');
+            btn.style.backgroundColor = '#efefef';
+            btn.style.color = '#333';
+        }
+        else {
+            btn.replaceChildren(prev_txt)
+            alert('خطا');
+        }
+    });
+
+}
+
+function filter_orders(url, status) {
+    if (status.length !== 1)
+        return;
+    window.open(url, '_self');
+}
+function fitler_user_orders() {
+    const status = document.getElementById('order-status').selectedItems;
+    if (status.length !== 1)
+        return;
+    window.open('/user/orders/' + status[0] + '/','_self');
+}
+function filter_shop_orders(){
+    const status = document.getElementById('order-status').selectedItems;
+    if (status.length !== 1)
+        return;
+    window.open('/shop/orders/' + status[0] + '/','_self');
 }

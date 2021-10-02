@@ -10,11 +10,9 @@ from orders.models import Order
 
 
 def tss(request: HttpRequest):
-    orders = Order.objects.all()
     
-    return render(request, 'orders/all_orders.html', {
-            'orders': orders
-        });
+    
+    return render(request, 'topic/issue.html')
 
 
 def home(request:HttpRequest):

@@ -40,10 +40,14 @@
 <div class="footer" >
        <div style="display:flex;justify-content:center;width:100%">
         <div style="margin-top: 0.5rem;">
-            <li class="foo-item">درباره ما</li>
+            <li class="foo-item">
+                <a style="text-decoration: none;color:white" href="{% url 'index:aboutus' %}">درباره ما</a>
+            </li>
             <li class="foo-item">سوالات متداول</li>
             <li class="foo-item">قوانین</li>
-            <li class="foo-item">ثبت شکایت</li>
+            <li class="foo-item">
+                <a href="{% url 'issues:issues'%}">ثبت شکایت</a>
+            </li>
         </div>
        </div>
         <div style="text-align:center;color:rgb(255, 255, 255);font-size:0.9rem;width:100%;margin-top:1rem">

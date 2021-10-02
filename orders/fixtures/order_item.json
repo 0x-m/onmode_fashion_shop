@@ -1,10 +1,10 @@
 [
     {
         "model": "orders.OrderItem",
-        "pk": 1,
+        "pk": 10,
         "fields":{
             "order": 1,
-            "product":1,
+            "product": 11,
             "quantity":2,
             "color":1,
             "size":2
@@ -12,10 +12,10 @@
     },
     {
         "model": "orders.OrderItem",
-        "pk": 2,
+        "pk": 20,
         "fields":{
             "order": 1,
-            "product":2,
+            "product": 15,
             "quantity":10,
             "color":2,
             "size":1
@@ -23,10 +23,10 @@
     }
     ,  {
         "model": "orders.OrderItem",
-        "pk": 3,
+        "pk": 30,
         "fields":{
             "order": 1,
-            "product":1,
+            "product": 22,
             "quantity":2,
             "color":3,
             "size":2
@@ -34,10 +34,10 @@
     }
     ,  {
         "model": "orders.OrderItem",
-        "pk": 4,
+        "pk": 40,
         "fields":{
-            "order": 2,
-            "product":1,
+            "order": 1,
+            "product":12,
             "quantity":2,
             "color":3,
             "size":2

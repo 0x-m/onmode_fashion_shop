@@ -104,40 +104,24 @@ def checkout(request:HttpRequest):
 
 @login_required        
 def get_shop_orders(request:HttpRequest, status='pending'):
-    order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED]
-    if not (status.lower() in [o.lower for o in order_states]):
+    order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED,'all']
+    order_states = [o.lower() for o in order_states]
+    print(status.lower() in order_states)
+    if not (status.lower() in [o.lower() for o in order_states]):
         return HttpResponseNotFound('not found')
     
     if not request.user.shop.first():
         return HttpResponseBadRequest("shop not found")
-    orders = Order.objects.filter(shop=request.user.shop.first(), status=status)
-    # pending_orders = orders.filter(state=Order.PENDING)
-    # accepted_orders = orders.filter(state=Order.ACCEPTED)
-    # sent_orders = orders.filter(state=Order.SENT)
-    # returned_orders = orders.filter(state=Order.RETURNED)
-    # recieved_orders = orders.filter(state=Order.RECEIVED)
-    # rejected_orders = orders.filter(state=Order.REJECTED)
-
-    
-    # return render(request, 'orders/orders.html',{
-    #     'pending_orders': pending_orders,
-    #     'accepted_orders': accepted_orders,
-    #     'sent_orders': sent_orders,
-    #     'recieved_orders': recieved_orders,
-    #     'returned_orders': returned_orders,
-    #     'rejected_orders': rejected_orders,
-    #     'owner': 'shop'
-        
-    # })
-    
-    return render(request, 'all_orders.html', {
-        'orders': orders
+    orders = Order.objects.filter(shop=request.user.shop.first(), state=status)
+    return render(request, 'orders/all_orders.html', {
+        'orders': orders,
+        'owner': 'shop'
     })
     
     
 @login_required    
 def get_user_orders(request:HttpRequest, status: str ='pending'):
-    print(Order.ACCEPTED)
+
     order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED,'all']
     order_states = [o.lower() for o in order_states]
     print(status.lower() in order_states)
@@ -148,28 +132,10 @@ def get_user_orders(request:HttpRequest, status: str ='pending'):
     if (status != 'all'):
         print('not all')
         orders = Order.objects.filter(user=request.user, state=status)
-    
-    
-    # orders = Order.objects.filter(user=request.user)
-    # pending_orders = orders.filter(state=Order.PENDING)
-    # accepted_orders = orders.filter(state=Order.ACCEPTED)
-    # rejected_orders = orders.filter(state=Order.REJECTED)
-    # sent_orders = orders.filter(state=Order.SENT)
-    # returned_orders = orders.filter(state=Order.RETURNED)
-    # recieved_orders = orders.filter(state=Order.RECEIVED)
-    
-    # return render(request, 'orders/orders.html',{
-    # 'pending_orders': pending_orders,
-    # 'accepted_orders': accepted_orders,
-    # 'sent_orders': sent_orders,
-    # 'recieved_orders': recieved_orders,
-    # 'returned_orders': returned_orders,
-    # 'rejected_orders': rejected_orders,
-    # 'owner': 'user',
-    
-    # })
+ 
     return render(request, 'orders/all_orders.html', {
-        'orders': orders
+        'orders': orders,
+        'owner': 'user'
     })
     
         

@@ -238,15 +238,15 @@
         <custom-text placeholder="کدپستی"></custom-text>
         <textarea rows="5" class="txt" placeholder="نشانی کامل"></textarea>
         <section class="total">
-            <span >
+            <span id="total_sum" >
             مبلغ پرداختی: {{cart.get_total_price}}
             </span>  
         </section>
         <section  class="coupon">
-            <input class="coupon-txt" type="text" placeholder="کد تخفیف" />
-            <button class="app">اعمال</button>
+            <input class="coupon-txt" id="coupon-code" type="text" placeholder="کد تخفیف" />
+            <button onclick="apply_coupon();" >اعمال</button>
         </section>
-        <button class="btn co" style="width:100%;margin-top:0.5rem">پرداخت</button>
+        <button class="btn co"  style="width:100%;margin-top:0.5rem">پرداخت</button>
         
     </div>
 </div>

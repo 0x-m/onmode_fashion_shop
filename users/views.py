@@ -1,7 +1,7 @@
 
 
 from functools import cached_property
-from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
+from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, request
 from http import HTTPStatus
@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from index.utils import get_cities, get_provinces
 import secrets
 from django.utils import timezone
-# from ratelimit.decorators import ratelimit
+from ratelimit.decorators import ratelimit
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
 # f_handller = logging.FileHandler('logs/users.log','a')
@@ -33,7 +33,7 @@ def generate_code():
     code = ''.join(secrets.choice(alphbet)for i in range(6))
     return code
         
-# @ratelimit(key='ip',rate='10/m',block=True)
+@ratelimit(key='ip',rate='15/m',method='POST', block=True)
 def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
@@ -55,6 +55,9 @@ def enrollment(request:HttpRequest):
         user = User.objects.filter(phone_no=phone_no).first()
         
         if user: #user does exist
+            if not user.is_active:
+                return HttpResponse('دسترسی شما محدود شده است یا اکانت شما حذف شده است.')
+
             #goto login form
             return render(request, 'registration/login.html',{
                 'phone_no': phone_no
@@ -78,8 +81,8 @@ def enrollment(request:HttpRequest):
     
     #request method is get:
     return render(request, 'registration/phone.html')
-            
-            
+
+@ratelimit(key='ip',rate='10/h',method='GET',block=True)                   
 def reset_password(request: HttpRequest):
     phone_no = request.session.get('phone_no')
     if not phone_no:
@@ -97,6 +100,7 @@ def reset_password(request: HttpRequest):
     #-----------------------------
     return render(request, 'registration/verification.html', {'code': verification_code, 'phone_no': phone_no});            
 
+@ratelimit(key='ip',rate='5/m',method='POST',block=True)            
 def verification(request:HttpRequest):
     if request.method == 'POST':
         print(request.POST.get('code'))
@@ -188,7 +192,7 @@ def login_user(request:HttpRequest):
             password = form.cleaned_data['password']    
            
             user = authenticate(phone_no=phone_no, password=password)
- 
+
             if user :
                 user.backend = 'users.CustomAuthenticationBackend.PhoneAuthentication'
                 login(request, user,backend='users.CustomAuthenticationBackend.PhoneAuthentication')

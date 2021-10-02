@@ -1,7 +1,102 @@
 {% extends 'index/base.html' %}
 {% load static %}
 {% block content %}
-
+<style>
+    a {
+        text-decoration: none;
+        color: #000000;
+      }
+      
+      a:hover {
+        color: #222222
+      }
+      
+      /* Dropdown */
+      
+      .dropdown {
+        display: inline-block;
+        position: relative;
+      }
+      
+      .dd-button {
+        display: inline-block;
+        border: 1px solid #efefef;
+        border-radius: 1px;
+        min-width: 120px;
+        padding: .5rem;
+        background-color: #ffffff;
+        cursor: pointer;
+        white-space: nowrap;
+        margin: 0.5rem 0.5rem auto;
+        font-size: 0.8rem;
+      }
+      
+      .dd-button:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        width: 0; 
+        height: 0; 
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid rgb(170, 170, 170);
+      }
+      
+      .dd-button:hover {
+        background-color: rgba(250,250,250,0.5);
+      }
+      
+      
+      .dd-input {
+        display: none;
+      }
+      
+      .dd-menu {
+        position: absolute;
+        top: 100%;
+        border: 1px solid #ccc;
+        border-radius: 1px;
+        padding: 0;
+        width: 100%;
+        margin: 2px 0 0 0;
+        box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+        background-color: #ffffff;
+        list-style-type: none;
+        display: none;
+      }
+      
+      .dd-input + .dd-menu {
+        display: none;
+      } 
+      
+      .dd-input:checked + .dd-menu {
+        display: block;
+      } 
+      
+      .dd-menu li {
+        padding: 10px 10px;
+        cursor: pointer;
+        white-space: nowrap;
+        font-size: 0.8rem;
+      }
+      
+      .dd-menu li:hover {
+        background-color: #f6f6f6;
+      }
+      
+      .dd-menu li a {
+        display: block;
+        margin: -10px -20px;
+        padding: 10px 20px;
+      }
+      
+      .dd-menu li.divider{
+        padding: 0;
+        border-bottom: 1px solid #cccccc;
+      }
+   
+</style>
  <!----------------BANNER------------>
 <image-field {% if shop.banner  %}initial="{{shop.banner.url}}"{% endif %}  class="shop-banner" disabled>
     <div slot="placeholder">
@@ -15,12 +110,25 @@
 <div class="container vertical w-100 mt-05">
     <div class="shop-action" style="padding-bottom: 0.3rem;">
         <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem" onclick="show_filter();" class="btn-tiny">فیلتر</button>
-        {{shop.}}
         {% if user.shop.first.id == shop.id %}
-        <button onclick="get_edit_shop_form();" style="min-width: 125px;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem;margin-left:0.3rem" class="btn-tiny">
+        <!-- <button onclick="get_edit_shop_form();" style="min-width: 125px;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem;margin-left:0.3rem" class="btn-tiny ssh">
             ویرایش بوتیک
-        </button>
-        <button style="min-width:128px;background-color:rgb(255, 57, 57);font-size:0.8rem;color:white;margin-right:0px;" class="btn-tiny" onclick="get_add_product_view();">محصول جدید</button>
+        </button> -->
+        <label class="dropdown">
+            <div class="dd-button">
+              مدیریت بوتیک
+            </div>
+            <input type="checkbox" class="dd-input" id="test">
+            <ul class="dd-menu">
+              <li onclick="get_edit_shop_form();">ویرایش بوتیک</li>
+              <li onclick="get_add_product_view();">افزودن محصول</li>
+              <li onclick="">
+                  <a href="{% url 'orders:shop_orders' %}">مدیریت فروش</a>
+              </li> 
+            </ul>
+          </label>
+        <div class="shop-manage-dropdown"></div>
+        <!-- <button style="min-width:128px;background-color:rgb(255, 57, 57);font-size:0.8rem;color:white;margin-right:0px;" class="btn-tiny" onclick="get_add_product_view();">محصول جدید</button> -->
         {% endif %}
     </div>
 

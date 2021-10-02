@@ -269,8 +269,8 @@ class OrderItem(models.Model):
     def post_create(cls, sender, instance, created, *args, **kwargs ):
         if created:
             print('orderitem created')
-            discount = Discount.objects.filter(product=instance)
-            if discount.is_valid():
+            discount = Discount.objects.filter(product=instance.product).last()
+            if discount and discount.is_valid():
                 instance.discount = discount
                 instance.save()
             

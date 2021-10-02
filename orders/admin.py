@@ -28,7 +28,7 @@ class OrderCustomAdmin(admin.ModelAdmin):
 
 @admin.register(OrderItem)
 class OrderItemCustomAdmin(admin.ModelAdmin):
-    fields = ['order', 'product', ('price','discounted_price'),('total_price','discounted_total_price'),'discount','color','size']
+    fields = ['order', 'product', ('price','discounted_price'),('total_price','discounted_total_price'),'discount','color','size', 'quantity']
     list_filter = ['price']
     raw_id_fields = ['order','product']
     list_display = ['order','product','price','total_price']
