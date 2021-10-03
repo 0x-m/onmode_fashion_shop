@@ -2,7 +2,6 @@
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
 from django.urls import utils
-
 from django.utils import timezone
 from users.models import User, Address
 from django.utils import timezone
@@ -10,6 +9,10 @@ from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
 from django.urls import reverse
 import os
+
+class OldJSONField(models.JSONField):
+    def db_type(self, connection):
+        return 'json'
 
 class Shop(models.Model):
     def generate_path(instance, filename):
@@ -143,7 +146,7 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=200,null=True, blank=True)
-    attrs = models.JSONField(null=True,blank=True)
+    attrs = OldJSONField(default=dict,blank=True,)
     is_active = models.BooleanField(default=True)
     
     
