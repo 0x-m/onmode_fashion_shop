@@ -88,7 +88,8 @@ class Type(models.Model):
     description = models.CharField(verbose_name=_('Description'),max_length=500,null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
     atrrs = models.JSONField(verbose_name=_('Attributes'),null=True, blank=True)
-
+    has_color = models.BooleanField(default=True)
+    has_size = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = _('Type')
@@ -121,6 +122,7 @@ class Product(models.Model):
     sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products')
     name = models.CharField(verbose_name=_('Name'),max_length=120,blank=True, null=True)
     description = models.CharField(verbose_name=_('Description'),max_length=500, blank=True)
+    free_delivery = models.BooleanField(default=False,verbose_name=_('Free Delivery'))
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
         MinValueValidator(1000),
     ])

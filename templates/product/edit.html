@@ -184,8 +184,11 @@
             {% endfor %}
         </div>
     </div>
-
-    <div class="txt-box w-100">
+    <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
+        <span style="font-size: 0.8rem;">ارسال رایگان</span>
+        <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
+    </label>
+    <div class="txt-box w-100 mt-1">
         <textarea id="description" class="text" name="description" required>{{ product.description }}</textarea>
         <label class="holder">توضیحات</label>
     </div>

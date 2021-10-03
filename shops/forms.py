@@ -53,6 +53,7 @@ class AddProductForm(forms.Form):
     keywords = StringTagField()
     attrs = JsonField()
     price = forms.IntegerField()
+    free_delivery = forms.BooleanField()
     
     def clean_brand(self):
         id = self.cleaned_data['brand']

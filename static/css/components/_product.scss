@@ -51,9 +51,10 @@
             --ionicon-stroke-width: 24px;
             cursor: pointer;
 
-            &:hover {
-                color: gray;
+            &:hover, &.added {
+                color: rgb(53, 51, 51);
             }
+          
         }
         
         

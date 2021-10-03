@@ -10,31 +10,21 @@ from orders.models import Order
 
 
 def tss(request: HttpRequest):
-    
-    
     return render(request, 'topic/issue.html')
 
-
 def home(request:HttpRequest):
-
     return render(request, 'index/home/home.html', context= {
         'lss': range(30)
     })
 
-
 def aboutUs(request:HttpRequest):
     return render(request, 'index/aboutus.html');
-
-def rules(request:HttpRequest):
-    pass
 
 def contactUs(request:HttpRequest):
     pass
 
 def FAQS(request:HttpRequest):
-    pass
-
-
+    return render(request, 'index/FAQs.html')
 
 def get_province_cities(request:HttpRequest):
     print('sdfsf')
@@ -55,7 +45,7 @@ def get_province_cities(request:HttpRequest):
 
 
 def rules(request:HttpRequest):
-    return render(request, 'rules.html')
+    return render(request, 'index/rules.html')
 
 def restricted(request:HttpRequest,*args):
     return render(request,'registration/code_expiration.html')

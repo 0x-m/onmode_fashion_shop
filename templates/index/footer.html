@@ -43,8 +43,12 @@
             <li class="foo-item">
                 <a style="text-decoration: none;color:white" href="{% url 'index:aboutus' %}">درباره ما</a>
             </li>
-            <li class="foo-item">سوالات متداول</li>
-            <li class="foo-item">قوانین</li>
+            <li class="foo-item">
+                <a href="{% url 'index:faqs' %}">سوالت متداول</a>
+            </li>
+            <li class="foo-item">
+                <a href="{% url 'index:rules' %}">قوانین</a>
+            </li>
             <li class="foo-item">
                 <a href="{% url 'issues:issues'%}">ثبت شکایت</a>
             </li>

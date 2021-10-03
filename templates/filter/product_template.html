@@ -1,11 +1,16 @@
 {% load static %}
 {% for product in products %}
+    {% if rail == 'true' %}
+        <li class="splide__slide">
+    {% endif %}
     <om-product title="{{ product.name }}" 
         pid="{{product.id}}"
         link="{{ product.get_absolute_url }}"
         price="{{product.price}} تومان" 
         {%if product.discounts.last.is_valid  %}
         discountedprice="{{product.discounts.last.get_discounted_price }}تومان" 
+        badge = "{{ product.discounts.last.percent }}%"
+        badgeclass="badge-red"
         {% endif %}
         {% if product.images.first.image %}
         preview="{{ product.images.first.image.url }}"
@@ -17,4 +22,7 @@
         {% endif %}
     >
     </om-product>
+    {% if rail == 'true' %}
+        </li>
+    {% endif %}
 {% endfor %}

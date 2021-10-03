@@ -8,6 +8,7 @@ app_name = 'index'
 urlpatterns = [
     path('', views.home, name='home'),
     path('aboutus/', views.aboutUs, name='aboutus'),
+    path('faqs/', views.FAQS, name='faqs'),
     path('contactus', views.contactUs, name='contactus'),
     path('rules/',views.rules, name='rules'),
     path('cities/', views.get_province_cities, name='get_cities'),

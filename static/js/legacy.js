@@ -170,6 +170,8 @@ function prepare_product_info(command){
     const type = get_selecteds("types", true);
     const categories = get_selecteds("categories",false);
     const subtype = get_selecteds("subtypes", true);
+    const free_delivery = document.getElementById('free_delivery').checked;
+    
     const attrs =  get_attrs();
 
     const  colors = document.getElementById("colors").children;
@@ -285,7 +287,7 @@ function prepare_product_info(command){
     //otherwise, in the case of clean data::
 
     //---------------- return sanitized data-------------------------
-    const data = new FormData();
+    const data = new FormData(); //use form initializer...
     data.append("name", name);
     data.append("price", price);
     data.append("description", description);
@@ -299,6 +301,7 @@ function prepare_product_info(command){
     data.append("is_available",'True')
     data.append("categories",categories);
     data.append("brand", brand);
+    data.append('free_delivery', free_delivery);
     if (command == "add"){
         const images = document.getElementById("images").files;
         for (let i=0; i < images.length && i <= 5; i++){
@@ -308,6 +311,11 @@ function prepare_product_info(command){
     return data;
     //----------------------------------------------------
 }
+
+function toggle_search_box(){
+    var box = document.getElementById("search-box");
+    box.classList.toggle("show-box");
+ }
 
 function add_product(command){
     const data = prepare_product_info("add");

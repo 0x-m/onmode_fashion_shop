@@ -17,6 +17,7 @@ from django.db.models import Q
 from index.utils import get_provinces
 from .forms import AddProductForm, FilterForm, ShopInfoForm
 from django.contrib.staticfiles.storage import staticfiles_storage
+from random import shuffle
 
 @login_required
 def check_for_shop_name(request:HttpRequest, shop_name):
@@ -31,8 +32,7 @@ def add_product(request:HttpRequest):
     shop = get_object_or_404(Shop, seller=request.user, is_active=True)
     if request.method == "POST":
         form = AddProductForm(request.POST)
-        print(request.POST.get('keywords'))
-        print(request.POST.get('description'))
+        print(request.POST['free_delivery'])
         if form.is_valid():
             new_values = {
                 'shop': shop,
@@ -45,6 +45,7 @@ def add_product(request:HttpRequest):
                 'quantity' : form.cleaned_data['quantity'],
                 'keywords' : form.cleaned_data['keywords'],
                 'attrs' : form.cleaned_data['attrs'],
+            'free_delivery': form.cleaned_data['free_delivery']
                 
             }
             categories = form.cleaned_data['categories']
@@ -215,14 +216,9 @@ def get_all_products(request:HttpRequest):
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
     
-    return render(request,'product/all_product.html',{
+    return render(request,'index/all_products.html',{
         'page':page,
-        'brands': Brand.objects.all(),
-        'categories': Category.objects.all(),
-        'colors': Color.objects.all(),
-        'sizes': Size.objects.all(),
-        'subtypes': SubType.objects.all(),
-        'types': Type.objects.all(),
+
     })
 
 def filter(request:HttpRequest,shop_name=None):
@@ -315,7 +311,7 @@ def search(request:HttpRequest, pg):
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
         
-    return render(request,'product/all_products.html',{
+    return render(request,'index/search_result.html',{
         'page': page,
         'brands': Brand.objects.all(),
         'categories': Category.objects.all(),
@@ -446,4 +442,24 @@ def change_shop_banner(request:HttpRequest):
             return HttpResponse('logo changed successfully')
     
     return HttpResponseNotAllowed(['POST'])
+ 
+ 
+def get_boutiques(request: HttpRequest):
+    boutiques = Shop.objects.all()
+    boutique_list = list(boutiques)
+    shuffle(boutique_list)
+    print(len(boutiques), 'number of boutiques')
+#    # paginator = Paginator(boutiques, 100)
+#     pg_num = request.GET.get('pg')
+#     try:
+#         page = paginator.get_page(pg_num)
+#     except PageNotAnInteger:
+#         page = paginator.get_page(1)
+#     except EmptyPage:
+#         page = paginator.get_page(paginator.num_pages)
+    
+    return render(request, 'index/boutiques.html', {
+        'boutiques': boutique_list
+    })
+    
  

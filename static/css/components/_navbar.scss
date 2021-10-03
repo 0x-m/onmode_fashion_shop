@@ -1,10 +1,10 @@
 .navbar {
     display: flex;
     background-color: white;
+    border-bottom: 1px solid #efefee;
     z-index: 10;
     width: 100%;
-    padding-top: 1rem;
-    margin-bottom: 0.5rem;
+    padding: 1rem 0 1rem 0;
     .nav {
         flex: 70%;
         width: 100%;

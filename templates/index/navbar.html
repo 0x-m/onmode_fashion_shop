@@ -8,15 +8,15 @@
         آنمد
     </a>
    <div class="nav nav-md">
-    <a href="#" id="prods" class="nav-item" onclick="showMegaMenu();"  onmousemove="showMegaMenu();">محصولات</a>
-    <a href="#" class="nav-item">بوتیکها</a>
+    <a href="{% url 'shops:all_products' %}" id="prods" class="nav-item" onclick="showMegaMenu();"  onmousemove="showMegaMenu();">محصولات</a>
+    <a href="{% url 'shops:boutiques' %}" class="nav-item">بوتیکها</a>
     <a href="#" class="nav-item">شگفت انگیز</a>
     <a href="#" class="nav-item">وبلاگ</a>
     <a href="{% url 'index:aboutus' %}" class="nav-item">درباره ما</a>
    </div>
    
    <div class="nav" style="flex:10%;display:flex;justify-content:flex-end;align-items:center;">
-       <ion-icon id="ass" onclick="testcc();"  name="search-outline" class="icon"></ion-icon>
+       <ion-icon id="ass" onclick="toggle_search_box();"  name="search-outline" class="icon"></ion-icon>
             <ion-icon id="user-icon"  onclick="open_dashboard();" name="person-outline" class="icon {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
             <div id="cart-icon" style="position: relative;" class="{% if not user.is_authenticated %}hi{% endif %}">
                 <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
@@ -27,4 +27,5 @@
        <ion-icon name="menu-outline" onclick="open_mobile_menu();"  class="icon vi"></ion-icon>
    </div>
 </nav>
+{% include 'index/searchbox.html' %}
 {% include 'index/home/megamenu.html' %}

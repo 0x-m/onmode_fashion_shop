@@ -1,4 +1,4 @@
-{%  extends 'base.html' %}
+{%  extends 'index/base.html' %}
 
 
 {% block title %}قوانین{% endblock %}
@@ -7,6 +7,7 @@
 <style>
     .ax {
         text-align: justify;
+        text-justify: newspaper;
         font-size: 0.7rem;
     }
     h1 {
@@ -15,8 +16,12 @@
     h2{
         font-size: 1rem;
     }
+    .container {
+        flex-direction: column;
+
+    }
 </style>
-<div class="container" style="width: 100%;padding:1rem">
+<div class="container" style="padding:1rem">
     <h1>مقدمه</h1>
    <section style="padding-right: 1rem;padding-left:1rem">
         <p class="ax">

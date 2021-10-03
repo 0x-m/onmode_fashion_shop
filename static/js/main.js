@@ -30,7 +30,7 @@ function comboboxSelectItem()
          }
          //-----------------------------------------
 
-         item.classList.add("selected"); //select clicked item
+        item.classList.add("selected"); //select clicked item
 
          //add item's text and toggle icon to combobox header
          var sp = document.createElement("span");

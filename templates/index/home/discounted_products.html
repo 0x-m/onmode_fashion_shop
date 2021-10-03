@@ -1,55 +1,14 @@
 {% load static %}
+{% load filter_product %}
 <div  style="display: flex;justify-content:center;margin-top:2rem;margin-bottom:1rem">
     <p style="border-bottom:1px solid gray;padding:0.5rem 0.8rem 0.5rem 0.8rem"">
         ویژه آنمد
     </p>
 </div>
-<div dir="ltr" style="width: 85%;margin: 0.5rem auto;" class="splide" id="discounteds" data-splide='{ "autoplay": "true", "interval": "4000","perPage":4}'>
+<div dir="ltr" style="width: 85%;margin: 0.5rem auto;" class="splide" id="discounteds" data-splide='{ "autoplay": "true", "interval": "4000","perPage":4,"direction":"rtl"}'>
 	<div class="splide__track">
 		<ul class="splide__list">
-			<li  class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-2.jpg' %}"></om-product>
-            </li>
-			<li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-
-            </li>
-			<li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-3.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-4.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-5.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-6.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-7.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-5.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-4.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-2.jpg' %}"></om-product>
-            </li>
+            {% filter_product discounted='true' top=10 %}
 		</ul>
 	</div>
 </div>

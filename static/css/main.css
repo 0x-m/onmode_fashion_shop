@@ -487,8 +487,8 @@
   --ionicon-stroke-width: 24px;
   cursor: pointer;
 }
-.product .action .icon:hover {
-  color: gray;
+.product .action .icon:hover, .product .action .icon.added {
+  color: #353333;
 }
 
 @media screen and (min-width: 576px) {
@@ -742,9 +742,7 @@
   border-bottom: 1px solid #efefee;
   z-index: 10;
   width: 100%;
-  padding-top: 1rem;
-  padding-bottom: 0.6rem ;
-
+  padding: 1rem 0 1rem 0;
 }
 .navbar .nav {
   flex: 70%;
@@ -1215,8 +1213,7 @@
     width: 100%;
   }
 }
-/*-------------checkbox-----------------*/
-.switch{
+.switch {
   font-size: 30px;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1229,34 +1226,31 @@
   position: relative;
   cursor: pointer;
   outline: none;
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  }
-  
-
- .switch:after{
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.switch::after {
   position: absolute;
   content: "";
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
   background: lightgray;
-  transform-origin: center,center;
-  -webkit-transform: scale(.7);
-  transform: scale(.7);
+  transform-origin: center, center;
+  -webkit-transform: scale(0.7);
+  transform: scale(0.7);
   left: 0;
   top: -1px;
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  }
-  
-  .switch:checked:after{
-      left: 1.4rem;
-      background-color: rgb(92, 92, 92);
-  }
-  .switch:checked {
-      border-color: gray;
-  }
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.switch:checked::after {
+  left: 1.4rem;
+  background-color: #5c5c5c;
+}
+.switch:checked {
+  border-color: gray;
+}
 
 .comment {
   position: relative;
@@ -1306,6 +1300,59 @@
 
   .comment-text-box {
     width: 85%;
+  }
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  height: 0;
+  transition: 0.4s;
+  border-bottom: 1px solid #efefef;
+}
+.search-box .search-text {
+  appearance: none;
+  outline: none;
+  border: none;
+  width: 100%;
+  outline: none;
+  font-size: 2rem;
+  color: gray;
+  background-color: white;
+  padding-right: 1rem;
+}
+.search-box .search-text::placeholder {
+  color: #ccc;
+}
+.search-box .close-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-weight: 20;
+  padding: 1em;
+  cursor: pointer;
+  color: #c9c9c9;
+  background-color: white;
+}
+.search-box .close-btn:hover {
+  color: #777;
+}
+
+.show-box {
+  height: 12vh;
+}
+
+@media screen and (max-width: 675px) {
+  .show-box {
+    height: 10vh;
+  }
+
+  .search-box {
+    font-size: 0.8em;
   }
 }
 

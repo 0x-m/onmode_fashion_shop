@@ -6,6 +6,7 @@ from . import views
 app_name = 'shops'
 urlpatterns  = [
    # path('appeal/', views.make_appeal, name='appeal'),
+    path('boutiques/', views.get_boutiques, name='boutiques'),
     path('product/detail/<product_id>/', views.product_detail, name='detail'),
     path('product/add/', views.add_product, name='add_product'),
     path('product/edit/<product_id>/', views.edit_product, name='edit_product'),

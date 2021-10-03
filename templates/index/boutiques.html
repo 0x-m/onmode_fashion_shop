@@ -1,0 +1,45 @@
+{% extends 'index/base.html' %}
+{% load static %}
+
+{% block content%}
+<style>
+    .ava {
+        margin: 0.5rem;
+        
+    }
+
+    .ccd {
+        text-decoration: none;
+        text-align: center;
+        padding: 0.7rem;
+        color: #111;
+       
+        border: 1px solid #333;
+        width: 150px;
+        transition: 0.2s;
+    }
+
+    .ccd:hover {
+        background-color: #111;
+        color: white;
+    }
+
+    .ccd:active {
+        transform: translate(3%,3%);
+    }
+
+    @media screen and (max-width: 400px) {
+        .mds {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<div class="container horizontal justify-center mds" style="flex-wrap: wrap;width:80%;margin: 1rem auto;">
+    {% for bot in boutiques %}
+    <a class="ava" href="{{ bot.get_absolute_url }}">
+        <img loading="lazy" src="{% if bot.logo %}{{ bot.logo.url }}{% else %} {% static 'img/sampleproduct/noimage.png' %} {% endif %}" style="width: 64px; height:64px">
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

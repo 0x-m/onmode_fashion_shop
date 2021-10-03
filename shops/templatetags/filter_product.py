@@ -10,7 +10,7 @@ def to_int_list(str_list: str):
     print(str_list)
     return [int(i) for i in str_list.split(',')]
 
-@register.inclusion_tag('filter/filter_template.html')
+@register.inclusion_tag('filter/product_template.html')
 def filter_product(types="",
                    subtypes="",
                    categories="",
@@ -31,9 +31,9 @@ def filter_product(types="",
                    max_likes=0,
                    min_sales=0,
                    max_sales=0,
-                   ):
+                   rail='false'):
     products = Product.objects.all()
-    
+    print(categories,'cats......')
     if types:
         products &= products.filter(type__id__in=to_int_list(types))
     if subtypes:
@@ -94,5 +94,9 @@ def filter_product(types="",
     if len(products) >= top:
         products = products[:top]
             
-    return {'products': products}
+    return {'products': products, 'rail': rail}
 
+
+@register.filter('toString')
+def toString(i):
+    return str(i)

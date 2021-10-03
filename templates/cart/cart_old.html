@@ -421,6 +421,7 @@ background-color: rgb(45, 123, 190) !important;
 </div>  -->
 <div class="cart-container">
     <div class="cart-list">
+        
         {% for item in cart %}
         <div class="cart-item">
             <span data-id="{{item.product.id}}" onclick="remove_from_cart();" class="fa fa-trash-o remove-product"></span>

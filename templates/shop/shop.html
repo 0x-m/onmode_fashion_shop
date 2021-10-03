@@ -1,5 +1,6 @@
 {% extends 'index/base.html' %}
 {% load static %}
+{% load render_products %}
 {% block content %}
 <style>
     a {
@@ -111,9 +112,6 @@
     <div class="shop-action" style="padding-bottom: 0.3rem;">
         <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem" onclick="show_filter();" class="btn-tiny">فیلتر</button>
         {% if user.shop.first.id == shop.id %}
-        <!-- <button onclick="get_edit_shop_form();" style="min-width: 125px;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem;margin-left:0.3rem" class="btn-tiny ssh">
-            ویرایش بوتیک
-        </button> -->
         <label class="dropdown">
             <div class="dd-button">
               مدیریت بوتیک
@@ -127,8 +125,6 @@
               </li> 
             </ul>
           </label>
-        <div class="shop-manage-dropdown"></div>
-        <!-- <button style="min-width:128px;background-color:rgb(255, 57, 57);font-size:0.8rem;color:white;margin-right:0px;" class="btn-tiny" onclick="get_add_product_view();">محصول جدید</button> -->
         {% endif %}
     </div>
 
@@ -137,26 +133,7 @@
     <! ----------------------------------->
    
     <div  class="shop-products">
-        {% for product in page.object_list %}
-        <om-product title="{{ product.name }}" 
-                    pid="{{product.id}}"
-                    link="{{ product.get_absolute_url }}"
-                    price="{{product.price}} تومان" 
-                    {%if product.discounts.last.is_valid  %}
-                    discountedprice="{{product.discounts.last.get_discounted_price }}تومان" 
-                    {% endif %}
-                    {% if product.images.first.image %}
-                    preview="{{ product.images.first.image.url }}"
-                    {% else %}
-                    preview="{% static 'img/sampleproduct/noimage.png' %}"
-                    {% endif %}
-                    {% if product.shop.id == user.shop.first.id %}
-                    editable
-                    {% endif %}
-                    >
-        </om-product>
-
-        {% endfor %}
+      {% render_products page.object_list %}
     </div>
 
     <div class="pagination">    

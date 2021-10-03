@@ -169,12 +169,14 @@ class Product extends HTMLElement {
         get('/cart/add/' + this.pid + '/', function(resp, status) {
             update_cart_badge('increment');
         });
+        this.querySelector('#a1').classList.toggle('added')
     }
 
     _addToFavs() {
         get('/favourites/add/' + this.pid + '/', function(resp, status) {
 
         });
+        this.querySelector('#a2').classList.toggle('added')
     }
 
     _edit() {
