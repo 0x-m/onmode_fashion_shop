@@ -90,7 +90,7 @@ class Type(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=50,blank=True, unique=True)
     description = models.CharField(verbose_name=_('Description'),max_length=500,null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
-    atrrs = models.JSONField(verbose_name=_('Attributes'),null=True, blank=True)
+    atrrs = OldJSONField(verbose_name=_('Attributes'),null=True, blank=True)
     has_color = models.BooleanField(default=True)
     has_size = models.BooleanField(default=True)
 
