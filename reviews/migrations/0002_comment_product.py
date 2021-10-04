@@ -10,13 +10,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('shops', '0001_initial'),
-        ('favourites', '0001_initial'),
+        ('reviews', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='favourite',
+            model_name='comment',
             name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='favs', to='shops.product', verbose_name='Product'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shops.product', verbose_name='product'),
         ),
     ]
