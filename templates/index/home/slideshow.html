@@ -1,9 +1,9 @@
 {% load static %}
-<div dir="ltr" class="splide" data-splide='{"type": "loop", "autoplay": "true", "interval": "4000"}'>
+<!-- <div dir="ltr" class="splide" data-splide='{"type": "loop", "autoplay": "true", "interval": "4000"}'>
 	<div class="splide__track">
 		<ul class="splide__list">
 			<li  class="splide__slide">
-                <img src="{% static 'img/slideshow/a.jpg' %}" style="width: 100%;">
+                <img src="{% static 'img/slideshow/City girl-rafiki.svg' %}" style="width: 100%;">
             </li>
 			<li class="splide__slide">
                 <img src="{% static 'img/slideshow/b.jpg' %}" style="width: 100%;">
@@ -13,5 +13,52 @@
                 <img src="{% static 'img/slideshow/c.jpg' %}" style="width: 100%;">
             </li>
 		</ul>
+	</div>
+</div> -->
+<style>
+	.sd{
+        animation-name: ass;
+		animation-duration: 0.5s;
+		animation-timing-function:cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+	.fnt {
+		font-family: "Open Sans Condensed", sans-serif;
+		font-family: "Quicksand", sans-serif !important;
+		font-family: "Vibes", cursive !important;
+	}
+	.op {
+		animation-name: opp;
+		opacity: 0;
+		animation-duration: 1.3s;
+		animation-delay: 0.8s;
+		animation-fill-mode: forwards;
+	
+	}
+    @keyframes ass {
+        from {transform: scale(0,0);}
+        to {transform: scale(1,1);}
+    }
+	@keyframes opp {
+        from {opacity: 0; }
+        to {opacity: 1;}
+    }
+</style>
+<div class="pure-g" style="height: 100vh;" >
+	<div class="pure-u-1-1 pure-u-md-1-2">
+		<img class="sd" src="{% static 'img/slideshow/City girl-rafiki (1).svg' %}" style="width: 100%;">
+	</div>
+	<div class="pure-u-1-1 pure-u-md-1-2">
+		<div class="container vertical" style="width: 100%;height:100%;align-items:center;justify-content:center;background:white">
+			<p class="op fnt" style="font-size: 5rem;color:#555;color:rgb(238, 88, 88)">
+				با آنمد
+			</p>
+			<p class="op fnt" style="font-size: 3rem;color:#555;margin-top:2rem">
+				شعار شعار...
+			</p>
+			<p class="op fnt" style="font-size: 1rem;margin-top:16px;color:#666">
+				دسک
+			</p>
+		</div>
 	</div>
 </div>

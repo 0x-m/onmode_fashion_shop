@@ -1,13 +1,17 @@
+{% load static %}
 <style>
     .hi {
         display: none;
     }
+
+
+
 </style>
 <nav class="navbar sticky-md">
-    <a style="text-decoration: none;" href="{% url 'index:home'%}" class=" logo">
-        آنمد
+    <a style="text-decoration: none;position:absolute;top:8px;right:16px" href="{% url 'index:home'%}">
+        <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 60%;background:transparent">
     </a>
-   <div class="nav nav-md">
+   <div class="nav nav-md" style="margin-right: 100px;margin-top:8px">
     <a href="{% url 'shops:all_products' %}" id="prods" class="nav-item" onclick="showMegaMenu();"  onmousemove="showMegaMenu();">محصولات</a>
     <a href="{% url 'shops:boutiques' %}" class="nav-item">بوتیکها</a>
     <a href="#" class="nav-item">شگفت انگیز</a>

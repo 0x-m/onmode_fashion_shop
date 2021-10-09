@@ -738,11 +738,12 @@
 
 .navbar {
   display: flex;
-  background-color: white;
-  border-bottom: 1px solid #efefee;
+ 
   z-index: 10;
+
   width: 100%;
   padding: 1rem 0 1rem 0;
+
 }
 .navbar .nav {
   flex: 70%;
@@ -1311,7 +1312,7 @@
   overflow: hidden;
   height: 0;
   transition: 0.4s;
-  border-bottom: 1px solid #efefef;
+ 
 }
 .search-box .search-text {
   appearance: none;
@@ -1344,6 +1345,7 @@
 
 .show-box {
   height: 12vh;
+  border-bottom: 1px solid #efefef;
 }
 
 @media screen and (max-width: 675px) {
