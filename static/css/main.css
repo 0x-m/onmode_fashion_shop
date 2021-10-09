@@ -761,7 +761,7 @@
   transition: 0.3s;
 }
 .navbar .nav .nav-item:hover {
-  border-bottom-color: gray;
+  border-color: #666;
 }
 .navbar .nav .icon {
   font-size: 1.7em;
