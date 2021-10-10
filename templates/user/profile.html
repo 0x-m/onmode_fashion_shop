@@ -21,15 +21,15 @@
             <input name="first_name" class="text"  id="profile-first_name"  type="text"  value="{{user.first_name}}" required />
             <label class="holder">نام </label>
         </div>
-        <div class="txt-box mt-1">
+        <div class="txt-box mt-05">
             <input class="text"   id="profile-last_name" name="last_name"  type="text"  value="{{ user.last_name }}" required />
             <label class="holder" >نام خانوادگی</label>
         </div>
-        <div class="txt-box mt-1">
+        <div class="txt-box mt-05">
             <input class="text"  onblur="validate_email();" name="email" id="profile-email" type="email"  value="{{user.email}}" required />
             <label class="holder" >ایمیل</label>
         </div>
-        <div class="txt-box mt-1">
+        <div class="txt-box mt-05">
             <input style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" name="merchan_card" id="profile-merchan_card" class="text" type="text"  value="{{user.merchan_card}}" required />
             <label class="holder">شماره کارت: </label>
         </div>
@@ -51,22 +51,22 @@
             {% endfor %}
         </datalist>
 
-        <p class="txt-box mt-1">
+        <p class="txt-box mt-05">
             <input  autoComplete="off" list="cities" name="city"  id="profile-city" class="text" type="text"  value="{{user.address.city}}" required />
             <label class="holder" >شهرستان</label>
         </p>
         <datalist id="cities">
             <option value=" "></option>
         </datalist> 
-        <p class="txt-box mt-1">
+        <p class="txt-box mt-05">
             <input name="town"  id="profile-town" class="text" type="text"  value="{{user.address.town}}" required/>
             <label class="holder">شهر</label>
         </p>
-        <p class="txt-box mt-1">
+        <p class="txt-box mt-05">
             <input  id="postal_code" name="postal_code" class="text" type="text"  value="{{user.address.postal_code}}" required/>
             <label class="holder">کد پستی</label>
         </p>
-        <p class="txt-box mt-1">
+        <p class="txt-box mt-05">
             <textarea name="description" id="profile-description" rows="5"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
             <label class="holder">نشانی</label>
         </p>

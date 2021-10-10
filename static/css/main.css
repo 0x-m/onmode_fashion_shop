@@ -992,7 +992,7 @@
 }
 
 .txt-box {
-  border: 1px solid lightgray;
+  border: 1px solid #777;
   padding: 0.2rem;
   position: relative;
 }
@@ -1000,9 +1000,9 @@
 .txt-box .text {
   outline: none;
   border: none;
-  padding: 0.5rem;
-  font-size: 1rem;
-  color: gray;
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  color: rgb(90, 90, 90);
   width: 100%;
 }
 
@@ -1010,9 +1010,10 @@
   position: absolute;
   right: 5px;
   top: 50%;
+  font-size: 0.9rem;
   transform: translate(0, -50%);
-  color: lightgray;
-  padding: 0.2rem;
+  color: rgb(150, 150, 150);
+  padding: 0.1rem;
   background-color: transparent;
   transition: 0.2s;
   cursor: text;

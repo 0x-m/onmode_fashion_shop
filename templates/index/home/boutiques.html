@@ -5,18 +5,25 @@
         margin: 0.5rem;
         
     }
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 576px) {
         .mds {
             width: 100% !important;
         }
     }
 
 </style>
-<div class="container horizontal" style="flex-wrap: wrap;width:80%;height:100%;margin: 1rem auto;justify-content:center;align-items:center;margin-top:2rem">
+<div class="container horizontal msd" style="flex-wrap: wrap;width:85%;height:100%;margin: 3rem auto;justify-content:center;align-items:center;">
+    {% comment %}
     {% for bot in boutiques %}
     <a class="ava" href="{{ bot.get_absolute_url }}">
         <img loading="lazy" src="{% if bot.logo %}{{ bot.logo.url }}{% else %} {% static 'img/sampleproduct/noimage.png' %} {% endif %}" style="width: 64px; height:64px">
     </a>
     {% endfor %}
-    <button class="btn cta" style="width: 30%;margin-top:1rem;background:rgb(247, 87, 87);border:none">به ما بپیوندید!</button>
+    {% endcomment %}
+    {% for i in lss %}
+    <a class="ava" href="#">
+        <img loading="lazy" src="https://i.pravatar.cc/150?img={{i}}" style="width: 64px; height:64px">
+    </a>
+    {% endfor %}
 </div>
+<button class="btn cta" style="width: 30%;margin:1rem auto;background:rgb(247, 87, 87);border:none;font-size:0.9rem">به ما بپیوندید!</button>

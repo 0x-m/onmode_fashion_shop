@@ -49,14 +49,6 @@
                 {% else %}
                     <img class="gallery-preview" src="{% static 'img/res/noimg.jpg' %}" style="width: 100%;">
                 {% endif %}
-                <!-- <img class="gallery-preview" src="{% static 'img/sampleproduct/product-1.jpg'%}" />
-                <div class="thumbs">
-                    <img src="{% static 'img/sampleproduct/product-1.jpg'%}" class="thumb thumb--active">
-                    <img src="{% static 'img/sampleproduct/product-2.jpg'%}" class="thumb">
-                    <img src="{% static 'img/sampleproduct/product-3.jpg'%}" class="thumb">
-                    <img src="{% static 'img/sampleproduct/product-4.jpg'%}" class="thumb">
-                    <img src="{% static 'img/sampleproduct/product-4.jpg'%}" class="thumb">
-                </div> -->
                 <div class="thumbs">
                     {% for item in product.images.all %}
                     {% if item.image %}
