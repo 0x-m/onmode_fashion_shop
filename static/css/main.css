@@ -776,7 +776,7 @@
   align-items: center;
 }
 .navbar .nav .nav-item {
-  color: gray;
+  color: rgb(143, 143, 143);
   padding: 0.5rem;
   font-size: 0.9rem;
   text-decoration: none;
@@ -788,7 +788,7 @@
 }
 .navbar .nav .icon {
   font-size: 1.7em;
-  color: #aaa;
+  color: rgb(136, 136, 136);
   --ionicon-stroke-width: 24px;
   margin-left: 0.5rem;
   padding: 0.2rem;
