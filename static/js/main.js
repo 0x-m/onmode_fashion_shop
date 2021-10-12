@@ -353,6 +353,7 @@ function delete_attr(){
 }
 
 function select_tab(){
+    console.log("dasddasdsad");
     const target = event.target;
     if (target.classList.contains('tab-item')){
         const tab_id = target.dataset['tab'];

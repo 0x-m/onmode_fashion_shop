@@ -10,71 +10,68 @@
         display: flex;
         justify-content: center;
     }
+    select {
+        padding: 0.5rem;
+        border: 1px solid rgb(173, 173, 173);
+        background-color: white;
+        outline: none;
+        font-size: 0.8rem;
+    }
 </style>
-<div class="container vertical" style="width:90%;margin: 0.5rem auto;justify-content:flex-start;align-items:center">
-    <div class="txt-center">
-        <ion-icon name="person-outline"   style="font-size: 7rem;color:rgba(150, 150, 150, 0.8);margin:0.5rem auto;--ionicon-stroke-width: 12px;"></ion-icon>
-        <span style="font-size: 1.1rem;color:rgb(150, 150, 150);display:block;margin-top: -0.5rem">{{ user.phone_no}}</span>
+<div class="container vertical" style="width:90%;margin: 0.5rem auto;justify-content:flex-start;align-items:flex-start">
+    <div class="container horizontal" style="width: 100%;">
+        <ion-icon name="person-outline"   style="font-size: 7rem;color:rgba(150, 150, 150, 0.8);margin-left:0.7rem;--ionicon-stroke-width: 12px;"></ion-icon>
+        <!-- <span style="font-size: 1.1rem;color:rgb(150, 150, 150);display:block;margin-top: -0.5rem">{{ user.phone_no}}</span> -->
+        <div class="container vertical" style="width: 100%;">
+            <div  class="txt-box mt-1">
+                <input name="first_name" class="text"  id="profile-first_name"  type="text"  value="{{user.first_name}}" required />
+                <label class="holder">نام </label>
+            </div>
+            <div class="txt-box mt-1">
+                <input class="text"   id="profile-last_name" name="last_name"  type="text"  value="{{ user.last_name }}" required />
+                <label class="holder" >نام خانوادگی</label>
+            </div>
+        </div>
     </div>
     <form style="padding: 0;width:100%" id="personal_info">
-        <div  class="txt-box mt-1">
-            <input name="first_name" class="text"  id="profile-first_name"  type="text"  value="{{user.first_name}}" required />
-            <label class="holder">نام </label>
-        </div>
-        <div class="txt-box mt-05">
-            <input class="text"   id="profile-last_name" name="last_name"  type="text"  value="{{ user.last_name }}" required />
-            <label class="holder" >نام خانوادگی</label>
-        </div>
-        <div class="txt-box mt-05">
-            <input class="text"  onblur="validate_email();" name="email" id="profile-email" type="email"  value="{{user.email}}" required />
+        <div class="txt-box ">
+            <input class="text"  onblur="validate_email();" name="email" id="profile-email" type="email"  value="{% if user.email %}{{user.email}}{% endif %}" required />
             <label class="holder" >ایمیل</label>
         </div>
-        <div class="txt-box mt-05">
-            <input style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" name="merchan_card" id="profile-merchan_card" class="text" type="text"  value="{{user.merchan_card}}" required />
+        <div class="txt-box mt-1">
+            <input style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" name="merchan_card" id="profile-merchan_card" class="text" type="text"  value="{% if user.merchan_card %}{{user.merchan_card}}{% endif %}" required />
             <label class="holder">شماره کارت: </label>
         </div>
-        <div style="display:inline-flex;justify-content:space-between;align-items:center;margin-top:1rem;width:100%;">
-            <label style="font-size: 0.8rem;text-align:right;">جنسیت: </label>
-            <label class="radio-box">مرد<input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}></label>
-            <label class="radio-box" style="margin-right: 1rem;">زن<input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}></label>
+        <label style="font-size: 0.8rem;text-align:right; margin-top:1.5rem;display:block">جنسیت: </label>
+        <div class="container horizontal" style="justify-content:space-evenly;">
+            <label class="radio-box"><input type="radio" name="gender" style="margin: 0 0 0  0.5rem;" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>مرد</label>
+            <label  class="radio-box" ><input type="radio" style="margin: 0 0 0 0.5rem" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>زن</label>    
         </div>
-        <div style="width: 100%;margin-top:3rem;border:1px solid gray;position:relative">
-            <span style="position:absolute;left:40%;top:-1rem;padding:0.5rem;background-color:white">آدرس</span>
+        <div class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
+            <select required onchange="get_cities();" id="provinces" name="state"  style="width: 48%;">
+                <option value="-1" disabled selected>استان</option>
+                {% for province in provinces %}
+                    <option  value="{{province.id}}">{{province.name}}</option>
+                {% endfor %}
+            </select>
+            <select id="cities" style="width: 48%;">
+                <option>شهرستان</option>
+            </select>
         </div>
         <p class="txt-box mt-1">
-            <input onblur="get_cities();"  list="provinces" name="state"  id="profile-state" class="text" type="text" value="{{user.address.state}}" required/>
-            <label class="holder" for="state">استان</label>
-        </p>
-        <datalist  id="provinces">
-            {% for province in provinces %}
-                    <option  data-id="{{province.id}}" value="{{province.name}}"></option>
-            {% endfor %}
-        </datalist>
-
-        <p class="txt-box mt-05">
-            <input  autoComplete="off" list="cities" name="city"  id="profile-city" class="text" type="text"  value="{{user.address.city}}" required />
-            <label class="holder" >شهرستان</label>
-        </p>
-        <datalist id="cities">
-            <option value=" "></option>
-        </datalist> 
-        <p class="txt-box mt-05">
-            <input name="town"  id="profile-town" class="text" type="text"  value="{{user.address.town}}" required/>
-            <label class="holder">شهر</label>
-        </p>
-        <p class="txt-box mt-05">
             <input  id="postal_code" name="postal_code" class="text" type="text"  value="{{user.address.postal_code}}" required/>
             <label class="holder">کد پستی</label>
         </p>
-        <p class="txt-box mt-05">
-            <textarea name="description" id="profile-description" rows="5"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
+        <p class="txt-box mt-1">
+            <textarea name="description" id="profile-description" rows="3"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
             <label class="holder">نشانی</label>
         </p>
+
+        <p class="container horizontal" style="justify-content:space-between;width:85%;margin:1rem auto;margin-bottom:1rem">
+            <button style="min-width:48%;background:rgb(240, 94, 94);color:white;border:0" class="btn" onclick="edit_profile();">ثبت</button>
+            <button style="min-width:48%" class="btn" onclick="get_enrollment_form();">لغو</button>
+        </p>                
     </form>
-    <p class="container horizontal mt-1" style="justify-content:space-between;width:85%">
-        <button style="min-width:45%" class="btn" onclick="edit_profile();">ثبت</button>
-        <button style="min-width:45%" class="btn" onclick="get_enrollment_form();">لغو</button>
-    </p>
 
 </div>
 

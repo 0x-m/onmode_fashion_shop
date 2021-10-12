@@ -953,31 +953,31 @@ function show_shop_order_detail(){
 function get_cities(){
     const province_name = event.target.value;
     let province_id = null
-    const provinces = document.getElementById("provinces").getElementsByTagName("option");
-    
-    for (let i=0; i < provinces.length; ++i){
-        if(provinces[i].value.trim() == province_name.trim()){
-            province_id = provinces[i].dataset["id"];
-            break;
-        }
-    }
+    // const provinces = document.getElementById("provinces").getElementsByTagName("option");
 
+    // for (let i=0; i < provinces.length; ++i){
+    //     if(provinces[i].value.trim() == province_name.trim()){
+    //         province_id = provinces[i].dataset["id"];
+    //         break;
+    //     }
+    // }
 
-    if (province_id != null && province_id != ""){
-        fetch("/cities/" + "?province_id=" + province_id ,{
+    // selected_prov = document.getElementById('provinces').selectedOptions[0];
+    selected_prov = event.target.value;
+    if (selected_prov != -1){
+        fetch("/cities/" + "?province_id=" + selected_prov ,{
             header:{
                 "Content-type":"applicatin/json"
             }
         }).then((res) => {
             res.json().then((data)=> {
+                console.log(data);
                 const cities = document.getElementById("cities");
                 const fragment = document.createDocumentFragment();
-
-                cities.innerHTML = "";
-        
+                cities.innerHTML = '';
                 for(let i=0; i< data['cities'].length; ++i){
                     let option  = document.createElement("option");
-                    option.value = data['cities'][i];
+                    option.innerText = data['cities'][i];
                     fragment.appendChild(option);
                 }
                 cities.appendChild(fragment);
