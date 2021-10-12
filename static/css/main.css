@@ -56,27 +56,37 @@
 
 .drawer {
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 0;
-  display: flex;
+  top: 0px;
+  right: 0px;
+  width: 95%;
+  border: 1px solid #efefee;
   flex-direction: column;
-  height: 100vh;
+  height: 97%;
+  margin: 8px;
+  border-radius: 4px;
   z-index: 800;
+  opacity: 0;
+  display: none;
   background-color: white;
-  box-shadow: 1px 2px 4px #aaa;
   transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .drawer .header {
   position: relative;
   width: 100%;
+  
   flex: 8%;
-  background-color: rgba(240, 240, 240, 0.5);
+  /* background-color: rgba(240, 240, 240, 0.5); */
+  background-color: #fff;
+  border-radius: 4px 4px 0 0;
 }
 .drawer .header .close {
   cursor: pointer;
   color: gray;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translate(0, -50%);
   font-weight: 10;
 }
 .drawer .header .close:hover {
@@ -94,40 +104,53 @@
 .drawer .content {
   width: 100%;
   flex: 85%;
+  padding: 0.3rem;
   background-color: white;
   overflow: auto;
   position: relative;
+  border-top: 1px solid #efefee;
+  border-bottom: 1px solid #efefee;
 }
 .drawer .footer {
   bottom: 0;
+  border-radius: 0 0 4px 4px;
   width: 100%;
   flex: 5%;
   overflow: hidden;
-  background-color: rgba(240, 240, 240, 0.5);
+  /* background-color: rgba(240, 240, 240, 0.5); */
+  background-color: #fff;
 }
 
 .drawer-open {
-  width: 100% !important;
+  animation-name: ssh;
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation-fill-mode: forwards;
+  display: flex;
 }
 
+@keyframes ssh {
+  from {opacity: 0;transform: scale(0,0);}
+  to {opacity: 1;transform: scale(1,1);}
+}
 @media screen and (min-width: 576px) {
-  .drawer-open {
+  .drawer {
     width: 90% !important;
   }
 }
 @media screen and (min-width: 768px) {
-  .drawer-open {
+  .drawer{
     width: 60% !important;
   }
 }
 @media screen and (min-width: 996px) {
-  .drawer-open {
+  .drawer {
     width: 70% !important;
   }
 }
 @media screen and (min-width: 1200px) {
-  .drawer-open {
-    width: 30% !important;
+  .drawer {
+    width: 28% !important;
   }
 }
 .no-scroll {
@@ -849,7 +872,7 @@
   height: 100%;
   min-height: 100%;
   width: 100% !important;
-  background-color: rgba(100, 100, 100, 0.5);
+  background-color: white;
 }
 
 @keyframes spin {
@@ -992,7 +1015,7 @@
 }
 
 .txt-box {
-  border: 1px solid #777;
+  border-bottom: 1px solid rgb(168, 168, 168);
   padding: 0.2rem;
   position: relative;
 }
@@ -1001,7 +1024,7 @@
   outline: none;
   border: none;
   padding: 0.3rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: rgb(90, 90, 90);
   width: 100%;
 }
@@ -1010,7 +1033,7 @@
   position: absolute;
   right: 5px;
   top: 50%;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transform: translate(0, -50%);
   color: rgb(150, 150, 150);
   padding: 0.1rem;
@@ -1024,7 +1047,7 @@
 .txt-box .text:focus ~ .holder,
 .txt-box .text:valid ~ .holder {
   top: 0;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   background-color: white;
   color: gray;
 }

@@ -595,7 +595,7 @@ function reset_password() {
 }
 
 function get_profile(){
-    load_view("/users/profile/","GET", null,false);
+    load_view("/users/profile/","GET", null);
 }
 
 let num_of_comment_pages = 0;
@@ -856,7 +856,7 @@ function edit_profile(){
 
         //-------------------fetch drawer---------------
         const drawer = document.getElementById('drawer');
-        const prevcontent = drawer.innerHTML;
+        const prevcontent = drawer.content;
         //-----------------------------------------------
 
         const err_container = document.createElement('div');

@@ -23,6 +23,10 @@ class Drawer extends HTMLElement {
     get state() {
         return this.status;
     }
+
+    get content() {
+        return this.querySelector('.content').innerHTML;
+    }
     constructor() {
         super();
         this.status = 'closed';
@@ -50,6 +54,7 @@ class Drawer extends HTMLElement {
         this.drawer.classList.add('drawer-open');
         this.status = 'opened';
         document.body.classList.add('no-scroll');
+        document.getElementById('body-overlay').style.display = 'block'
 
     }
 
@@ -58,6 +63,8 @@ class Drawer extends HTMLElement {
         this.status = 'closed';
         this._clear();
         document.body.classList.remove('no-scroll');
+        document.getElementById('body-overlay').style.display = 'none'
+
 
     }
 

@@ -1,7 +1,20 @@
 {% load static %}
 <div class="cart">
     {% if cart.is_empty %}
-        !سبد شما خالیست
+        <cart-item pid="1"
+                   title="sdfsdfsdf"
+                   preview= "{% static 'img/sampleproduct/product-1.jpg' %}"
+                   price="1000"
+                   description="dfsfsfsfsfsfsfsfsfsfsfsfjdskfsjflksfjskfs"
+                   discounted_price="120">
+        </cart-item>
+        <cart-item pid="1"
+                    title="sdfsdfsdf"
+                    preview= "{% static 'img/sampleproduct/product-1.jpg' %}"
+                    price="1000"
+                    description="dfsfsfsfsfsfsfsfsfsfsfsfjdskfsjflksfjskfs"
+                    discounted_price="120">
+        </cart-item>
     {% else %}
         {% for item in cart %}
             <cart-item pid="{{item.product.id}}"

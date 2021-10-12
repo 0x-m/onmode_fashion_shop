@@ -32,6 +32,15 @@
                 margin: 0;
                 box-sizing: border-box;
             }
+            .body-overlay {
+                display: none;
+                position: fixed;
+                width: 100%;
+                z-index: 500;
+                height: 100%;
+                background-color: rgba(120,120,120,0.7)
+                /*background-color: rgba(70, 70, 70, 0.8);*/
+            }
         </style>
  
         <script>
@@ -63,6 +72,9 @@
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
+        <div class="body-overlay" id="body-overlay">
+
+        </div>
         {% include 'index/navbar.html' %}
             {% block content %}
             
