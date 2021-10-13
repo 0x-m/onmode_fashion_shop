@@ -498,14 +498,14 @@ function validate_phone_number(phone_no) {
 }
 
 function enroll(){
-    const phone_no = document.getElementById('phone_no');
-    if (!validate_phone_number(phone_no.text)){
-       phone_no.error("شماره همراه وارد شده صحیح نمیباشد");
-       console.log('invalid', phone_no.text);
+    const phone_no = document.getElementById('phone-no');
+    const err = document.getElementById('phone-error');
+    if (!validate_phone_number(phone_no.value)){
+       err.innerText = "شماره همراه وارد شده صحیح نمیباشد";
        return;
     }
-    console.log(phone_no.text);
-    load_view('/users/enrollment/','post',"phone_no=" + phone_no.text.trim());
+    console.log(phone_no.value);
+    load_view('/users/enrollment/','post',"phone_no=" + phone_no.value.trim());
 }
 
 function show_search_page(){
@@ -539,11 +539,11 @@ function login(){
     //         document.getElementById('drawer').hideLoader();
     //     }
     // });
-    load_view('/users/login/', 'post', "password=" + pass.text, success = function() {
+    load_view('/users/login/', 'post', "password=" + pass.value, success = function() {
         _toggle_nav_actions();
 
     }, error=function() {
-        document.getElementById('password').error('رمز عبور اشتباه است');
+        document.getElementById('login-error').innerText = 'رمز عبور اشتباه است';
         document.getElementById('drawer').hideLoader();
     })
     
@@ -551,41 +551,45 @@ function login(){
 
 
 function verify_code(){
-    const code = document.getElementById('verification_code');
-    load_view('/users/verification/', 'post', 'code=' + code.text.trim(), 
+    const code = document.getElementById('verification-code');
+    const err = document.getElementById('verification-error');
+    load_view('/users/verification/', 'post', 'code=' + code.value.trim(), 
     function() {
         document.getElementById('drawer').hideLoader();
-        code.error('کد اشتباه است. دوباره تلاش کنید');
+        err.innerText =  'کد اشتباه است. دوباره تلاش کنید';
     });
 }
 
 function validate_password(){
-    let password = document.getElementById("password");
-    let confirm = document.getElementById("confirm");
-    const error = document.getElementById("error");
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+    const password_error = document.getElementById("password-error");
+    const confirm_err = document.getElementById('confirm-error');
     let rx = RegExp('(?=.*[0-9])(?=.*[!@#$%^&*.])(?=.{8,})');
-    if (password.text != confirm.text ){
-       confirm.error("تکرار رمز عبور صحیح نمیباشد");
+    if (password != confirm ){
+        confirm_err.innerText = "تکرار رمز عبور صحیح نمیباشد";
         return false;
     }
-    else if(password.text.length < 8){
-        password.error("رمز عبور باید حداقل هشت حرفی باشد");
+    else if(password.length < 8){
+        password_error.innerText = "رمز عبور باید حداقل هشت حرفی باشد";
         return false
     }
-    else if(! rx.test(password.text)){
-        password.error("رمز عبور باید شامل حروف اعداد و نمادها باشد");
+    else if(! rx.test(password)){
+        password_error.innerText = "رمز عبور باید شامل حروف اعداد و نمادها باشد";
         return false
     }
     return true;
 }
 function set_password(){
-    let password = document.getElementById("password").text;
-    let confirm = document.getElementById("confirm").text;
-    console.log(password, confirm);
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
     if (!validate_password()) {
         return;
     }
-    load_view('/users/set_password/', 'post', "password=" + password.trim() + "&confirm=" + confirm.trim(), success= function() {
+    document.getElementById('drawer').showLoader();
+    load_view('/users/set_password/', 'post',
+    "password=" + password.trim() + "&confirm=" + confirm.trim(), 
+    success=function() {
         _toggle_nav_actions();
     });
 }

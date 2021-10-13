@@ -175,7 +175,7 @@ def set_password(request:HttpRequest):
             if request.session.get('reset_verified'):
                 del request.session['reset_verified']
 
-            return render(request, 'user/dashboard.html');
+            return render(request, 'user/welcome.html')
         else:
             return HttpResponseUnprocessableEntity(form.errors)
     return HttpResponseNotAllowed(['POST'])
@@ -200,7 +200,7 @@ def login_user(request:HttpRequest):
                 if request.session.get('verified'):
                     del request.session['verified']
                 request.session.save()
-                return render(request, 'user/dashboard.html');
+                return render(request, 'user/welcome.html');
             else:
                 return HttpResponseBadRequest("incorrect password...try again")
             

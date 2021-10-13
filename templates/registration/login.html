@@ -1,5 +1,9 @@
-<div class="position--center" style="width: 70%;">
-    <custom-text id="password" style="width: 100%;" placeholder="پسورد" password></custom-text>
+<div class="position--center" style="margin:0 auto;width:80%">
+    <div class="txt-box w-100 mt-1">
+        <input id="password"  type="password" class="text" required>
+        <label class="holder">رمز عبور</label>
+    </div>
+    <p id="login-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
     <button onclick="login();" class="btn cta" dir="rtl" style="margin:0.7rem auto;width:100%;display:block">ورود</button>
     <p class="font-size--sm w-100 " style="text-align: center;">
         <span style="color:rgb(124, 120, 120);cursor:pointer;margin-top:0.5rem" onclick="reset_password();">رمز عبور خود را فراموش کرده ام.</span>
