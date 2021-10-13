@@ -16,8 +16,83 @@
         top: 0;
     }
 
+    .prof-dropdown {
+        display: inline-block;
+        position: relative;
 
+        
+    }
+    .prof-toggle {
+        display: inline-block;
+        
+    }
+    .prof-menu {
+        position: absolute;
+        top: 100%;
+        left: -30px;
+        z-index: 500;
+        margin: 0px 0;
+        padding: 0;
+        list-style-type: none;
+        background-color: white;
+        box-shadow: 1px 4px 6px #efefef;
+        border: 1px solid rgb(233, 233, 233);
+        width: 150px;
+        display: none;
+        border-radius: 4px;
+       
+    }
+    .prof-menu::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 45px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #efefef99;
+    }
+    .prof-menu li {
+        text-decoration: none;
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 10px 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        color: #666;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .prof-menu a {
+        text-decoration: none;
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 10px 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        color: #666;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .prof-menu li:hover {
+        background-color: #efefef55;
+    }
+    .prof-menu a:hover {
+        background-color: #efefef55;
 
+    }
+    .prof-dropdown:hover .prof-toggle {
+       color:#444;
+    }
+    .prof-dropdown:hover  .prof-menu {
+        display: block;
+    }
+
+    .prof-dropdown:focus-within .prof-menu {
+        display: block;
+    }
+    
 </style>
 
 <nav class="navbar" >
@@ -34,13 +109,59 @@
    
    <div class="nav" style="flex:10%;display:flex;justify-content:flex-end;align-items:center;">
        <ion-icon id="ass" onclick="toggle_search_box();"  name="search-outline" class="icon"></ion-icon>
-            <ion-icon id="user-icon"  onclick="open_dashboard();" name="person-outline" class="icon {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
-            <div id="cart-icon" style="position: relative;" class="{% if not user.is_authenticated %}hi{% endif %}">
-                <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
-                </ion-icon>
-                <span id="cart-num-badge"  style="border-radius:3px;position: absolute;top:2px;right:0;background:rgb(255, 52, 52);color:white;font-size:0.6rem;padding:0.3rem;">{{ cart|length }}</span>
-            </div>
-             <button id="login-button" onclick="open_dashboard()"  class="btn  {% if user.is_authenticated %}hi{% endif %}" style="margin-left: 0.5rem;font-size:0.7rem;">عضویت / ورود</button>
+        <div class="prof-dropdown">
+            <ion-icon id="user-icon"  name="person-outline" class="icon prof-toggle {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
+            <ul class="prof-menu">
+                <div style="width: 100%;background-color:#efefef33;padding:0.5rem;text-align:center">
+                    <span style="font-size:0.9rem;color:rgb(95, 95, 95);display:block;margin-top:0.0rem">{{ user.phone_no}}</span>
+                    <span style="font-size: 0.7rem;color:rgb(92, 92, 92);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>        
+                </div>
+                <li onclick="get_profile();">
+                    <ion-icon name="create-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                    <span>پروفایل</span>
+                </li>
+                <li onclick="get_profile();">
+                    <ion-icon name="wallet-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                    <span> کیف پول</span>
+                </li>
+                <a href="{% url 'orders:user_orders'  'pending' %}">
+                    <ion-icon name="bag-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                    <span>سفارشها</span>
+                </a>
+                <li  onclick="open_favourites();" >
+                    <ion-icon name="heart-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                    <span>علاقه مندیها</span>
+                </li>
+                <li onclick="get_messages();" style="position: relative;">
+                    <ion-icon name="notifications-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                    <span>پیامها</span>
+                    <span style="left:8px;top:50%;transform:translate(0,-50%);font-size:0.6rem;color:white;position:absolute;border-radius:6px;padding:0.3rem;display:block;background:rgb(255, 90, 90)">10</span>
+                </li>
+                {% if user.shop.first.is_active %}
+                    <a href="{{user.shop.first.get_absolute_url }}" >
+                        <ion-icon name="storefront-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                        <span>بوتیک من</span>
+                    </a>
+                {% else %}
+                    <li onclick="get_appeal_form();" >
+                        <ion-icon name="storefront-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                        <span>ایجاد بوتیک</span>
+                    </li>
+                {% endif %}
+                <a href="% url 'users:logout' %}">
+                    <ion-icon name="log-out-outline" style="font-size: 19px;margin-left:8px;color:#444"></ion-icon>
+                    <span style="color: rgb(243, 74, 74);"> خروج</span>
+                </a>
+                
+            </ul>
+
+        </div>
+        <div id="cart-icon" style="position: relative;" class="{% if not user.is_authenticated %}hi{% endif %}">
+            <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
+            </ion-icon>
+            <span id="cart-num-badge"  style="border-radius:3px;position: absolute;top:2px;right:0;background:rgb(255, 52, 52);color:white;font-size:0.6rem;padding:0.3rem;">{{ cart|length }}</span>
+        </div>
+            <button id="login-button" onclick="open_dashboard()"  class="btn  {% if user.is_authenticated %}hi{% endif %}" style="margin-left: 0.5rem;font-size:0.7rem;">عضویت / ورود</button>
        <ion-icon name="menu-outline" onclick="open_mobile_menu();"  class="icon vi"></ion-icon>
    </div>
 </nav>
