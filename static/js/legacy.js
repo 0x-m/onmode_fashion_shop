@@ -1065,3 +1065,7 @@ function filter_shop_orders(){
         return;
     window.open('/shop/orders/' + status[0] + '/','_self');
 }
+
+function get_wallet() {
+    load_view('/account/wallet', 'get',null)
+}

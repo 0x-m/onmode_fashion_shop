@@ -1,0 +1,37 @@
+<style>
+    .brick {
+        border: 1px solid gray;
+        border-radius: 6px;
+    }
+</style>
+<div class="container vertical position--center">
+    <div class="brick">
+        <p>کل موجودی</p>
+    </div>
+    <div class="container horizontal">
+        <div class="brick">
+            <p>قابل برداشت</p>
+        </div>
+        <div class="brick">
+            <p>
+                غیرقابل برداشت
+            </p>
+        </div>
+    </div>
+    <div class="tab-container">
+        <div onclick="select_tab()" class="tab-items">
+            <div data-tab="tab-widthraw" class="tab-item tab-item-selected">برداشت</div>
+            <div data-tab="tab-deposit" class="tab-item">واریز</div>
+        </div>
+        <div class="tab-contents">
+            <div class="tab-content tab-show-content" id="tab-widthraw">
+                <p>widthraw</p>
+            </div>
+            <div class="tab-content" id="tab-deposit">
+                <p>
+                    deposit
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

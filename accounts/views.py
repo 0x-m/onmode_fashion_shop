@@ -20,3 +20,7 @@ def checkout_request(request:HttpRequest):
     return render(request, 'accounts/checkout.html', {
         
     })
+    
+@login_required
+def get_wallet(request: HttpRequest):
+    return render(request, 'account/wallet.html')
