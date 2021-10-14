@@ -1069,3 +1069,7 @@ function filter_shop_orders(){
 function get_wallet() {
     load_view('/account/wallet', 'get',null)
 }
+
+function get_messages(){
+    load_view('/messages/', 'get')
+}

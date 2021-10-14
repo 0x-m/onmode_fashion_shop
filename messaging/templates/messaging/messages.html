@@ -1,86 +1,62 @@
-
- <style>
-    .container {
-        background-color: white;
-        margin-top: 2rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items:center;
-    }
+<style>
     .message {
+        border-bottom: 1px solid #efefee;
         width: 95%;
-        margin: 0.2rem;
-        margin-top: 1.5rem;
-        padding: 0.4rem;
-        word-wrap: break-word;
-        border-bottom: 1px solid rgb(223, 223, 223);
+        margin: 0.5rem auto;
+        padding-bottom: 0.2rem;
         position: relative;
-        font-size: 0.7rem;
-        color: black;
-        border-radius: 2px;
-        
     }
-    .delete-btn {
-
-        position: absolute;
-        bottom: -1rem;
+    .messge-title {
         font-size: 1rem;
-        padding-left: 0.7rem;
-        padding-right: 0.7rem;
-        left: 45%;
-        border: 0;
-        
-    }
-    .info{
-        border-right: 5px solid rgba(65, 247, 65,0.4);
-    }
-    .warning{
-        border-right: 5px solid rgba(245, 41, 5,0.4);
-    }
-    .alert {
-        border-right: 5px solid rgba(54, 155, 223,0.4);
-    }
-    
-</style>
+        font-weight: bold;
 
-<div class=" container">
-    <spanc class="fa fa-envelope" style="font-size:10rem;color:rgba(245,245,245,0.8);"></spanc>
-    <div class="container">
-        <div class="message info">
-            <button class="btn btn-primary delete-btn">
-                <span class="fa fa-trash"></span>
-            </button>
-            <p>
-               کاربر گرامی
-               بدین وسیله به ...
-            </p>
-        </div>
-        <div class="message warning">
-            <button class="btn btn-primary delete-btn">
-                <span class="fa fa-trash"></span>
-            </button>
-            <p>
-                پیام دریافتی شما به ملیبلیبلیبلیبلیبلیبلیبلببببببببببببببببببیلیل
-                لیبلیبلیبلیبلیبل
-                لیبلیبللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللی
-                سیبسیبببببببببببببببببببببببببببببببببببببببب
-                بسیببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببنزله....
-                و....
-            </p>
-        </div>
-        <div class="message alert">
-            <button class="btn btn-primary delete-btn">
-                <span class="fa fa-trash"></span>
-            </button>
-            <p>
-                پیام دریافتی شما به ملیبلیبلیبلیبلیبلیبلیبلببببببببببببببببببیلیل
-                لیبلیبلیبلیبلیبل
-                لیبلیبللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللی
-                سیبسیبببببببببببببببببببببببببببببببببببببببب
-                بسیببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببنزله....
-                و....
-            </p>
-        </div>
+    }
+    .message-body {
+        color: gray;
+        font-size: 0.8rem;
+        text-align: right;
+        text-justify:newspaper;
+        word-wrap: normal;
+        line-break: auto;
+        line-height: 1.3rem;
+        margin-top: 0.5rem;
+        margin-right: 0.5rem;
+        width: 85%;
+    }
+</style>
+<div class="container vertical">
+    <div class="message">
+        <ion-icon name="alert-circle-outline" style="font-size: 3.5rem;color:skyblue;position:absolute;top:3px;left:8px;"></ion-icon>
+        <p class="message-title">
+            سلام
+        </p>
+        <p class="message-body">
+            بتسنبتسنبتسنبتسنبتسنبتس
+            بتسنبتسنبستبنستبنسبتسنبتسنبتسنبتسیب
+            تسبنستسنبتسنبستبنستبدتدرتدطتبخسبتخهبتخثهت
+        </p>
+        <button style="font-size: 0.8rem;margin:1rem auto;width:30%" class="btn cta">خوانده شد</button>
+    </div>
+    <div class="message">
+        <ion-icon name="happy-outline" style="font-size: 3.5rem;color:rgb(80, 224, 116);position:absolute;top:3px;left:8px;"></ion-icon>
+        <p class="message-title">
+            خوش آمدگویی
+        </p>
+        <p class="message-body">
+            به آنمد خوش آمدید
+        </p>
+        <button style="font-size: 0.8rem;margin:1rem auto;width:30%" class="btn cta">خوانده شد</button>
+    </div>
+    <div class="message">
+        <ion-icon name="warning-outline" style="font-size: 3.5rem;color:rgb(243, 247, 20);position:absolute;top:3px;left:8px;"></ion-icon>
+        <p class="message-title">
+           اخطاریه
+        </p>
+        <p class="message-body">
+            فعالیت شما در سایت مغایر با قوانین سایت میباشد
+            فعالیت شما در سایت مغایر با قوانین سایت میباشد
+
+        </p>
+        <button style="font-size: 0.8rem;margin:1rem auto;width:30%" class="btn cta">خوانده شد</button>
     </div>
 </div>

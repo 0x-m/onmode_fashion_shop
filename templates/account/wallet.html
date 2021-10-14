@@ -1,36 +1,65 @@
 <style>
     .brick {
         border: 1px solid gray;
-        border-radius: 6px;
+        border-radius: 2px;
+        text-align: center;
+        padding: 1rem;
+
     }
+    .tab-item-1 {
+        font-size: 0.8rem !important;
+    }
+
+
 </style>
-<div class="container vertical position--center">
-    <div class="brick">
-        <p>کل موجودی</p>
+<div class="container vertical" style="width: 100%;">
+    <div class="brick" style="border:none;margin-top:1.5rem;" >
+        <p style="font-size: 3rem;color:rgb(245, 81, 81);" class="fnt">27500 تومن</p>
     </div>
-    <div class="container horizontal">
-        <div class="brick">
-            <p>قابل برداشت</p>
+    <div class="container horizontal" style="width: 100%;margin-top:0.3rem;justify-content:space-between;">
+        <div class="brick" style="width: 49%;border:none;">
+            <p style="font-size: 1.5rem;color:rgb(99, 99, 99)" class="fnt">15000 تومن</p>
+            <p style="font-size: 0.7rem;margin-top:0.5rem">قابل برداشت</p>
         </div>
-        <div class="brick">
-            <p>
-                غیرقابل برداشت
-            </p>
+        <div class="brick" style="width: 49%;border:none;background:#efefef55">
+            <p style="font-size: 1.5rem;color:rgb(117, 117, 117)" class="fnt">27500 تومن</p>
+            <p style="font-size: 0.7rem;margin-top:0.5rem">غیرقابل برداشت</p>
         </div>
     </div>
     <div class="tab-container">
-        <div onclick="select_tab()" class="tab-items">
-            <div data-tab="tab-widthraw" class="tab-item tab-item-selected">برداشت</div>
-            <div data-tab="tab-deposit" class="tab-item">واریز</div>
+        <div onclick="select_tab()" class="tab-items" style="width: 100%;justify-content:center">
+            <div data-tab="tab-widthraw" class="tab-item tab-item-1 tab-item-selected">برداشت</div>
+            <div data-tab="tab-deposit" class="tab-item tab-item-1">واریز</div>
+            <div data-tab=""tab-history"" class="tab-item tab-item-1">تاریخچه</div>
+
         </div>
         <div class="tab-contents">
             <div class="tab-content tab-show-content" id="tab-widthraw">
-                <p>widthraw</p>
+                <div style="margin: 2rem auto;width:80%">
+                    <div class="txt-box w-100 mt-1">
+                        <input id="widthraw-text"  type="text" class="text" required>
+                        <label class="holder">مبلغ به تومان</label>
+                    </div>
+                    <p id="widthraw-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
+                    <button  class="btn cta" dir="rtl" style="margin:0.7rem auto;width:100%;display:block">ثبت درخواست</button>
+                    <p style="margin-top: 1rem;font-size:0.8rem">
+                        **تاریخ برداشت قبلی...
+                    </p>
+                </div>
             </div>
             <div class="tab-content" id="tab-deposit">
-                <p>
-                    deposit
-                </p>
+                <div  style="width:80%;margin:2rem auto;">
+                    <div class="txt-box w-100 mt-1">
+                        <input id="deposit-text"  type="text" class="text" required>
+                        <label class="holder">مبلغ به تومان</label>
+                    </div>
+                    <p id="deposit-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
+                    <button class="btn cta" dir="rtl" style="margin:0.7rem auto;width:100%;display:block">ادامه</button>
+    
+                </div>
+            </div>
+            <div id="tab-history" class="tab-content">
+
             </div>
         </div>
     </div>
