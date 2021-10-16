@@ -336,16 +336,18 @@ def product_detail(request:HttpRequest, product_id):
     except EmptyPage:
         page = paginator.get_page(paginator.num_pages)
     
-    user_comment = Comment();
+    user_comment = None
     if request.user.is_authenticated:
         user_comment = comments.filter(user=request.user).first();
+    liked = product.favs.filter(user=request.user).count()
     related_products = Product.objects.filter(type=product.type)[:10]
     print(user_comment, '---------------------')
     return render(request, 'product/detail/product.html',{
         'product':product,
         'page': page,
         'user_comment': user_comment,
-        'related_products':related_products
+        'related_products':related_products,
+        'liked': liked
     })
     
 def get_discounted_products(request:HttpRequest):
@@ -381,14 +383,13 @@ def edit_shop(request:HttpRequest):
         return HttpResponseBadRequest("you have no shop...!")
     
     shop = request.user.shop.first()
-    print(request.POST.get('post_destinations'),'dessss.......')
-    print(request.POST.get('title'),'title::............:')
     post_destinations = '';
     if shop.post_destinations:
         post_destinations = shop.post_destinations.split(',')
 
     if request.method == "POST":
-       
+        all_states = request.POST.get('overall')
+        all_states = True if (all_states == 'true') else False
         form = ShopInfoForm(request.POST, instance=shop)
         banner = request.FILES.get('banner')
         logo = request.FILES.get('logo')
@@ -400,6 +401,8 @@ def edit_shop(request:HttpRequest):
             if banner:
                 shop.banner.delete()
                 shop.banner = banner
+
+            shop.convers_all_states = all_states
             shop.save()
             return HttpResponse("edited successfully")
         else:

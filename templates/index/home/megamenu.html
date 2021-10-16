@@ -15,7 +15,7 @@
                         {% for type in cat.types.all %}
                         <ul class="mega-menu-item">
                             <li class="mega-menu-title">{{ type.name }}</li>
-                            {% for subtype in type.subtype.all %}
+                            {% for subtype in type.subtypes.all %}
                                 <li>{{ subtype.name }}</li>
                             {% endfor %}
                         </ul>

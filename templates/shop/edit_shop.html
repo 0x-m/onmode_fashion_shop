@@ -22,7 +22,7 @@
     </p>
     <div style="cursor: pointer;width:100%;padding:0.5rem;border:1px dashed gray;text-align:center;margin-top: 1rem;">
         <label style="cursor: pointer;"> 
-            <input onchange="document.getElementById('img-logo').innerText=this.files[0].name;" name="logo" type="file" style="position: fixed;top:-100px;" >
+            <input onchange="document.getElementById('img-logo').innerText=this.files[0].name;" accept=".jpg,.jpeg,.png,.webp" name="logo" type="file" style="position: fixed;top:-100px;" >
             <span class="fa fa-image"></span>
             <span class="fz-small">لوگو</span>
             <span id="img-logo" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم لوگو کمتر از 150 کیلوبایت باشد</span>
@@ -33,7 +33,7 @@
         <label style="cursor: pointer;">
             <span class="fa fa-image"></span>
             <span class="fz-small">بنر</span>
-            <input onchange="document.getElementById('img-banner').innerText=this.files[0].name;"  name="banner" type="file" style="position: fixed;top:-100px;" placeholder="بنر" multiple>
+            <input onchange="document.getElementById('img-banner').innerText=this.files[0].name;"  name="banner" type="file" accept=".jpg,.jpeg,.png,.webp" style="position: fixed;top:-100px;" placeholder="بنر" multiple>
             <span id="img-banner" style="color: rgb(109, 109, 109);font-size:0.7em;margin-top:0.2em">حجم بنر کمتر از 300 کیلوبایت باشد</span>
         </label>
     </div>
@@ -41,7 +41,7 @@
     <label style="font-size: 0.8rem;color:gray;margin-top:1rem;display:block;margin-top:1rem">ارسال پستی به : </label>
     <div style="display: inline-flex;justify-content:space-between;width:101%;align-items:center;margin-top:1rem">
         <label style="font-size: 0.8rem;">سراسر ایران</label>
-        <input onclick="toggle_state_list();" type="checkbox" class="switch" name="overall" id="overall" value="true">
+        <input onclick="toggle_state_list();" type="checkbox" class="switch" {% if user.shop.first.convers_all_states %}checked{% endif %}  name="overall" id="overall" value="true">
     </div>
     <div class="list-box" style="background-color: white;width:100%;margin-top:0.5rem">
         <input data-target="states" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نام استان ">

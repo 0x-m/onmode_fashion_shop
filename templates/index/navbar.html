@@ -109,6 +109,7 @@
    
    <div class="nav" style="flex:10%;display:flex;justify-content:flex-end;align-items:center;">
        <ion-icon id="ass" onclick="toggle_search_box();"  name="search-outline" class="icon"></ion-icon>
+       {% if user.is_authenticated %}
         <div class="prof-dropdown">
             <ion-icon id="user-icon"  name="person-outline" class="icon prof-toggle {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
             <ul class="prof-menu">
@@ -156,6 +157,7 @@
             </ul>
 
         </div>
+        {% endif %}
         <div id="cart-icon" style="position: relative;" class="{% if not user.is_authenticated %}hi{% endif %}">
             <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
             </ion-icon>

@@ -1,5 +1,6 @@
 {% extends 'index/base.html' %}
 {% load static %}
+{% load filter_product %}
 {% load jalali_tags %}
 {% block title %}محصول{% endblock %}
 {% block content %}
@@ -32,6 +33,12 @@
         letter-spacing: normal;
     }
 
+    .in-fav{
+        color: red !important;
+    }
+    .in-comment{
+        color: green !important;
+    }
     @media screen and (min-width:698px) {
         .gal-md {
             width: 80% !important;
@@ -43,18 +50,18 @@
     <input type="hidden" value="{{ user.first_name }}" id="author" />
     <div class="pure-g gal-md">
         <div class="pure-u-1-1 pure-u-md-1-2">
-            <div class="gallery">
+            <div onclick="change_preview()" class="gallery">
                 {% if product.images.first.image %}
-                    <img class="gallery-preview" src="{{product.images.first.image.url}}" style="width: 100%;">
+                    <img class="gallery-preview" id="gallery-preview" src="{{product.images.first.image.url}}" style="width: 100%;">
                 {% else %}
-                    <img class="gallery-preview" src="{% static 'img/res/noimg.jpg' %}" style="width: 100%;">
+                    <img class="gallery-preview" id="gallery-preview" src="{% static 'img/sampleproduct/noimage.png' %}" style="width: 100%;">
                 {% endif %}
                 <div class="thumbs">
                     {% for item in product.images.all %}
                     {% if item.image %}
                         <img src="{{ item.image.url }}" class="thumb {% if forloop.counter0 == 0 %} thumb-active{% endif %}" />
                     {% else %}
-                        <img src="{% static 'img/img1/noimg.jpg' %}" class="thumb {% if forloop.counter0 == 0 %} thumb--active{% endif %}" />
+                        <img src="{% static 'img/sampleproduct/noimage.png' %}" class="thumb {% if forloop.counter0 == 0 %} thumb--active{% endif %}" />
                     {% endif %}
                 {% endfor %}
                 </div>
@@ -62,41 +69,57 @@
         </div>
         <div class="pure-u-1-1 pure-u-md-1-2">
             <div class="container vertical product-detail">
-                <h3 class="product-title">محصول من</h3>
+                <h3 class="product-title">{{ product.name }}</h3>
                 <div class="product-status" >
                     <p onclick="document.getElementById('comment-tab-item').click();document.getElementById('comment-body').focus();" style="cursor:pointer;color:#777;justify-self: flex-start;text-align:center;display:flex;justify-content:center;align-items:center;padding:0.5rem">
-                        <ion-icon style="font-size:1.1rem;" name="chatbubbles-outline"></ion-icon>  
-                        <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem">12</span>
+                        <ion-icon class="{% if user_comment %}in-comment{% endif %}" style="font-size:1.1rem;" name="chatbubbles-outline"></ion-icon>  
+                        <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem">{{product.comments.all|length}}</span>
                     </p>
-                    <p onclick="add_to_favourites();" style="cursor:pointer;color:#777;justify-self: flex-start;text-align:center;display:flex;justify-content:center;align-items:center;padding:0.5rem">
-                        <ion-icon style="font-size:1.1rem;user-select:none" name="heart-outline"></ion-icon>  
-                        <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;user-select:none">12</span>
+                    <p onclick="add_to_favourites();"  style="cursor:pointer;color:#777;justify-self: flex-start;text-align:center;display:flex;justify-content:center;align-items:center;padding:0.5rem">
+                        <ion-icon class="{% if liked == 1 %}in-fav{% endif %}" style="font-size:1.1rem;user-select:none" name="heart-outline"></ion-icon>  
+                        <span  style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;user-select:none;">{{product.favs.all|length}}</span>
                     </p>
-                    <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:#333;color:#fff">27%</span>
+                    {% if product.discounts.last.is_vali %}
+                    <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:#333;color:#fff">{{ product.discounts.last.percent }}</span>
+                    {% endif %}
                 </div>
               
                 <p class="product-description">
-                    خوبه اروزنه بسسببیسسسسسسسسسسسس
-                    بسبسبسبسبسبسبسبسبسبسببسیببببببببب
-                    بسبسبسبسبسب یسسسسسسسسسسسسسسب
-                    خوبه اروزنه بسسببسیییییییییی
-                    بسبسبسبسبسبسبسبسبسبسببسییییییییییییییییی
-                    بسبسبسبسبسب  سیبببببببببببببببب  
+                  {{product.description}}
                 </p>   
                 <div class="product-prices">
-                    <span class="product-price">25000 تومان</span>
-                    <span class="product-discounted-price">1500 تومن</span>    
+                    
+                    {% if product.discounts.last.is_valid %}
+                    <span class="product-price">{{product.price}} تومان</span>
+                    <span class="product-discounted-price">{{product.discount.last.get_discounted_price}} تومن</span>    
+                    {% else %}
+                    <span style="font-size: 1rem;color:gray">{{product.price}}تومن</span>
+                    {% endif %}
                 </div>
-                <h4 class="product-boutique" >نام بوتیک: بوتیک من</h4>
+                <h4 class="product-boutique" >نام بوتیک: {{product.shop.name}} </h4>
                 <p style="color: #666;font-size:0.7rem;margin-top:0.5rem">
+                    {% if prouct.free_delivery %}
                     ارسال رایگان: دارد
+                    {% else %}
+                    ارسال رایگان: ندارد
+                    {% endif %}
                 </p>
                 <p style="color:#666;font-size: 0.7rem;margin-top:0.5rem">
-               امکان ارسال به استانهای: یزد کرمان تهران بوشهر 
+                    {% if product.shop.convers_all_states %}
+                    امکان ارسال به : سراسر ایران
+                    {% else %}
+                    امکان ارسال به استانهای: {{product.shop.post_destinations}}    
+
+                    {% endif %}
                 </p>
+
                 <div class="product-options">
-                    <combo-box placeholder="سایز"></combo-box>
-                    <combo-box style="margin-right: 0.5rem;" placeholder="رنگ"></combo-box>
+                    {% if product.type.has_size %}
+                        <combo-box placeholder="سایز"></combo-box>
+                    {% endif %}
+                    {% if product.type.has_color %}
+                        <combo-box style="margin-right: 0.5rem;" placeholder="رنگ"></combo-box>
+                    {% endif %}
                 </div>
                 <div class="product-actions">
                     <button class="btn cta" style="width: 50%;margin:0rem auto;">میخرم</button>
@@ -164,12 +187,15 @@
         <div class="tab-contents">
             <div id="specs" class="tab-content tab-show-content">
                 <div style="display: flex;flex-direction:column;padding:0.5rem">
-                    {% for key,value in product.attrs.items %}
+                    {% comment %}
+                    {% for key,value in product.get_attributes %}
                         <div  style="margin:0.2rem;padding: 0.5rem;background-color:#fcfcfc">
                             <span style="font-size: 0.8rem;">{{ key }}:</span>
                             <span style="font-size: 0.8rem;">{{ value }}</span>
                         </div>
                     {% endfor %}
+                    {% endcomment %}
+                    {{product.get_attributes}}
                 </div>
             </div>
             <div id="comments" class="tab-content">

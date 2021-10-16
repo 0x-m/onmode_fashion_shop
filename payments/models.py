@@ -14,7 +14,7 @@ class PaymentTransaction(models.Model):
     code = models.CharField(verbose_name=_('Code'),max_length=50)
     description = models.TextField(verbose_name=_('Description'),max_length=500)
     authoriy = models.CharField(verbose_name=_('Authority'),max_length=50)
-    type = models.IntegerField(verbose_name=_('type'), choices=TYPES)
+    type = models.IntegerField(verbose_name=_('type'), choices=TYPES, default=0)
     
     class Meta:
         verbose_name = _('Payment')

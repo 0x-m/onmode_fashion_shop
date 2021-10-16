@@ -15,7 +15,7 @@
     <label class="holder" >شماره تماس</label>
 </div>
 <div class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
-    <select  required onchange="get_cities('cus-cities');" id="provinces" name="state"  style="width: 48%;">
+    <select  required onchange="get_cities('cus-cities');"  name="state"  style="width: 48%;">
         <option value="-1" disabled selected>استان</option>
         {% for province in provinces %}
             <option  value="{{province.id}}">{{province.name}}</option>

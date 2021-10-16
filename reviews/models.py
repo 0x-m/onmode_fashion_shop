@@ -7,7 +7,7 @@ from django.utils import timezone
 
 class Comment(models.Model):
     
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE,verbose_name=_('product'))
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE,verbose_name=_('product'), related_name='comments')
     user = models.ForeignKey(to=User,verbose_name=_('User'),on_delete=models.CASCADE)
     date_published = models.DateTimeField(default=timezone.now)
     body = models.CharField(max_length=5000)

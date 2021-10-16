@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
+from django.forms.fields import JSONString
 from django.urls import utils
 from django.utils import timezone
 from django.contrib.postgres.fields import HStoreField
@@ -10,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from product_attributes.models import Size, Color
 from django.urls import reverse
 import os
-
+import json
 class OldJSONField(models.JSONField):
     def db_type(self, connection):
         return 'json'
@@ -56,7 +57,6 @@ class Shop(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40, unique=True)
-    slug = models.SlugField()
     logo = models.ImageField(verbose_name=_('Logo'),null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
     
@@ -72,8 +72,7 @@ class Brand(models.Model):
 #such as men, women, kids,...
 class Category(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40,unique=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=500, null=True)
-    slug = models.SlugField()
+    description = models.CharField(verbose_name=_('Description'),max_length=500, null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
     image = models.ImageField(verbose_name=_('Image'),null=True,blank=True)
 
@@ -146,7 +145,7 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=200,null=True, blank=True)
-    attrs = HStoreField(default=dict,blank=True,)
+    attrs = models.CharField(verbose_name=_('attributes'),null=True,max_length=2000,blank=True,)
     is_active = models.BooleanField(default=True)
     
     
@@ -172,6 +171,12 @@ class Product(models.Model):
     def is_available(self):
         return (self.quantity > 0) and (self.is_active)
     
+    def get_attributes(self):
+        if self.attrs:
+            return json.loads(self.attrs)
+        return dict()
+            
+        
  
     
 class ProductImage(models.Model):

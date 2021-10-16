@@ -52,6 +52,6 @@ class SubtTypeAdmin(ModelAdmin):
 
 @admin.register(Brand)
 class BrandAdmin(ModelAdmin):
-    list_display = ['name', 'slug', 'is_active']
+    list_display = ['name', 'is_active']
     list_editable = ['is_active']
-    readonly_fields = ['slug']
+    

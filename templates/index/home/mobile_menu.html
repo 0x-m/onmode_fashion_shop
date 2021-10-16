@@ -10,7 +10,7 @@
                     {% for type in cat.types.all %}
                         <menu-group caption="{{type.name}}">
                             {% for subtype in type.subtypes.all %}
-                                <menu-item caption="{{item.subtype}}"></menu-item>
+                                <menu-item caption="{{subtype.name}}"></menu-item>
                             {% endfor %}
                         </menu-group>
                     {% endfor %}

@@ -3,7 +3,7 @@
 <div class="favourites" style="width: 95%;margin:1rem auto;">
     {% if favourites and user.is_authenticated %}
     {% for item in favourites %}
-        <fav-item preview="{{ item.product.images.first.image.url }}" 
+        <fav-item preview="{% if item.product.images.first.image %}{{ item.product.images.first.image.url }}{% else %}{% static 'img/sampleproduct/noimage.png' %}{% endif %}" 
                   pid="{{ item.product.id }}"
                   link="{{ item.product.get_aboslute_url }}"
                   title="{{ item.product.name }}" 

@@ -64,6 +64,7 @@ class Product extends HTMLElement {
         return this.getAttribute('link');
     }
 
+
     get preview() {
         return this.getAttribute('preview');
     }

@@ -22,7 +22,7 @@
                     boutique="{{item.product.shop.name}}" 
                     price="{{item.product.price}}تومن" 
                     description="{{ itme.product.description }}" 
-                    preview="{{ item.product.images.first.image.url }}" 
+                    preview="{% if item.product.images.first.image %}{{ item.product.images.first.image.url }}{% else %}{% static 'img/sampleproduct/noimage.png' %}{% endif %}" 
                     colors="{{ item.colors }}" 
                     sizes="{{ item.sizes }}" 
                     quantity="{{item.quantity}}"
@@ -30,7 +30,12 @@
                     discounted
                     discounted_price={{item.discounted_price }}
                     {% endif %}
-                    outofstock="true">
+                    {% if not item.product.has_color %}
+                    noneditable='true'
+                    {% endif %}
+                    {% if item.product.quantity == 0%}
+                    outofstock="true"
+                    {% endif %}>
             </cart-item>
         {% endfor %}
         <div class="container vertical mt-1  w-100" style="justify-content: center;align-items:center;background:#efefef;padding:0.5rem">

@@ -10,7 +10,7 @@ from product_attributes.models import Color, Size
 from django.core.exceptions import ValidationError
 from .models import Brand, Category, Shop, SubType, Type
 from django import forms
-from django.core.validators import RegexValidator
+from django.core.validators import MaxLengthValidator, RegexValidator
 from django.forms.models import model_to_dict
 import json
 
@@ -51,7 +51,7 @@ class AddProductForm(forms.Form):
     description = forms.CharField(max_length=500,empty_value="بدون توضیحات")
     quantity = forms.IntegerField()
     keywords = StringTagField()
-    attrs = JsonField()
+    attrs = forms.CharField(max_length=2000)
     price = forms.IntegerField()
     free_delivery = forms.BooleanField()
     

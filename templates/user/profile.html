@@ -21,6 +21,7 @@
 
 </style>
 <div class="container vertical" style="width:90%;margin: 0.5rem auto;justify-content:flex-start;align-items:flex-start">
+    <form style="padding: 0;width:100%" id="personal_info">
     <div class="container horizontal" style="width: 100%;">
         <ion-icon name="person-outline"   style="font-size: 7rem;color:rgba(150, 150, 150, 0.8);margin-left:0.7rem;--ionicon-stroke-width: 12px;"></ion-icon>
         <!-- <span style="font-size: 1.1rem;color:rgb(150, 150, 150);display:block;margin-top: -0.5rem">{{ user.phone_no}}</span> -->
@@ -35,7 +36,6 @@
             </div>
         </div>
     </div>
-    <form style="padding: 0;width:100%" id="personal_info">
         <div class="txt-box ">
             <input class="text"  onblur="validate_email();" name="email" id="profile-email" type="email"  value="{% if user.email %}{{user.email}}{% endif %}" required />
             <label class="holder" >ایمیل</label>
@@ -51,13 +51,17 @@
         </div>
         <div  class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
             <select required onchange="get_cities('user-cities');" id="provinces" name="state"  style="width: 48%;">
-                <option value="-1" disabled selected>استان</option>
+                <option value="-1" disabled>استان</option>
                 {% for province in provinces %}
-                    <option  value="{{province.id}}">{{province.name}}</option>
+                    <option  value="{{province.id}}" {% if user.address.state == province.name %}selected{% endif %} >{{province.name}}</option>
                 {% endfor %}
             </select>
-            <select id="user-cities" style="width: 48%;">
-                <option>شهرستان</option>
+            <select id="user-cities" name="city" style="width: 48%;">
+                {% if user.address.city %}
+                    <option>{{user.address.city}}</option>
+                {% else %}
+                    <option value="-1" disabled>شهرستان</option>
+                {% endif %}
             </select>
         </div>
         <p class="txt-box mt-1">
@@ -67,13 +71,11 @@
         <p class="txt-box mt-1">
             <textarea name="description" id="profile-description" rows="3"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
             <label class="holder">نشانی</label>
-        </p>
-
-        <p class="container horizontal" style="justify-content:space-between;width:85%;margin:1rem auto;margin-bottom:1rem">
-            <button style="min-width:48%;background:rgb(240, 94, 94);color:white;border:0" class="btn" onclick="edit_profile();">ثبت</button>
-            <button style="min-width:48%" class="btn" onclick="get_enrollment_form();">لغو</button>
-        </p>                
+        </p>           
     </form>
-
+    <p class="container horizontal" style="justify-content:space-between;width:85%;margin:1rem auto;margin-bottom:1rem">
+        <button style="width:100%;background:rgb(240, 94, 94);color:white;border:0" class="btn cta" onclick="edit_profile();">ثبت</button>
+        <!-- <button style="min-width:48%" class="btn" onclick="get_enrollment_form();">لغو</button> -->
+    </p>     
 </div>
 

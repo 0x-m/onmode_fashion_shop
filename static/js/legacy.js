@@ -142,7 +142,22 @@ function validate_field(rx){
 }
 
 
+function change_preview() {
+    const preview = document.getElementById('gallery-preview')
+    target = event.target
+    if (target.classList.contains('thumb')) {
+        preview.src = event.target.src
+        const thumbs = target.parentNode.children;
+        for (let i=0; i < thumbs.length; ++i) {
+            thumbs.classList.remove('thumb-active')
+        }
+        target.classList.add('thumb-active')
+    }
+    
+}
+
 function get_attrs(){
+    console.log('get atttrs......')
     const _attrs = document.getElementById("attr-list").children;
     let attrs = new Map();
     
@@ -157,10 +172,15 @@ function get_attrs(){
         attrs["مخشصات"] = "ندارد"
     }
     console.log(attrs);
+
     return JSON.stringify(attrs);
 }
 
 function prepare_product_info(command){
+        
+    const attrs =  get_attrs();
+    console.log(attrs,'..................')
+    return
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const quantity = document.getElementById("quantity").value;
@@ -171,8 +191,6 @@ function prepare_product_info(command){
     const categories = get_selecteds("categories",false);
     const subtype = get_selecteds("subtypes", true);
     const free_delivery = document.getElementById('free_delivery').checked;
-    
-    const attrs =  get_attrs();
 
     const  colors = document.getElementById("colors").children;
     let selected_colors = "";
@@ -825,6 +843,8 @@ function cvt_fa_No_2_en(str){
 function edit_profile(){
     form = document.getElementById("personal_info");
     const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
+    console.log('------------------', data);
+
     const email = document.getElementById("profile-email").value;
     const card = document.getElementById("profile-merchan_card").value;
     const errors = new Array()
@@ -834,15 +854,9 @@ function edit_profile(){
     if(!is_valid_card(card)){
         errors.push('شماره کارت نامعتبر است');
     }
-    if(!validate_province_and_city()){
-        const msg  = "استان و شهرستان انتخابی مغایرت دارند";
-        errors.push(msg);
-    }
-
     if (data.get('first_name').trim() === '' || data.get('last_name').trim() === ''){
         errors.push('لطفا نام و نام خانوادگی خود را وارد کیند');
     }
-
 
     if( errors.length !=0){
 
@@ -955,8 +969,6 @@ function show_shop_order_detail(){
 
 
 function get_cities(pair){
-    const province_name = event.target.value;
-    let province_id = null
 
     selected_prov = event.target.value;
     if (selected_prov != -1){
@@ -982,27 +994,28 @@ function get_cities(pair){
 
 }
 
-function validate_province_and_city(){
-    const province = document.getElementById("profile-state");
-    const city = document.getElementById("profile-city");
-    const provinces = document.getElementById("provinces").getElementsByTagName("option");
-    const cities = document.getElementById("cities").getElementsByTagName("option");
-    let is_provinace = false , is_city = false;
-    for (let i=0; i < provinces.length; ++i){
-        if (provinces[i].value.trim() == province.value.trim()){
-            is_provinace = true
-            break;
-        }
-    }
-    for (let j=0; j < cities.length; ++j){
-        if(cities[j].value.trim() == city.value.trim()){
-            is_city = true
-            break;
-        }
-    }
-    console.log(is_city);
-    return is_city && is_provinace;
-}
+// function validate_province_and_city(){
+    
+//     const city = document.getElementById("user-cities").value;
+//     const provinces = document.getElementById("provinces").getElementsByTagName("option");
+//     const province = document.getElementById('provinces').value;
+//     const cities = document.getElementById("user-cities").getElementsByTagName("option");
+//     let is_provinace = false , is_city = false;
+//     for (let i=0; i < provinces.length; ++i){
+//         if (provinces[i].value.trim() == province.trim){
+//             is_provinace = true
+//             break;
+//         }
+//     }
+//     for (let j=0; j < cities.length; ++j){
+//         if(cities[j].value.trim() == city.value.trim()){
+//             is_city = true
+//             break;
+//         }
+//     }
+//     console.log(is_city);
+//     return is_city && is_provinace;
+// }
 
 function send_issue(){
     const subject_id = document.getElementById('issue-subject').selectedItems;

@@ -10,8 +10,8 @@ def to_int_list(str_list: str):
     print(str_list)
     return [int(i) for i in str_list.split(',')]
 
-@register.inclusion_tag('filter/product_template.html')
-def filter_product(types="",
+@register.inclusion_tag('filter/product_template.html',takes_context=True)
+def filter_product(context, types="",
                    subtypes="",
                    categories="",
                    brands="",
@@ -94,7 +94,7 @@ def filter_product(types="",
     if len(products) >= top:
         products = products[:top]
             
-    return {'products': products, 'rail': rail}
+    return {'products': products, 'rail': rail, 'user': context['user']}
 
 
 @register.filter('toString')
