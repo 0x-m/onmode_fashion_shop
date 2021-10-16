@@ -1,3 +1,4 @@
+from logging import log
 from math import prod
 from os import closerange
 from product_attributes.models import Color, Size
@@ -11,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from shops.models import Category, Product
 import string
 from .cart import Cart
-
+from index.utils import get_provinces
 
 @login_required
 def add(request:HttpRequest, product_id):
@@ -50,6 +51,9 @@ def add(request:HttpRequest, product_id):
     return JsonResponse({'cart_num': len(cart)})
 
 
+@login_required
+def checkout_cart(request: HttpRequest):
+    pass
 
 @login_required
 def remove(request:HttpRequest, product_id):
@@ -107,7 +111,9 @@ def apply_coupon(request:HttpRequest, code):
 
 @login_required
 def checkout(request:HttpRequest):
-    return render(request, 'cart/checkout/checkout.html');
+    return render(request, 'cart/checkout/checkout.html', {
+        'provinces': get_provinces()
+        });
 
 def cart_list(request:HttpRequest):
     return render(request, 'cart/cart.html',{

@@ -49,14 +49,14 @@
             <label class="radio-box"><input type="radio" name="gender" style="margin: 0 0 0  0.5rem;" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>مرد</label>
             <label  class="radio-box" ><input type="radio" style="margin: 0 0 0 0.5rem" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>زن</label>    
         </div>
-        <div class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
-            <select required onchange="get_cities();" id="provinces" name="state"  style="width: 48%;">
+        <div  class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
+            <select required onchange="get_cities('user-cities');" id="provinces" name="state"  style="width: 48%;">
                 <option value="-1" disabled selected>استان</option>
                 {% for province in provinces %}
                     <option  value="{{province.id}}">{{province.name}}</option>
                 {% endfor %}
             </select>
-            <select id="cities" style="width: 48%;">
+            <select id="user-cities" style="width: 48%;">
                 <option>شهرستان</option>
             </select>
         </div>

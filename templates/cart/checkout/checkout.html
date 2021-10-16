@@ -212,41 +212,8 @@
             </tfoot>
         </table>
     </div>
-    <div class="cart-checkout">
-        <div class="container horizontal w-100" style="justify-content: space-between;">
-            <span style="font-size: 0.8rem;color:#555">آدرس خودم</span>
-            <input type="checkbox" class="switch" />
-        </div>
-        <div class="txt-box w-100 mt-1">
-            <input  onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price"  name="price" type="text" class="text" required>
-            <label class="holder">نام</label>
-        </div>
-        <div class="txt-box w-100 mt-1">
-            <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price"  name="price" type="text" class="text" required>
-            <label class="holder">نام</label>
-        </div>        
-        <div class="adds" style="margin-top: 0.5rem;justify-content:space-between">
-            <select style="width: 49%;" id="province">
-                <option value="" disabled selected>شهرستان</option>
-                <option value="">a</option>
-                <option value="">a</option>
-                <option value="">a</option>
-                <option value="">a</option>
-                <option value="">a</option>
-            </select>
-            <select style="width: 49%;">
-                <option value="">a</option>
-                <option value="">a</option>
-                <option value="">a</option>
-                <option value="">a</option>
-                <option value="">a</option>
-            </select>
-        </div>
-        <div class="txt-box w-100 mt-1">
-            <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price"  name="price" type="text" class="text" required>
-            <label class="holder">نام</label>
-        </div>         
-         <textarea rows="5" class="txt" placeholder="نشانی کامل"></textarea>
+    <div class="cart-checkout" style="width: 95%;">
+        {% include 'cart/address.html' %}
         <section class="total">
             <span id="total_sum" >
             مبلغ پرداختی: {{cart.get_total_price}}

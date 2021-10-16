@@ -954,19 +954,10 @@ function show_shop_order_detail(){
 }
 
 
-function get_cities(){
+function get_cities(pair){
     const province_name = event.target.value;
     let province_id = null
-    // const provinces = document.getElementById("provinces").getElementsByTagName("option");
 
-    // for (let i=0; i < provinces.length; ++i){
-    //     if(provinces[i].value.trim() == province_name.trim()){
-    //         province_id = provinces[i].dataset["id"];
-    //         break;
-    //     }
-    // }
-
-    // selected_prov = document.getElementById('provinces').selectedOptions[0];
     selected_prov = event.target.value;
     if (selected_prov != -1){
         fetch("/cities/" + "?province_id=" + selected_prov ,{
@@ -976,7 +967,7 @@ function get_cities(){
         }).then((res) => {
             res.json().then((data)=> {
                 console.log(data);
-                const cities = document.getElementById("cities");
+                const cities = document.getElementById(pair);
                 const fragment = document.createDocumentFragment();
                 cities.innerHTML = '';
                 for(let i=0; i< data['cities'].length; ++i){

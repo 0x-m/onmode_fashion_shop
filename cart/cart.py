@@ -1,13 +1,11 @@
-from math import log, prod
 
-from django.db.models.query import QuerySet
-from product_attributes.models import Color
+from product_attributes.models import Color, Size
 from shops.models import Product
 from django.http import HttpRequest
 from django.conf import settings
 from coupons.models import Coupon
 import logging
-
+from orders.models import Order,OrderAddress, OrderList, OrderItem
 
 #-----------------------------------------------
 logger = logging.getLogger(__name__)
@@ -167,9 +165,57 @@ class Cart():
             self.save()
             logger.info('coupon is set..')
     
+    def make_orders(self,user, order_address: OrderAddress=None):
+        orders = {}
+        order_list = OrderList(user=user)
+        order_list.save()
+        if order_address:
+            order_list.use_default_address = True
+        else:
+            if not order_address:
+                raise Exception('Addres is not provided')
+            order_list.Address = order_address
+            
+        for item in self: 
+            product = item['product']
+            shop = product.shop
+            size = 0
+            color = 0
+            if item['size_id']:
+                size_id = int(item['size_id'])
+                size = Size.objects.filter(id=size_id).first()
+            if item['color_id']:
+                color_id = int(item['color_id'])
+                color = Color.objects.filter(id=color_id).first()
+       
+            quantity = item['quantity']
+            if shop.id not in orders.keys():
+                orders[shop.id] = Order(user=user,shop=shop,order_list=order_list)
+                orders[shop.id].save()
+                
+            order_item  = OrderItem(
+                order=orders[shop.id],
+                product=product,
+                quantity=quantity,
+                size = size,
+                color = color
+            )
+            
+            order_item.save()
+            orders[shop.id].save() #to compute price
+            
+        order_list.save() #to compute price
+        if self.coupon:
+            order_list.coupon = Coupon
+        
+        order_list.finish()
+
+    
     def checkout(self):
+        #-------create orders------------
         self.coupon.make_used()
-        del self.session['coupon_id']
+        if self.session.get('coupon_id'):
+            del self.session['coupon_id']
         self.clear()
         self.save()
     
