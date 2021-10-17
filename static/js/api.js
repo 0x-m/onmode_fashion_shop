@@ -1,4 +1,29 @@
 
+
+function get(url, callback= function(){}) {
+    const xr = new XMLHttpRequest();
+
+    xr.onload = function() {
+        callback(xr.responseText, xr.status);
+    };
+    
+    xr.open('get', url);
+    xr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xr.send();
+    
+}
+
+function post(url, payload, callback) {
+    const xr = new XMLHttpRequest();
+    xr.onload = function() {
+        callback(xr.responseText, xr.status);
+    };
+    xr.open('post', url);
+    xr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xr.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
+    xr.send(payload);
+}
+
 function getCookie(name){
     let cookieValue = null;
     if(document.cookie && document.cookie != ''){
@@ -14,395 +39,76 @@ function getCookie(name){
     }
 }
 
-function set_error(msg, timeout, after){
-    const error_dialog = document.getElementById("error-dialog");
-    document.getElementById("error-msg").innerText = msg;
-    error_dialog.classList.add("show");
-    setTimeout(() => {
-        error_dialog.classList.remove("show");
-    }, timeout);
-    after();
-}
 
-
-
-function set_confirmation_dialog(msg, accept, reject){
-    confirmation_dialog = document.getElementById("confirmation-dialog");
-    document.getElementById("confirm-msg").innerText = msg
-    document.getElementById("confirm-accetp").onclick = () =>{accept();}
-    document.getElementById("confirm-reject").onclick = ()=>{ reject();}
-    toggle_confirmation_dialog();
-
-}
-function toggle_confirmation_dialog(){
-    document.getElementById("confirmation-dialog").classList.toggle("show");
-    document.getElementById("side-box").classList.toggle("overflow-hidden");
-}
-
-function start_waiting(){
-    document.getElementById("waiting").classList.add("show");
-
-}
-
-function end_waiting(){
-    document.getElementById("waiting").classList.remove("show");
-
-}
-
-function toggle_waiting(){
-    document.getElementById("waiting").classList.toggle("show");
-    document.getElementById("side-box").classList.toggle("overflow-hidden");
-}
-
-
-
-function set_view(view){
-    document.getElementById("side-box-content").innerHTML = view;
-    //showSidebox();
-
-}
-
-function load_view(url,method, data, after=()=>{}){
-    const xhttp = new XMLHttpRequest()
-    xhttp.onload = () =>{
-        if (xhttp.status == 200){
-            end_waiting();
-            set_view(xhttp.responseText);
-            
-        }
-        after(xhttp);
-    }
-   
+function load_view(url, method='get', payload={},success=function(){}, error=function(){}) {
+    console.log('load view...')
+    const d = document.getElementById('drawer');
+    d.showLoader();
+    d.open();
     
-    showSidebox();
-    start_waiting();
-    xhttp.open(method, url);
-    xhttp.setRequestHeader("X-CSRFToken",window.CSRF_TOKEN);
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhttp.send(data);
-    
-}
-
-function  command(url, then = ()=>{}, error = ()=>{}){
-    const xhttp = new XMLHttpRequest()
-    console.log("data---------");
-    
-    xhttp.onload = () =>{
-       if (xhttp.status == 200){
-           then(xhttp.responseText);
-       }
-    }
-    xhttp.onerror= () => {
-        error();
-        console.log(xhttp.url);
-    }
-    xhttp.open("GET", url);
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhttp.send();
-   
-}
-
-//-------------------------------------------------------------------------------
-//------------------------------------CART---------------------------------------
-//-------------------------------------------------------------------------------
-function get_cart(){   
-   showSidebox();
-   start_waiting();
-   fetch("/cart/",{
-       header :{
-           'content-type':'application/x-www-form-urlencoded'
-       }
-   }).then((res) => {
-       res.text().then((r)=>{
-           end_waiting();
-           set_view(r);
-       })
-   })
-}
-
-function add_to_cart(){
-    event.preventDefault()
-    event.target.disabled = true;
-    const product_id = event.target.dataset["id"];
-   // command("/cart/add/" + product_id + "/");
-    fetch("/cart/add/" + product_id + "/").then((response) => {
-        if(response.ok){
-            response.json().then((t) =>{
-                const num =  document.getElementById("card-num");
-                num.innerText = t['cart_num']
-            })
-        }
-    })
-    event.target.disabled = false;
-}
-
-
-function add_to_cart_in_detail_page(){
-    const color = document.querySelector("#product-colors>.color.select-color").dataset["id"];
-    const size = document.querySelector("#product-sizes>.size.select-size").dataset["id"];
-    const product_id = event.target.dataset['id'];
-    const quantity = document.getElementById("product-quantity").value
-    console.log(color, size, quantity);
-    event.preventDefault()
-    event.target.disabled = true;
-    fetch("/cart/add/" + product_id + "/" + "?q="+ quantity + "&color="+color+"&size="+size).then((response) => {
-        if(response.ok){
-            response.json().then((t) =>{
-                const num =  document.getElementById("card-num");
-                num.innerText = t['cart_num']
-            })
-        }
-    })
-    event.target.disabled = false;
-
-
-}
-
-function remove_from_cart(){
-    const t = event.target;
-    t.disabled = true;
-    const item = event.target.parentNode
-    const product_id = event.target.dataset["id"]
-
-    msg = "آیا مایل به حذف مورد انتخابی هستید؟"
-    set_confirmation_dialog(msg, ()=>{
-
-        toggle_confirmation_dialog(); 
-        fetch("/cart/remove/" + product_id + "/",{
-           method: "GET"
-        }).then((resp) => {
-
-            resp.json().then((data)=>{
-                document.getElementById("card-num").innerText = data["num"];
-                document.getElementById("total_price").innerText = data["total"];
-                item.remove();
-                if (data["num"] == "0"){
-                    document.getElementById("cart-summary").remove();
+    method = method.toLowerCase();
+    if (method === 'get') {
+        get(url, (function(obj) {
+            return function (resp, status) {
+                if (status === 200) {
+                    d.hideLoader();
+                    d.setContent(resp);
+                    success();
+                }   
+                else {
+                    //handle error....
+                    d.hideLoader();
+                    error();
                 }
-                t.disabled = false;
-                //get_cart()
-            })
-        })
+            };
+        })(d));
+    }
+    else if (method === 'post'){
+        post(url, payload, (function(obj) {
+            return function(resp, status){
+                if (status === 200){
+                    obj.hideLoader();
+                    obj.setContent(resp);
+                    success();
+                }
+                else {
+                   obj.hideLoader();
+                   error();
+                }
+            };
+        })(d));
+    }
+    else {
        
-        
-    }, () =>{
-        toggle_confirmation_dialog();
-    });
-    
-}
-
-function change_product_color(product_id=null,color_id=null){
-
-    const obj = event.target
-    if (obj.classList.contains("color")){
-        const color_id = obj.dataset["id"];
-        const product_id = obj.parentNode.dataset["id"];
-        const color = obj.parentNode.parentNode.parentNode.children[0];
-
-        let data = "?product_id=" + product_id + "&color_id=" + color_id;
-        command("/cart/set_color/" + data, (dx) =>{
-            color.style.background = obj.style.backgroundColor;
-        });
-        
-    }
-}
-
-function change_product_size(){
-    const obj = event.target;
-    if (obj.classList.contains("size")){
-        const size_id = obj.dataset["id"];
-        const product_id = obj.parentNode.dataset["id"];
-        const size = obj.parentNode.parentNode.parentNode.children[0];
-        const data = "?size_id=" + size_id + "&product_id=" + product_id;
-        command("/cart/set_size/" + data, (d) =>{
-            size.innerText = obj.innerText;
-        });
-    }
-}
-
-function increment_product(){
-    const product_id = event.target.dataset["id"];
-    command("/cart/increment/" + product_id + "/",(data)=>{
-        resp = JSON.parse(data);
-        console.log(data);
-        document.getElementById("total_price").innerText = resp['total'];
-        document.getElementById("card-num").innerText = resp['num']
-    }, ()=>{
-        msg = "اتمام موجودی";
-        console.log("err...inc...")
-        set_error(msg, 1000, ()=>{});
-    });
-
-
-}
-
-function decrement_product(){
-    const product_id = event.target.dataset["id"];
-    command("/cart/decrement/" + product_id + "/", (data)=> {
-        resp = JSON.parse(data);
-        console.log(data);
-        document.getElementById("total_price").innerText = resp["total"];
-        document.getElementById("card-num").innerText = resp['num'];
-    })
-}
-
-function apply_coupon(){
-    const coupon_code = document.getElementById("coupon-code").value;
-    if (coupon_code.toString().length != 6) {
-        return;
-    }
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = () =>{
-        if(xhttp.status == 200){
-            end_waiting();
-            resp = JSON.parse(xhttp.responseText);
-            document.getElementById("total-price").innerHTML = resp["total"];
-        }
-        if(xhttp.status == 400){
-            end_waiting();
-            console.log('ssss')
-            msg = "کوپن نامعتبر"
-            set_error(msg,2000,()=>{});
-        }
     }
 
-    xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
-    xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
-    start_waiting();
-    xhttp.send();
-}
-function checkout_cart(){
-    start_waiting();
-    fetch('/orders/checkout/',{
-        method: 'GET'
-    }).then((response) =>{
-
-        response.text().then((txt)=>{
-            end_waiting();
-            set_view(txt);
-        })
-
-    })
-}
-//----------------------------------------------------------------------------
-//----------------------------------------------------------------------------
-//----------------------------------------------------------------------------
-
-
-
-function make_issue(){
-    fetch("/issue/register/",{
-        method: "GET",
-
-    }).then((response)=>{
-        response.text().then((txt)=>{
-            set_view(txt)
-            showSidebox();
-        })
-    })
 }
 
-function toggle_address_form(){
-    if(event.target.checked){
-        document.getElementById('address_form').style.display = "none"
-    }
-    else{
-        document.getElementById('address_form').style.display = "flex";
-    }
+function open_cart() {
+   const p = document.createElement('p')
+   p.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);";
+   p.innerText = "سبد خرید";
+   const v = document.createElement('a');
+   v.className = 'btn cta ';
+   v.innerText = "خرید";
+   v.href = '/cart/checkout'
+   v.style = 'text-decoration:none;width:45%;border-radius: 32px;font-size:0.8rem;border:none;padding:0.5rem;text-align:center;margin:3% auto;';
+   document.getElementById('drawer').addHeader(p);
+   document.getElementById('drawer').addFooter(v)
+   load_view('/cart/');
 }
 
-function get_all_issues(){
-    fetch('/issue/all/',{
-        method : "GET"
-    }).then((response) =>{
-        response.text().then((txt) => {
-            
-        })
-    })
+function update_cart(){
+
 }
 
-function change_issue_help(){
-    console.log("sddsdsf")
-    const id = document.getElementById("subject").value;
-    document.getElementById("issue-disc").innerHTML = document.getElementById("help-"+id).innerHTML;
+function checkout() {
+ //
 }
 
-/********************************************* */
-function purchase(){
-    const form = document.getElementById('address_form')
-    const use_default_address = document.getElementById("use_default_address").checked;
-    const data = new FormData(form);
-    if (use_default_address == true){
-        data.append('user_default_address','true')
-    }
-    else if (use_default_address == false){
-        data.append('user_default_address', 'false')
-    }
-    
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = () =>{
-        if(xhttp.status == 200){
-            end_waiting()
-            set_view(xhttp.responseText);
-        }
-    }
-
-    xhttp.open("POST","/orders/checkout/");
-    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-    start_waiting();
-    xhttp.send(data);
+function get_add_product_view(product_id) {
+    load_view('/product/add/');
 }
-
-
-
-/*******************FAVOURITES**************** */
-
-function get_favourites(){
-   
-   start_waiting();
-   showSidebox();
-   fetch("/favourites/",{
-        header: {
-            'content-type':'application/x-www-form-urlencoded'
-        }
-    }).then((response) => {
-        if(response.status != 200){
-           
-        }
-        response.text().then((txt)=>{
-            set_view(txt);
-            end_waiting();
-        })
-    })
-}
-function add_to_favourites(){
-    const product_id = event.target.dataset["id"];
-    command("/favourites/add/" + product_id + "/",(data)=>{
-        console.log(data);
-    });
-}
-function remove_from_favourites(){
-    const product_id = event.target.dataset["id"];
-    msg = "آیا مایل به حذف مورد انتخابی هستید؟"
-    set_confirmation_dialog(msg , () => {
-        toggle_confirmation_dialog();
-        start_waiting();
-        command("/favourites/remove/" + product_id + "/",()=>{
-            get_favourites();
-        });
-    }, () => {
-        toggle_confirmation_dialog();
-    })
-}
-
-/********************************************* */
-
-/*********************SHOP******************** */
-
-function get_add_product_form(){
-    load_view("/product/add/", "GET", null, false);
-}
-
 
 function get_selecteds(name, single){
     console.log('aaaa');
@@ -440,7 +146,22 @@ function validate_field(rx){
 }
 
 
+function change_preview() {
+    const preview = document.getElementById('gallery-preview')
+    target = event.target
+    if (target.classList.contains('thumb')) {
+        preview.src = event.target.src
+        const thumbs = target.parentNode.children;
+        for (let i=0; i < thumbs.length; ++i) {
+            thumbs.classList.remove('thumb-active')
+        }
+        target.classList.add('thumb-active')
+    }
+    
+}
+
 function get_attrs(){
+    console.log('get atttrs......')
     const _attrs = document.getElementById("attr-list").children;
     let attrs = new Map();
     
@@ -455,10 +176,13 @@ function get_attrs(){
         attrs["مخشصات"] = "ندارد"
     }
     console.log(attrs);
+
     return JSON.stringify(attrs);
 }
 
 function prepare_product_info(command){
+        
+    const attrs =  get_attrs();
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const quantity = document.getElementById("quantity").value;
@@ -468,7 +192,7 @@ function prepare_product_info(command){
     const type = get_selecteds("types", true);
     const categories = get_selecteds("categories",false);
     const subtype = get_selecteds("subtypes", true);
-    const attrs =  get_attrs();
+    const free_delivery = document.getElementById('free_delivery').checked;
 
     const  colors = document.getElementById("colors").children;
     let selected_colors = "";
@@ -501,8 +225,8 @@ function prepare_product_info(command){
         selected_sizes = selected_sizes.slice(1, selected_sizes.length);
     }
     
+    //-------------------------validations--------------------
     const errors = new Array()
-
     if (name == ""){
         errors.push("نام محصول را وارد کنید");
 
@@ -534,20 +258,56 @@ function prepare_product_info(command){
     if(selected_sizes == ""){
         errors.push("سایزبندی محصول را انتخاب کنید")
     }
+    //------------------------------------------------------------
 
+    //------------------- Error Dialog----------------------------
     if( errors.length !=0){
-        let msg = ""
-        for (let i=0; i < errors.length; ++i){
-            msg += errors[i] + "<br/>";
-        }
-        // set_error(msg,5000,()=>{
 
-        // })
-        document.getElementById('drawer').setContent(msg);
-        return null;
+        //--------ul of errors-------------------------
+        const frag = document.createDocumentFragment();
+        for (let i=0; i < errors.length; ++i){
+            // msg += errors[i] + "<br/>";
+            let li = document.createElement('li');
+            li.innerHTML = errors[i];
+            frag.appendChild(li)
+        }
+        const err_list = document.createElement('ul');
+        err_list.appendChild(frag);
+        //----------------------------------------------
+
+        //-------------------fetch drawer---------------
+        const drawer = document.getElementById('drawer');
+        const prevcontent = drawer.innerHTML;
+        //-----------------------------------------------
+
+        const err_container = document.createElement('div');
+        err_container.className = 'container vertical position--center';
+        err_container.style = 'color:red;font-size:0.9rem;line-height: 1.3rem;'
+        err_container.appendChild(err_list); //append error list to err_container**
+
+        const backbtn = document.createElement('button'); //back to add product button
+        backbtn.className = 'btn cta mt-1 ';
+        backbtn.style = "font-size:0.8rem";
+        backbtn.textContent = "بازگشت"
+        err_container.appendChild(backbtn); //append backbutton to err_container
+        drawer.setcc(err_container); //replace drawer content with a given node (err_container)
+
+        //handle go back to add product------------------------------
+        backbtn.addEventListener('click', (function (drawer, val) {
+            return function() {
+                drawer.setContent(val);
+                //ex: try to keeping text contents of add product view...
+            }
+        })(drawer,prevcontent)); 
+        //-----------------------------------------------------------
+
+        return null; //data were corrupted so, nothing will return (endpoint_1 of prepare_product_info)
     }
 
-    const data = new FormData();
+    //otherwise, in the case of clean data::
+
+    //---------------- return sanitized data-------------------------
+    const data = new FormData(); //use form initializer...
     data.append("name", name);
     data.append("price", price);
     data.append("description", description);
@@ -561,6 +321,7 @@ function prepare_product_info(command){
     data.append("is_available",'True')
     data.append("categories",categories);
     data.append("brand", brand);
+    data.append('free_delivery', free_delivery);
     if (command == "add"){
         const images = document.getElementById("images").files;
         for (let i=0; i < images.length && i <= 5; i++){
@@ -568,7 +329,13 @@ function prepare_product_info(command){
         }
     }
     return data;
+    //----------------------------------------------------
 }
+
+function toggle_search_box(){
+    var box = document.getElementById("search-box");
+    box.classList.toggle("show-box");
+ }
 
 function add_product(command){
     const data = prepare_product_info("add");
@@ -580,85 +347,22 @@ function add_product(command){
             // const sucess = document.getElementById("sucessful-edit").innerHTML;
             const d = document.getElementById('drawer');
             d.hideLoader();
-            d.setContent('success');
+            d.setContent('success'); // ex:change with xhttp.responseText and, in the server side, make the addition is done successfully prompt...
             
         }
-        // if(xhttp.status == 400){
-        //     const msg = "لطفا اطلاعات خواسته شده را به درستی وارد کنید"
-        //     set_error(msg,1000,()=>{end_waiting();})
-        // }
-    }
-    if (data){
+
+    };
+    if (data) {
         document.getElementById('drawer').showLoader();
         xhttp.send(data);
     }
   
 }
 
-function filter_product(){
-    document.getElementById("categories").value = get_selecteds("category_list", false);
-    document.getElementById("types").value = get_selecteds("type_list", false);
-    document.getElementById("subtypes").value = get_selecteds("subtype_list", false);
-    document.getElementById("brands").value = get_selecteds("brand_list", false);
-    console.log(get_selecteds("category_list",false));
-    let selected_colors = "";
-    let all_colors = "";
-    const colors = document.getElementById("color_list").children;
-    for (let i=0; i < colors.length; ++i){
-        all_colors += "," + colors[i].dataset["id"];
-        if (colors[i].classList.contains("select-color")){
-            selected_colors += "," + colors[i].dataset["id"];
-        }
-    }
-
-    const sizes = document.getElementById("size_list").children;
-    let selected_sizes = "";
-    let all_sizes = "";
-    for (let i=0; i < sizes.length; ++i){
-        all_sizes += "," + sizes[i].dataset["id"];
-
-        if (sizes[i].classList.contains("select-size")){
-            selected_sizes += "," + sizes[i].dataset["id"];
-        }
-    }
-
-    if (selected_colors == ""){
-        selected_colors = all_colors;
-    }
-    if (selected_sizes == ""){
-        selected_sizes = all_sizes;
-    }
-    console.log("colors");
-    console.log(selected_colors);
-    console.log("sizes");
-    console.log(selected_sizes);
-    document.getElementById("colors").value = selected_colors.slice(1,selected_colors.length);
-    document.getElementById("sizes").value = selected_sizes.slice(1, selected_sizes.length);
-    return true
-}
-
-
-function get_edit_product(){
-    event.stopPropagation();
-    const product_id = event.target.dataset["id"];
-
-    showSidebox();
-    start_waiting();
-    fetch("/product/edit/" + product_id + "/").then((res) => {
-
-        if(res.ok){
-            res.text().then((txt)=>{
-                end_waiting();
-                set_view(txt);
-            })
-        }
-    });
-}
 
 function edit_product(){
     const data = prepare_product_info("edit");
     const product_id = document.getElementById("id").value;
-    
     const xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/product/edit/" + product_id + "/");
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
@@ -673,63 +377,38 @@ function edit_product(){
             set_error(msg,1000,()=>{end_waiting();})
         }
     }   
-    start_waiting();
+    
     xhttp.send(data);
 }
 
-function remove_product(){
-    event.stopPropagation();
-    const product_id = event.target.dataset["id"];
-    const product = document.getElementById("product-" + product_id);
-    const data = new FormData();
-    data.append("id", product_id);
-    showSidebox();
-    msg = "آیا از حذف محصول اطمینان دارید؟"
-    set_confirmation_dialog(msg,()=>{
-        
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = () =>{
-
-            if(xhttp.status == 200){
-                end_waiting();
-                const success = document.getElementById("sucessful-edit").innerHTML;
-                set_view(success);
-                product.remove();
-                end_waiting();
-            }
-        }
-        // confirmation_dialog.classList.remove("show");
-        toggle_confirmation_dialog();
-        xhttp.open("GET","/product/remove/" + product_id);
-        
-        start_waiting();
-        xhttp.send()
-        
-
-    }, () => {
-        // confirmation_dialog.classList.remove("show");
-        toggle_confirmation_dialog();
-    })
-}
 function changeimg(){
     const num = event.target.dataset['num'];
-    console.log(num)
     const id = event.target.dataset['img'];
     const img = document.getElementById(id);
     const prod_img_id = img.dataset['id'];
-    const product_id = document.getElementById("id").value;
-    const product = document.getElementById("product-" + product_id);
-    console.log(product)
-    const file = event.target.files[0];
+
+
+    //--------------check for size-------------------
+    const t = event.target; 
+    if (t.files.length == 0) //any image ???
+        return;
+    
+    const file = t.files[0]; 
+    if (Math.round(file.size / 1024) > 150){ //above 150kb
+        alert('حجم فایل باید کمتر از 150 کیلوبایت باشد');
+        return;
+    }
+    //------------------------------------------------
+    
     const xhttp = new XMLHttpRequest();
     xhttp.onload = () =>{
         if (xhttp.status == 200){
             path = xhttp.responseText;
             img.src = path;
-            if(num == 1){
-                console.log("ojk...")
-                product.children[0].children[0].src = path;
-            }
+            // if(num == 1){
+            //     console.log("ojk...")
+            //     product.children[0].children[0].src = path;
+            // }
         }
     }
 
@@ -743,94 +422,107 @@ function changeimg(){
     
 }
 
-/********************************************* */
-
-function get_messages(){
-    load_view("/messages/","GET", null);
-}
-function get_appeal_form(){
-    load_view("/appeal/register/", "GET", null);
-}
-
-function validate_page_name(){
-    const obj = event.target
-    const rx = new RegExp("^[a-z0-9_]{4,}$");
-    if (! (rx.test(page_name)) ){
-        obj.classList.add("error")
+function update_cart_badge(cmd, val=0) {
+    const cart_badge = document.getElementById('cart-num-badge');
+    let count_string = cart_badge.innerText;
+    if (count_string === '99+') {
+        return;
     }
-    else{
-        obj.classList.remove("error")
+
+    let count = parseInt(count_string);
+    switch(cmd) {
+        case 'increment':
+            cart_badge.innerText = (count + 1 > 99) ? "99+" : count + 1;
+            break;
+        case 'decrement':
+            cart_badge.innerText = (count - 1 >= 0) ? count - 1 : 0;
+            break;
+        case 'add':
+            const res = count + parseInt(val);
+            cart_badge.innerText = (res  > 99) ? "99+" : res;
+            break;
+        case 'subtract':
+            const ress = count - parseInt(val);
+            cart_badge.innerText = (ress >= 0) ? ress : 0;
+            break;
     }
 }
 
-function make_appeal_for_boutique(){
-    const data = new FormData()
-    const page_name = document.getElementById("page_name").value
-    const rx = new RegExp("^[a-z0-9_]{4,}$")
-    if (! (rx.test(page_name)) ){
-        return
-    }
-    const description = document.getElementById("description").value
-    data.append("page_name", page_name)
-    data.append("description", description)
-    const xhttp = new XMLHttpRequest();
 
-    xhttp.onload = ()=>
-    {
-        if (xhttp.status == 200){
-            end_waiting();
-            set_view(xhttp.responseText);
+
+function open_search() {
+    console.log('search...');
+}
+
+function open_dashboard() {
+    load_view('/users/dashboard');
+}
+
+function open_favourites() {    
+    load_view('/favourites/');
+}
+
+//in product detail page
+function add_to_favourites() {
+    const pid = document.getElementById('product_id').value;
+    get('/favourites/add/' + pid + '/', function(resp, status) {
+        if (status === 200) {
         }
-    }
+    });
+    console.log('addddd');
+    event.target.style.color = 'red';
 
-    xhttp.open("POST", '/appeal/register/');
-    xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    start_waiting()
-    xhttp.send(data);
-
-
-
-       
-}
-/*******************REGISTRATION**************** */
-function get_enrollment_form(){
-    load_view("/users/enrollment/","GET");
+  
 }
 
-function validate_phone_number() {
+
+function open_mobile_menu() {
+    const d = document.getElementById('drawer');
+    const s = document.getElementById('mobile_menu');
+    d.setcc(s.content.cloneNode(true));
+    d.open();
+}
+
+function showMegaMenu() {
+    event.stopPropagation();
+    event.target.classList.add('cc');
+    document.getElementById('megamenu').style.display = 'flex';
+
+}
+
+function testcc(){
+    load_view('/test');
+    console.log('ssaaa');
+}
+
+function closeMegaMenu() {
+     const el = document.getElementById('prods');
+     document.getElementById('megamenu').style.display = 'none';
+     el.classList.remove('cc');
+     console.log('move...')
+ }
+
+
+ function get_enrollment_form(){
+    load_view("/users/enrollment/");
+}
+
+function validate_phone_number(phone_no) {
     console.log("validate..phone...")
     var phone_rx = new RegExp("^09[0-9]{9}$");
-    var phone_no = document.getElementById('phone_no').value.toString();
     return phone_rx.test(phone_no);
 
 }
 
 function enroll(){
-    if (!validate_phone_number()){
-        document.getElementById("error").innerText = "شماره همراه وارد شده صحیح نمیباشد";
-        return;
+    const phone_no = document.getElementById('phone-no');
+    const err = document.getElementById('phone-error');
+    if (!validate_phone_number(phone_no.value)){
+       err.innerText = "شماره همراه وارد شده صحیح نمیباشد";
+       return;
     }
-    document.getElementById("error").innerText = "";
-
-    const phone_no = document.getElementById("phone_no").value;
-    data = new FormData();
-    data.append("phone_no", phone_no);
-    const xhttp = new XMLHttpRequest()
-    xhttp.onload = () =>
-    {
-        if (xhttp.status == 200){
-            set_view(xhttp.responseText);
-            end_waiting();
-        }
-
-     
-    }
-    xhttp.open("POST", "/users/enrollment/");
-    xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    start_waiting();
-    xhttp.send("phone_no=" + phone_no.trim());
-
+    console.log(phone_no.value);
+    load_view('/users/enrollment/','post',"phone_no=" + phone_no.value.trim());
 }
 
 function show_search_page(){
@@ -842,263 +534,160 @@ function show_search_page(){
     
 }
 
+function _toggle_nav_actions() {
+    document.getElementById('cart-icon').classList.remove('hi');
+    document.getElementById('user-icon').classList.remove('hi');
+    document.getElementById('login-button').classList.add('hi');
+}
 
+function dispatch_pay() {
+    //---------------sentinel-------------------
+    const uda = document.getElementById("use_default_address").checked;
+    const f = document.forms['custom-address'];
+    if (!uda) {
+        for (let v=0;v < f.elements.length; v++){
+            let j = f.elements[v].value.trim()
+            if ( j == '' || j == '-1'){
+                console.log(f.elements[v])
+            alert('خطا: لطفااطلاعات مربوط به آدرس خود را به طور کامل وارد کنید')
+            return;
+            }
+        }
+    }
+    //------------------------------------------
+    load_view('/cart/dispatcher?use_default_address=' + uda);
+}
 
 function login(){
-    var  d = new XMLHttpRequest()
-    const password = document.getElementById("password").value;
-    const data = new FormData()
-    data.append("password", password);
-    load_view("/users/login/","POST",data,(x)=>{
-        if(x.status == 422 || x.status == 400){
-            const msg = "رمز عبور اشتباه است"
-            set_error(msg ,1500,()=>{});
-            toggle_waiting();
+    const pass = document.getElementById('password');
+    document.getElementById('drawer').showLoader();
+    load_view('/users/login/', 'post', "password=" + pass.value, success = function() {
+        _toggle_nav_actions();
 
-        }
+    }, error=function() {
+        document.getElementById('login-error').innerText = 'رمز عبور اشتباه است';
+        document.getElementById('drawer').hideLoader();
     });
 }
 
-function logout(){
-    load_view("/users/logout/", "GET", null, false);
-}
-
-
 
 function verify_code(){
-    const xhttp = new XMLHttpRequest();
-    // xhttp.onreadystatechange = () =>{
-    //     if(xhttp.status == 200){
-            
-    //         set_view(xhttp.responseText);
-    //     }
-        
-    // }
-    const code = document.getElementById("code").value;
-    const data = new FormData()
-    data.set("code", code);
-    xhttp.onload = () => {
-        if(xhttp.status == 422 || xhttp.status == 400){
-            const msg = "کد  اشتباه است"
-            end_waiting();
-            set_error(msg ,1500,()=>{});
-            
-        
-        }
-
-        if(xhttp.status == 200){
-            end_waiting()
-            set_view(xhttp.responseText);
-        }
-    }
-    xhttp.open("POST","/users/verification/");
-    xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    start_waiting();
-    xhttp.send("code=" + code.trim());
-    
+    const code = document.getElementById('verification-code');
+    const err = document.getElementById('verification-error');
+    load_view('/users/verification/', 'post', 'code=' + code.value.trim(), 
+    function() {
+        document.getElementById('drawer').hideLoader();
+        err.innerText =  'کد اشتباه است. دوباره تلاش کنید';
+    });
 }
 
 function validate_password(){
-    let password = document.getElementById("password").value;
-    let confirm = document.getElementById("confirm").value;
-    const error = document.getElementById("error");
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+    const password_error = document.getElementById("password-error");
+    const confirm_err = document.getElementById('confirm-error');
     let rx = RegExp('(?=.*[0-9])(?=.*[!@#$%^&*.])(?=.{8,})');
     if (password != confirm ){
-        error.innerText = "تکرار رمز عبور صحیح نمیباشد"
+        confirm_err.innerText = "تکرار رمز عبور صحیح نمیباشد";
         return false;
     }
     else if(password.length < 8){
-        error.innerText = "رمز عبور باید حداقل هشت حرفی باشد"
+        password_error.innerText = "رمز عبور باید حداقل هشت حرفی باشد";
         return false
     }
     else if(! rx.test(password)){
-        error.innerText = "رمز عبور باید شامل حروف اعداد و نمادها باشد"
+        password_error.innerText = "رمز عبور باید شامل حروف اعداد و نمادها باشد";
         return false
     }
     return true;
 }
 function set_password(){
-    let password = document.getElementById("password").value;
-    let confirm = document.getElementById("confirm").value;
-    const data = new FormData();
-    data.append("password", password);
-    data.append("confirm", confirm);
-    if(validate_password()){
-    //    load_view("/users/set_password/", "POST", data, true);
-        const xhttp = new XMLHttpRequest()
-        xhttp.onload = () =>{
-
-            if(xhttp.status == 200){
-                get_profile();
-            }
-        }
-        xhttp.open("POST","users/set_password/")
-        xhttp.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-        xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        start_waiting();
-        xhttp.send("password=" + password.trim() + "&confirm=" + confirm.trim());
-    
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+    if (!validate_password()) {
+        return;
     }
+    document.getElementById('drawer').showLoader();
+    load_view('/users/set_password/', 'post',
+    "password=" + password.trim() + "&confirm=" + confirm.trim(), 
+    success=function() {
+        _toggle_nav_actions();
+    });
 }
 
-
+function reset_password() {
+    load_view('/users/reset_password/')
+}
 
 function get_profile(){
-    load_view("/users/profile/","GET", null,false);
+    load_view("/users/profile/","GET", null);
 }
 
+let num_of_comment_pages = 0;
+function fetchComment() {
+    const pid = 1;
+    const xr = new XMLHttpRequest();
+    const cbox = document.getElementById('comment-box');
 
-function toggle_state_list(){
-    
-  const states = document.getElementById("states").children;
-  if (event.target.checked == true){
-  for (let i=0; i < states.length; ++i){
-      states[i].classList.add('selected');
-      states[i].children[0].classList.add('show');
-  }
-  }
-  else {
-    for (let i=0; i < states.length; ++i){
-        states[i].classList.remove('selected');
-        states[i].children[0].classList.remove('show');
-    }
-  }
-}
-
-function edit_profile(){
-    form = document.getElementById("personal_info");
-    const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
-    const email = document.getElementById("email").value;
-    const card = document.getElementById("merchan_card").value;
-    if(! is_valid_email(email) && ! is_valid_card(card)){
-        const msg  = "شماره کارت و ایمل نامعتبر است"
-        set_error(msg,1000);
-        return
-    }
-    else if(! is_valid_email(email)){
-        const msg  = " ایمل نامعتبر است"
-        set_error(msg,1000);
-        return
-    }
-    else if(! is_valid_card(card)){
-        const msg  = "شماره کارت نامعتبر است"
-        set_error(msg,1000);
-        return
-    }
-    else if(! validate_province_and_city()){
-        const msg  = "استان و شهرستان نامعتبر"
-        set_error(msg,1000);
-        return
-    }
-    const xhttp = new XMLHttpRequest()
-    xhttp.open("POST", "/users/profile/");
-    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-    xhttp.onload = () =>{
-        if(xhttp.status == 200){
-            const sucess = document.getElementById("sucessful-edit").innerHTML;
-            set_view(sucess);
-            end_waiting();
+    xr.onload = function() {
+        if (xr.status == 200) {
+            cbox.appendChild(xr.responseText);
+            //remove comment-button
         }
-    }
-    start_waiting();
-    xhttp.send(data);
+    };
+
+    xr.open('get','/product/comments/' + pid + '/');
+    xr.send();
 }
 
-/************************************************ */
+function add_comment() {
+    const comment_body = document.getElementById('comment-body');
+    if (comment_body.value.trim() == ''){
+        alert('نظر خود را بنویسید...')
+        return;
+    }
+    const pid = document.getElementById('product_id').value;
+    const author = document.getElementById('author').value;
+    const btn = document.getElementById('comment-submit');
+    btn.setAttribute('disabled', true);
+    const lod = document.createElement('div');
+    lod.className='loader';
+    const btn_txt = btn.textContent;
+    lod.style = 'width:16px;height:16px;margin:0 auto;'
+    btn.replaceChildren(lod);
 
-function get_cities(){
-    const province_name = event.target.value;
-    let province_id = null
-    const provinces = document.getElementById("provinces").getElementsByTagName("option");
-    
-    for (let i=0; i < provinces.length; ++i){
-        if(provinces[i].value.trim() == province_name.trim()){
-            province_id = provinces[i].dataset["id"];
-            break;
+    const data = new FormData();
+    data.append('comment_body', comment_body.value);
+    data.append('comment_title', 'no');
+    post('/comments/product/' + pid + '/leave/','comment_body=' + comment_body.value + '&comment_title='+ 'no', function(resp, status) {
+        if (status != 200){
+            const bb  = document.getElementById('comment-submit');
+            alert('خطا در ارسال نظر...');
+            bb.replaceChildren(btn_txt);
+            bb.setAttribute('disabled', false);
+            return;
         }
-    }
+        const com = document.createElement('om-comment');
+        com.setAttribute('author', author );
+        com.setAttribute('body', comment_body.value);
+        com.setAttribute('date', 'اکنون...');
+        const cbox = document.getElementById('comment-box');
+        const btn = document.getElementById('comment-submit');
+        cbox.insertBefore(com, cbox.firstChild);
+        comment_body.remove();
+        btn.remove();
 
-
-    if (province_id != null && province_id != ""){
-        fetch("/cities/" + "?province_id=" + province_id ,{
-            header:{
-                "Content-type":"applicatin/json"
-            }
-        }).then((res) => {
-            res.json().then((data)=> {
-                const cities = document.getElementById("cities");
-                const fragment = document.createDocumentFragment();
-
-                cities.innerHTML = "";
-                console.log(data);
-                for(let i=0; i< data['cities'].length; ++i){
-                    let option  = document.createElement("option");
-                    option.value = data['cities'][i];
-                    fragment.appendChild(option);
-                }
-                cities.appendChild(fragment);
-            })
-        })
-    }
-
-}
-
-function validate_province_and_city(){
-    console.log("fsdsf")
-    const province = document.getElementById("state");
-    const city = document.getElementById("city");
-
-    const provinces = document.getElementById("provinces").getElementsByTagName("option");
-    const cities = document.getElementById("cities").getElementsByTagName("option");
-
-    let is_provinace = false , is_city = false;
-    for (let i=0; i < provinces.length; ++i){
-        if (provinces[i].value.trim() == province.value.trim()){
-            is_provinace = true
-            break;
-        }
-    }
-    for (let j=0; j < cities.length; ++j){
-        if(cities[j].value.trim() == city.value.trim()){
-            is_city = true
-            break;
-        }
-    }
-
-    if (! is_provinace){
-        province.classList.add("error");
-    }
-    else{
-        province.classList.remove("error");
-    }
-
-    if (! is_city){
-        city.classList.add("error");
-    }
-    else{
-        city.classList.remove("error");
-    }
-
-    return is_city && is_provinace;
-}
-
-function checkout_request(){
-    load_view("/account/checkout","GET",null);
-}
-
-function deposit_request(){
-    load_view("/account/deposit","GET",null);
-
+    });
 }
 
 function get_edit_shop_form(){
-    load_view("/shop/edit/","GET",null);
+    load_view("/shop/edit/");
 }
-``
+
 function edit_shop(){
-    const shop_form = document.querySelector("#shop_form");
-    const data = new FormData(shop_form);
+    const shop_form = document.getElementById("shop_form");
+    console.log(shop_form);
+    let data = new FormData(shop_form);
     const states = document.querySelector("#states").children;
     let selected_states = "";
     for (let i=0; i < states.length; i++){
@@ -1107,73 +696,74 @@ function edit_shop(){
             selected_states += "," + t.slice(0,t.length - 1).trim();
         }
     }
+
+    data.append("post_destinations", selected_states.slice(1,selected_states.length));
     
-    data.append("post_destinatinos", selected_states.slice(1,selected_states.length));
     const xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/shop/edit/");
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-    // fetch("/shop/edit/",{
-    //     method: "POST",
-    //     header:
-    //     {
-    //         "X-CSRFToken": getCookie("csrftoken")
-    //     },
-    //     body: data
-
-    // }).then((response) =>{
-    //     if(response.ok){
-    //         const sucess = document.getElementById("sucessful-edit").innerHTML;
-    //         set_view(sucess);
-    //     }
-    // })
     xhttp.onload = () =>{
         if(xhttp.status == 200){
-            const sucess = document.getElementById("sucessful-edit").innerHTML;
-            set_view(sucess);
-            end_waiting();
+            
+            document.getElementById('drawer').setContent(xhttp.responseText);
+
         }
     }
-    start_waiting();
+
     xhttp.send(data);
 }
 
-
-
-
-/*********************ORDERS********************* */
-function get_user_orders(){
-    console.log('ordes...');    
-    event.stopPropagation();
-    showSidebox();
-    start_waiting();
-    fetch('/user/orders/',{
-        method: "GET"
-    }).then((res) => {
-        
-        res.text().then((txt)=>{
-            end_waiting();
-            set_view(txt);
-        }
-        );
-    });
+//-----------appeal for new boutique------------------
+function get_appeal_form(){
+    load_view("/appeal/register/");
 }
-
-function get_shop_orders(){
-    console.log('ordes...');    
-    event.stopPropagation();
-    showSidebox();
-    start_waiting();
-    fetch('/shop/orders/',{
-        method: "GET"
-    }).then((res) => {
-        
-        res.text().then((txt)=>{
-            end_waiting();
-            set_view(txt);
-        }
-        );
-    });
+function validate_page_name(){
+    const obj = event.target
+    const rx = new RegExp("^[a-z0-9_]{4,}$");
+    if (! (rx.test(page_name)) ){
+        obj.classList.add("error")
+    }
+    else{
+        obj.classList.remove("error")
+    }
 }
+function make_appeal_for_boutique(){
+    const rx = new RegExp("^[a-z0-9_]{4,}$")
+    if (! (rx.test(page_name.text))){
+        page_name.error('نام صفحه انتخابی نامعتبر است')
+    }
+
+    post('/appeal/register/', 'page_name=' + page_name.text + '&description=' + 'توضیحات', function(resp,status) {
+        if (status == 200){
+            const drawer = document.getElementById('drawer');
+            drawer.setContent('درخواست شما ثبت شد...');
+
+        }
+        else {
+            page_name.error('این نام صفحه قبلاانتخاب شده است');
+        }
+    });
+   
+}
+//----------------------------------------------------
+
+
+function showMegaMenu() {
+    event.stopPropagation();
+    event.target.classList.add('cc');
+    document.getElementById('megamenu').style.display = 'flex';
+
+ }
+
+ function closeMegaMenu() {
+     const el = document.getElementById('prods');
+     document.getElementById('megamenu').style.display = 'none';
+     el.classList.remove('cc');
+     console.log('move...')
+ }
+
+
+
 function show_order_detail(){
     console.log('dssdsd');
     const id = event.target.dataset['id'];
@@ -1203,118 +793,11 @@ function show_shop_order_detail(){
     })
 }
 
-function accept_order(){
-    const order_id = event.target.dataset['id'];
-    start_waiting();
-    fetch(`/shop/order/${order_id}/accept/`,{
-        method: 'GET'
-    }).then((response) => {
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    })
-}
-function reject_order(){
-    const order_id = event.target.dataset['id'];
-    start_waiting();
-    fetch(`/shop/order/${order_id}/reject/`,{
-        method: 'GET'
-    }).then((response) => {
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    })
-}
-function cancell_order(){
-    const order_id = event.target.dataset['id'];
-    start_waiting();
-    fetch(`/user/order/${order_id}/cancell/` ,{
-        method: 'GET'
-    }).then((response) => {
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    });
-}
-function recieve_order() {
-    const order_id = event.target.dataset['id'];
-    start_waiting();
-    fetch(`/user/order/${order_id}/verify/`,{
-        method: 'GET'
-    }).then((response) => {
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    });
-}
-
-function send_tracking_code(){
-    const order_id = event.target.dataset['id'];
-    const tracking_code = document.getElementById('tracking_code').value
-    start_waiting();
-    fetch('/orders/tracking_code/' + order_id + '/' + "?tracking_code=" + tracking_code ,{
-        method: 'GET',
-        header: {
-            'content-type': 'application/x-www-form-urlencoded'
-        }
-    }).then((response) => {
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    })
-}
-
-/*********************COMMENTS******************* */
-
-function get_comments(){
-
-}
-
-function leave_comment(){
-    const title = document.getElementById("comment-title").value;
-    const body = document.getElementById("comment-body").value;
-    console.log(title,body)
-    const product_id = event.target.dataset['id'];
-   
-    if(title != "" && body != ""){
-
-        const xhttp = new XMLHttpRequest()
-        const data = new FormData();
-        data.append("comment_title",title);
-        data.append("comment_body", body);
-        xhttp.onload = ()=>{
-
-            if( xhttp.status == 200){
-                showSidebox();
-                set_view(xhttp.responseText);
-            }
-        }
-        xhttp.open("POST","/comments/product/" + product_id + "/leave/" );
-        xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-        xhttp.send(data);
-       
-    }
-
-}
-/************************************************** */
 function is_valid_email(email){
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
-function validate_email(){
-    const email = document.getElementById("email")
-    if (! is_valid_email(email.value)){
-        email.classList.add("error");
-    }
-    else{
-        email.classList.remove("error")
-    }
-}
+
 
 function is_valid_card(card_num){
 
@@ -1336,14 +819,285 @@ function is_valid_card(card_num){
     return false;
 }
 
-function validate_card(){
-    const card = document.getElementById("merchan_card");
-    
-    if(! is_valid_card(card.value)){
-        card.classList.add("error");
+
+function cvt_fa_No_2_en(str){
+    const cvt_map = {
+        '۰': '0', 
+        '۱': '1', 
+        '۲': '2', 
+        '۳': '3', 
+        '۴': '4', 
+        '۵': '5', 
+        '۶': '6', 
+        '۷': '7', 
+        '۸': '8', 
+        '۹': '9',
+        '' : '0',
+        '١' : '1',
+        '٢' : '2',
+        '٣' : '3',
+        '٤' : '4',
+        '٥' : '5',
+        '٦' : '6',
+        '٧' : '7',
+        '٨' : '8',
+        '٩' : '9',
+
+    };
+    let newstr = '';
+    for (let i=0; i < str.length; ++i){
+        newstr += cvt_map[str[i]];
     }
-    else{
-        card.classList.remove("error");
-    }
     
+    return (newstr.length > 0 ? newstr: str);
+
+}
+
+function edit_profile(){
+    form = document.getElementById("personal_info");
+    const data = new FormData(form); //"?first_name=" + first_name + "&last_name=" + last_name;
+    console.log('------------------', data);
+
+    const email = document.getElementById("profile-email").value;
+    const card = document.getElementById("profile-merchan_card").value;
+    const errors = new Array()
+    if(! is_valid_email(email)){
+        errors.push('ایمیل نامعتبر است');
+    }
+    if(!is_valid_card(card)){
+        errors.push('شماره کارت نامعتبر است');
+    }
+    if (data.get('first_name').trim() === '' || data.get('last_name').trim() === ''){
+        errors.push('لطفا نام و نام خانوادگی خود را وارد کیند');
+    }
+
+    if( errors.length !=0){
+
+        //--------ul of errors-------------------------
+        const frag = document.createDocumentFragment();
+        for (let i=0; i < errors.length; ++i){
+            // msg += errors[i] + "<br/>";
+            let li = document.createElement('li');
+            li.innerHTML = errors[i];
+            frag.appendChild(li)
+        }
+        const err_list = document.createElement('ul');
+        err_list.appendChild(frag);
+        //----------------------------------------------
+
+        //-------------------fetch drawer---------------
+        const drawer = document.getElementById('drawer');
+        const prevcontent = drawer.content;
+        //-----------------------------------------------
+
+        const err_container = document.createElement('div');
+        err_container.className = 'container vertical position--center';
+        err_container.style = 'color:red;font-size:0.9rem;line-height: 1.3rem;'
+        err_container.appendChild(err_list); //append error list to err_container**
+
+        const backbtn = document.createElement('button'); //back to add product button
+        backbtn.className = 'btn cta mt-1 ';
+        backbtn.style = "font-size:0.8rem";
+        backbtn.textContent = "بازگشت"
+        err_container.appendChild(backbtn); //append backbutton to err_container
+        drawer.setcc(err_container); //replace drawer content with a given node (err_container)
+
+        //handle go back to add product------------------------------
+        backbtn.addEventListener('click', (function (drawer, val) {
+            return function() {
+                drawer.setContent(val);
+                //ex: try to keeping text contents of add product view...
+            }
+        })(drawer,prevcontent)); 
+        //-----------------------------------------------------------
+
+        return; //data were corrupted so, nothing will return (endpoint_1 of prepare_product_info)
+    }
+
+    const xhttp = new XMLHttpRequest()
+    xhttp.open("POST", "/users/profile/");
+    xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+            document.getElementById('drawer').setContent('successfully edited');
+        }
+    }
+    xhttp.send(data);
+}
+
+
+function apply_coupon(){
+    const coupon_code = document.getElementById("coupon-code").value;
+    if (coupon_code.toString().length != 8) {
+        alert('wrong');
+        return;
+    }
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = () =>{
+        if(xhttp.status == 200){
+          
+            alert('success')
+            resp = JSON.parse(xhttp.responseText);
+            document.getElementById("total_sum").innerHTML = 'مبلغ' + resp["total"] + 'تومان' ;
+        }
+        if(xhttp.status == 400){
+           alert('کوپن نامعتبر')
+        }
+    }
+
+    xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
+    xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+    xhttp.send();
+}
+
+function toggle_address(){
+    console.log('check checke')
+    document.getElementById('other-address').classList.toggle('disp-none');
+
+}
+
+function show_order_detail(){
+    const id = event.target.dataset['id'];
+
+    fetch(`/user/order/${id}/detail/` ,{
+        method: "GET"
+
+    }).then((response) =>{
+        response.text().then((txt) => {
+            document.getElementById('drawer').setContent(txt);
+            
+        })
+    })
+    document.getElementById('drawer').open();
+}
+
+function show_shop_order_detail(){
+    const id = event.target.dataset['id'];
+    fetch(`/shop/order/<order_id>/detail/` + id + '/',{
+        method: "GET"
+
+    }).then((response) =>{
+        
+        response.text().then((txt) => {
+            end_waiting();
+            set_view(txt);
+        })
+    })
+}
+
+
+function get_cities(pair){
+
+    selected_prov = event.target.value;
+    if (selected_prov != -1){
+        fetch("/cities/" + "?province_id=" + selected_prov ,{
+            header:{
+                "Content-type":"applicatin/json"
+            }
+        }).then((res) => {
+            res.json().then((data)=> {
+                console.log(data);
+                const cities = document.getElementById(pair);
+                const fragment = document.createDocumentFragment();
+                cities.innerHTML = '';
+                for(let i=0; i< data['cities'].length; ++i){
+                    let option  = document.createElement("option");
+                    option.innerText = data['cities'][i];
+                    fragment.appendChild(option);
+                }
+                cities.appendChild(fragment);
+            })
+        })
+    }
+
+}
+
+
+function send_issue(){
+    const subject_id = document.getElementById('issue-subject').selectedItems;
+    const btn = event.target;
+    const description = document.getElementById('issue-description');
+    if (subject_id.length != 1){
+        alert('لطفا موضوع را انتخاب کنید')
+    }
+    if (description.value.trim() === ''){
+        alert('توضیحات خالیست')
+    }
+    const prev_txt = btn.innerText;
+    const lod = document.createElement('div');
+    lod.className='loader';
+    const btn_txt = btn.textContent;
+    lod.style = 'width:16px;height:16px;margin:0 auto;'
+    btn.replaceChildren(lod);
+    
+
+    post('/issue/register/', 'subject=' + subject_id + '&description=' + description.value, 
+        function(resp, status) {
+            console.log(status,'.....')
+        if ( status === 200){
+            btn.disabled = true;
+            btn.replaceChildren('شکایت ثبت شد');
+            btn.style.backgroundColor = '#efefef';
+            btn.style.color = '#333';
+        }
+        else {
+            btn.replaceChildren(prev_txt)
+            alert('خطا');
+        }
+    });
+
+}
+
+function filter_orders(url, status) {
+    if (status.length !== 1)
+        return;
+    window.open(url, '_self');
+}
+function fitler_user_orders() {
+    const status = document.getElementById('order-status').selectedItems;
+    if (status.length !== 1)
+        return;
+    window.open('/user/orders/' + status[0] + '/','_self');
+}
+function filter_shop_orders(){
+    const status = document.getElementById('order-status').selectedItems;
+    if (status.length !== 1)
+        return;
+    window.open('/shop/orders/' + status[0] + '/','_self');
+}
+
+function get_wallet() {
+    load_view('/account/wallet', 'get',null)
+}
+
+function get_messages(){
+    load_view('/messages/', 'get')
+}
+
+
+function select_tab(){
+    const target = event.target;
+    if (target.classList.contains('tab-item')){
+        const tab_id = target.dataset['tab'];
+        console.log(tab_id);
+        const items = target.parentNode.children;
+        for (let i = 0; i < items.length; ++i){
+            items[i].classList.remove('tab-item-selected');
+        }
+        const contents = target.parentNode.parentNode.getElementsByClassName('tab-contents')[0].children;
+        for (let i=0; i < contents.length; ++i){
+            contents[i].classList.remove('tab-show-content');
+        }
+        target.classList.add('tab-item-selected');
+        document.getElementById(tab_id).classList.add('tab-show-content');
+
+    }
+
+}
+
+function show_filter() {
+    const d = document.getElementById('drawer');
+    const c = document.getElementById('filter_box');
+    d.setcc(c.content.cloneNode(true));
+    d.open();
 }

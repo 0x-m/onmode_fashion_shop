@@ -99,15 +99,15 @@
    
 </style>
  <!----------------BANNER------------>
-<image-field {% if shop.banner  %}initial="{{shop.banner.url}}"{% endif %}  class="shop-banner" disabled>
+<!-- <image-field {% if shop.banner  %}initial="{{shop.banner.url}}"{% endif %}  class="shop-banner" disabled>
     <div slot="placeholder">
         <div style="display: flex;justify-content:center; align-items:center">
         <ion-icon style="font-size:2rem;color:#efefef" name="camera-outline"></ion-icon>
         <span style="color: #ccc;margin-right:0.5rem">بنر</span>
         </div>
     </div>
-</image-field>
-
+</image-field> -->
+<img src="{% if shop.banner %}{{ shop.banner.url }}{% else %}{% static 'img/blog/3.jpg' %}{% endif %}" style="object-fit: cover;" class="shop-banner" alt="بنر بوتیک" />
 <div class="container vertical w-100 mt-05">
     <div class="shop-action" style="padding-bottom: 0.3rem;">
         <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem" onclick="show_filter();" class="btn-tiny">فیلتر</button>
