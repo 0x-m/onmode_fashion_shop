@@ -10,7 +10,7 @@ import requests
 import json
 from orders.form import AddressForm
 from requests.api import request
-
+from cart.cart import Cart
 from orders.models import OrderAddress, OrderList
 from payments.models import PaymentTransaction
 
@@ -32,8 +32,10 @@ def pay(request: HttpRequest):
         callback_url = reverse('payments:verify')
         description = 'واریز به حساب'
     elif type == 'checkout':
+        if len(Cart(request)) == 0:
+            return HttpResponse('کارت خالیست')
         request.session['payment_type'] = 'checkout'
-        callback_url = reverse('payment:verify')
+        callback_url = reverse('payments:verify')
         description = 'خرید محصول'
     request.session.save()
 
@@ -52,7 +54,7 @@ def pay(request: HttpRequest):
         'accept': 'application/json'
     }
 
-    req = requests.post('https://api.zarinpal.com/pg/v4/payment/request.json',
+    req = requests.post('https://api.zarinpal.com/pg/v4/payment/request.json/',
                         json= params, 
                         headers=headers)
     res = req.json()
@@ -139,7 +141,7 @@ def verify(request:HttpRequest):
             'content-type': 'applicatioin/json',
             'accept': 'application/json'
         }
-        req = requests.post('https://zarinpal.com/pg/v4/payment/verify.json', 
+        req = requests.post('https://api.zarinpal.com/pg/v4/payment/verify.json', 
                             headers=headers, params=params)
         res = json.load(req.json())
         if res['data']['code'] == 100:

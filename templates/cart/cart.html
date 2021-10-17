@@ -38,16 +38,16 @@
                     {% endif %}>
             </cart-item>
         {% endfor %}
-        <div class="container vertical mt-1  w-100" style="justify-content: center;align-items:center;background:#efefef;padding:0.5rem">
+        <div class="container vertical mt-1  w-100" style="justify-content: center;align-items:center;background:#efefef;padding:0.8rem;border-radius:8px">
             <p style="font-size: 0.7rem;">
-                تعداد اقلام:{{ cart|length }}
+                تعداد اقلام:&nbsp;<span id="in-cart-num">{{ cart|length }}</span>
             </p>
             <p style="font-size: 1rem;color:#444;margin-top:0.6rem">
                جمع کل:
                <span id="total_price">{{ cart.get_total_price }}</span>
                 تومان
             </p>
-            <a style="display: block;text-decoration:none;" href="{% url 'cart:checkout' %}" class="btn cta">خرید</a>
+            <!-- <a  style="display: block;text-decoration:none;border-radius:32px" href="{% url 'cart:checkout' %}" class="btn cta">خرید</a> -->
         </div>
     {% endif %}
   

@@ -14,7 +14,7 @@
 </style>
 <div class="container vertical" style="width: 100%;">
     <div class="brick" style="border:none;margin-top:1.5rem;" >
-        <p style="font-size: 3rem;color:rgb(245, 81, 81);" class="fnt">27500 تومن</p>
+        <p style="font-size: 3rem;color:rgb(245, 81, 81);" class="fnt">{{user.account.balance}} تومن</p>
     </div>
     <div class="container horizontal" style="width: 100%;margin-top:0.3rem;justify-content:space-between;">
         <div class="brick" style="width: 49%;border:none;">
@@ -41,7 +41,7 @@
                         <label class="holder">مبلغ به تومان</label>
                     </div>
                     <p id="widthraw-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
-                    <button  class="btn cta" dir="rtl" style="margin:0.7rem auto;width:100%;display:block">ثبت درخواست</button>
+                    <button style="margin:1rem auto;width:80%;background:rgb(88, 88, 88);color:white;border:0;border-radius:32px;font-size:0.8rem" class="btn cta" onclick="edit_profile();">ثبت درخواست</button>
                     <p style="margin-top: 1rem;font-size:0.8rem">
                         **تاریخ برداشت قبلی...
                     </p>
@@ -54,7 +54,7 @@
                         <label class="holder">مبلغ به تومان</label>
                     </div>
                     <p id="deposit-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
-                    <button class="btn cta" dir="rtl" style="margin:0.7rem auto;width:100%;display:block">ادامه</button>
+                    <button style="margin:1rem auto;width:80%;background:rgb(88, 88, 88);color:white;border:0;border-radius:32px;font-size:0.8rem" class="btn cta" onclick="edit_profile();">اتصال به درگاه</button>
     
                 </div>
             </div>

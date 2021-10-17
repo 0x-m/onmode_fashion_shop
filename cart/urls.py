@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 from . import views
 
@@ -12,5 +13,6 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('set_color/', views.change_product_color, name='change_color'),
     path('set_size/', views.change_product_size, name='change_size'),
+    path('dispatcher/', views.dispatcher, name='cart_dispatch'),
     path('',views.cart_list, name='cart_list'),
 ]

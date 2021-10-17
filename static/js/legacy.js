@@ -95,7 +95,21 @@ function load_view(url, method='get', payload={},success=function(){}, error=fun
 }
 
 function open_cart() {
+   const p = document.createElement('p')
+   p.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);";
+   p.innerText = "سبد خرید";
+   const v = document.createElement('a');
+   v.className = 'btn cta ';
+   v.innerText = "خرید";
+   v.href = '/cart/checkout'
+   v.style = 'text-decoration:none;width:45%;border-radius: 32px;font-size:0.8rem;border:none;padding:0.5rem;text-align:center;margin:3% auto;';
+   document.getElementById('drawer').addHeader(p);
+   document.getElementById('drawer').addFooter(v)
    load_view('/cart/');
+}
+
+function update_cart(){
+
 }
 
 function checkout() {
@@ -541,6 +555,24 @@ function _toggle_nav_actions() {
     document.getElementById('login-button').classList.add('hi');
 }
 
+function dispatch_pay() {
+    //---------------sentinel-------------------
+    const uda = document.getElementById("use_default_address").checked;
+    const f = document.forms['custom-address'];
+    if (!uda) {
+        for (let v=0;v < f.elements.length; v++){
+            let j = f.elements[v].value.trim()
+            if ( j == '' || j == '-1'){
+                console.log(f.elements[v])
+            alert('خطا: لطفااطلاعات مربوط به آدرس خود را به طور کامل وارد کنید')
+            return;
+            }
+        }
+    }
+    //------------------------------------------
+    load_view('/cart/dispatcher?use_default_address=' + uda);
+}
+
 function login(){
     const pass = document.getElementById('password');
     document.getElementById('drawer').showLoader();
@@ -914,9 +946,8 @@ function edit_profile(){
 
 
 function apply_coupon(){
-    console.log('apply.....');
     const coupon_code = document.getElementById("coupon-code").value;
-    if (coupon_code.toString().length != 6) {
+    if (coupon_code.toString().length != 8) {
         alert('wrong');
         return;
     }
@@ -926,7 +957,7 @@ function apply_coupon(){
           
             alert('success')
             resp = JSON.parse(xhttp.responseText);
-            document.getElementById("total-sum").innerHTML = 'مبلغ' + resp["total"] + 'تومان' ;
+            document.getElementById("total_sum").innerHTML = 'مبلغ' + resp["total"] + 'تومان' ;
         }
         if(xhttp.status == 400){
            alert('کوپن نامعتبر')
@@ -936,6 +967,12 @@ function apply_coupon(){
     xhttp.open("GET","/cart/apply_coupon/" + coupon_code + "/");
     xhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
     xhttp.send();
+}
+
+function toggle_address(){
+    console.log('check checke')
+    document.getElementById('other-address').classList.toggle('disp-none');
+
 }
 
 function show_order_detail(){

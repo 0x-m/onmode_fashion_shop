@@ -1,35 +1,41 @@
 <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
     <span style="font-size: 0.8rem;">آدرس خودم</span>
-    <input  type="radio" class="switch" name="use_default_address" value="desc" > 
+    <input onchange="toggle_address();"  type="checkbox" class="switch" name="use_default_address" id="use_default_address" value="true" > 
 </label>
-<div class="txt-box mt-1 ">
-    <input class="text"  name="first_name"  type="text" required />
-    <label class="holder" >نام</label>
-</div>
-<div class="txt-box mt-1 ">
-    <input class="text"  name="last_name"  type="text" required />
-    <label class="holder" >نام خانوادگی</label>
-</div>
-<div class="txt-box mt-1">
-    <input class="text"  name="phone_no" type="text" required />
-    <label class="holder" >شماره تماس</label>
-</div>
-<div class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
-    <select  required onchange="get_cities('cus-cities');"  name="state"  style="width: 48%;">
-        <option value="-1" disabled selected>استان</option>
-        {% for province in provinces %}
-            <option  value="{{province.id}}">{{province.name}}</option>
-        {% endfor %}
-    </select>
-    <select name="city" id="cus-cities" style="width: 48%;">
-        <option>شهرستان</option>
-    </select>
-</div>
-<div class="txt-box mt-1 ">
-    <input class="text"  name="town"  type="text" required />
-    <label class="holder" >شهر</label>
-</div>
-<div class="txt-box mt-1 ">
-    <input class="text"  name="town"  type="text" required />
-    <label class="holder" >کدپستی</label>
+<div id="other-address" >
+    <div class="txt-box mt-1 ">
+        <input class="text"  name="first_name"  type="text" required />
+        <label class="holder" >نام</label>
+    </div>
+    <div class="txt-box mt-1 ">
+        <input class="text"  name="last_name"  type="text" required />
+        <label class="holder" >نام خانوادگی</label>
+    </div>
+    <div class="txt-box mt-1">
+        <input class="text"  name="phone_no" type="text" required />
+        <label class="holder" >شماره تماس</label>
+    </div>
+    <div class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
+        <select  required onchange="get_cities('cus-cities');"  name="state"  style="width: 48%;">
+            <option value="-1" disabled selected>استان</option>
+            {% for province in provinces %}
+                <option  value="{{province.id}}">{{province.name}}</option>
+            {% endfor %}
+        </select>
+        <select name="city" id="cus-cities" style="width: 48%;">
+            <option>شهرستان</option>
+        </select>
+    </div>
+    <div class="txt-box mt-1 ">
+        <input class="text"  name="town"  type="text" required />
+        <label class="holder" >شهر</label>
+    </div>
+    <div class="txt-box mt-1 ">
+        <input class="text"  name="postal_code"  type="text" required />
+        <label class="holder" >کدپستی</label>
+    </div>
+    <p class="txt-box mt-1">
+        <textarea name="description" id="profile-description" rows="3"  class="text" style="resize:vertical;"  >{{user.address.description}}</textarea>
+        <label class="holder">نشانی</label>
+    </p>    
 </div>

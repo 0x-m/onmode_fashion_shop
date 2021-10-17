@@ -1,15 +1,12 @@
-from logging import log
-from math import prod
-from os import closerange
+
 from product_attributes.models import Color, Size
-from django.db.models.fields.related_descriptors import ReverseManyToOneDescriptor
 from coupons.models import Coupon
-from django.db.models.query import RawQuerySet
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
-from django.http import HttpRequest, request
+from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required
 from shops.models import Category, Product
+from users.models import Address
 import string
 from .cart import Cart
 from index.utils import get_provinces
@@ -112,12 +109,31 @@ def apply_coupon(request:HttpRequest, code):
 @login_required
 def checkout(request:HttpRequest):
     return render(request, 'cart/checkout/checkout.html', {
-        'provinces': get_provinces()
+        'provinces': get_provinces(),
         });
 
 def cart_list(request:HttpRequest):
     return render(request, 'cart/cart.html',{
         'cart': Cart(request)
+    })
+
+
+
+@login_required
+def dispatcher(request: HttpRequest):
+    c = Cart(request)
+    uda = request.GET.get('use_default_address')
+    has_address = False
+    ua = Address.objects.filter(user=request.user).first()
+    if ua:
+        has_address = ua.is_complete()
+    print(uda, has_address, '----------------------------')
+    adds =  has_address == False and uda == 'true'
+    print(adds,'aaaaaaaassasas')
+    hs = request.user.account.has_enough_balance(c.get_total_price())
+    return render(request, 'cart/dispatcher.html', {
+        'has_enough_balance': hs,
+        'has_complete_address': str(adds),
     })
 
 @login_required

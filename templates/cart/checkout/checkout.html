@@ -188,7 +188,8 @@
                 {% for item in cart %}
                     <tr>
                         <td>
-                            <img src="{{ item.product.images.first.image.url }}" class="img">
+                            <img 
+                            src="{% if item.product.images.first.image %}{{ item.product.images.first.image.url }}{% else %}{% static 'img/sampleproduct/noimage.png' %}{% endif %}"  class="img">
                         </td>
                         <td>{{ item.product.name }}</td>
                         <td>{{ item.product.shop.name }}</td>
@@ -205,7 +206,6 @@
                         <td>{{item.total}}</td>
                     </tr>
                 {% endfor %}
- 
             </tbody>
             <tfoot>
 
@@ -214,7 +214,7 @@
     </div>
     <div class="cart-checkout" style="width: 95%;">
         {% if cart|length  > 0 %}
-        <form method="GET" action="/payments/dispatch/">
+        <form id="custom-address" method="GET" action="/payments/dispatch/">
             <input type="hidden" name="amount" value="{{ cart.get_total_price }}" />
             {% include 'cart/address.html' %}
             <section class="total">
@@ -222,14 +222,17 @@
                 مبلغ پرداختی: {{cart.get_total_price}}
                 </span>  
             </section>
-            <section  class="coupon">
-                <input class="coupon-txt" type="text" id="coupon-code" placeholder="کد تخفیف" />
-                <button onclick="apply_coupon();" class="app">اعمال</button>
-            </section>
-            
-            <input type="submit"  class="btn co" style="width:100%;margin-top:0.5rem">پرداخت</button> 
-        
     </form>
+    {% if cart.coupon.is_valid %}
+    <p style="color: white;background:rgb(19, 184, 46);padding:0.2rem;text-align:center;font-size:0.8rem;"> کوپن اعمال شده است</p>
+    {% else %}
+    <section  class="coupon">
+        <input class="coupon-txt" type="text" id="coupon-code" placeholder="کد تخفیف" />
+        <button onclick="apply_coupon();" class="app">اعمال</button>
+    </section>
+    {% endif %}
+    <button onclick="dispatch_pay();"  class="btn co" style="width:100%;margin-top:0.5rem">پرداخت</button> 
+
     {% endif %}
     </div>
 </div>

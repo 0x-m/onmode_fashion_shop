@@ -65,8 +65,21 @@ var CartItem = /** @class */ (function (_super) {
         this.querySelector('.remove').addEventListener('click', this._remove);
         var quant = this.querySelector('.quantity');
         quant.setAttribute('value', (_a = this.quantity) !== null && _a !== void 0 ? _a : "1");
-        quant.addEventListener('onincrement', function () { get('/cart/add/' + _this._pid + '/', function () { update_cart_badge('increment'); }); });
-        quant.addEventListener('ondecrement', function () { get('/cart/remove/' + _this._pid + '/', function () { update_cart_badge('decrement'); }); });
+        quant.addEventListener('onincrement', function () { get('/cart/increment/' + _this._pid + '/', function (resp, status) { 
+            update_cart_badge('increment'); 
+            const s = JSON.parse(resp);
+            document.getElementById('total_price').innerText = s['total'];
+            document.getElementById("in-cart-num").innerText = s['num'];
+
+        }); });
+        quant.addEventListener('ondecrement', function () { get('/cart/decrement/' + _this._pid + '/', function (resp, status) { 
+            update_cart_badge('decrement'); 
+            const s = JSON.parse(resp);
+            document.getElementById('total_price').innerText = s['total'];
+            document.getElementById("in-cart-num").innerText = s['num'];
+
+
+        }); });
         this.querySelector('#colors').addEventListener('onselectedchange', function () { get('/cart/set_color/?product_id=' + _this.pid + '&color_id=' + _this.selected_color); });
         this.querySelector('#sizes').addEventListener('onselectedchange', function () { get('/cart/set_size/?product_id=' + _this.pid + '&size_id=' + _this.selected_size); });
     };
@@ -303,6 +316,9 @@ var CartItem = /** @class */ (function (_super) {
             return function (resp, status) {
                 if (status === 200) {
                     update_cart_badge('subtract', a.quantity);
+                    const s = JSON.parse(resp);
+                    document.getElementById('total_price').innerText = s['total'];        
+                    document.getElementById("in-cart-num").innerText = s['num'];
                     a.remove();
                 }
             };

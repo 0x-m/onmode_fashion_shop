@@ -108,11 +108,11 @@ class Drawer extends HTMLElement {
     }
 
     addHeader(val) {
-        this.querySelector('.header').appendChild = val;
+        this.querySelector('.header').appendChild(val);
     }
 
     addFooter(val) {
-        this.querySelector('.footer').appendChild = val;
+        this.querySelector('.footer').appendChild(val);
     }
    
 }

@@ -115,10 +115,11 @@
   bottom: 0;
   border-radius: 0 0 4px 4px;
   width: 100%;
-  flex: 5%;
+  flex: 8%;
   overflow: hidden;
   /* background-color: rgba(240, 240, 240, 0.5); */
   background-color: #fff;
+  position: relative;
 }
 
 .drawer-open {
@@ -1382,5 +1383,7 @@
     font-size: 0.8em;
   }
 }
-
+.disp-none {
+  display: none;
+}
 /*# sourceMappingURL=main.css.map */

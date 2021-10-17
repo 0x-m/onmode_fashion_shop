@@ -134,8 +134,6 @@ function add_to_cart(){
         }
     })
     event.target.disabled = false;
-
-
 }
 
 
