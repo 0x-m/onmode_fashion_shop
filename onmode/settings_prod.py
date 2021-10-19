@@ -1,28 +1,18 @@
 
 
 from pathlib import Path
-from posixpath import join
 import os
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-klg*(0#3t#0%ddpkjfy#6ebv0%i@p+v6rsml8v+_lt!*stupf'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#SECRET_KEY = 'django-insecure-klg*(0#3t#0%ddpkjfy#6ebv0%i@p+v6rsml8v+_lt!*stupf'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
-
-# Application definition
-#'django.contrib.admin'
 INSTALLED_APPS = [
     'apps.MyAdminConfig',
     'django.contrib.auth',
@@ -30,7 +20,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.postgres',
     'users',
     'index',
     'product_attributes',
@@ -91,23 +80,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'onmode.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  'onmodeir_testdb',
-        'USER': 'onmodeir_super',
-        'PASSWORD': 'e*W7{op-+Prn',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':  config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
 
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -124,9 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#------------EMAIL-----------------
+#----------------------------------
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'fa-ir'
 lANGUAGES = [
@@ -145,7 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # STATIC_ROOT  =  os.path.join(BASE_DIR,'staticfiles')
 # STATIC_URL = '/static/'
 # PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
@@ -175,13 +157,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 CART_SESSION_ID = 'cart_id'
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
 
 LOGGING = {
     'version': 1,
@@ -216,3 +193,16 @@ LOGGING = {
     }
 }
 DEBUG_PROPAGATE_EXCEPTIONS = True
+
+AWS_ACCESS_KEY_ID = 'afa9396c-f015-4a2f-9917-40d62c09646a'
+AWS_SECRET_ACCESS_KEY = 'e1e762f233a0877eb37f32e1ca721fb248b01535f3fa65c047e325653e5d94bd'
+AWS_STORAGE_BUCKET_NAME = 'testbuck'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.ir-thr-at1.arvanstorage.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_S3_ENDPOINT_URL = 'https://s3.ir-thr-at1.arvanstorage.com'
+AWS_LOCATION = 'static'
+
+
+DEFAULT_FILE_STORAGE = 'onmode.storage_backends.MediaStorage'

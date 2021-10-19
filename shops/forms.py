@@ -51,7 +51,7 @@ class AddProductForm(forms.Form):
     description = forms.CharField(max_length=500,empty_value="بدون توضیحات")
     quantity = forms.IntegerField()
     keywords = StringTagField()
-    attrs = forms.CharField(max_length=2000)
+    attrs = JsonField()
     price = forms.IntegerField()
     free_delivery = forms.BooleanField()
     

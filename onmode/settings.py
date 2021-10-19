@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'users',
     'index',
     'product_attributes',
@@ -163,7 +164,7 @@ STATICFILES_DIRS = (
 )
 
 #whitenoise.storage.CompressedManifestStaticFilesStorage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 #whitenoise.storage.CompressedStaticFilesStorage
 
 
@@ -217,3 +218,17 @@ LOGGING = {
     }
 }
 DEBUG_PROPAGATE_EXCEPTIONS = True
+
+
+AWS_ACCESS_KEY_ID = 'afa9396c-f015-4a2f-9917-40d62c09646a'
+AWS_SECRET_ACCESS_KEY = 'e1e762f233a0877eb37f32e1ca721fb248b01535f3fa65c047e325653e5d94bd'
+AWS_STORAGE_BUCKET_NAME = 'testbuck'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.ir-thr-at1.arvanstorage.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_S3_ENDPOINT_URL = 'https://s3.ir-thr-at1.arvanstorage.com'
+AWS_LOCATION = 'static'
+
+
+DEFAULT_FILE_STORAGE = 'onmode.storage_backends.MediaStorage'

@@ -1,4 +1,5 @@
 
+from typing import Dict
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
 from django.forms.fields import JSONString
@@ -145,7 +146,7 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True,null=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'),default=0)
     keywords = models.CharField(verbose_name=_('Keywords'),max_length=200,null=True, blank=True)
-    attrs = models.CharField(verbose_name=_('attributes'),null=True,max_length=2000,blank=True,)
+    attrs = models.JSONField(verbose_name=_('attributes'), default=dict)
     is_active = models.BooleanField(default=True)
     
     
