@@ -13,19 +13,14 @@ from requests.api import request
 from cart.cart import Cart
 from orders.models import OrderAddress, OrderList
 from payments.models import PaymentTransaction
-
+from decouple import config
+from django.conf import settings
 merchant_id = 'c7605487-63a0-472d-b296-88ef6466bd89'
-
-
-
-
-
 @login_required
 def pay(request: HttpRequest):
     type = request.GET.get('type') # deposit | checkout
     amount = request.GET.get('amount')
     phone_no = request.user.phone_no
-
     request.session['pay_amount'] = amount
     if type == 'deposit':
         request.session['payment_type'] = 'deposit'

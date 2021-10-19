@@ -352,10 +352,9 @@ function add_product(command){
         }
 
     };
-    if (data) {
-        document.getElementById('drawer').showLoader();
-        xhttp.send(data);
-    }
+    document.getElementById('drawer').showLoader();
+    xhttp.send(data);
+
   
 }
 
@@ -368,16 +367,15 @@ function edit_product(){
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
     xhttp.onload = () =>{
         if(xhttp.status == 200){
-            const sucess = document.getElementById("sucessful-edit").innerHTML;
-            set_view(sucess);
-            end_waiting();
+            const d = document.getElementById('drawer');
+            d.hideLoader();
+            d.setContent('success'); // ex:change with xhttp.responseText and, in the server side, make the addition is done successfully prompt...
         }
+
         if(xhttp.status == 400){
-            const msg = "لطفا اطلاعات خواسته شده را به درستی وارد کنید"
-            set_error(msg,1000,()=>{end_waiting();})
         }
     }   
-    
+    document.getElementById('drawer').showLoader();
     xhttp.send(data);
 }
 
@@ -405,10 +403,7 @@ function changeimg(){
         if (xhttp.status == 200){
             path = xhttp.responseText;
             img.src = path;
-            // if(num == 1){
-            //     console.log("ojk...")
-            //     product.children[0].children[0].src = path;
-            // }
+            document.getElementById()
         }
     }
 
@@ -416,8 +411,8 @@ function changeimg(){
     const data = new FormData();
     data.append("image",file);
     data.append("id",prod_img_id);
-   
     xhttp.setRequestHeader("X-CSRFToken",getCookie("csrftoken"));
+    document.getElementById('drawer').showLoader();
     xhttp.send(data);
     
 }
@@ -729,18 +724,23 @@ function validate_page_name(){
 }
 function make_appeal_for_boutique(){
     const rx = new RegExp("^[a-z0-9_]{4,}$")
-    if (! (rx.test(page_name.text))){
-        page_name.error('نام صفحه انتخابی نامعتبر است')
+    const page_name = document.getElementById('page_name').value;
+    console.log(page_name);
+    const page_name_error = document.getElementById('page_name_error');
+    if (! (rx.test(page_name))){
+        page_name_error.value = 'نام بوتیک معتبر نمیباشد';
     }
-
-    post('/appeal/register/', 'page_name=' + page_name.text + '&description=' + 'توضیحات', function(resp,status) {
+    document.getElementById('drawer').showLoader();
+    post('/appeal/register/', 'page_name=' + page_name + '&description=' + 'توضیحات', function(resp,status) {
         if (status == 200){
             const drawer = document.getElementById('drawer');
+            drawer.hideLoader();
             drawer.setContent('درخواست شما ثبت شد...');
 
         }
         else {
-            page_name.error('این نام صفحه قبلاانتخاب شده است');
+            page_name_error.value = 'این نام صفحه قبلاانتخاب شده است';
+            document.getElementById('drawer').hideLoader();
         }
     });
    

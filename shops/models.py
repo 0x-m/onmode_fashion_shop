@@ -172,11 +172,6 @@ class Product(models.Model):
     def is_available(self):
         return (self.quantity > 0) and (self.is_active)
     
-    def get_attributes(self):
-        if self.attrs:
-            return json.loads(self.attrs)
-        return dict()
-            
         
  
     

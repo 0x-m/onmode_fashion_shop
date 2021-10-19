@@ -29,9 +29,12 @@
 <p class="w-100 " style="text-align: center;font-size:0.9rem">
     <span style="color:#888;cursor:pointer;" >نام صفحه بوتیک به انگلیسی را وارد نمایید</span>
 </p>
-<custom-text id="page_name" style="width: 100%;margin-top:0.5rem;font-size:0.8rem" placeholder="YourBoutiqueName"></custom-text>
-
-<button class="btn cta" dir="rtl" onclick="make_appeal_for_boutique();" style="margin:0.7rem auto;width:100%;display:block">ثبت</button>
+<div class="txt-box w-100 mt-1">
+    <input id="page_name"  type="text" class="text" required>
+    <label class="holder">نام بوتیک</label>
+</div>
+<p id="page_name_error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
+<button  class="btn cta" onclick="make_appeal_for_boutique();"  style="margin:1rem auto;width:50%">ثبت</button>
 <p class="w-100 " style="text-align: center;font-size:0.9rem;margin-top:0.5rem">
     <span style="color:rgb(241, 72, 72);font-size:0.7rem" >
        استفاده از علایم (,;/?~`'"[]{}*&^%$#@!=+-()<>) در نام بوتیک مجاز نمیباشد

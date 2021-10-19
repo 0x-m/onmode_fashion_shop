@@ -27,15 +27,12 @@ def FAQS(request:HttpRequest):
     return render(request, 'index/FAQs.html')
 
 def get_province_cities(request:HttpRequest):
-    print('sdfsf')
-    print(request.GET.get('province_id'))
     province_id = request.GET.get('province_id')
     if province_id.isdigit:
         cities = get_cities(province_id)
         cities_dict = {
             'cities':cities
         }
-        print(cities_dict)
         return JsonResponse(cities_dict);
         # return render(request,'utils/cities.html',{
         #     'cities': cities
