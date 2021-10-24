@@ -11,16 +11,18 @@ import string
 from .cart import Cart
 from index.utils import get_provinces
 
-@login_required
+
 def add(request:HttpRequest, product_id):
+    print(request.session)
     product = Product.objects.filter(id=product_id).first()
     qunatity = request.GET.get('q',1)
     color = request.GET.get('color')
     size = request.GET.get('size')
     if not product:
         return HttpResponseBadRequest("product is not found")
-    if product.shop == request.user.shop.first():
-        return HttpResponseForbidden("you can not buy from yourself...!")
+    if request.user.is_authenticated:
+        if product.shop == request.user.shop.first():
+            return HttpResponseForbidden("you can not buy from yourself...!")
     if qunatity:
         try:
             qunatity = int(qunatity)

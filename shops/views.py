@@ -326,7 +326,7 @@ def search(request:HttpRequest, pg):
 
 def product_detail(request:HttpRequest, product_id):
     product = get_object_or_404(Product,id=product_id,is_active=True)
-    comments = Comment.objects.filter(product=product)
+    comments = Comment.objects.filter(product=product).all()
     paginator = Paginator(comments, 20)
     page_no = request.GET.get('pg');
     try:
@@ -337,9 +337,10 @@ def product_detail(request:HttpRequest, product_id):
         page = paginator.get_page(paginator.num_pages)
     
     user_comment = None
+    liked = None
     if request.user.is_authenticated:
         user_comment = comments.filter(user=request.user).first();
-    liked = product.favs.filter(user=request.user).count()
+        liked = product.favs.filter(user=request.user).count()
     related_products = Product.objects.filter(type=product.type)[:10]
     print(user_comment, '---------------------')
     return render(request, 'product/detail/product.html',{

@@ -34,10 +34,12 @@
         padding: 0;
         list-style-type: none;
         background-color: white;
-        box-shadow: 1px 4px 6px #efefef;
+        box-shadow: 0px 0px 6px #efefef;
         border: 1px solid rgb(233, 233, 233);
         width: 160px;
-        display: none;
+        transform: scale(0);
+        transition: 0.3s;
+        transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.2);
         border-radius: 4px;
        
     }
@@ -75,17 +77,17 @@
         align-items: center;
     }
     .prof-menu li:hover {
-        background-color: #efefef55;
+        background-color: #efefef99;
     }
     .prof-menu a:hover {
-        background-color: #efefef55;
+        background-color: #efefef99;
 
     }
     .prof-dropdown:hover .prof-toggle {
        color:#444;
     }
     .prof-dropdown:hover  .prof-menu {
-        display: block;
+        transform: scale(1);
     }
 
     .prof-dropdown:focus-within .prof-menu {
@@ -157,7 +159,7 @@
 
         </div>
         
-        <div id="cart-icon" style="position: relative;" class="{% if not user.is_authenticated %}hi{% endif %}">
+        <div id="cart-icon" style="position: relative;" class="">
             <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
             </ion-icon>
             <span id="cart-num-badge"  style="border-radius:3px;position: absolute;top:2px;right:0;background:rgb(255, 52, 52);color:white;font-size:0.6rem;padding:0.3rem;user-select:none;pointer-events:none">{{ cart|length }}</span>

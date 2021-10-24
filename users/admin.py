@@ -1,6 +1,5 @@
 from typing import Any, Optional
 from django.contrib.admin.options import ModelAdmin
-
 from django.db.models import fields
 from django.forms.widgets import PasswordInput
 from .models import Address, User
@@ -108,6 +107,6 @@ class UserModelAdmin(ModelAdminJalaliMixin,UserAdmin):
     
 admin.site.register(User,UserModelAdmin)
 
-@admin.register(Address)
-class AddressAdmin(ModelAdmin):
-    list_display = ['user','state','city','town','postal_code']
+# @admin.register(Address)
+# class AddressAdmin(ModelAdmin):
+#     list_display = ['user','state','city','town','postal_code']

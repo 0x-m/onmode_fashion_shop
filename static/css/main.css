@@ -1035,6 +1035,20 @@
   position: relative;
 }
 
+.txt-box::after {
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  content: "";
+  width: 0%;
+  border-bottom: 2px solid rgb(48, 48, 48);
+  transition: 0.3s;
+  transform-origin: center center;
+  transform: scale(0);
+  width: 100%;
+  transition-timing-function:ease-in-out;
+}
+
 .txt-box .text {
   outline: none;
   border: none;
@@ -1043,6 +1057,7 @@
   color: rgb(90, 90, 90);
   width: 100%;
 }
+
 
 .holder {
   position: absolute;
@@ -1066,6 +1081,10 @@
   background-color: white;
   color: gray;
 }
+.txt-box:focus-within::after {
+  transform: scale(1);
+}
+
 
 .list-box {
   width: 80%;
@@ -1400,3 +1419,29 @@
   display: none;
 }
 /*# sourceMappingURL=main.css.map */
+
+.radio-box input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  border: none;
+  
+
+}
+.radio-box {
+  cursor: pointer;
+}
+
+.radio-box span {
+  background-color: rgb(255, 255, 255);
+  font-size: 0.8rem;
+  text-align: center;
+  border-radius: 4px;
+  padding: 0.5rem;
+  color: #333;
+  
+}
+.radio-box input[type="radio"]:checked ~ span {
+  background-color: #444;
+  color: white;
+}

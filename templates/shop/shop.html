@@ -78,6 +78,9 @@
       .dd-menu li {
         padding: 10px 10px;
         cursor: pointer;
+        display: flex;
+        justify-content:flex-start;
+        align-items: center;
         white-space: nowrap;
         font-size: 0.8rem;
       }
@@ -90,6 +93,8 @@
         display: block;
         margin: -10px -20px;
         padding: 10px 20px;
+        justify-content:flex-start;
+        align-items: center;
       }
       
       .dd-menu li.divider{
@@ -118,10 +123,17 @@
             </div>
             <input type="checkbox" class="dd-input" id="test">
             <ul class="dd-menu">
-              <li onclick="get_edit_shop_form();">ویرایش بوتیک</li>
-              <li onclick="get_add_product_view();">افزودن محصول</li>
+              <li onclick="get_edit_shop_form();">
+                <ion-icon name="pencil-outline" style="font-size: 19px;margin-left:8px"></ion-icon>
+                ویرایش بوتیک
+              </li>
+              <li onclick="get_add_product_view();">
+                <ion-icon name="add" style="font-size: 19px;margin-left:8px"></ion-icon>
+                افزودن محصول
+              </li>
               <li onclick="">
-                  <a href="{% url 'orders:shop_orders' %}">مدیریت فروش</a>
+                <ion-icon name="settings-outline" style="font-size: 19px;margin-left:8px"></ion-icon>
+                <a href="{% url 'orders:shop_orders' %}">مدیریت فروش</a>
               </li> 
             </ul>
           </label>

@@ -1,0 +1,13 @@
+--------------------------------------
+coupon and discount => promotions
+remove user wallet
+request for boutique, issues => ticket
+remove order item from dashboard
+remove user address from dashboard
+separate product and shop
+--------------------------------------
+add product UI => step by step addition
+show cart for unregistered users
+remove orders page (too complicated)
+remove cart page ()
+--------------------------------------

@@ -16,8 +16,11 @@
         background-color: white;
         outline: none;
         font-size: 0.8rem;
+        cursor: pointer;
     }
-
+    select:focus {
+        border-color: #333;
+    }
 
 </style>
 <div class="container vertical" style="width:90%;margin: 0.5rem auto;justify-content:flex-start;align-items:flex-start">
@@ -45,9 +48,15 @@
             <label class="holder">شماره کارت: </label>
         </div>
         <label style="font-size: 0.8rem;text-align:right; margin-top:1.5rem;display:block">جنسیت: </label>
-        <div class="container horizontal" style="justify-content:space-evenly;">
-            <label class="radio-box"><input type="radio" name="gender" style="margin: 0 0 0  0.5rem;" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>مرد</label>
-            <label  class="radio-box" ><input type="radio" style="margin: 0 0 0 0.5rem" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>زن</label>    
+        <div class="container horizontal" style="justify-content:center">
+            <label class="radio-box">
+                <input type="radio" name="gender" style="margin: 0 0 0  0.5rem;" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>
+                <span>مرد</span>
+            </label>
+            <label  class="radio-box" >
+                <input type="radio" style="margin: 0 0 0 0.5rem" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>
+                <span>زن</span>
+            </label>    
         </div>
         <div  class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
             <select required onchange="get_cities('user-cities');" id="provinces" name="state"  style="width: 48%;">

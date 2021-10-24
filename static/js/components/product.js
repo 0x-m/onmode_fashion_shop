@@ -4,7 +4,7 @@ product_template.innerHTML = `
 
     <div class="product">
         <a class="link" href="#">
-            <img class="preview"  style="width:100%" />
+            <img class="preview"  style="width:100%;border-radius:4px" />
         </a> 
         <div class="detail">
             <p class="name"></p>
