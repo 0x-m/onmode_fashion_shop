@@ -262,13 +262,13 @@
   color: gray;
   padding: 0.5rem;
   cursor: pointer;
-  border-radius: 1px;
-  border-bottom: 1.2px solid transparent;
+  border-radius: 32px;
+  padding: 0.5rem 0.8rem 0.5rem 0.8rem ;
   margin-left: 0.5rem;
 }
 .tab-container .tab-items .tab-item:hover, .tab-container .tab-items .tab-item.tab-item-selected {
-  border-bottom-color: gray;
-  color: black;
+  background-color: #fc5c5c;
+  color: rgb(255, 255, 255);
 }
 .tab-container .tab-contents {
   margin-top: 0.5rem;
@@ -326,10 +326,14 @@
   display: none;
   width: 100%;
   position: absolute;
-  box-shadow: 1px 1px 2px #efefef;
+  box-shadow: 0px 2px 5px #efefef;
   justify-content: flex-start;
   z-index: 200;
   background-color: white;
+}
+
+.mega-menu  .tab-item{
+  font-size:  0.9rem !important;
 }
 
 .mega-menu-item {
@@ -340,6 +344,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   flex-grow: 1;
+  justify-self: flex-start;
 }
 
 .mega-menu-item li {
@@ -356,12 +361,13 @@
 }
 
 .mega-menu-item li:hover {
-  color: black;
+  color: rgb(252, 118, 118);
 }
 
 .mega-menu-title {
-  font-size: 1rem !important;
-  color: black !important;
+  font-size: .9rem !important;
+  font-weight: bold;
+  color: rgb(218, 42, 42) !important;
 }
 
 .badge {
@@ -1088,9 +1094,10 @@
 
 .list-box {
   width: 80%;
-  padding: 0;
-  border: 1px solid lightgray;
-  border-radius: 2px;
+  padding: 0.3rem;
+  border: 1px solid #777;
+  border-radius: 16px;
+
 }
 
 .list-box .filter {
@@ -1099,36 +1106,39 @@
   color: #4d4d4d;
   font-size: 0.8em;
   width: 100%;
-  padding: 0.5em;
+  padding: 0.7em;
+
   padding-right: 0.6em;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid #777;
 }
 
 .list-box .filter::placeholder {
-  color: #444444;
+  color: #e0e0e0;
 }
 
 .list-box .items {
   overflow-y: auto;
   width: 100%;
   padding: 0em;
-  max-height: 20vh;
+  max-height: 40vh;
   border-radius: 0px;
 }
 
 .list-box .items > .item {
-  margin-top: 0.1em;
-  font-size: 0.9em;
-  color: #979292;
-  border-radius: 0px;
-  padding: 0.6em;
+  margin: 0.3em 4px 0.3rem 4px;
+  font-size: 0.8rem;
+  color: #222;
+  padding: 0.8em;
   position: relative;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
 .selected {
-  background-color: whitesmoke;
+  background-color: rgb(255, 119, 119);
+  color: white !important;
+  font-weight: bold;
 }
 
 .checked {
@@ -1444,4 +1454,96 @@
 .radio-box input[type="radio"]:checked ~ span {
   background-color: #444;
   color: white;
+}
+
+
+
+.bgg {
+  background-size: cover;
+  background-image: url('{% static "img/slideshow/wave_(1).svg" %}');
+  width: 100%;
+  height: 250px;
+  position: absolute;
+  
+  user-select: none;
+  top: 0;
+}
+
+.prof-dropdown {
+  display: inline-block;
+  position: relative;
+
+  
+}
+.prof-toggle {
+  display: inline-block;
+  
+}
+.prof-menu {
+  position: absolute;
+  top: 100%;
+  left: -30px;
+  z-index: 500;
+  margin: 0px 0;
+  padding: 0;
+  list-style-type: none;
+  background-color: white;
+  box-shadow: 0px 0px 6px #efefef;
+  border: 1px solid rgb(233, 233, 233);
+  width: 160px;
+  transform: scale(0);
+  transition: 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.2);
+  border-radius: 4px;
+ 
+}
+.prof-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 45px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #efefef99;
+}
+.prof-menu li {
+  text-decoration: none;
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 10px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #666;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.prof-menu a {
+  text-decoration: none;
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 10px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #666;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.prof-menu li:hover {
+  background-color: #efefef99;
+}
+.prof-menu a:hover {
+  background-color: #efefef99;
+
+}
+.prof-dropdown:hover .prof-toggle {
+ color:#444;
+}
+.prof-dropdown:hover  .prof-menu {
+  transform: scale(1);
+}
+
+.prof-dropdown:focus-within .prof-menu {
+  display: block;
 }

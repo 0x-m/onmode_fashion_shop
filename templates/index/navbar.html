@@ -4,96 +4,6 @@
         display: none !important;
     }
 
-    .bgg {
-        background-size: cover;
-        background-image: url('{% static "img/slideshow/wave_(1).svg" %}');
-        width: 100%;
-        height: 250px;
-        position: absolute;
-        
-        user-select: none;
-        top: 0;
-    }
-
-    .prof-dropdown {
-        display: inline-block;
-        position: relative;
-
-        
-    }
-    .prof-toggle {
-        display: inline-block;
-        
-    }
-    .prof-menu {
-        position: absolute;
-        top: 100%;
-        left: -30px;
-        z-index: 500;
-        margin: 0px 0;
-        padding: 0;
-        list-style-type: none;
-        background-color: white;
-        box-shadow: 0px 0px 6px #efefef;
-        border: 1px solid rgb(233, 233, 233);
-        width: 160px;
-        transform: scale(0);
-        transition: 0.3s;
-        transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.2);
-        border-radius: 4px;
-       
-    }
-    .prof-menu::before {
-        content: '';
-        position: absolute;
-        top: -8px;
-        left: 45px;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 8px solid #efefef99;
-    }
-    .prof-menu li {
-        text-decoration: none;
-        width: 100%;
-        font-size: 0.8rem;
-        padding: 10px 8px;
-        cursor: pointer;
-        white-space: nowrap;
-        color: #666;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .prof-menu a {
-        text-decoration: none;
-        width: 100%;
-        font-size: 0.8rem;
-        padding: 10px 8px;
-        cursor: pointer;
-        white-space: nowrap;
-        color: #666;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .prof-menu li:hover {
-        background-color: #efefef99;
-    }
-    .prof-menu a:hover {
-        background-color: #efefef99;
-
-    }
-    .prof-dropdown:hover .prof-toggle {
-       color:#444;
-    }
-    .prof-dropdown:hover  .prof-menu {
-        transform: scale(1);
-    }
-
-    .prof-dropdown:focus-within .prof-menu {
-        display: block;
-    }
-    
 </style>
 
 <nav class="navbar" >
@@ -114,9 +24,9 @@
         <div class="prof-dropdown">
             <ion-icon id="user-icon"  name="person-outline" class="icon prof-toggle {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
             <ul class="prof-menu">
-                <div style="width: 100%;background-color:#efefef33;padding:0.5rem;text-align:center">
-                    <span style="font-size:0.9rem;color:rgb(95, 95, 95);display:block;margin-top:0.0rem">{{ user.phone_no}}</span>
-                    <span style="font-size: 0.7rem;color:rgb(92, 92, 92);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>        
+                <div style="width: 100%;background-color:rgb(243, 91, 91);padding:0.5rem;text-align:center;border-radius:4px 4px 0 0;">
+                    <span style="font-size:0.9rem;color:rgb(255, 255, 255);display:block;margin-top:0.0rem">{{ user.phone_no}}</span>
+                    <span style="font-size: 0.7rem;color:rgb(255, 255, 255);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>        
                 </div>
                 <li onclick="get_profile();">
                     <ion-icon name="create-outline" style="font-size: 19px;margin-left:8px;color:rgb(250, 100, 100)"></ion-icon>

@@ -10,9 +10,8 @@ function listboxSelect(){
     var item = event.target;
     if(item){
         if(item.classList.contains("item"))
-            
             item.classList.toggle("selected");
-            item.children[0].classList.toggle("show");
+            
     }
 }
 
@@ -23,7 +22,6 @@ function listboxSelect_mono(){
             const items = item.parentNode.getElementsByClassName("item")
             for(let i=0; i < items.length; ++i){
                 items[i].classList.remove("selected")
-                items[i].children[0].classList.remove("show")
                
             }
             item.classList.add("selected")

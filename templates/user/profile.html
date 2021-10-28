@@ -23,7 +23,7 @@
     }
 
 </style>
-<div class="container vertical" style="width:90%;margin: 0.5rem auto;justify-content:flex-start;align-items:flex-start">
+<div class="container vertical" style="width:90%;height:100%;margin: 0.5rem auto;justify-content:center;align-items:center">
     <form style="padding: 0;width:100%" id="personal_info">
     <div class="container horizontal" style="width: 100%;">
         <ion-icon name="person-outline"   style="font-size: 7rem;color:rgba(150, 150, 150, 0.8);margin-left:0.7rem;--ionicon-stroke-width: 12px;"></ion-icon>
@@ -47,16 +47,18 @@
             <input style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" name="merchan_card" id="profile-merchan_card" class="text" type="text"  value="{% if user.merchan_card %}{{user.merchan_card}}{% endif %}" required />
             <label class="holder">شماره کارت: </label>
         </div>
-        <label style="font-size: 0.8rem;text-align:right; margin-top:1.5rem;display:block">جنسیت: </label>
-        <div class="container horizontal" style="justify-content:center">
-            <label class="radio-box">
-                <input type="radio" name="gender" style="margin: 0 0 0  0.5rem;" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>
-                <span>مرد</span>
-            </label>
-            <label  class="radio-box" >
-                <input type="radio" style="margin: 0 0 0 0.5rem" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>
-                <span>زن</span>
-            </label>    
+        <div class="container horizontal mt-1 w-100" style="justify-content: space-between;">
+            <label style="font-size: 0.8rem;text-align:right;display:block;color:gray">جنسیت: </label>
+            <div>
+                <label  class="radio-box">
+                    <input type="radio" name="gender" style="margin: 0 0 0  0.5rem;" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>
+                    <span>مرد</span>
+                </label>
+                <label class="radio-box" >
+                    <input type="radio" style="margin: 0 0 0 0.5rem" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>
+                    <span>زن</span>
+                </label> 
+            </div>
         </div>
         <div  class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
             <select required onchange="get_cities('user-cities');" id="provinces" name="state"  style="width: 48%;">

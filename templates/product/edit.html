@@ -1,203 +1,130 @@
-{% load static %}
 <style>
-    .color, .size{
-        margin-top: 0.2rem;
-    }
-
-
-    .error{
-        border-bottom-color: red;
-    }
-
-    .attr-box {
-        width: 100%;
-        padding: 0.2rem;
-        background-color: white;
-
-    }
-
-    .attr-list {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-    .attr-list .attr {
-        padding: 0.5rem;
-        margin-top: 0.5rem;
-        position: relative;
-        background-color: #f1f1f1;
-    }
-
-    .attr-list .attr .close {
-        position: absolute;
-        top: 25%;
-        cursor: pointer;
-        left: 2%;
-    }
-
-    .i-thumb {
-        max-width: 48px;
-        max-height: 48px;
-        cursor:pointer;
+    .tran {
+        transform: translate(-50%,-50%) !important;
         
     }
-
-    .img-btn{
-        cursor: pointer;
-        background-color: white;
-        color: rgb(158, 158, 158);
-        border-bottom: 1px solid #efefef;
-        margin: 1rem 0.2rem 1rem 0.2rem;
-        padding: 0.5rem 0rem .5rem 0rem;
-        width: 100%;
+    .tab-content {
+        transform: translate(1000%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 80%;
+        transition: 0.5s;
+        display: block !important;
     }
-
-    .img-btn:hover{
-        color: gray;
-    }
-
-    .title {
-        font-size: 0.7rem;
-        margin-right: .2rem;
-        margin-bottom: 0.5re;
-        margin-top: 1rem;
-        color: gray;
-        width: 100%;
-    }
-
 </style>
-<div class="container vertical" style="position: relative;width:90%;margin:1rem auto;justify-content:center; align-items:center">
-    <input type="hidden" value="{{ product.id }}" id="id" name="id" >
-    <div class="txt-box w-100 mt-1">
-        <input  id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
-        <label class="holder">نام محصول</label>
-    </div>
-    <div class="txt-box w-100 mt-1">
-        <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price" value="{{ product.name }}" name="price" type="text" class="text" required>
-        <label class="holder">قیمت</label>
-    </div>
-    <div class="txt-box w-100 mt-1">
-        <input onblur="validate_field('^[1-9][0-9]{0,2}$');" value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
-        <label class="holder">تعداد</label>
-    </div>
-    <div  class="list-box mt-1 w-100 " style="background-color: white;">
-        <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
-        <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-           {% for type in types %}
-                <div data-id = "{{ type.id }}" class="item {% if type == product.type %}selected{% endif %}">
-                    {{ type.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+<div class="container vertical h-100" style="width:80%;margin:0 auto;justify-content: center;align-items:center">
+    <div class="tab-container">
+        <div class="tab-contents">
+            <div id="tab-1" class="tab-content tran">
+                <div class="txt-box w-100 mt-1">
+                    <input  id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
+                    <label class="holder">نام محصول</label>
                 </div>
-           {% endfor %}
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-2">مرحله بعد</button>    
+            </div>
+            <div id="tab-2" class="tab-content">
+                <div class="txt-box w-100 mt-1">
+                    <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price" value="{{ product.name }}" name="price" type="text" class="text" required>
+                    <label class="holder">قیمت</label>
+                </div>
+                <div class="txt-box w-100 mt-1">
+                    <input onblur="validate_field('^[1-9][0-9]{0,2}$');" value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
+                    <label class="holder">تعداد</label>
+                </div>
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-3">مرحله بعد</button>    
+            </div>
+            <div id="tab-3" class="tab-content">
+                <div  class="list-box mt-1 w-100 " style="background-color: white;">
+                    <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
+                    <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                       {% for type in types %}
+                            <div data-id = "{{ type.id }}" class="item {% if type == product.type %}selected{% endif %}">
+                                {{ type.name }}
+                                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                            </div>
+                       {% endfor %}
+                      
+                    </div>
+                </div>   
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-4">مرحله بعد</button>    
+
+            </div>
+            <div id="tab-4" class="tab-content">
+                <div  class="mt-1 list-box w-100" style="background-color: white">
+                    <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
+                    <div id="subtypes" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                        {% for subtype in subtypes %}
+                            <div data-id="{{ subtype.id }}" class="item {% if subtype == product.subtype %}selected{% endif %}">
+                                {{ subtype.name }}
+                                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                            </div>
+                        {% endfor %}
+                        <div data-id="{{ subtype.id }}" class="item">
+                            aaaaa
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                        <div data-id="{{ subtype.id }}" class="item">
+                            fsdfdsfds
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+    
+                    </div>
+                </div>  
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-5">مرحله بعد</button>    
+            </div>
+            <div id="tab-5" class="tab-content">
+                <div  class="list-box mt-1 w-100 " style="background-color: white;">
+                    <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
+                    <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                       {% for type in types %}
+                            <div data-id = "{{ type.id }}" class="item {% if type == product.type %}selected{% endif %}">
+                                {{ type.name }}
+                                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                            </div>
+                       {% endfor %}
+                    </div>
+                </div>
+                    <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
+            </div>
+            <div id="tab-6" class="tab-content">
+                <div  class="mt-1 w-100 list-box" style="background-color: white;margin-top:2rem">
+                    <input data-target="brands" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند">
+                    <div id="brands" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                       {% for brand in brands %}
+                            <div data-id="{{ brand.id }}" class="item {% if brand == product.brand %}selected{% endif %}">
+                                {{ brand.name }}
+                                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                            </div>
+                       {% endfor %}
+                    </div>
+                </div>   
+                    <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
+            </div>
           
         </div>
-    </div>    
-    <div  class="mt-1 list-box w-100" style="background-color: white">
-        <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
-        <div id="subtypes" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-            {% for subtype in subtypes %}
-                <div data-id="{{ subtype.id }}" class="item {% if subtype == product.subtype %}selected{% endif %}">
-                    {{ subtype.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                </div>
-            {% endfor %}
-        </div>
-    </div>  
-    <div  class="mt-1 w-100 list-box" style="background-color: white;margin-top:2rem">
-        <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="کتگوریها">
-        <div id="categories" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-         {% for category in categories %}
-            <div data-id="{{ category.id }}" class="item {% if category in product.categories.all %}selected{% endif %}">
-                {{ category.name }}
-                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-            </div>
-         {% endfor %}
-        </div>
-    </div>    
-
-    <div  class="mt-1 w-100 list-box" style="background-color: white;margin-top:2rem">
-        <input data-target="brands" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند">
-        <div id="brands" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-           {% for brand in brands %}
-                <div data-id="{{ brand.id }}" class="item {% if brand == product.brand %}selected{% endif %}">
-                    {{ brand.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                </div>
-           {% endfor %}
-        </div>
-    </div>    
-    
-    <p style="font-size:0.8rem;margin-top:2rem">رنگ های موجود:</p>
-    <div id="colors" onclick="select_multi_color();" style="flex-wrap: wrap;" class="inline-list" >
-       {% for color in colors %}
-            <div class="color {% if color in product.colors.all %}select-color{% endif %}" data-id="{{ color.id }}" style="background-color:{{color.code}};"></div>
-       {% endfor %}
-       
     </div>
-    <p style="font-size:0.8rem;margin-top:1rem">سایز های موجود:</p>
-    <div id="sizes" onclick="select_multi_size();" class="inline-list">
-       {% for size in sizes %}
-            <div class="size {% if size in product.sizes.all %}select-size{% endif %}" data-id="{{ size.id }}">{{ size.code }}</div>
-       {% endfor %}
-    </div> 
-    {% if product %}
-    <input type="hidden" name="id" id="id" value="{{ product.id }}">
-    <span style="text-align: center;" class="fz-small mt-1 w-100">تصاویر محصول</span>
-    <div style="display: flex;justify-content:center;margin-top:0.5rem" class="w-100 thumbs">
-       {% for item in product.images.all %}
-        <label>
-            <img data-id="{{item.id}}" id="img-{{item.id}}"  src="{% if item.image %} {{item.image.url}}{% else %}{% static 'img/sampleproduct/noimage.png' %}{% endif %}" class="i-thumb" style="margin-left: 0.3rem;" />
-            <input accept=".jpg,.jpeg,.png,.webp" data-num="{{ forloop.counter }}" data-img="img-{{item.id}}" onchange="changeimg();" type="file" accept=".jpg,.png,.gif,.webp,.tiff" id="img-1" name="image" style="position: fixed;top:-100px">
-        </label>
-       {% endfor %}
-        
-    </div>
-    {% else %}
-        <div style="cursor: pointer;width:100%;padding:0.5rem;border:1px dashed gray;text-align:center;margin-top:1rem">
-            <label style="cursor:pointer;">
-                <span class="fa fa-image"></span>
-                <span class="fz-small">افزودن تصاویر (حد اکثر 5 عدد)</span>
-                <input accept=".jpg,.jpeg,.png,.webp" id="images" name="images" type="file" style="position: fixed;top:-100px;" placeholder="تصاویر" multiple>
-            </label>
-        </div>
-    {% endif %}
-    <div class="txt-box w-100 mt-1">
-        <input type="text" id="keywords" name="keywords" class="text"  value="{{ product.keywords }}" required>
-        <label class="holder">کلمات کلیدی</label>    
-    </div>
-
-
-    <span style="font-size: 0.9rem;margin-top:2rem;text-align:right;width:100%">سایر ویژگیها</span>
-    <div class="attr-box w-100" style="margin-top: 1rem;">
-            <input id="attr-txt"  type="text" style="float: right;width:85%"  class="text-box" placeholder="ویژگی: مقدار">
-            <button onclick="add_attr();" style="float: right;margin-top:0.2rem;margin-right:0.5rem;font-size:0.7rem;padding:0.6rem" class="btn btn-primary">&plus;</button>    
-        <div id="attr-list" style="width: 100%;font-size:0.8rem" class="attr-list">
-            <div style="background-color: #fdfdfd;"  class="attr">
-                <span >قد:بلند (مثال)</span>
-                <span class="close">&times;</span>
-            </div>
-            {% for key,value in product.attrs.items %}
-            <div style="background-color: #fdfdfd;"  class="attr">
-                <span >{{key}}:{{value}}</span>
-                <span class="close">&times;</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-        <span style="font-size: 0.8rem;">ارسال رایگان</span>
-        <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
-    </label>
-    <div class="txt-box w-100 mt-1">
-        <textarea style="resize:vertical" id="description" class="text" name="description" required>{{ product.description }}</textarea>
-        <label class="holder">توضیحات</label>
-    </div>
-
-    {% if product %}
-         <input type="submit" onclick="edit_product();" style="width:100%;background:rgb(204, 204, 204);;color:rgb(255, 255, 255);border:0;border-radius:32px;font-size:0.8rem" class="btn cta" value="ویرایش">
-    {% else %}
-          <input type="submit" onclick="add_product();" style="width:100%;background:rgb(204, 204, 204);;color:rgb(255, 255, 255);border:0;border-radius:32px;font-size:0.8rem" class="btn cta" value="افزودن">
-    {% endif %}
-
-
 </div>

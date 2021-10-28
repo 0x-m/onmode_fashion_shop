@@ -1074,7 +1074,16 @@ function get_messages(){
     load_view('/messages/', 'get')
 }
 
+function _select_tab() {
+    const target = event.target;
+    const tab_id = target.dataset['tab'];
+    const contents = target.parentNode.parentNode.children;
 
+    for (let i=0; i < contents.length; ++i){
+        contents[i].classList.remove('tran')
+    }
+    document.getElementById(tab_id).classList.add('tran');
+}
 function select_tab(){
     const target = event.target;
     if (target.classList.contains('tab-item')){
