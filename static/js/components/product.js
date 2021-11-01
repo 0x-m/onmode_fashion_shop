@@ -167,10 +167,14 @@ class Product extends HTMLElement {
     }
     
     _addToCart() {
+        document.getElementById('drawer').showLoader();
+        document.getElementById('drawer').open();
         get('/cart/add/' + this.pid + '/', function(resp, status) {
             update_cart_badge('increment');
+            open_cart();
         });
-        this.querySelector('#a1').classList.toggle('added')
+        this.querySelector('#a1').classList.toggle('added');
+        
     }
 
     _addToFavs() {

@@ -28,10 +28,8 @@ itemTemplate.innerHTML = `
         }
         
         #caption {
-            flex: 96%;
-          
+            flex-basis: auto;
             user-select:none;
-            margin-left: 8px;
             margin-right: 5px;
            
         }

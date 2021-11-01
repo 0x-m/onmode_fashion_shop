@@ -13,9 +13,6 @@ from product_attributes.models import Size, Color
 from django.urls import reverse
 import os
 import json
-class OldJSONField(models.JSONField):
-    def db_type(self, connection):
-        return 'json'
 
 class Shop(models.Model):
     def generate_path(instance, filename):
@@ -29,7 +26,6 @@ class Shop(models.Model):
                                   validators=[
                                       RegexValidator('^[0-9]*$')
                                   ])
-    description = models.CharField(verbose_name=_('Description'),max_length=2000,blank=True)
     address = models.CharField(verbose_name=_('Address'),max_length=500,blank=True)
     logo = models.ImageField(verbose_name=_('Logo'), null=True, blank=True,upload_to=generate_path)
     banner = models.ImageField(verbose_name=_('Banner'),blank=True, null=True,upload_to=generate_path)
@@ -55,12 +51,10 @@ class Shop(models.Model):
         return len(self.orders.all().distinct('user'))
         
 
-
 class Brand(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40, unique=True)
     logo = models.ImageField(verbose_name=_('Logo'),null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_('Active'),default=True)
-    
         
     class Meta:
         verbose_name = _('Brand')
@@ -73,11 +67,7 @@ class Brand(models.Model):
 #such as men, women, kids,...
 class Category(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40,unique=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=500, null=True, blank=True)
-    is_active = models.BooleanField(verbose_name=_('Active'),default=True)
-    image = models.ImageField(verbose_name=_('Image'),null=True,blank=True)
 
-        
     class Meta:
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
@@ -89,8 +79,6 @@ class Category(models.Model):
 class Type(models.Model):
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='types')
     name = models.CharField(verbose_name=_('Name'),max_length=50,blank=True, unique=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=500,null=True, blank=True)
-    is_active = models.BooleanField(verbose_name=_('Active'),default=True)
     has_color = models.BooleanField(default=True)
     has_size = models.BooleanField(default=True)
 
@@ -99,11 +87,12 @@ class Type(models.Model):
         verbose_name_plural = _('Types')
 
     def __str__(self) -> str:
-        return str(self.name)
+        return str(self.name) 
     
 #product subtype: sport shoes, classic bag,...
 class SubType(models.Model):
-    type = models.ForeignKey(verbose_name=_('Type'),to=Type,on_delete=models.CASCADE, related_name='subtypes')
+    types = models.ManyToManyField(verbose_name=_('Types'),to=Type, related_name='subtypes')
+    categories = models.ManyToManyField(verbose_name=('Categories'),to=Category, related_name='subtypes')
     name = models.CharField(verbose_name=_('Name'),max_length=50)
         
     class Meta:
@@ -111,7 +100,7 @@ class SubType(models.Model):
         verbose_name_plural = _('SubTypes')
 
     def __str__(self) -> str:
-        return self.name
+        return self.name 
 
 
 
@@ -124,7 +113,6 @@ class Product(models.Model):
     colors = models.ManyToManyField(verbose_name=_('Colors'),to=Color,related_name='products')
     sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products')
     name = models.CharField(verbose_name=_('Name'),max_length=120,blank=True, null=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=500, blank=True)
     free_delivery = models.BooleanField(default=False,verbose_name=_('Free Delivery'))
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
         MinValueValidator(1000),

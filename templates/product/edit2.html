@@ -80,7 +80,19 @@
         <input onblur="validate_field('^[1-9][0-9]{0,2}$');" value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
         <label class="holder">تعداد</label>
     </div>
-    <div  class="list-box mt-1 w-100 " style="background-color: white;">
+    <div class="container w-100 mt-1" style="justify-content: space-between;">
+        <select style="width: 49%;">
+            <option value="1">نوع محصول</option>
+            <option value="1">رده محصول</option>
+            <option value="1">رده محصول</option>
+            <option value="1">رده محصول</option>
+
+        </select>
+        <select style="width: 49%;">
+            <option value="1">رده محصول</option>
+        </select>
+    </div>
+    <!-- <div  class="list-box mt-1 w-100 " style="background-color: white;">
         <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
         <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
            {% for type in types %}
@@ -91,8 +103,8 @@
            {% endfor %}
           
         </div>
-    </div>    
-    <div  class="mt-1 list-box w-100" style="background-color: white">
+    </div>     -->
+    <!-- <div  class="mt-1 list-box w-100" style="background-color: white">
         <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
         <div id="subtypes" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
             {% for subtype in subtypes %}
@@ -102,7 +114,7 @@
                 </div>
             {% endfor %}
         </div>
-    </div>  
+    </div>   -->
     <div  class="mt-1 w-100 list-box" style="background-color: white;margin-top:2rem">
         <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="کتگوریها">
         <div id="categories" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">

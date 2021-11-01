@@ -11,38 +11,112 @@
 
     }
 
-    .footer {
-        background-color: #aaa;
+    .site-footer {
+        background-color: #444;
+        margin-top: 1rem;
+        padding-bottom: 0.5rem;
+        padding: 0;
         width: 100%;
-        min-height: 400px;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        position: relative;
+        
     }
-    .footer ul {
-        list-style-type: none;
+    .site-footer .footer-logo {
+        flex-basis: 3%;
+        background-color: rgb(255, 255, 255);
+        border-radius:  50% 0 0 50%;
+    }
+    
+    .site-footer .footer-menu {
+        flex-basis: 70%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-right: 0.5rem;
+    }
 
+    .site-footer .footer-menu a {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 16px;
+        text-decoration: none;
+        font-size: 0.8rem;
+        color: rgb(255, 255, 255);
+        height: 100%;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        word-break: keep-all;
+        word-wrap: unset;
     }
-    .footer .contact-us {
-        background-color: rgb(92, 92, 92);
-        flex: 50%;
-     
-        height: 400px;
+    .site-footer .footer-menu a:hover{
+        background-color: rgb(245, 86, 86);
+        color: white;
+        cursor: pointer;
     }
-    .footer ul li {
-        color: black;
-        font-size: 0.9rem;
-        padding:0.3rem
-    }   
-    .footer  ul li:first-child {
-        font-size: 1.2rem;
+
+    .site-footer .footer-tokens 
+    {
+        flex: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
-    .footer .footer-menu {
+
+    #zarinpal img {
+        width: 32px;
+        height: 32px;
+        margin: 0;
+        padding-top: 5px;
+    }
+    #zarinpal {
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    #zarinpal img {width: 24px;}
+    .img-logo {
+        background-color: transparent;
+        width: 32px;
+        height: 32px;
+        margin-left: 8px;
+    }
+   .copyright {
+       font-size: 0.7rem;
+       font-weight: bold;
+       font-style: italic;
+       color: white;
+       background-color: rgb(238, 64, 64);
+       padding: 0.3rem;
+       display: flex;
+       justify-content: center;
+       text-align: center;
+       align-items: center;
+       
+   }
+    @media screen and (max-width: 576px) {
+        .site-footer {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+        }
+
+        .footer-logo {
+            display: none;
+
+        }
+
+        .site-footer .footer-menu a:hover {
+            background-color: transparent !important;
+            color: rgb(224, 83, 83);
+        }
+
+        .footer-tokens {
+            margin-top: 1rem;
+        }
+        .copyright {
+            background-color: transparent;
+        }
+    }
 
 </style>
 <!-- 
@@ -73,35 +147,26 @@
            </p>
         </div>
 </div>   -->
-<!-- <footer class="footer">
-    <a class="footer-logo" href="{% url 'index:home' %}"  >
-        <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="height:100%;max-width:36px;background:transparent">
+
+<footer class="site-footer">
+    <a href="" class="footer-logo">
+        <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 32px;background:transparent" />
     </a>
+    <section class="footer-menu">
+        <a href="">سوالات متداول</a>
+        <a href="">قوانین</a>
+        <a href="">وبلاگ</a>
+        <a onclick="get_profile();">تماس با ما</a>
+    </section>
+    <section class="footer-tokens">
+        <div id="zarinpal">
+            <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+        </div>
+        <img src="{% static 'img/logos/enamad-1.png' %}" class="img-logo" />
+        <img src="{% static 'img/logos/sazmandehi.png' %}" class="img-logo" />
 
-    <a class="f-item" href="">قوانین</a>
-    <a class="f-item" href="">درباره ما</a>
-    <a class="f-item" href="">وبلاگ</a>
-    <a class="f-item" href="">سوالات متداول</a>
-    <a class="f-item" href="">ثبت شکایت</a>
-    <a class="f-item" href="">تماس با ما</a>
-
-    <span class="footer-copyright">&copy;onmode.ir</span>
-
-</footer> -->
-
-<footer class="footer">
-   <section class="footer-menu" style="flex: 50%;">
-    <ul>
-        <li>پشتیبانی</li>
-        <li>سلام</li>
-        <li>ررر</li>
-    </ul>
-    <ul>
-        <li>پشتیبانی</li>
-        <li>سلام</li>
-        <li>ررر</li>
-    </ul>
-   </section>
-    <section class="contact-us"></section>
-    <section class="footer-copyright"></section>
+    </section>
+    <p class="copyright">
+        onmode.ir&copy;<br/>آسوده خرید کنید
+    </p>
 </footer>

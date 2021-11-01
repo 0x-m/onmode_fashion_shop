@@ -27,6 +27,8 @@ class Drawer extends HTMLElement {
     get content() {
         return this.querySelector('.content').innerHTML;
     }
+
+
     constructor() {
         super();
         this.status = 'closed';
@@ -49,8 +51,10 @@ class Drawer extends HTMLElement {
     }
 
     open() {
+        if (event) {
         event.preventDefault();
         event.stopPropagation();
+        }
         this.drawer.classList.add('drawer-open');
         this.status = 'opened';
         document.body.classList.add('no-scroll');

@@ -337,7 +337,9 @@
 }
 
 .cc {
-  border-color: #b3b3b3 !important;
+  background-color: rgb(240, 65, 65);
+  border-radius: 16px;
+  color: white !important;
 }
 
 .mega-menu-item li:hover {
@@ -781,11 +783,23 @@
   padding: 0.5rem;
   font-size: 0.9rem;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: 0.3s;
+  position: relative;
 }
-.navbar .nav .nav-item:hover {
-  border-color: #666;
+.navbar .nav .nav-item::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 50%;
+  transform-origin: center center;
+  transform: translate(-50%,0) scale(0);
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: 0.3s;
+  border-bottom: 1px solid rgb(248, 66, 66);
+
+}
+.navbar .nav .nav-item:hover::after, .navbar .nav .nav-item:focus:after{
+  transform: translate(-50%,0) scale(1,1);
 }
 .navbar .nav .icon {
   font-size: 1.7em;
@@ -1076,7 +1090,7 @@
   width: 80%;
   padding: 0.3rem;
   border: 1px solid #777;
-  border-radius: 16px;
+  border-radius: 8px;
 
 }
 
@@ -1093,7 +1107,7 @@
 }
 
 .list-box .filter::placeholder {
-  color: #e0e0e0;
+  color: #6d6d6d;
 }
 
 .list-box .items {
@@ -1527,3 +1541,20 @@
 .prof-dropdown:focus-within .prof-menu {
   display: block;
 }
+
+select {
+  padding: 0.5rem;
+  border: 1px solid rgb(173, 173, 173);
+  background-color: white;
+  outline: none;
+  font-size: 0.8rem;
+  accent-color: red;
+  cursor: pointer;
+}
+option {
+  accent-color: red;
+}
+select:focus {
+  border-color: #333;
+}
+
