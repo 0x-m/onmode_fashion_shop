@@ -94,3 +94,30 @@
     border-color: #333;
   }
   
+
+.radio-box input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border: none;
+    
+  
+  }
+  .radio-box {
+    cursor: pointer;
+  }
+  
+  .radio-box span {
+    background-color: rgb(255, 255, 255);
+    font-size: 0.8rem;
+    text-align: center;
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: #333;
+    
+  }
+  .radio-box input[type="radio"]:checked ~ span {
+    background-color: #444;
+    color: white;
+  }
+  
