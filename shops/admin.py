@@ -39,19 +39,19 @@ class ProductCustomAdmin(ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    list_display = ['id','name', 'is_active']
+    list_display = ['id','name']
 
 @admin.register(Type)
 class TypeAdmin(ModelAdmin):
-    list_display = ['name', 'is_active']
+    list_display = ['id','name']
 
 @admin.register(SubType)
 class SubtTypeAdmin(ModelAdmin):
-    list_display = ['name', 'type']
+    list_display = ['id','name']
 
 
 @admin.register(Brand)
 class BrandAdmin(ModelAdmin):
-    list_display = ['name', 'is_active']
-    list_editable = ['is_active']
+    list_display = ['id','name']
+
     
