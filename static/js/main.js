@@ -61,23 +61,23 @@ function listboxFilter (){
  }
 
 
-function select_color(){
+ function select_color(){
                
     if(event.target.classList.contains("color")){
         var colors = event.target.parentNode.getElementsByClassName("color");
         for (var i=0; i < colors.length; ++i){
-            colors[i].classList.remove("select-color");
+            colors[i].classList.remove("inline-item--selected");
         }
-        event.target.classList.toggle("select-color");
+        event.target.classList.toggle("inline-item--selected");
     }
 }
 function select_size(){
   if(event.target.classList.contains("size")){
     var sizes = event.target.parentNode.getElementsByClassName("size");
     for (var i=0; i < sizes.length; ++i){
-        sizes[i].classList.remove("select-size");
+        sizes[i].classList.remove("inline-item--selected");
     }
-      event.target.classList.toggle("select-size");
+      event.target.classList.toggle("inline-item--selected");
   }
 }
 
@@ -86,7 +86,7 @@ function select_multi_color(){
     console.log("multi color select")
     event.stopPropagation();
     if(event.target.classList.contains("color")){
-        event.target.classList.toggle("select-color");
+        event.target.classList.toggle("inline-item--selected");
     }
     
 }
@@ -94,10 +94,9 @@ function select_multi_size(){
     console.log("multi size select")
     event.stopPropagation();
   if(event.target.classList.contains("size")){
-      event.target.classList.toggle("select-size");
+      event.target.classList.toggle("inline-item-inline-selected");
   }
 }
-
 
 function add_attr(){
 
