@@ -505,6 +505,8 @@ function fetch_types(){
             for (let i=0; i < da['types'].length; ++i) {
                 let div = document.createElement('div');
                 div.dataset['id'] = da['types'][i].id;
+                div.dataset['hascolor'] = da['types'][i]['has_size'];
+                div.dataset['hassize'] = da['types'][i]['has_size'];
                 div.innerText = da['types'][i].name;
                 div.className = 'item';
                 frag.appendChild(div);
@@ -518,6 +520,10 @@ function fetch_subtypes() {
 
     const cats = get_selecteds('categories', false, true);
     const st = get_selecteds('types', true, true);
+    const hs = event.target.dataset['hascolor'];
+    if (hs === 'true'){
+        //
+    }
     get('/shop/subtypes?cats='+ cats+'&type=' + st, function(data, status) {
         if (status == 200){
             const d = JSON.parse(data);

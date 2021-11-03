@@ -476,7 +476,7 @@ def get_types(request: HttpRequest):
     print('sdfsfsfsfds')
     types = {}
     if len(categories):
-        types = Type.objects.filter(categories__id__in=categories).distinct().values('id', 'name')
+        types = Type.objects.filter(categories__id__in=categories).distinct().values('id', 'name', 'has_color', 'has_size')
     print(types)
 
     return JsonResponse({
