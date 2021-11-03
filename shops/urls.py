@@ -19,5 +19,7 @@ urlpatterns  = [
     path('<shop_name>/', views.get_products_of_shop, name='shop'),
     path('search/<pg>/', views.search, name='search'),
     path('shop/edit/', views.edit_shop, name='edit_shop'),
+    path('shop/types/', views.get_types),
+    path('shop/subtypes/', views.get_subtypes),
  
 ]

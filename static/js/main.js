@@ -25,7 +25,7 @@ function listboxSelect_mono(){
                
             }
             item.classList.add("selected")
-            item.children[0].classList.add("show")
+            
         }
     }
 }
@@ -99,39 +99,37 @@ function select_multi_size(){
 }
 
 
-
 function add_attr(){
-  var t = document.getElementById("attr-txt").value;
-  if (t.indexOf(":") < 0){
-      return
-  }
-  k = t.toString().split(":");
-  if (product_attrs.has(k[0])){
-    product_attrs.set(k[0].trim(),k[1].trim());
-      return;
-  }
-  product_attrs.set(k[0].trim(),k[1].trim());
-  var div = document.createElement("DIV");
-  div.className = "attr";
-  var sp1 = document.createElement("SPAN");
-  sp1.innerText = t;
-  var sp2 = document.createElement("SPAN");
-  sp2.innerHTML = "&times;";
-  sp2.className = "close";
-  sp2.addEventListener('click', delete_attr);
-  div.appendChild(sp1);
-  div.appendChild(sp2);
-  document.getElementById("attr-list").appendChild(div);
-  console.log(product_attrs)
-}
 
-function delete_attr(){
-  console.log("aads");
-  console.log(product_attrs)
-  var t = event.target.parentNode.innerText;
-  console.log(t);
-  product_attrs.delete(t.split(":")[0]);
-  console.log(product_attrs)
-  event.target.parentNode.remove();
-}
+    const attr = document.getElementById("attr-txt").value.trim();
+    const val = document.getElementById('val-txt').value.trim();
+    if (attr == '' || val == ''){
+        console.log('emtpy');
+        return
+    }
+  
+    product_attrs.set(attr,val)
+    var div = document.createElement("DIV");
+    div.className = "attr";
+    var sp1 = document.createElement("SPAN");
+    sp1.innerText = attr + ':' + val;
+    var sp2 = document.createElement("SPAN");
+    sp2.innerHTML = "&times;";
+    sp2.className = "close";
+    sp2.addEventListener('click', delete_attr);
+    div.appendChild(sp1);
+    div.appendChild(sp2);
+    document.getElementById("attr-list").appendChild(div);
+    console.log(product_attrs)
+  
+  
+  }
+  function delete_attr(){
+  
+    var t = event.target.parentNode.innerText;
+    console.log(t);
+    product_attrs.delete(t.split(":")[0]);
+    console.log(product_attrs)
+    event.target.parentNode.remove();
+  }
 

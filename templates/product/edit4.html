@@ -1,0 +1,249 @@
+<style>
+    .attr-box {
+        width: 100%;
+        padding: 0.2rem;
+        background-color: white;
+
+    }
+
+    .attr-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .attr-list .attr {
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        position: relative;
+        background-color: #f1f1f1;
+    }
+
+    .attr-list .attr .close {
+        position: absolute;
+        top: 25%;
+        cursor: pointer;
+        left: 2%;
+    }
+    .tran {
+        transform: translate(-50%,-50%) !important;
+        
+    }
+
+    .tab-content {
+        transform: translate(1000%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 80%;
+        transition: 0.5s;
+        display: block !important;
+    }
+
+    .ssz {
+        font-size: 0.7rem;
+        width: auto !important;
+        height:  auto !important;
+    }
+
+    combo-box::part(selectedBox) {
+        width: 100%;
+        padding: 0.5rem ;
+        border: 1px solid rgb(179, 179, 179);
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+
+    combo-box {
+        width: 80%;
+        padding: 0;
+        margin: 0;
+    }
+
+    combo-box-item::part(container) {
+        margin: 0.2rem;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+        background-color: white;
+    }
+
+    combo-box::part(items) {
+        border-radius: 6px;
+        margin-top: 0.2rem;
+        border: 1px solid #8a8a8a;
+        box-shadow: 0 0 5px rgb(184, 184, 184);
+        
+    }
+    combo-box-item::part(container):hover {
+        background-color: rgb(247, 93, 93);
+        color: white;
+    }
+
+    combo-box-item[selected]::part(container) {
+        background-color: rgb(236, 98, 98) !important;
+        color: white;
+    }
+
+    list-box::part(container) {
+        border:1px solid rgb(199, 199, 199) !important;
+        border-radius: 4px;
+        height: 200px;
+        
+     }
+     list-box::part(searchbox) {
+        appearance: none;
+        border: none;
+        padding: 0.5rem;
+        border-bottom: 1px solid #efefef;
+     }
+     listbox-item {
+         margin-top: 0.2rem;
+     }
+     listbox-item::part(container) {
+        background-color: white;
+        padding: 0.5rem;
+
+     }
+     listbox-item[selected]::part(container) {
+        border-radius: 4px;
+        background-color: rgb(228, 77, 77);
+        color: white;
+        opacity: 1;
+     }
+     listbox-item::part(icon) {
+        flex: 0;
+     }
+
+</style>
+<div class="container horizontal">
+    
+</div>
+    <div class="tab-container w-100" >
+        <div class="tab-contents w-100" style="height: auto;">
+            <div id="tab-1" class="tab-content tran" style="margin-top: 1rem;">
+                <div class="txt-box w-100" style="margin-top:10rem;" >
+                    <input  id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
+                    <label class="holder">نام محصول</label>
+                </div>
+                <div class="container horizontal w-100" style="justify-content: space-between;">
+                    <div class="txt-box  mt-1" style="width: 48%;">
+                        <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price" value="{{ product.name }}" name="price" type="text" class="text" required>
+                        <label class="holder">قیمت</label>
+                    </div>
+                    <div class="txt-box  mt-1" style="width: 48%;">
+                        <input onblur="validate_field('^[1-9][0-9]{0,2}$');" value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
+                        <label class="holder">تعداد</label>
+                    </div>
+                </div>
+                <div class="container horizontal w-100 mt-1" style="justify-content: space-between;flex-wrap:wrap">
+                    <combo-box placeholder="کتگوری ها" style="width: 100%;" multiple>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                    </combo-box>
+                    <combo-box placeholder="نوع محصول" style="width: 49%;">
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                    </combo-box>
+                    <combo-box placeholder="رده محصول" style="width: 49%;">
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                    </combo-box>
+
+                    <combo-box placeholder="رنگبندی" style="width: 100%;" multiple>
+                        <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(255, 96, 96);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                        <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(178, 224, 70);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>                    <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(42, 194, 194);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>                    <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                    </combo-box>
+
+                    <combo-box placeholder="سایزبندی" style="width: 100%;" multiple>
+                        <combo-box-item caption="ٓS" value="">
+                        </combo-box-item>
+                        <combo-box-item caption="M" value="">
+                        </combo-box-item>                   
+                         <combo-box-item caption="L" value="">
+                        </combo-box-item>       
+                        <combo-box-item caption="XL" value="">
+                            <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                        <combo-box-item caption="XXL" value="">
+                            <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                    </combo-box>
+                    <list-box placeholder="برند" style="width: 100%;margin-top:0.5rem;" searchable multiple>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                    </list-box>
+                </div>
+
+                <label style="padding:0.5rem;margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
+                    <span style="font-size: 0.8rem;">ارسال رایگان</span>
+                    <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
+                </label>
+                <button class="btn cta tab-button w-100 mt-1" style="margin-bottom: 2rem;" onclick="_select_tab();" data-tab="tab-2">مرحله بعد</button>    
+            </div>
+            <div id="tab-2" class="tab-content">
+                <div style="margin-top: 1rem;">
+                    <tag-box placeholder="هشتگ" style="width: 100%;font-size:0.8rem" ></tag-box>
+                </div>
+                <div class="txt-box w-100 mt-1" style="margin-top: 1rem;">
+                    <textarea id="description" rows="6" class="text" name="description" required>{{ product.description }}</textarea>
+                    <label class="holder">توضیحات</label>
+                </div>
+                <span style="font-size: 0.9rem;margin-top:2rem;text-align:right;width:100%;display:block;width:100%;text-align:center;font-size:1rem;font-weight:bold">سایر مشخصات</span>
+
+                <div class="attr-box w-100" style="margin-top: 1rem;">
+                        <div class="container horizontal" style="justify-content: space-between;align-items:center">
+                            <div class="txt-box" style="width: 40%;">
+                                <input id="attr-txt" type="text"   class="text"  value="{{ product.keywords }}" required>
+                                <label class="holder">مشخصه</label>    
+                            </div>                
+                            <span>:</span>
+                            <div class="txt-box" style="width: 40%;">
+                                <input id="val-txt" type="text"   class="text"  value="{{ product.keywords }}" required>
+                                <label class="holder">مقدار</label>    
+                            </div>                
+                            <button onclick="add_attr();" style="padding:0.5rem;height:100%;border-radius:4px" class="btn cta">&plus;</button>    
+                        </div>
+                    <div id="attr-list" style="width: 100%;font-size:0.8rem;margin-top:1rem" class="attr-list">
+                        <div style="background-color: #fdfdfd;"  class="attr">
+                            <span >قد:بلند (مثال)</span>
+                            <span class="close">&times;</span>
+                        </div>
+                        {% for key,value in product.attrs.items %}
+                        <div style="background-color: #fdfdfd;"  class="attr">
+                            <span >{{key}}:{{value}}</span>
+                            <span class="close">&times;</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+             
+                <button class="btn cta tab-button w-100 mt-1" style="margin-bottom: 2rem;" onclick="_select_tab();" data-tab="tab-3">ثبت محصول</button>    
+            </div>
+        </div>
+</div>

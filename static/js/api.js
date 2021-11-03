@@ -5,6 +5,7 @@ function get(url, callback= function(){}) {
 
     xr.onload = function() {
         callback(xr.responseText, xr.status);
+
     };
     
     xr.open('get', url);
@@ -110,8 +111,7 @@ function get_add_product_view(product_id) {
     load_view('/product/add/');
 }
 
-function get_selecteds(name, single){
-    console.log('aaaa');
+function get_selecteds(name, single, allow_empty=false){
     const items = document.getElementById(name).children;
     let selecteds = ""
     let all = ""
@@ -129,6 +129,10 @@ function get_selecteds(name, single){
     }
     if (selecteds == ""){
         selecteds = all;
+        if (allow_empty){
+            selecteds = "";
+            return selecteds
+        }
     }
     return selecteds.slice(1,selecteds.length) //eliminating first ,
 }
@@ -483,6 +487,51 @@ function showMegaMenu() {
     event.target.classList.add('cc');
     document.getElementById('megamenu').style.display = 'flex';
 
+}
+
+var prev_cats = "";
+function fetch_types(){
+    const cats = get_selecteds('categories', false, true);
+    console.log(cats,'categ...');
+    if (prev_cats === cats){
+        console.log('null');
+        return
+    }
+    
+    get('/shop/types?cats='+cats, function(data, status) {
+        if (status == 200) {
+            const da = JSON.parse(data)
+            const frag = new DocumentFragment()
+            for (let i=0; i < da['types'].length; ++i) {
+                let div = document.createElement('div');
+                div.dataset['id'] = da['types'][i].id;
+                div.innerText = da['types'][i].name;
+                div.className = 'item';
+                frag.appendChild(div);
+            }
+            document.getElementById('types').replaceChildren(frag);
+        }
+    });
+}
+
+function fetch_subtypes() {
+
+    const cats = get_selecteds('categories', false, true);
+    const st = get_selecteds('types', true, true);
+    get('/shop/subtypes?cats='+ cats+'&type=' + st, function(data, status) {
+        if (status == 200){
+            const d = JSON.parse(data);
+            const frag = new DocumentFragment();
+            for (let i=0; i < d['subtypes'].length; ++i) {
+                let div = document.createElement('div');
+                div.className = 'item';
+                div.dataset['id'] = d['subtypes'][i]['id'];
+                div.innerText = d['type'][i]['subtypes'];
+                frag.appendChild(div);
+            }
+            document.getElementById('subtypes').replaceChildren(frag);
+        }
+    });
 }
 
 function testcc(){

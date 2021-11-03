@@ -1,6 +1,9 @@
 const tag_box_template = document.createElement('template');
 tag_box_template.innerHTML = `
 <style>
+    :host {
+        display: block;
+    }
     #container {
         display: flex;
         overflow-x: auto;

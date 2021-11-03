@@ -2,7 +2,7 @@ from reviews.models import Comment
 from typing import ClassVar
 from django.db.models.query import RawQuerySet
 from django.forms import forms
-from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed
+from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
 from .models import  Product, Shop
 from django import http
 from django.http.request import HttpRequest
@@ -467,3 +467,30 @@ def get_boutiques(request: HttpRequest):
     })
     
  
+@login_required
+def get_types(request: HttpRequest):
+
+    categories_string = request.GET.get('cats')
+    categories = [int(i) for i in categories_string.split(',')]
+    print(categories)
+    print('sdfsfsfsfds')
+    types = {}
+    if len(categories):
+        types = Type.objects.filter(categories__id__in=categories).distinct().values('id', 'name')
+    print(types)
+
+    return JsonResponse({
+        "types": list(types)
+    })
+ 
+@login_required
+def get_subtypes(request: HttpRequest):
+    type = request.GET.get('type')
+    types = [int(type)]
+    categories = request.GET.get('cats')
+    categories = [int(i) for i in categories.split(',')]
+    subtypes = SubType.objects.filter(types__id__in=types, categories__id__in=categories).distinct().values('id', 'name')
+    return JsonResponse({
+        "subtypes": list(subtypes)
+    })
+    
