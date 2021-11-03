@@ -16,7 +16,7 @@ itemTemplate.innerHTML = `
             
         }
         .selected {
-            background-color: rgba(240,240,240,0.6) !important;
+            background-color: rgba(240,240,240,0.6);
         }
 
         #icon {
@@ -28,15 +28,17 @@ itemTemplate.innerHTML = `
         }
         
         #caption {
-            flex-basis: auto;
+            flex: 96%;
+          
             user-select:none;
+            margin-left: 8px;
             margin-right: 5px;
            
         }
      
     </style>
 
-    <div id="container">
+    <div part="container" id="container">
         <span part="icon" id="icon">
              <slot></slot>
         </span>
@@ -58,7 +60,12 @@ class ComboBoxItem extends HTMLElement {
     }
 
     set selected(value) {
-        this.setAttribute('selected', value);
+        if (value){
+            this.setAttribute('selected', true);
+        }
+        else{
+            this.removeAttribute('selected');
+        }
     }
 
     get caption() {
@@ -74,7 +81,7 @@ class ComboBoxItem extends HTMLElement {
     }
 
     set value(value) {
-        return this.setAttribute('value', value);
+       this.setAttribute('value', value);
     }
 
     constructor() {
@@ -83,20 +90,22 @@ class ComboBoxItem extends HTMLElement {
         this.shadowRoot.appendChild(itemTemplate.content.cloneNode(true));
         this.shadowRoot.querySelector('#caption').textContent = this.getAttribute('caption');
 
-
     }
 
     attributeChangedCallback(name, oldval, newval) {
         if ( oldval === newval)
             return;
+        console.log(newval, typeof newval)
         switch(name) {
             case 'selected':
                 const container = this.shadowRoot.querySelector('#container');
                 if (newval === 'true'){
                     container.classList.add('selected');
+                    this.selected = true
                 }
                 else if (newval === 'false'){
                     container.classList.remove('selected');
+                    this.selected = false;
                 }
                 break;
 
@@ -117,6 +126,9 @@ num_template.innerHTML = `
         :host {
             display:block;
             position: relative;
+            padding:0;
+            margin:0;
+            widdth:100%;
         }
         #items{
             display: none;
@@ -126,6 +138,9 @@ num_template.innerHTML = `
             z-index: 100;
             background-color: white;
             width: 100%;
+            padding:0.2rem;
+            
+            overflow-y: auto;
 
         }
         #selectedBox {
@@ -133,26 +148,25 @@ num_template.innerHTML = `
             justify-content: space-between;
             align-items: center;
             border: 1px solid rgba(240,240,240,1);
-            padding: 0.1rem;
+            pading:0;
             cursor: pointer;
             position: relative;
+            width: 100%;
 
         }
         #selectedItems {
-            flex:96%;
             user-select: none;
             display:flex;
             position: relative;
             overflow-x: auto;
-
-            
+            flex:95%
         }
         #selectedBox:hover {
             background-color: rgba(250,250,250,0.5);
         }
         #arrow {
             direction: ltr;
-            flex: 4%;
+            flex: 5%;
             transform: rotate(90deg);
             font-size: 0.6rem;
             text-align: center;
@@ -192,16 +206,25 @@ num_template.innerHTML = `
             font-size: 0.8rem;
         }
 
+        #container {
+            position: relative;
+            width: 100%;
+            padding:0.2rem;
+        }
+
     </style>
 
-    <div id="selectedBox" part="selectedBox">
-        <div part="selectedItems" id="selectedItems"></div>
-        <span id="arrow">&#10095;</span>
+    <div id="container" part="container">
+        <div id="selectedBox" part="selectedBox">
+            <div part="selectedItems" id="selectedItems"></div>
+            <span id="arrow">&#10095;</span>
+        </div>
+
+        <div part="items" id="items">
+            <slot></slot>
+        </div>
     </div>
-    
-    <div id="items">
-        <slot id="items_slot"></slot>
-    </div>
+   
 
 
 `;
@@ -237,8 +260,6 @@ class ComboBox extends HTMLElement {
         this._itemsBox = this.shadowRoot.querySelector('#items');
         this._selectedBox = this.shadowRoot.querySelector('#selectedBox');
         this._isOpen = false;
-        this._clearAll = this._clearAll.bind(this);
-        this._slotchange = this._slotchange.bind(this);
         this._multiple = false;
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
@@ -246,12 +267,6 @@ class ComboBox extends HTMLElement {
         this._deselectItem = this._deselectItem.bind(this);
         this._onSelectedBoxClick = this._onSelectedBoxClick.bind(this);
         this._itemsBox.addEventListener('click', this._selectItem);
-        this.selectedChangedEvent = new CustomEvent('onselectedchange', {
-            bubbles: true,
-            cancelable: false,
-            composed: true,
-        });
-        
 
 
     }
@@ -271,14 +286,12 @@ class ComboBox extends HTMLElement {
     connectedCallback () {
         this._selectedBox.addEventListener('click', this._onSelectedBoxClick);
         document.addEventListener('click', (e) => { 
+            console.log('clic:', e.target.id)
             if(e.target.tagName.toLowerCase() !== 'combo-box-item'){
                 this.close();
             }
             
         });
-        this.addEventListener('slotchange', this._slotchange);
-        const items_slot = this.shadowRoot.querySelector('#items_slot');
-        items_slot.addEventListener('slotchange', this._slotchange);
         this._items = Array.from(this.querySelectorAll('combo-box-item'));
         this._items.forEach( (item, i) => {
             if (!item.id) {
@@ -286,17 +299,6 @@ class ComboBox extends HTMLElement {
             }
         });
         this._setPlaceholder();
-
-        }
-
-        _slotchange() {
-
-            this._items = Array.from(this.querySelectorAll('combo-box-item'));
-            this._items.forEach( (item, i) => {
-                if (!item.id) {
-                    item.setAttribute('id', 'item-' + i);
-                }
-            });
 
         }
 
@@ -340,15 +342,15 @@ class ComboBox extends HTMLElement {
             this._clearPlaceholder();
             const selectedItems = this.shadowRoot.querySelector('#selectedItems');
             if(e.target.selected === true){
+                console.log('already selected');
                 return;
             }
             if(!this.multiple){
                 const selectedCount = this.selectedItems.length;
                 selectedItems.replaceChildren(e.target.cloneNode(true));
                 this._clearAll();
+
                 e.target.selected = true;
-                this.dispatchEvent(this.selectedChangedEvent);
-                console.log('event dispatched...');
                 this.close();
             }
             else {
@@ -358,7 +360,7 @@ class ComboBox extends HTMLElement {
                 selectedItems.appendChild(item);
                 e.target.selected = true;
             }
-            
+
         }
     }
 

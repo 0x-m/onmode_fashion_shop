@@ -12,6 +12,47 @@
         transition: 0.5s;
         display: block !important;
     }
+
+    .ssz {
+        font-size: 0.7rem;
+        width: auto !important;
+        height:  auto !important;
+    }
+
+    combo-box::part(selectedBox) {
+        width: 100%;
+        padding: 0.5rem ;
+        border: 1px solid red;
+    }
+
+    combo-box {
+        width: 80%;
+    }
+
+    combo-box-item::part(container) {
+        margin: 0.2rem;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+        background-color: white;
+    }
+
+    combo-box::part(items) {
+        border-radius: 4px;
+        border: 1px solid gray;
+        margin-top: 0.5rem;
+        box-shadow: 0 0 5px gray;
+        
+    }
+    combo-box-item::part(container):hover {
+        background-color: rgb(247, 93, 93);
+    }
+
+    combo-box-item[selected]::part(container) {
+        background-color: rgb(236, 98, 98) !important;
+        color: white;
+    }
+
 </style>
 <div class="container vertical" style="width:90%;justify-content: center;align-items:center">
     <div class="tab-container">
@@ -31,18 +72,6 @@
                         <label class="holder">تعداد</label>
                     </div>
                 </div>
-                <div class="txt-box w-100 mt-1">
-                    <textarea id="description" class="text" name="description" required>{{ product.description }}</textarea>
-                    <label class="holder">توضیحات</label>
-                </div>
-                <label style="background:#fafafa;border-radius:4px;padding:0.5rem;margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-                    <span style="font-size: 0.8rem;">ارسال رایگان</span>
-                    <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
-                </label>
-            
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-2">مرحله بعد</button>    
-            </div>
-            <div id="tab-2" class="tab-content">
                 <div class="container horizontal w-100" style="justify-content: space-between;">
                     <div  class="list-box mt-1" style="background-color: white;width:48%">
                         <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
@@ -93,9 +122,22 @@
                         </div>
                     </div>    
                 </div>
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-3">مرحله بعد</button>    
+
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-2">مرحله بعد</button>    
             </div>
-            <div id="tab-3" class="tab-content">
+            <div id="tab-2" class="tab-content">
+                <combo-box placeholder="رنگبندی" multiple>
+                    <combo-box-item caption="سرخ" value="">
+                        <span style="background-color:rgb(255, 96, 96);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                    </combo-box-item>
+                    <combo-box-item caption="سرخ" value="">
+                        <span style="background-color:rgb(178, 224, 70);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                    </combo-box-item>                    <combo-box-item caption="سرخ" value="">
+                        <span style="background-color:rgb(42, 194, 194);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                    </combo-box-item>                    <combo-box-item caption="سرخ" value="">
+                        <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                    </combo-box-item>
+                </combo-box>
                 <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:space-evenly" class="inline-list" >
                     {% for color in colors %}
                          <div class="color {% if color in product.colors.all %}select-color{% endif %}" data-id="{{ color.id }}" style="background-color:{{color.code}};"></div>
@@ -144,18 +186,18 @@
                          <span class="ssz">XXl</span>
                      </div>
                  </div>
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-4">مرحله بعد</button>    
-
+                <div class="txt-box w-100 mt-1">
+                    <textarea id="description" class="text" name="description" required>{{ product.description }}</textarea>
+                    <label class="holder">توضیحات</label>
+                </div>
+                <label style="padding:0.5rem;margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
+                    <span style="font-size: 0.8rem;">ارسال رایگان</span>
+                    <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
+                </label>
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-3">مرحله بعد</button>    
             </div>
-            <div id="tab-4" class="tab-content">
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-5">مرحله بعد</button>    
-            </div>
-            <div id="tab-5" class="tab-content">
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
-            </div>
-            <div id="tab-6" class="tab-content">
+            <div id="tab-3" class="tab-content">
                 <tag-box placeholder="هشتگ" style="width: 100%;margin-top:1rem;font-size:0.8rem" ></tag-box>
-
                 <span style="font-size: 0.9rem;margin-top:2rem;text-align:right;width:100%">سایر مشخصات</span>
                 <div class="attr-box w-100" style="margin-top: 1rem;">
                         <div class="container horizontal" style="justify-content: space-between;align-items:center">
@@ -183,6 +225,17 @@
                         {% endfor %}
                     </div>
                 </div>
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-4">مرحله بعد</button>    
+
+            </div>
+            <div id="tab-4" class="tab-content">
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-5">مرحله بعد</button>    
+            </div>
+            <div id="tab-5" class="tab-content">
+                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
+            </div>
+            <div id="tab-6" class="tab-content">
+         
                 <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
             </div>
           
