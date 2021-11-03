@@ -3,6 +3,7 @@
         transform: translate(-50%,-50%) !important;
         
     }
+
     .tab-content {
         transform: translate(1000%);
         position: absolute;
@@ -22,11 +23,15 @@
     combo-box::part(selectedBox) {
         width: 100%;
         padding: 0.5rem ;
-        border: 1px solid red;
+        border: 1px solid rgb(179, 179, 179);
+        font-size: 0.8rem;
+        border-radius: 6px;
     }
 
     combo-box {
         width: 80%;
+        padding: 0;
+        margin: 0;
     }
 
     combo-box-item::part(container) {
@@ -38,14 +43,15 @@
     }
 
     combo-box::part(items) {
-        border-radius: 4px;
-        border: 1px solid gray;
-        margin-top: 0.5rem;
-        box-shadow: 0 0 5px gray;
+        border-radius: 6px;
+        margin-top: 0.2rem;
+        border: 1px solid #8a8a8a;
+        box-shadow: 0 0 5px rgb(184, 184, 184);
         
     }
     combo-box-item::part(container):hover {
         background-color: rgb(247, 93, 93);
+        color: white;
     }
 
     combo-box-item[selected]::part(container) {
@@ -53,12 +59,41 @@
         color: white;
     }
 
+    list-box::part(container) {
+        border:1px solid rgb(199, 199, 199) !important;
+        border-radius: 4px;
+        height: 200px;
+        
+     }
+     list-box::part(searchbox) {
+        appearance: none;
+        border: none;
+        padding: 0.5rem;
+        border-bottom: 1px solid #efefef;
+     }
+     listbox-item {
+         margin-top: 0.2rem;
+     }
+     listbox-item::part(container) {
+        background-color: white;
+        padding: 0.5rem;
+
+     }
+     listbox-item[selected]::part(container) {
+        border-radius: 4px;
+        background-color: rgb(228, 77, 77);
+        color: white;
+        opacity: 1;
+     }
+     listbox-item::part(icon) {
+        flex: 0;
+     }
+
 </style>
-<div class="container vertical" style="width:90%;justify-content: center;align-items:center">
-    <div class="tab-container">
-        <div class="tab-contents">
+    <div class="tab-container w-100">
+        <div class="tab-contents w-100" style="height: auto;">
             <div id="tab-1" class="tab-content tran">
-                <div class="txt-box w-100 mt-1">
+                <div class="txt-box w-100" style="margin-top:10rem;" >
                     <input  id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
                     <label class="holder">نام محصول</label>
                 </div>
@@ -72,133 +107,86 @@
                         <label class="holder">تعداد</label>
                     </div>
                 </div>
-                <div class="container horizontal w-100" style="justify-content: space-between;">
-                    <div  class="list-box mt-1" style="background-color: white;width:48%">
-                        <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
-                        <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-                           {% for type in types %}
-                                <div data-id = "{{ type.id }}" class="item {% if type == product.type %}selected{% endif %}">
-                                    {{ type.name }}
-                                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                                </div>
-                           {% endfor %}
-                          
-                        </div>
-                    </div>    
-                    <div  class="mt-1 list-box" style="background-color: white;width:48%">
-                        <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
-                        <div id="subtypes" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-                            {% for subtype in subtypes %}
-                                <div data-id="{{ subtype.id }}" class="item {% if subtype == product.subtype %}selected{% endif %}">
-                                    {{ subtype.name }}
-                                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>  
-                </div> 
-                <div class="container horizontal w-100 mt-05" style="justify-content: space-between;">
-                    <div  class="list-box" style="background-color: white;width:48%">
-                        <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="کتگوریها">
-                        <div id="categories" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-                         {% for category in categories %}
-                            <div data-id="{{ category.id }}" class="item {% if category in product.categories.all %}selected{% endif %}">
-                                {{ category.name }}
-                                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                            </div>
-                         {% endfor %}
-                        </div>
-                    </div>    
-                
-                    <div  class="list-box" style="background-color: white;width:48%">
-                        <input data-target="brands" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند">
-                        <div id="brands" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-                           {% for brand in brands %}
-                                <div data-id="{{ brand.id }}" class="item {% if brand == product.brand %}selected{% endif %}">
-                                    {{ brand.name }}
-                                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                                </div>
-                           {% endfor %}
-                        </div>
-                    </div>    
+                <div class="container horizontal w-100 mt-1" style="justify-content: space-between;flex-wrap:wrap">
+                    <combo-box placeholder="کتگوری ها" style="width: 100%;" multiple>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                    </combo-box>
+                    <combo-box placeholder="نوع محصول" style="width: 49%;">
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                    </combo-box>
+                    <combo-box placeholder="رده محصول" style="width: 49%;">
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                        <combo-box-item caption="زنانه" value=""></combo-box-item>
+                    </combo-box>
+
+                    <combo-box placeholder="رنگبندی" style="width: 100%;" multiple>
+                        <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(255, 96, 96);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                        <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(178, 224, 70);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>                    <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(42, 194, 194);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>                    <combo-box-item caption="سرخ" value="">
+                            <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                    </combo-box>
+
+                    <combo-box placeholder="سایزبندی" style="width: 100%;" multiple>
+                        <combo-box-item caption="ٓS" value="">
+                        </combo-box-item>
+                        <combo-box-item caption="M" value="">
+                        </combo-box-item>                   
+                         <combo-box-item caption="L" value="">
+                        </combo-box-item>       
+                        <combo-box-item caption="XL" value="">
+                            <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                        <combo-box-item caption="XXL" value="">
+                            <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
+                        </combo-box-item>
+                    </combo-box>
+                    <list-box placeholder="برند" style="width: 100%;margin-top:0.5rem;" searchable multiple>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                        <listbox-item  caption="hello" value="1">
+                        </listbox-item>
+                    </list-box>
                 </div>
 
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-2">مرحله بعد</button>    
-            </div>
-            <div id="tab-2" class="tab-content">
-                <combo-box placeholder="رنگبندی" multiple>
-                    <combo-box-item caption="سرخ" value="">
-                        <span style="background-color:rgb(255, 96, 96);border-radius:50%;width:16px;height:16px;display:block;"></span>
-                    </combo-box-item>
-                    <combo-box-item caption="سرخ" value="">
-                        <span style="background-color:rgb(178, 224, 70);border-radius:50%;width:16px;height:16px;display:block;"></span>
-                    </combo-box-item>                    <combo-box-item caption="سرخ" value="">
-                        <span style="background-color:rgb(42, 194, 194);border-radius:50%;width:16px;height:16px;display:block;"></span>
-                    </combo-box-item>                    <combo-box-item caption="سرخ" value="">
-                        <span style="background-color:rgb(22, 29, 71);border-radius:50%;width:16px;height:16px;display:block;"></span>
-                    </combo-box-item>
-                </combo-box>
-                <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:space-evenly" class="inline-list" >
-                    {% for color in colors %}
-                         <div class="color {% if color in product.colors.all %}select-color{% endif %}" data-id="{{ color.id }}" style="background-color:{{color.code}};"></div>
-                    {% endfor %}
-                    <div class="color inline-item">
-                        <span style="background-color: green;" />
-                    </div>
-                    <div class="color inline-item">
-                     <span style="background-color: rgb(201, 37, 114);" />
-                    </div>
-                     <div class="color inline-item">
-                         <span style="background-color: rgb(36, 96, 226);" />
-                     </div>
-                     <div class="color inline-item">
-                         <span style="background-color: rgb(71, 209, 71);" />
-                     </div>
-                     <div class="color inline-item">
-                         <span style="background-color: rgb(248, 78, 220);" />
-                     </div>
-                     <div class="color inline-item">
-                         <span style="background-color: rgb(255, 203, 60);" />
-                     </div>
-                     <div class="color inline-item">
-                         <span style="background-color: rgb(31, 182, 119);" />
-                     </div>
-                     <div class="color inline-item">
-                         <span style="background-color: rgb(20, 22, 26);" />
-                     </div>
-                 </div>
-                 <div id="sizes" onclick="select_multi_size();" class="inline-list mt-05">
-                     {% comment %}
-                    {% for size in sizes %}
-                         <div class="size {% if size in product.sizes.all %}select-size{% endif %}" data-id="{{ size.id }}">{{ size.code }}</div>
-                    {% endfor %}
-                    {% endcomment %}
-                     <div class="color inline-item">
-                         <span class="ssz">S</span>
-                     </div>
-                     <div class="color inline-item">
-                         <span class="ssz">L</span>
-                     </div>
-                     <div class="color inline-item">
-                         <span class="ssz">XL</span>
-                     </div>
-                     <div class="color inline-item">
-                         <span class="ssz">XXl</span>
-                     </div>
-                 </div>
-                <div class="txt-box w-100 mt-1">
-                    <textarea id="description" class="text" name="description" required>{{ product.description }}</textarea>
-                    <label class="holder">توضیحات</label>
-                </div>
                 <label style="padding:0.5rem;margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
                     <span style="font-size: 0.8rem;">ارسال رایگان</span>
                     <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
                 </label>
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-3">مرحله بعد</button>    
+                <button class="btn cta tab-button w-100 mt-1" style="margin-bottom: 2rem;" onclick="_select_tab();" data-tab="tab-2">مرحله بعد</button>    
             </div>
-            <div id="tab-3" class="tab-content">
-                <tag-box placeholder="هشتگ" style="width: 100%;margin-top:1rem;font-size:0.8rem" ></tag-box>
-                <span style="font-size: 0.9rem;margin-top:2rem;text-align:right;width:100%">سایر مشخصات</span>
+            <div id="tab-2" class="tab-content">
+                <tag-box placeholder="هشتگ" style="width: 100%;font-size:0.8rem" ></tag-box>
+
+                <div class="txt-box w-100 mt-1" style="margin-top: 1rem;">
+                    <textarea id="description" rows="6" class="text" name="description" required>{{ product.description }}</textarea>
+                    <label class="holder">توضیحات</label>
+                </div>
+                <span style="font-size: 0.9rem;margin-top:2rem;text-align:right;width:100%;display:block;width:100%;text-align:center;font-size:1rem;font-weight:bold">سایر مشخصات</span>
+
                 <div class="attr-box w-100" style="margin-top: 1rem;">
                         <div class="container horizontal" style="justify-content: space-between;align-items:center">
                             <div class="txt-box" style="width: 40%;">
@@ -212,7 +200,7 @@
                             </div>                
                             <button onclick="add_attr();" style="padding:0.5rem;height:100%;border-radius:4px" class="btn cta">&plus;</button>    
                         </div>
-                    <div id="attr-list" style="width: 100%;font-size:0.8rem" class="attr-list">
+                    <div id="attr-list" style="width: 100%;font-size:0.8rem;margin-top:1rem" class="attr-list">
                         <div style="background-color: #fdfdfd;"  class="attr">
                             <span >قد:بلند (مثال)</span>
                             <span class="close">&times;</span>
@@ -225,20 +213,8 @@
                         {% endfor %}
                     </div>
                 </div>
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-4">مرحله بعد</button>    
-
+             
+                <button class="btn cta tab-button w-100 mt-1" style="margin-bottom: 2rem;" onclick="_select_tab();" data-tab="tab-3">ثبت محصول</button>    
             </div>
-            <div id="tab-4" class="tab-content">
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-5">مرحله بعد</button>    
-            </div>
-            <div id="tab-5" class="tab-content">
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
-            </div>
-            <div id="tab-6" class="tab-content">
-         
-                <button class="btn cta tab-button w-100 mt-1" onclick="_select_tab();" data-tab="tab-6">مرحله بعد</button>     
-            </div>
-          
         </div>
-    </div>
 </div>

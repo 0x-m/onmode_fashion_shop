@@ -123,6 +123,9 @@ const num_template = document.createElement('template');
 
 num_template.innerHTML = `
     <style>
+        * {
+            box-sizing: border-box;
+        }
         :host {
             display:block;
             position: relative;
@@ -186,6 +189,7 @@ num_template.innerHTML = `
             align-items:center;
             justify-content: space-between;
             padding:0px;
+            font-size: 0.8rem;
             
         }
 

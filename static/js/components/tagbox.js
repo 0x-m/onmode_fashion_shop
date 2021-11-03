@@ -65,7 +65,7 @@ tag_box_template.innerHTML = `
         appearance: none;
         outline: none;
         border:none;
-        font-size: 1.3rem;
+        font-size: 1rem;
         vertical-align: middle;
         min-height:100%;
         color: gray;
@@ -73,7 +73,7 @@ tag_box_template.innerHTML = `
     }
 
     #text::placeholder { 
-        color: #eee;
+        color: #aaa;
     }
 </style>
 <div part="container" id="container">

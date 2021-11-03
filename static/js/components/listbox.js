@@ -14,6 +14,8 @@ Itemtemplate.innerHTML = `
         padding: 0.3rem;
         position: relative;
         scroll-snap-algin: center;
+        color:black;
+        font-size:0.8rem;
         
     }
     
@@ -30,8 +32,7 @@ Itemtemplate.innerHTML = `
         display: block;
         margin-left: 3px;
         margin-right: 3px;
-        font-size: 0.9rem;
-        color: #aaa;
+
         
     }
     .selected {
@@ -43,7 +44,7 @@ Itemtemplate.innerHTML = `
     }
     </style>
 
-    <div  id="container">
+    <div part="container"  id="container">
         <span part="icon" id="icon">
             <slot></slot>
         </span>
@@ -135,9 +136,11 @@ class ListboxItem extends HTMLElement {
     #toggleSelect() {
         if (this.selected === true){
             this._container.classList.add('selected');
+            this.setAttribute('selected');
         }
         else {
             this._container.classList.remove('selected');
+            this.removeAttribute('selected');
         }
     }
 
@@ -153,25 +156,24 @@ listBoxTemplate.innerHTML = `
 
     <style>
         :host {
-            display: block;
-            flex-direction: column;
-            position: relative;
-            overflow: auto;
            
         }
         #container {
             background-color:white;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(240,240,240,0.9);
             position: relative;
-            scroll-snap-type: y mandatory;
-            
+            border: 1px solid #efefef;
+            padding: 0.2rem;
             
         }
         #items {
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            max-height: 250px;
+            scroll-snap-type: y mandatory;
+
         }
         #searchBox {
             position: sticky;
@@ -197,9 +199,9 @@ listBoxTemplate.innerHTML = `
         }
     </style>
 
-    <div id='container'>
-        <input type="text" id="searchBox">
-        <div id="items">
+    <div part="container" id='container'>
+        <input part="searchbox" type="text" placeholder="فیلتر..." id="searchBox">
+        <div part="items" id="items">
             <slot></slot>
         </div>
     </div>
