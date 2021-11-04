@@ -46,6 +46,7 @@
         width: auto !important;
         height: auto !important;
         font-size: 0.7rem;
+        pointer-events: none;
     }
 
     .img-btn{
@@ -94,7 +95,7 @@
     </div>
     <label style="background:#fafafa;border-radius:4px;padding:0.5rem;margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
         <span style="font-size: 0.8rem;">ارسال رایگان</span>
-        <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="price">
+        <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="false">
     </label>
 
     <div class="container horizontal w-100" style="justify-content: space-between;">
@@ -145,53 +146,21 @@
         </div>    
     </div>
 
-    <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:space-evenly" class="inline-list" >
+    <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:flex-start" class="inline-list" >
        {% for color in colors %}
-            <div class="color {% if color in product.colors.all %}select-color{% endif %}" data-id="{{ color.id }}" style="background-color:{{color.code}};"></div>
+        <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if color in product.colors.all %}inline-item--selected{% endif %}">
+            <span style="background-color: {{ color.code }}" />
+        </div>
        {% endfor %}
-       <div class="color inline-item">
-           <span style="background-color: green;" />
-       </div>
-       <div class="color inline-item">
-        <span style="background-color: rgb(201, 37, 114);" />
-       </div>
-        <div class="color inline-item">
-            <span style="background-color: rgb(36, 96, 226);" />
-        </div>
-        <div class="color inline-item">
-            <span style="background-color: rgb(71, 209, 71);" />
-        </div>
-        <div class="color inline-item">
-            <span style="background-color: rgb(248, 78, 220);" />
-        </div>
-        <div class="color inline-item">
-            <span style="background-color: rgb(255, 203, 60);" />
-        </div>
-        <div class="color inline-item">
-            <span style="background-color: rgb(31, 182, 119);" />
-        </div>
-        <div class="color inline-item">
-            <span style="background-color: rgb(20, 22, 26);" />
-        </div>
+       
     </div>
-    <div id="sizes" onclick="select_multi_size();" class="inline-list mt-05">
-        {% comment %}
+    <div id="sizes" onclick="select_multi_size();" style="justify-content: flex-start;width:100%" class="inline-list mt-05">
        {% for size in sizes %}
-            <div class="size {% if size in product.sizes.all %}select-size{% endif %}" data-id="{{ size.id }}">{{ size.code }}</div>
+        <div data-id="{{size.id}}" class="inline-item {% if size in product.sizes.all %}inline-item--selected{% endif %}">
+            <span  class="ssz">{{ size.code }}</span>
+        </div>
        {% endfor %}
-       {% endcomment %}
-        <div class="color inline-item">
-            <span class="ssz">S</span>
-        </div>
-        <div class="color inline-item">
-            <span class="ssz">L</span>
-        </div>
-        <div class="color inline-item">
-            <span class="ssz">XL</span>
-        </div>
-        <div class="color inline-item">
-            <span class="ssz">XXl</span>
-        </div>
+ 
     </div> 
     {% if product %}
     <input type="hidden" name="id" id="id" value="{{ product.id }}">
@@ -214,11 +183,8 @@
             </label>
         </div>
     {% endif %}
-    <div class="txt-box w-100 mt-1">
-        <input type="text" id="keywords" name="keywords" class="text"  value="{{ product.keywords }}" required>
-        <label class="holder">کلمات کلیدی</label>    
-    </div>
-    <tag-box placeholder="هشتگ" style="width: 100%;margin-top:1rem;font-size:0.8rem" ></tag-box>
+    
+    <tag-box id="keywords" placeholder="هشتگ" style="width: 100%;margin-top:2rem;font-size:0.8rem" ></tag-box>
 
     <span style="font-size: 0.9rem;margin-top:2rem;text-align:right;width:100%">سایر مشخصات</span>
     <div class="attr-box w-100" style="margin-top: 1rem;">

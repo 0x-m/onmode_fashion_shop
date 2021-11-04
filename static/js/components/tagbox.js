@@ -101,7 +101,7 @@ class TagBox extends HTMLElement {
     }
 
     get tags() {
-        return this._tags;
+        return this._tags.values();
     }
     get max_allowed() {
         return this.max_num_tags;
@@ -117,7 +117,7 @@ class TagBox extends HTMLElement {
         super();
         this.max_num_tags = 10;
         this.count = 0;
-        this._tags = new Map;
+        this._tags = new Map();
         this.attachShadow({ mode: 'open'});
         this.shadowRoot.appendChild(tag_box_template.content.cloneNode(true));
 

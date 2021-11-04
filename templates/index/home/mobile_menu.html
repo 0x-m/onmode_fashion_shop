@@ -7,10 +7,12 @@
         <menu-group caption="دسته محصولات">
             {% for cat in categories %}
                 <menu-group caption="{{cat.name}}">
-                    {% for type in cat.types.all %}
+                    {% for type in cat.types.all|dictsortreversed:'id' %}
                         <menu-group caption="{{type.name}}">
-                            {% for subtype in type.subtypes.all %}
-                                <menu-item caption="{{subtype.name}}"></menu-item>
+                            {% for subtype in type.subtypes.all|dictsortreversed:'id' %}
+                                {% if cat in subtype.categories.all %}
+                                     <menu-item link="/shop/products/{{cat.id}}/{{type.id}}/{{subtype.id}}/" caption="{{subtype.name}}"></menu-item>
+                                {% endif %}
                             {% endfor %}
                         </menu-group>
                     {% endfor %}

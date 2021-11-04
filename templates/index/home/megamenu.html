@@ -12,11 +12,13 @@
             {% for cat in categories %}
                 <div id="mm-{{forloop.counter}}" class="tab-content {% if forloop.counter == 1%}tab-show-content{% endif %}">
                     <div class="container horizontal" style="justify-content: flex-start;">
-                        {% for type in cat.types.all %}
+                        {% for type in cat.types.all|dictsortreversed:'id' %}
                         <ul class="mega-menu-item">
                             <li class="mega-menu-title">{{ type.name }}</li>
-                            {% for subtype in type.subtypes.all %}
-                                <li>{{ subtype.name }}</li>
+                            {% for subtype in type.subtypes.all|dictsortreversed:'id' %}
+                                {% if cat in subtype.categories.all %}
+                                <a href="/shop/products/{{cat.id}}/{{type.id}}/{{subtype.id}}/">{{ subtype.name }}</a>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                         {% endfor %}

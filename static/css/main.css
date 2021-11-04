@@ -400,22 +400,23 @@
   justify-self: flex-start;
 }
 
-.mega-menu-item li {
+.mega-menu-item li, .mega-menu-item a {
   font-size: 0.8rem;
   color: #696969;
   cursor: pointer;
   padding: 0.3rem;
   padding-right: 0.5rem;
   margin-top: 0.5rem;
+  text-decoration: none;
 }
 
 .cc {
-  background-color: #faa2a2;
-  border-radius: 16px;
-  color: #fcfcfc !important;
+
+  border-bottom: 1px solid rgb(230, 79, 79) !important;
+  color: #272727 !important;
 }
 
-.mega-menu-item li:hover {
+.mega-menu-item li:hover, .mega-menu-item a:hover {
   color: #f75757;
 }
 
@@ -433,20 +434,23 @@
 .inline-list .inline-item {
   border-radius: 50%;
   padding: 0.2rem;
-  margin-left: 0.3rem;
+  margin-left: 0.2rem;
   border: 1px solid #e0e0e0;
   cursor: pointer;
-  display: flex;
+  position: relative;
   min-width: 32px;
   min-height: 32px;
-  justify-content: center;
-  align-items: center;
+
 }
 .inline-list .inline-item span {
   border-radius: 50%;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   user-select: none;
   pointer-events: none;
 }
@@ -456,13 +460,15 @@
 
 .badge {
   position: absolute;
-  padding: 0.6rem 0.3rem 0.3rem 0.3rem;
-  font-size: 0.8rem;
+  padding: 0.4rem;
+  font-size: 0.7rem;
   color: white;
   display: flex;
+  border-radius: 6px;
+  text-align: center;
 }
 .badge-red {
-  background-color: #f14646 !important;
+  background-color: #e23232 !important;
 }
 .badge-green {
   background-color: green !important;
@@ -605,7 +611,6 @@
   align-items: center;
   margin: 0.5rem auto;
   margin-bottom: 0.3rem;
-  background-color: white;
   width: 80%;
   z-index: 1;
 }
@@ -1005,13 +1010,14 @@
   padding: 0.3rem 0.5rem 0.3rem 0.5rem;
   margin-left: 0.3rem;
   border: 1px solid #efefef;
+  border-radius: 4px;
   font-size: 0.9rem;
   cursor: pointer;
   color: #333;
   text-align: center;
 }
 .pagination .page-item:hover {
-  border-color: #777;
+  border-color: rgb(211, 71, 71);
 }
 .pagination .page-item:active {
   transform: translate(5%, 5%);
@@ -1334,6 +1340,7 @@
   font-size: 0.8rem;
   padding: 0.3rem;
   width: 100%;
+  border-radius: 6px;
 }
 .comment-text-box:active {
   outline: 1px solid #999;
@@ -1346,6 +1353,16 @@
 
   .comment-text-box {
     width: 85%;
+  }
+}
+
+@media screen and (min-width:900px) {
+  .comment {
+    width: 50%;
+  }
+
+  .comment-text-box {
+    width: 50%;
   }
 }
 .search-box {

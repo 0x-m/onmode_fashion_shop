@@ -2,7 +2,7 @@
 from typing import Dict
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
-from django.forms.fields import JSONString
+from django.forms.fields import JSONString, NullBooleanField
 from django.urls import utils
 from django.utils import timezone
 from django.contrib.postgres.fields import HStoreField
@@ -101,19 +101,21 @@ class SubType(models.Model):
 
     def __str__(self) -> str:
         return self.name 
+    
 
 
 
 class Product(models.Model):
     shop = models.ForeignKey(verbose_name=_('Shop'),to=Shop, on_delete=models.CASCADE)
-    brand = models.ForeignKey(verbose_name=_('Brand'),to=Brand, on_delete=models.CASCADE,null=True)
-    categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='products')
-    type = models.ForeignKey(verbose_name=_('Type'),to=Type,on_delete=models.CASCADE,null=True)
+    brand = models.ForeignKey(verbose_name=_('Brand'),to=Brand, on_delete=models.CASCADE,null=True, blank=True)
+    categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='products', blank=True)
+    type = models.ForeignKey(verbose_name=_('Type'),to=Type,on_delete=models.CASCADE,null=True, blank=True)
     subtype = models.ForeignKey(verbose_name=_('SubType'),to=SubType,on_delete=models.CASCADE, related_name='products', null=True)
-    colors = models.ManyToManyField(verbose_name=_('Colors'),to=Color,related_name='products')
-    sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products')
+    colors = models.ManyToManyField(verbose_name=_('Colors'),to=Color,related_name='products', blank=True)
+    sizes = models.ManyToManyField(verbose_name=_('Sizes'),to=Size,related_name='products', blank=True)
     name = models.CharField(verbose_name=_('Name'),max_length=120,blank=True, null=True)
-    free_delivery = models.BooleanField(default=False,verbose_name=_('Free Delivery'))
+    free_delivery = models.BooleanField(default=False,verbose_name=_('Free Delivery'), blank=True)
+    description = models.CharField(verbose_name=_('product description'), max_length=5000,blank=True, null=True)
     price = models.DecimalField(verbose_name=_('Price'),max_digits=10,decimal_places=0,validators=[
         MinValueValidator(1000),
     ])

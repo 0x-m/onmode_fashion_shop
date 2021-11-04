@@ -63,8 +63,8 @@ function listboxFilter (){
 
  function select_color(){
                
-    if(event.target.classList.contains("color")){
-        var colors = event.target.parentNode.getElementsByClassName("color");
+    if(event.target.classList.contains("inline-item")){
+        var colors = event.target.parentNode.getElementsByClassName("inline-item");
         for (var i=0; i < colors.length; ++i){
             colors[i].classList.remove("inline-item--selected");
         }
@@ -72,8 +72,8 @@ function listboxFilter (){
     }
 }
 function select_size(){
-  if(event.target.classList.contains("size")){
-    var sizes = event.target.parentNode.getElementsByClassName("size");
+  if(event.target.classList.contains("inline-item")){
+    var sizes = event.target.parentNode.getElementsByClassName("inline-item");
     for (var i=0; i < sizes.length; ++i){
         sizes[i].classList.remove("inline-item--selected");
     }
@@ -85,16 +85,15 @@ function select_size(){
 function select_multi_color(){
     console.log("multi color select")
     event.stopPropagation();
-    if(event.target.classList.contains("color")){
+    if(event.target.classList.contains("inline-item")){
         event.target.classList.toggle("inline-item--selected");
     }
     
 }
 function select_multi_size(){
-    console.log("multi size select")
     event.stopPropagation();
-  if(event.target.classList.contains("size")){
-      event.target.classList.toggle("inline-item-inline-selected");
+  if(event.target.classList.contains("inline-item")){
+      event.target.classList.toggle("inline-item--selected");
   }
 }
 

@@ -4,11 +4,11 @@
 <style>
     .linkTo {
         position: relative;
-        width: 95%;
-        margin: 0.2rem auto;
-        margin-left: 1rem;
+        width: 100%;
+
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
+        margin-top: 2rem;
         align-items: center;
     }
 
@@ -16,12 +16,9 @@
         text-decoration: none;
         outline: none;
         padding: 0.5rem;
-        background-color: #fff;
-        border: 1px solid gray;
-        color: rgb(102, 102, 102);
-        font-size: 1rem;
+        font-size: 1,1rem;
         display: flex;
-        justify-content: space-between;
+
         width: 150px;
     }
     .fnt {
@@ -29,6 +26,9 @@
 		font-family: "Quicksand", sans-serif !important;
 		font-family: "Vibes", cursive !important;
 	}
+    .cta{
+        text-decoration: none;
+    }
 @media screen and (max-width:480px) {
     .w-100-md {
         width: 100%;
@@ -56,9 +56,10 @@
             {% for cat in categories %}
                 <div id="new-{{ forloop.counter }}" class="tab-content {% if forloop.counter == 1%}tab-show-content {% endif %}">
                     <p class="linkTo">
-                        <a href="#" class="ll">
-                            <span style="flex: 80%;display:block;">مشاهده همه</span>
-                            <ion-icon style="font-size:1.5rem;display:block;flex:10%" name="arrow-forward-circle-outline"></ion-icon>
+                        <a href="#" class="btn cta" style="width: 150px;">
+                            مشاهده همه 
+                            <!-- <span style="flex: 80%;display:block;">مشاهده همه</span>
+                            <ion-icon style="font-size:1.5rem;display:block;flex:10%" name="arrow-forward-circle-outline"></ion-icon> -->
                         </a>
                     </p> 
                     <div class="container horizontal justify-center" style="padding: 0.5rem;flex-wrap:wrap">

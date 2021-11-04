@@ -157,7 +157,7 @@
         {% for p in page.paginator.page_range %}
             <a class="page-item" href="?pg={{p}}" class="{% if page.number == p %}active-page{% endif %}">{{ p }}</a>
         {% endfor %}
-             <a href="?pg={{page.paginator.num_pages }}">انتها</a>
+             <a class="page-item" href="?pg={{page.paginator.num_pages }}">انتها</a>
         {% if page.has_next %}
          <a class="page-item" href="?pg={{page.next_page_number}}">&raquo;</a>
         {% endif %}

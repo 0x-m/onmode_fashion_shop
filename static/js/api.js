@@ -185,12 +185,19 @@ function get_attrs(){
 }
 
 function prepare_product_info(command){
-        
+    let keyword = '';
+    const kk = document.getElementById('keywords');
+    if (kk) {
+        for (let i of kk.tags){
+            keyword += ',' + i;
+        }
+        keyword = keyword.slice(1, keyword.length);
+
+    }    
     const attrs =  get_attrs();
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const quantity = document.getElementById("quantity").value;
-    const keywords = document.getElementById("keywords").value;
     const price = document.getElementById("price").value;
     const brand = get_selecteds("brands", true);
     const type = get_selecteds("types", true);
@@ -203,7 +210,7 @@ function prepare_product_info(command){
     let all_colors = "";
     for (let i=0; i < colors.length; ++i){
         all_colors += "," + colors[i].dataset["id"];
-        if (colors[i].classList.contains("select-color")){
+        if (colors[i].classList.contains("inline-item--selected")){
             selected_colors += "," + colors[i].dataset["id"];
         }
     }
@@ -218,7 +225,7 @@ function prepare_product_info(command){
     let selected_sizes = "";
     for (let i=0; i < sizes.length; ++i){
         all_sizes += "," + sizes[i].dataset["id"];
-        if (sizes[i].classList.contains("select-size")){
+        if (sizes[i].classList.contains("inline-item--selected")){
             selected_sizes += "," + sizes[i].dataset["id"];
         }
     }
@@ -316,7 +323,7 @@ function prepare_product_info(command){
     data.append("price", price);
     data.append("description", description);
     data.append("quantity",quantity);
-    data.append("keywords", keywords);
+    data.append("keywords", keyword);
     data.append("colors", selected_colors);
     data.append("sizes", selected_sizes);
     data.append("type", type);
@@ -407,7 +414,7 @@ function changeimg(){
         if (xhttp.status == 200){
             path = xhttp.responseText;
             img.src = path;
-            document.getElementById()
+            document.getElementById('drawer').hideLoader();
         }
     }
 
@@ -497,7 +504,9 @@ function fetch_types(){
         console.log('null');
         return
     }
-    
+
+    document.getElementById('types').replaceChildren('');
+    document.getElementById('subtypes').replaceChildren('');
     get('/shop/types?cats='+cats, function(data, status) {
         if (status == 200) {
             const da = JSON.parse(data)
@@ -516,23 +525,30 @@ function fetch_types(){
     });
 }
 
+var prev_subtype = "";
 function fetch_subtypes() {
-
     const cats = get_selecteds('categories', false, true);
     const st = get_selecteds('types', true, true);
+
+    if (prev_subtype === st){
+        return;
+    }
     const hs = event.target.dataset['hascolor'];
     if (hs === 'true'){
         //
     }
+    document.getElementById('subtypes').replaceChildren('');
     get('/shop/subtypes?cats='+ cats+'&type=' + st, function(data, status) {
         if (status == 200){
+            console.log('subtype');
             const d = JSON.parse(data);
+            console.log(d);
             const frag = new DocumentFragment();
             for (let i=0; i < d['subtypes'].length; ++i) {
                 let div = document.createElement('div');
                 div.className = 'item';
                 div.dataset['id'] = d['subtypes'][i]['id'];
-                div.innerText = d['type'][i]['subtypes'];
+                div.innerText = d['subtypes'][i]['name'];
                 frag.appendChild(div);
             }
             document.getElementById('subtypes').replaceChildren(frag);

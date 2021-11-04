@@ -1,6 +1,6 @@
 from reviews.models import Comment
 from typing import ClassVar
-from django.db.models.query import RawQuerySet
+from django.db.models.query import QuerySet, RawQuerySet
 from django.forms import forms
 from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
 from .models import  Product, Shop
@@ -32,7 +32,7 @@ def add_product(request:HttpRequest):
     shop = get_object_or_404(Shop, seller=request.user, is_active=True)
     if request.method == "POST":
         form = AddProductForm(request.POST)
-        print(request.POST['free_delivery'])
+        print(request.POST.get('free_delivery'))
         if form.is_valid():
             new_values = {
                 'shop': shop,
@@ -323,6 +323,21 @@ def search(request:HttpRequest, pg):
     })
 
 
+def get_product_by_url(request: HttpRequest, category, type, subtype):
+    products = Product.objects.filter(is_active=True, categories__id__in=category, type__id=type, subtype__id=subtype).all()
+    paginator = Paginator(products, 20)
+    page_no = request.GET.get('pg');
+    try:
+        page = paginator.get_page(page_no)
+    except PageNotAnInteger:
+        page = paginator.get_page(1)
+    except EmptyPage:
+        page = paginator.get_page(paginator.num_pages)
+
+    return render(request, 'index/search_result.html', {
+        'page': page
+    })
+    
 
 def product_detail(request:HttpRequest, product_id):
     product = get_object_or_404(Product,id=product_id,is_active=True)
@@ -467,16 +482,21 @@ def get_boutiques(request: HttpRequest):
     })
     
  
+
+ 
 @login_required
 def get_types(request: HttpRequest):
 
     categories_string = request.GET.get('cats')
-    categories = [int(i) for i in categories_string.split(',')]
-    print(categories)
-    print('sdfsfsfsfds')
-    types = {}
-    if len(categories):
-        types = Type.objects.filter(categories__id__in=categories).distinct().values('id', 'name', 'has_color', 'has_size')
+    categories_id = [int(i) for i in categories_string.split(',')]
+
+    types =  QuerySet(Type)
+    if len(categories_id):
+        categoires = Category.objects.filter(id__in=categories_id).all()
+        for c in categoires:
+            types &= c.types.all()
+        # types = Type.objects.filter(categories__id=categories_id).distinct().values('id', 'name', 'has_color', 'has_size')
+        types = types.values('id', 'name', 'has_color', 'has_size')
     print(types)
 
     return JsonResponse({

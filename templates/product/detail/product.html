@@ -33,6 +33,12 @@
         letter-spacing: normal;
     }
 
+    .ssz {
+        width: auto !important;
+        height: auto !important;
+        font-size: 0.7rem;
+        pointer-events: none;
+    }
     .in-fav{
         color: red !important;
     }
@@ -79,8 +85,8 @@
                         <ion-icon class="{% if liked == 1 %}in-fav{% endif %}" style="font-size:1.1rem;user-select:none" name="heart-outline"></ion-icon>  
                         <span  style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;user-select:none;">{{product.favs.all|length}}</span>
                     </p>
-                    {% if product.discounts.last.is_vali %}
-                    <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:#333;color:#fff">{{ product.discounts.last.percent }}</span>
+                    {% if product.discounts.last.is_valid %}
+                    <span style="border-radius:4px;font-size: 0.8rem;font-weight:10;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:rgb(199, 15, 15);color:#fff">{{ product.discounts.last.percent }}%</span>
                     {% endif %}
                 </div>
               
@@ -113,13 +119,59 @@
                     {% endif %}
                 </p>
 
-                <div class="product-options">
+                <div class="product-options" style="flex-direction: column;display:flex">
+                    {% if  product.type.has_color %}
+                        <div id="colors" onclick="select_color();" style="width: 100%;margin-top:0.5rem;justify-content:center" class="inline-list" >
+                            {% for color in colors %}
+                            <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if color in product.colors.all %}inline-item--selected{% endif %}">
+                                <span style="background-color: {{ color.code }}" />
+                            </div>
+                            {% endfor %}
+                            <div title="{{color.name}}" class="inline-item">
+                                <span class="color" style="background-color: red" />
+                            </div>
+                            <div title="{{color.name}}"  class="inline-item">
+                                <span class="color" style="background-color: rgb(231, 97, 97)" />
+                            </div>
+                            <div title="{{color.name}}" class="inline-item">
+                                <span class="color" style="background-color: rgb(56, 53, 53)" />
+                            </div>
+                            <div title="{{color.name}}"  class="inline-item">
+                                <span class="color" style="background-color: rgb(255, 255, 255)" />
+                            </div>
+                            <div title="{{color.name}}" class="inline-item">
+                                <span class="color" style="background-color: rgb(56, 53, 53)" />
+                            </div>
+                            <div title="{{color.name}}"  class="inline-item">
+                                <span class="color" style="background-color: rgb(255, 255, 255)" />
+                            </div>
+                            <div title="{{color.name}}" class="inline-item">
+                                <span class="color" style="background-color: rgb(56, 53, 53)" />
+                            </div>
+                            <div title="{{color.name}}"  class="inline-item">
+                                <span class="color" style="background-color: rgb(255, 255, 255)" />
+                            </div>
+
+                        </div>           
+                    {% endif %}
                     {% if product.type.has_size %}
-                        <combo-box placeholder="سایز"></combo-box>
-                    {% endif %}
-                    {% if product.type.has_color %}
-                        <combo-box style="margin-right: 0.5rem;" placeholder="رنگ"></combo-box>
-                    {% endif %}
+                    <div id="sizes" onclick="select_size();" style="justify-content:center;width:100%;" class="inline-list mt-05">
+                        {% for size in sizes %}
+                         <div data-id="{{size.id}}" class="inline-item {% if size in product.sizes.all %}inline-item--selected{% endif %}">
+                             <span  class="ssz">{{ size.code }}</span>
+                         </div>
+                        {% endfor %}
+                        <div data-id="{{size.id}}" class="inline-item ">
+                            <span  class="ssz">XX</span>
+                        </div>
+                        <div data-id="{{size.id}}" class="inline-item ">
+                            <span  class="ssz">XX</span>
+                        </div>                        <div data-id="{{size.id}}" class="inline-item ">
+                            <span  class="ssz">XX</span>
+                        </div>
+                     </div> 
+                             
+                     {% endif %}
                 </div>
                 <div class="product-actions">
                     <button class="btn cta" style="width: 50%;margin:0rem auto;">میخرم</button>
@@ -201,8 +253,8 @@
             <div id="comments" class="tab-content">
                 {% if user.is_authenticated %}
                 <div class="container vertical" style="justify-content: center;align-items:center">
-                    <textarea id="comment-body" placeholder="نظر شما" rows="3"  class="comment-text-box ">{{ user_comment.body }}</textarea>
-                    <button id="comment-submit" onclick="add_comment();" class="btn cta" style="width: 20%;font-size:0.7rem;">
+                    <textarea id="comment-body" placeholder="نظر شما" rows="3"  class="comment-text-box " >{{ user_comment.body }}</textarea>
+                    <button id="comment-submit" onclick="add_comment();" class="btn cta" style="width: 20%;font-size:0.7rem;margin-top:0.5rem">
                         {% if user_comment %}
                         ویرایش
                         {% else %}

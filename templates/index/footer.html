@@ -7,19 +7,26 @@
         width:100%;
         height: 450px;
         margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        bottom: 0;
         background-image: url('{% static "img/slideshow/wave.svg" %}');
 
     }
 
+
+
     .site-footer {
         background-color: #444;
-        margin-top: 1rem;
         padding-bottom: 0.5rem;
         padding: 0;
         width: 100%;
         display: flex;
-        position: relative;
-        
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
     }
     .site-footer .footer-logo {
         flex-basis: 3%;
@@ -118,36 +125,63 @@
         }
     }
 
+    .footer-menu {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        width: 100%;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .footer-menu a {
+        text-decoration: none;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: rgb(114, 18, 18);
+    }
+    .footer-menu a:hover {
+        color: rgb(223, 71, 91);
+    }
+    .footer-menu a:first-child {
+        font-size: 1rem;
+        font-weight: bold;
+        padding-right: 0;
+    }
+
+    @media screen and (max-width: 570px) {
+        .bbb {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
 </style>
+
+<div class="ffooter">
+    <div class="container horizontal" style="width: 50%;margin-top:5rem;justify-content:flex-start;align-items:flex-start">
+        <section class="footer-menu">
+            <a href="#">درباره ما</a>
+            <a href="#">وبلاگ</a>
+            <a href="#">قوانین</a>
+            <a href="#">ثبت شکایت</a>
+            <a href="#">سوالات پرتکرار</a>
+        </section>
+        <section class="footer-menu">
+            <a href="#">پروفایل</a>
+            <a href="#">سبد خرید</a>
+            <a href="#">علاقه مندیها</a>
+            <a href="#">سفارشها</a>
+            <a href="#">بازگشت</a>
+        </section>
+        <section class="footer-menu">
+            <a href="#">سفارشها</a>
+            <a href="#">بازگشت</a>
+        </section>
+    </div>
+</div>
 <!-- 
-<div class="footer" style="height:250px;">
-       <div class="container horizontal w-100 justify-center">
-        <div style="margin-top: 0.5rem;">
-            <a class="foo-item" href="{% url 'index:aboutus' %}">درباره ما</a>
-            <a class="foo-item" href="{% url 'index:faqs' %}">سوالت متداول</a>
-            <a class="foo-item" href="{% url 'index:rules' %}">قوانین</a>
-            <a class="foo-item" href="{% url 'issues:issues'%}">ثبت شکایت</a>
-        </div>
-       </div>
-       <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=234837&amp;Code=OTO7bnJBNhCkDXUFKLLT"><img referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=234837&amp;Code=OTO7bnJBNhCkDXUFKLLT" alt="" style="cursor:pointer" id="OTO7bnJBNhCkDXUFKLLT"></a>
-        <div style="text-align:center;color:rgb(255, 255, 255);font-size:0.9rem;width:100%;margin-top:1rem">
-           <p>
-               <span>شماره تماس:</span>
-               <span>00-88-55556-445</span>
-           </p>
-           <p>
-            <span">ایمیل:</span>
-            <span>onmode@gmail.com</span>
-           </p>
-
-        </p>
-           <p style="color: rgb(255, 255, 255);font-size:0.7em;font-style:italic;position:absolute;bottom:8px;width:100%;text-align:center">
-            تمام حقوق مادی و معنوی این سایت متعلق به گروه آنمد می باشد
-            <span style="color: rgb(255, 255, 255);font-size:1.5rem">&copy;</span>
-           </p>
-        </div>
-</div>   -->
-
 <footer class="site-footer">
     <a href="" class="footer-logo">
         <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 32px;background:transparent" />
@@ -169,4 +203,4 @@
     <p class="copyright">
         onmode.ir&copy;<br/>آسوده خرید کنید
     </p>
-</footer>
+</footer> -->

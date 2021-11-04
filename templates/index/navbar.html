@@ -3,10 +3,20 @@
     .hi {
         display: none !important;
     }
+    .hhe{
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-origin:border-box;
+        background-position: center;
+        width:100%;
+        margin: 0;
+        background-image: url('{% static "img/slideshow/wave_(1).svg" %}');
+
+    }
 
 </style>
 
-<nav class="navbar" >
+<nav class="navbar {% if not shop %}hhe {% endif %}" >
     <a style="text-decoration: none;position:absolute;top:6px;right:16px" href="{% url 'index:home'%}">
         <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 50%;background:transparent">
     </a>
@@ -24,7 +34,7 @@
         <div class="prof-dropdown">
             <ion-icon id="user-icon"  name="person-outline" class="icon prof-toggle {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
             <ul class="prof-menu">
-                <div style="width: 100%;background-color:rgb(243, 91, 91);padding:0.5rem;text-align:center;border-radius:4px 4px 0 0;">
+                <div style="width: 100%;background-color:rgb(223, 68, 89);padding:0.5rem;text-align:center;border-radius:4px 4px 0 0;">
                     <span style="font-size:0.9rem;color:rgb(255, 255, 255);display:block;margin-top:0.0rem">{{ user.phone_no}}</span>
                     <span style="font-size: 0.7rem;color:rgb(255, 255, 255);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>        
                 </div>
@@ -36,7 +46,7 @@
                     <ion-icon name="wallet-outline" style="font-size: 19px;margin-left:8px;color:rgb(250, 100, 100)"></ion-icon>
                     <span> کیف پول</span>
                 </li>
-                <a href="{% url 'orders:user_orders'  'pending' %}">
+                <a href="{% url 'orders:user_orders' %}">
                     <ion-icon name="bag-outline" style="font-size: 19px;margin-left:8px;color:rgb(250, 100, 100)"></ion-icon>
                     <span>سفارشها</span>
                 </a>
@@ -72,7 +82,7 @@
         <div id="cart-icon" style="position: relative;" class="">
             <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
             </ion-icon>
-            <span id="cart-num-badge"  style="border-radius:3px;position: absolute;top:2px;right:0;background:rgb(255, 52, 52);color:white;font-size:0.6rem;padding:0.3rem;user-select:none;pointer-events:none">{{ cart|length }}</span>
+            <span id="cart-num-badge"  style="border-radius:6px;position: absolute;top:2px;right:0;background:rgb(230, 42, 114);color:white;font-size:0.6rem;padding:0.2rem;user-select:none;pointer-events:none">{{ cart|length }}</span>
         </div>
             <button id="login-button" onclick="open_dashboard()"  class="btn  {% if user.is_authenticated %}hi{% endif %}" style="margin-left: 0.5rem;font-size:0.7rem;">عضویت / ورود</button>
        <ion-icon name="menu-outline" onclick="open_mobile_menu();"  class="icon vi"></ion-icon>

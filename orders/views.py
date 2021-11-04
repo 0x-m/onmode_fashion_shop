@@ -33,7 +33,8 @@ def checkout_cart(request:HttpRequest):
         
 
 @login_required        
-def get_shop_orders(request:HttpRequest, status='pending'):
+def get_shop_orders(request:HttpRequest):
+    status = request.GET.get('status', 'pending')
     order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED,'all']
     order_states = [o.lower() for o in order_states]
     print(status.lower() in order_states)
@@ -50,11 +51,12 @@ def get_shop_orders(request:HttpRequest, status='pending'):
     
     
 @login_required    
-def get_user_orders(request:HttpRequest, status: str ='pending'):
-
+def get_user_orders(request:HttpRequest):
+    status = request.GET.get('status')
+    if not status:
+        status = 'pending'
     order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED,'all']
     order_states = [o.lower() for o in order_states]
-    print(status.lower() in order_states)
     if not (status.lower() in [o.lower() for o in order_states]):
         return HttpResponseNotFound('not found')
     orders = Order.objects.all()

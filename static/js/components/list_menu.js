@@ -11,9 +11,17 @@ const listMenuTemplateText = ``;
 class MenuItem extends HTMLElement {
 
     static get observedAttributes(){
-        return ['caption'];
+        return ['caption', 'link'];
     }
 
+
+    get link() {
+        return this.getAttribute('link');
+    } 
+
+    set link(value) {
+        this.setAttribute('link', value);
+    }
     get caption() {
         return this._caption;
     }
@@ -36,6 +44,8 @@ class MenuItem extends HTMLElement {
                     cursor: pointer;
                     display: block;
                     transition: 0.5s all;
+                    text-decoration: none;
+                    color:#444;
                     border-bottom: 1px solid #efefef;
                 }
                 #caption:hover {
@@ -43,7 +53,7 @@ class MenuItem extends HTMLElement {
                 }
             </style>
 
-            <span id="caption"></span>
+            <a href="#" id="caption"></a>
         `;
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this._caption = this.shadowRoot.querySelector('#caption');
@@ -57,6 +67,9 @@ class MenuItem extends HTMLElement {
         switch(name) {
             case 'caption':
                 this._caption.textContent = newval;
+                break;
+            case 'link':
+                this._caption.href = newval;
                 break;
             default:
                 return;

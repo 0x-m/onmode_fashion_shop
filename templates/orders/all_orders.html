@@ -94,18 +94,44 @@
     }
 
     combo-box::part(selectedBox) {
-        padding: 0.5rem !important;
+        width: 100%;
+        padding: 0.5rem ;
+        border: 1px solid rgb(179, 179, 179);
         font-size: 0.8rem;
-      
-    }
-    combo-box::part(selectedBox):hover {
-        border: 1px solid #777;
-      
+        border-radius: 6px;
     }
 
-    combo-box-item {
-        font-size: 0.8rem;
+    combo-box {
+        width: 80%;
+        padding: 0;
+        margin: 0;
     }
+
+    combo-box-item::part(container) {
+        margin: 0.2rem;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+        background-color: white;
+    }
+
+    combo-box::part(items) {
+        border-radius: 6px;
+        margin-top: 0.2rem;
+        border: 1px solid #8a8a8a;
+        box-shadow: 0 0 5px rgb(184, 184, 184);
+        
+    }
+    combo-box-item::part(container):hover {
+        background-color: rgb(247, 93, 93);
+        color: white;
+    }
+
+    combo-box-item[selected]::part(container) {
+        background-color: rgb(236, 98, 98) !important;
+        color: white;
+    }
+
     @media screen and (min-width: 576px) {
         tr {
             height: 4vw;
@@ -119,58 +145,55 @@
     }
 
 </style>
-<div class="container horizontal" style="justify-content:flex-end;width: 85%;margin:2rem auto;">
-    <combo-box id="order-status" placeholder="جدیدترین">
-        <combo-box-item style="width: 100%;"  caption="درحال بررسی" value="pending"></combo-box-item>
-        <combo-box-item style="width: 100%;" caption="تایید شده" value="accept"></combo-box-item>
-        <combo-box-item style="width: 100%;" caption="رد شده" value="rejected"></combo-box-item>
-        <combo-box-item style="width: 100%;" caption="ارسال شده" value="sent"></combo-box-item>
-        <combo-box-item style="width: 100%;" caption="بازگشتی" value="returned"></combo-box-item>
-        <combo-box-item style="width: 100%;" caption="دریافت شده" value="received"></combo-box-item>
-    </combo-box>
-    <button  class="btn" 
-    {% if owner == 'user' %}
-        onclick="filter_user_orders();"
-    {% else %}
-        onclick="filter_shop_orders();"
-    {% endif %}
-    style="margin-right: 0.5rem;font-size:0.8rem">فیلتر</button>
-</div> 
-<table>
-    <tr>
-        <th>شماره</th>
-        {% if owner == 'shop' %}
-            <th>خریدار</th>
-        {% elif owner == 'user' %}
-            <th>بوتیک</th>
-        {% endif %}
-        <th>تعداد محصولات</th>
-        <th>قیمت کل</th>
-        <th>تاریخ ایجاد</th>
-        <th>جزئیات</th>
-    </tr>
- {% for order in orders %}
-    <tr>
-        <td>{{ order.id }}</td>
-        {% if owner == 'shop' %}
-        <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
-        {% elif owner == 'user' %}
-        <td>{{ order.shop.name }}</td>
-        {% endif %}
-        <td>{{ order.quantity }}</td>
-        <td>{{ order.discounted_total_price }}</td>
-        <td>{{order.date_created|to_jalali:'%y/%m/%d' }}</td>
-        <td>
-            {% if owner == 'user' %}
-            <span data-id="{{ order.id }}" onclick="show_order_detail();" >مشاهده</span>
-            {% elif owner == 'shop' %}
-            <span data-id="{{ order.id }}" onclick="show_shop_order_detail();">مشاهده</span>
-            {% endif %}                         </td>
-    </tr>
- {% endfor %}
-</table>
-
-<div class="pagination">
-
-</div>
+    <div class="container horizontal" style="justify-content:flex-end;width: 50%;margin:2rem auto;">
+        <form action="{% if owner == 'user' %}/user/orders{% else %}/shop/orders/{% endif %}" method="get" style="width: 100%;display:flex;justify-content:flex-end">
+                <select name="status">
+                    <option value="pending">درحال بررسی</option>
+                    <option value="accept">تایید شده</option>
+                    <option value="rejected">رد شده</option>
+                    <option value="sent">ارسال شده</option>
+                    <option value="returned">بازگشتی</option>
+                    <option value="received">دریافت شده</option>
+                </select>   
+                <button class="btn cta" style="margin-right: 0.5rem;border-radius:4px" type="submit">فیلتر</button>    
+        </form>
+    </div> 
+    <table>
+        <tr>
+            <th>شماره</th>
+            {% if owner == 'shop' %}
+                <th>خریدار</th>
+            {% elif owner == 'user' %}
+                <th>بوتیک</th>
+            {% endif %}
+            <th>تعداد محصولات</th>
+            <th>قیمت کل</th>
+            <th>تاریخ ایجاد</th>
+            <th>جزئیات</th>
+        </tr>
+     {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            {% if owner == 'shop' %}
+            <td>{{ order.user.first_name }}&nbsp{{ order.user.last_name }}</td>
+            {% elif owner == 'user' %}
+            <td>{{ order.shop.name }}</td>
+            {% endif %}
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.discounted_total_price }}</td>
+            <td>{{order.date_created|to_jalali:'%y/%m/%d' }}</td>
+            <td>
+                {% if owner == 'user' %}
+                <span data-id="{{ order.id }}" onclick="show_order_detail();" >مشاهده</span>
+                {% elif owner == 'shop' %}
+                <span data-id="{{ order.id }}" onclick="show_shop_order_detail();">مشاهده</span>
+                {% endif %}                         </td>
+        </tr>
+     {% endfor %}
+    </table>
+    
+    <div class="pagination">
+    
+    </div>
+    
 {% endblock %}
