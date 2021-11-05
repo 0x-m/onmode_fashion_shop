@@ -49,7 +49,7 @@ class AddProductForm(forms.Form):
     sizes = IntegerCSVFields()
     name = forms.CharField(max_length=120)
     description = forms.CharField(max_length=500,empty_value="بدون توضیحات")
-    quantity = forms.IntegerField()
+    quantity = forms.IntegerField(required=True)
     keywords = StringTagField()
     attrs = JsonField()
     price = forms.IntegerField()

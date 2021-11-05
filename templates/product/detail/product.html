@@ -2,7 +2,7 @@
 {% load static %}
 {% load filter_product %}
 {% load jalali_tags %}
-{% block title %}محصول{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 {% block content %}
 {% block dependencies %}
 <script src="{% static 'js/components/comment.js' %}" defer></script>
@@ -182,6 +182,7 @@
 <div  style="margin:1rem auto;width:85%" class="splide" id="related_products" data-splide='{ "autoplay": "true", "interval": "4000","perPage":4, "pagination":"false"}'>
 	<div class="splide__track">
 		<ul class="splide__list">
+            
 			<li  class="splide__slide">
                 <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-2.jpg' %}"></om-product>
             </li>

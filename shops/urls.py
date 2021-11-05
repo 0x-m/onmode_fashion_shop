@@ -21,6 +21,6 @@ urlpatterns  = [
     path('shop/edit/', views.edit_shop, name='edit_shop'),
     path('shop/types/', views.get_types),
     path('shop/subtypes/', views.get_subtypes),
-    path('shop/products/<category>/<subtype>/<type>/', views.get_product_by_url),
+    path('shop/products/<category>/<type>/<subtype>/', views.get_product_by_url),
  
 ]

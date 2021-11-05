@@ -29,11 +29,24 @@
     .cta{
         text-decoration: none;
     }
+
+    .product-hub {
+        display: flex;
+        justify-content: center;
+        margin: 1rem auto;
+        padding: 0.3rem;
+        width: 100%;
+        flex-wrap: wrap;
+    }
 @media screen and (max-width:480px) {
     .w-100-md {
         width: 100%;
         
+    }
 
+    .product-hub {
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -62,7 +75,7 @@
                             <ion-icon style="font-size:1.5rem;display:block;flex:10%" name="arrow-forward-circle-outline"></ion-icon> -->
                         </a>
                     </p> 
-                    <div class="container horizontal justify-center" style="padding: 0.5rem;flex-wrap:wrap">
+                    <div class="product-hub" >
                         {% with id=cat.id|toString  %}
                             {% filter_product categories=id  %}
                         {% endwith %}

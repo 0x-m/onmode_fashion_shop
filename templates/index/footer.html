@@ -5,81 +5,19 @@
         background-size: cover;
         background-position: center;
         width:100%;
-        height: 450px;
+        min-height: 450px;
+        bottom: 0;
         margin: 0;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
+        position: relative;
         justify-content: flex-start;
-        bottom: 0;
+        padding: 1rem;
         background-image: url('{% static "img/slideshow/wave.svg" %}');
 
     }
 
 
-
-    .site-footer {
-        background-color: #444;
-        padding-bottom: 0.5rem;
-        padding: 0;
-        width: 100%;
-        display: flex;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-
-    }
-    .site-footer .footer-logo {
-        flex-basis: 3%;
-        background-color: rgb(255, 255, 255);
-        border-radius:  50% 0 0 50%;
-    }
-    
-    .site-footer .footer-menu {
-        flex-basis: 70%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-right: 0.5rem;
-    }
-
-    .site-footer .footer-menu a {
-        display: inline-flex;
-        align-items: center;
-        margin-left: 16px;
-        text-decoration: none;
-        font-size: 0.8rem;
-        color: rgb(255, 255, 255);
-        height: 100%;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        word-break: keep-all;
-        word-wrap: unset;
-    }
-    .site-footer .footer-menu a:hover{
-        background-color: rgb(245, 86, 86);
-        color: white;
-        cursor: pointer;
-    }
-
-    .site-footer .footer-tokens 
-    {
-        flex: auto;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-
-    #zarinpal img {
-        width: 32px;
-        height: 32px;
-        margin: 0;
-        padding-top: 5px;
-    }
-    #zarinpal {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
     .img-logo {
         background-color: transparent;
         width: 32px;
@@ -130,18 +68,20 @@
         flex-direction: column;
         padding: 1rem;
         width: 100%;
+        flex-basis: 20%;
         justify-content: center;
-        margin-top: 2rem;
+        margin-top: 3rem;
+
     }
 
     .footer-menu a {
         text-decoration: none;
         margin-top: 1rem;
         font-size: 0.8rem;
-        color: rgb(114, 18, 18);
+        color: rgb(255, 255, 255);
     }
     .footer-menu a:hover {
-        color: rgb(223, 71, 91);
+        color: rgb(238, 119, 135);
     }
     .footer-menu a:first-child {
         font-size: 1rem;
@@ -157,27 +97,54 @@
         }
     }
 
+    .footer-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items:  center;
+        width: 100%;
+       
+        position: relative;
+        top: 100%;
+    }
+
+    @media screen and (max-width: 576px) {
+        .footer-container {
+            flex-direction: column;
+            justify-content: flex-end;
+            max-height: 50%;
+            align-items: flex-end;
+           
+
+        }
+
+        .footer-menu {
+            justify-content: center;
+            align-items: center;
+            margin-top: 0;
+        }
+        .footer-menu:first-child {
+            margin-top: 10rem;
+        }
+    }
 </style>
 
 <div class="ffooter">
-    <div class="container horizontal" style="width: 50%;margin-top:5rem;justify-content:flex-start;align-items:flex-start">
+    <div class="footer-container" >
         <section class="footer-menu">
+            <a href="">آنمد</a>
             <a href="#">درباره ما</a>
             <a href="#">وبلاگ</a>
             <a href="#">قوانین</a>
             <a href="#">ثبت شکایت</a>
             <a href="#">سوالات پرتکرار</a>
         </section>
-        <section class="footer-menu">
-            <a href="#">پروفایل</a>
-            <a href="#">سبد خرید</a>
-            <a href="#">علاقه مندیها</a>
-            <a href="#">سفارشها</a>
-            <a href="#">بازگشت</a>
-        </section>
-        <section class="footer-menu">
-            <a href="#">سفارشها</a>
-            <a href="#">بازگشت</a>
+        <section class="footer-menu" style="justify-content: center;align-items:center">
+            <a>تماس به ما</a>
+            <a>شماره تماس:000-0000-00</a>
+            <a>ایمیل:info@onmode.ir</a>
+            <a>
+                آدرس: بلوار فلان نشانیننینسیتبنتسیب
+            </a>
         </section>
     </div>
 </div>

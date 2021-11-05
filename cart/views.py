@@ -130,7 +130,7 @@ def dispatcher(request: HttpRequest):
     if ua:
         has_address = ua.is_complete()
     print(uda, has_address, '----------------------------')
-    adds =  has_address == False and uda == 'true'
+    adds =  has_address == True and uda == 'true'
     print(adds,'aaaaaaaassasas')
     hs = request.user.account.has_enough_balance(c.get_total_price())
     return render(request, 'cart/dispatcher.html', {

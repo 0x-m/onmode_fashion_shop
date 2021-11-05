@@ -1,17 +1,13 @@
 from reviews.models import Comment
-from typing import ClassVar
 from django.db.models.query import QuerySet, RawQuerySet
-from django.forms import forms
 from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
 from .models import  Product, Shop
-from django import http
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render, resolve_url
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_list_or_404, get_object_or_404
 from .models import *
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from discounts.models import Discount
 from django.utils import timezone
 from django.db.models import Q
 from index.utils import get_provinces
@@ -45,7 +41,7 @@ def add_product(request:HttpRequest):
                 'quantity' : form.cleaned_data['quantity'],
                 'keywords' : form.cleaned_data['keywords'],
                 'attrs' : form.cleaned_data['attrs'],
-            'free_delivery': form.cleaned_data['free_delivery']
+                'free_delivery': form.cleaned_data['free_delivery']
                 
             }
             categories = form.cleaned_data['categories']
@@ -324,7 +320,9 @@ def search(request:HttpRequest, pg):
 
 
 def get_product_by_url(request: HttpRequest, category, type, subtype):
-    products = Product.objects.filter(is_active=True, categories__id__in=category, type__id=type, subtype__id=subtype).all()
+    print(type, subtype)
+    products = Product.objects.filter(is_active=True, categories__id__in=[int(category)], type__id=int(type), subtype__id=int(subtype)).all()
+    print(len(products), 'products -----------------------')
     paginator = Paginator(products, 20)
     page_no = request.GET.get('pg');
     try:
@@ -486,9 +484,12 @@ def get_boutiques(request: HttpRequest):
  
 @login_required
 def get_types(request: HttpRequest):
-
     categories_string = request.GET.get('cats')
-    categories_id = [int(i) for i in categories_string.split(',')]
+    if not categories_string.strip():
+        return HttpResponseBadRequest()
+    print(categories_string,'---------------------')
+    if categories_string:
+        categories_id = [int(i) for i in categories_string.split(',')]
 
     types =  QuerySet(Type)
     if len(categories_id):

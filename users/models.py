@@ -80,7 +80,7 @@ class Address(models.Model):
         verbose_name_plural = _('Addresses')
      
     def __check_for_nullity_and_blank(self, value):
-        return (value != None) and (value != '')
+        return (value != None) and (value.strip() != '')
     
     def is_complete(self):
         return (self.__check_for_nullity_and_blank(self.state) and

@@ -32,7 +32,7 @@ def filter_product(context, types="",
                    min_sales=0,
                    max_sales=0,
                    rail='false'):
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True)
     print(categories,'cats......')
     if types:
         products &= products.filter(type__id__in=to_int_list(types))

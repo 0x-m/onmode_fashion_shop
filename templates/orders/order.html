@@ -10,12 +10,12 @@
         text-align: center;
         padding: 0.4rem;
         font-size: 0.7rem;
-        border-bottom: 1px solid rgb(226, 226, 226);
+        border-bottom: 1px solid rgb(124, 124, 124);
     }
     th{
-        background-color: rgb(240, 240, 240);
+        background-color: rgb(197, 197, 197);
         padding: 0.5rem;
-        color: rgb(54, 54, 54);
+        color: rgb(255, 255, 255);
     }
     tr{
         background-color: rgba(249,249,249,0.9);
@@ -37,7 +37,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 1px solid rgb(226, 226, 226);
+        border: 1px solid rgb(223, 79, 79);
     }
 
     .more {
@@ -98,7 +98,7 @@
         </tr>
         {% for item in order.items.all %}
             <tr>
-                <td>{{item.product.name }}</td>
+                <td><a href="{{ item.product.get_absolute_url }}">{{item.product.name| truncatewords:20 }}</a></td>
                 <td>{{ item.size}}</td>
                 <td>{{ item.color }}</td>
                 <td>{{ item.quantity }}</td>
@@ -118,13 +118,13 @@
 
        
     </table>
-    <p style="padding:0.7rem; margin:0.5rem auto;width:100%;background:#777; color:white;">
-        جمع کل: {{order.discounted_total_price}}
+    <p style="padding:0.7rem; margin:0.5rem auto;border-radius:6px;width:100%;background:rgb(121, 121, 121); color:white;">
+        جمع کل: {{order.discounted_total_price}} تومان
     </p> 
     <p style="width: 100%;line-height:2rem;font-size:0.7rem;padding-right:0.5rem;text-align: right">
-        <span style=font-size:0.7rem;font-weight:bold;background:#666;color:white;padding:0.5rem;float:left;">شماره سفارش: {{order.id}}</span>
+        <span style="background-color:rgb(90, 90, 90);font-size:0.7rem;font-weight:bold;border-radius:6px;color:white;padding:0.3rem;float:left;">شماره سفارش: {{order.id}}</span>
     </p>
-        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
+        <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem;">
             <p>تاریخ ثبت:</p>
             <p>{{order.order_list.date_created | to_jalali:'%y/%m/%d'}}</p>
         </div>
@@ -154,13 +154,13 @@
             <p>کدپستی:</p>
             <span>{{ vendee.address.postal_code}}</span>
         </div>
-        <div class="container vertical mt-1" style="width: 100%;font-size:0.8rem">
-            <p >نشانی:</p>
-            <p style="width: 85%;margin:0.8rem auto;color:#555;text-align:justify;text-justify:distribute;font-size:0.7rem" >{{vendee.address.description}}</p>
-        </div>
         <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem">
             <p>شماره تماس:</p>
             <span>{{vendee.phone_no}}</span>
+        </div>
+        <div class="container vertical mt-1" style="width: 100%;font-size:0.8rem">
+            <p >نشانی:</p>
+            <p style="width: 85%;margin:0.8rem auto;color:#555;text-align:justify;text-justify:distribute;font-size:0.7rem" >{{vendee.address.description}}</p>
         </div>
        {% endwith %}
         <br />
@@ -200,9 +200,9 @@
     {% if order.state == 'pending' %}
 
         {% if owner == 'shop' %}
-            <div class="box">
-                <button onclick="reject_order();" class="btn btn-primart">رد میکنم</button>
-                <button onclick="accept_order();" class="btn btn-success">آماده میکنم</button>
+            <div class="container horizontal" style="justify-content: space-between;">
+                <button style="width: 49%;" onclick="accept_order();" class="btn cta">آماده میکنم</button>
+                <button style="width: 49%;" onclick="reject_order();" class="btn">رد میکنم</button>
             </div>
         {% elif owner == 'user' %}
             <div class="box">

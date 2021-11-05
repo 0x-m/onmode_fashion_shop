@@ -109,34 +109,34 @@
     }
 
 
-
-    table {
-        width: 95%;
-        font-size: 0.9rem;
-        text-align: center;
-        margin: 0.5rem auto;
+    table{
         border-collapse: collapse;
-    }
-
-    th {
-        background-color: #a7a7a7;
-        padding: 0.5rem;
-        font-size: 0.8rem;
-        color: white;
-    }
-    tr {
-        background-color: #fff;
-        padding: 0.5rem;
-        margin-top: 0.5rem;
+        width: 100%;
+        margin: 1rem auto;
+        text-align: center;
+        padding: 0.4rem;
         font-size: 0.7rem;
+        border-bottom: 1px solid rgb(226, 226, 226);
     }
 
-    tr:nth-child(even) {
-        background-color: rgba(240,240,240,0.5);
-    }
-
-    td {
+   th{
+        background-color: rgb(240, 240, 240);
         padding: 0.5rem;
+        color: rgb(54, 54, 54);
+    }
+    tr{
+        background-color: rgba(249,249,249,0.9);
+        color: black;
+        padding: 1rem;
+        margin: 0.5rem;
+        height: 10vh;
+    }
+    tr:nth-child(even){
+        background-color: white;
+    }
+
+    tfoot {
+        background-color: #efefef;
     }
 
     .img {
@@ -227,15 +227,15 @@
     </div>
     <div class="cart-checkout" style="width: 95%;">
         {% if cart|length  > 0 %}
-        <form id="custom-address" method="GET" action="/payments/dispatch/">
-            <input type="hidden" name="amount" value="{{ cart.get_total_price }}" />
+        <form id="custom-address">
+            <input id="amount" type="hidden" name="amount" value="{{ cart.get_total_price }}" />
             {% include 'cart/address.html' %}
             <section class="total">
                 <span id="total_sum" >
                 مبلغ پرداختی: {{cart.get_total_price}}
                 </span>  
             </section>
-    </form>
+        </form>
     {% if cart.coupon.is_valid %}
     <p style="color: white;background:rgb(19, 184, 46);padding:0.2rem;text-align:center;font-size:0.8rem;"> کوپن اعمال شده است</p>
     {% else %}

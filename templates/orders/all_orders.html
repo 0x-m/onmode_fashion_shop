@@ -184,9 +184,9 @@
             <td>{{order.date_created|to_jalali:'%y/%m/%d' }}</td>
             <td>
                 {% if owner == 'user' %}
-                <span data-id="{{ order.id }}" onclick="show_order_detail();" >مشاهده</span>
+                <span style="cursor: pointer;" data-id="{{ order.id }}" onclick="show_order_detail();" >مشاهده</span>
                 {% elif owner == 'shop' %}
-                <span data-id="{{ order.id }}" onclick="show_shop_order_detail();">مشاهده</span>
+                <span style="cursor: pointer;" data-id="{{ order.id }}" onclick="show_shop_order_detail();">مشاهده</span>
                 {% endif %}                         </td>
         </tr>
      {% endfor %}

@@ -1,20 +1,22 @@
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import equals_lf
 from django.db.models.query import RawQuerySet
 from django.http.response import HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.utils.html import html_safe
+from django.utils.html import conditional_escape, html_safe
 import requests
 import json
+from  users.models import Address
 from orders.form import AddressForm
 from requests.api import request
 from cart.cart import Cart
 from orders.models import OrderAddress, OrderList
 from payments.models import PaymentTransaction
 from decouple import config
-from django.conf import settings
+from django.conf import UserSettingsHolder, settings
 merchant_id = 'c7605487-63a0-472d-b296-88ef6466bd89'
 @login_required
 def pay(request: HttpRequest):
@@ -61,17 +63,17 @@ def pay(request: HttpRequest):
 
 
 def _verify_checkout(request: HttpRequest):
+    print('verify issued...')
     user = request.user
-    cart = request.cart
+    cart = Cart(request)
     order_id  = None
     if request.session.get('order_address_id'):
+        print('order address fetched....')
         order_id = request.session.get('order_addres_id')
         del request.session['order_address_id']
     oa = None
     if  order_id:
         oa = OrderAddress.objects.filter(id=order_id).first()
-    if not oa:
-        return HttpResponseBadRequest('invalid inputs...')
     cart.make_orders(user, oa)
     cart.checkout()
     
@@ -83,15 +85,31 @@ def _verify_deposit(user, amount):
     
 
 def dispatch_pay(request: HttpRequest):
+    if request.method == 'GET':
+        return HttpResponseNotAllowed('post')
     user = request.user
-    amount = request.GET.get('amount')
+    print(request.POST.get('amount'))
+    print(request.POST.get('use_default_address'))
+    amount = request.POST.get('amount')
+    print(amount)
     try:
         amount = int(amount)
     except:
         return HttpResponseBadRequest('invalid input...')
 
-    use_default_address = request.GET.get('use_default_address')
+    use_default_address = request.POST.get('use_default_address').strip();
     use_default_address = True if (use_default_address == 'true') else False
+    print(use_default_address, 'use_Default address')
+    ua = Address.objects.filter(user=request.user).first()
+    has_address = False
+    print(ua)
+    if ua:
+        print(ua.is_complete(),'complete ua------')
+        has_address = ua.is_complete()
+            
+    print(has_address, 'has_address')       
+    if use_default_address and not has_address:
+        return HttpResponseBadRequest('complete your address');
     address = None
     if not use_default_address:
         form = AddressForm(request.POST)
@@ -105,10 +123,13 @@ def dispatch_pay(request: HttpRequest):
 
 
     if user.account.has_enough_balance(amount):
-        user.account.widthraw(amount)
-        _verify_checkout(request, use_default_address)
+        user.account.withdraw(amount)
+        _verify_checkout(request)
+        return HttpResponse('success')
     else:
         return redirect('/payments/pay/?' + 'type=checkout' + '&amount=' + str(amount) + '/')
+
+
 
 
 

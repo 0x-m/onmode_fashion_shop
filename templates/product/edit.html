@@ -76,16 +76,16 @@
 <div class="container vertical" style="position: relative;width:90%;margin:1rem auto;justify-content:center; align-items:center">
     <input type="hidden" value="{{ product.id }}" id="id" name="id" >
     <div class="txt-box w-100 mt-1">
-        <input  id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
+        <input onkeypress="return validateName(event);" id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
         <label class="holder">نام محصول</label>
     </div>
     <div class="container horizontal w-100" style="justify-content: space-between;">
         <div class="txt-box  mt-1" style="width: 48%;">
-            <input onblur="validate_field('^[1-9][0-9]{3,6}$');" id="price" value="{{ product.name }}" name="price" type="text" class="text" required>
+            <input onkeypress="return isNumber(event)" id="price" value="{{ product.price }}" name="price" type="text" class="text" required>
             <label class="holder">قیمت</label>
         </div>
         <div class="txt-box  mt-1" style="width: 48%;">
-            <input onblur="validate_field('^[1-9][0-9]{0,2}$');" value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
+            <input onkeypress="return isNumber(event)"  value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
             <label class="holder">تعداد</label>
         </div>
     </div>
@@ -95,7 +95,7 @@
     </div>
     <label style="background:#fafafa;border-radius:4px;padding:0.5rem;margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
         <span style="font-size: 0.8rem;">ارسال رایگان</span>
-        <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" value="false">
+        <input class="switch" type="checkbox"  name="free_delivery" id="free_delivery" >
     </label>
 
     <div class="container horizontal w-100" style="justify-content: space-between;">

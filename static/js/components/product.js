@@ -4,7 +4,7 @@ product_template.innerHTML = `
 
     <div class="product">
         <a class="link" href="#">
-            <img class="preview"  style="width:100%;border-radius:4px" />
+            <img loading="lazy" class="product-preview"  >
         </a> 
         <div class="detail">
             <p class="name"></p>
@@ -193,7 +193,7 @@ class Product extends HTMLElement {
     }
 
     _render() {
-        const parts = this.querySelectorAll('.link, .preview, .name, .realprice, .offprice, .badge');
+        const parts = this.querySelectorAll('.link, .product-preview, .name, .realprice, .offprice, .badge');
         parts[0].href=this.link;
         parts[1].src = this.preview;
         parts[2].textContent = this.title;

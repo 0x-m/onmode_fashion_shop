@@ -123,6 +123,7 @@ class Cart():
         self.cart = {}
         logger.info('cart is cleared...')
         self.save()
+        print('clear cart-------------------------')
     
     def get_total_price(self):
         logger.info('compute total issued...')
@@ -166,14 +167,13 @@ class Cart():
             logger.info('coupon is set..')
     
     def make_orders(self,user, order_address: OrderAddress=None):
+        print('make orders-----------------------')
         orders = {}
         order_list = OrderList(user=user)
         order_list.save()
-        if order_address:
+        if not order_address:
             order_list.use_default_address = True
         else:
-            if not order_address:
-                raise Exception('Addres is not provided')
             order_list.Address = order_address
             
         for item in self: 
@@ -198,7 +198,8 @@ class Cart():
                 product=product,
                 quantity=quantity,
                 size = size,
-                color = color
+                color = color,
+                price= item['price']
             )
             
             order_item.save()
@@ -213,7 +214,8 @@ class Cart():
     
     def checkout(self):
         #-------create orders------------
-        self.coupon.make_used()
+        if self.coupon:
+            self.coupon.make_used()
         if self.session.get('coupon_id'):
             del self.session['coupon_id']
         self.clear()

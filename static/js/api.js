@@ -113,7 +113,7 @@ function get_add_product_view(product_id) {
 
 function get_selecteds(name, single, allow_empty=false){
     const items = document.getElementById(name).children;
-    let selecteds = ""
+    let selecteds = "";
     let all = ""
     for (let i=0; i < items.length; ++i){
         all += "," + items[i].dataset["id"];
@@ -134,7 +134,7 @@ function get_selecteds(name, single, allow_empty=false){
             return selecteds
         }
     }
-    return selecteds.slice(1,selecteds.length) //eliminating first ,
+    return selecteds.slice(1,selecteds.length); //eliminating first ,
 }
 
 function validate_field(rx){
@@ -203,8 +203,8 @@ function prepare_product_info(command){
     const type = get_selecteds("types", true);
     const categories = get_selecteds("categories",false);
     const subtype = get_selecteds("subtypes", true);
-    const free_delivery = document.getElementById('free_delivery').checked;
-
+    const free_delivery = document.getElementById('free_delivery').checked == 'true' ? 'true': ' ';
+    console.log(free_delivery,'ffff')
     const  colors = document.getElementById("colors").children;
     let selected_colors = "";
     let all_colors = "";
@@ -348,6 +348,8 @@ function toggle_search_box(){
     box.classList.toggle("show-box");
  }
 
+
+ 
 function add_product(command){
     const data = prepare_product_info("add");
     const xhttp = new XMLHttpRequest()
@@ -456,6 +458,26 @@ function update_cart_badge(cmd, val=0) {
 
 
 
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
+function validateName(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = evt.key;
+    console.log(charCode);
+    const wilds = ".+--)(*&^%$#@!~`,/'\";:][\|=";
+    if (wilds.indexOf(charCode) > 0) {
+        return false;
+    }
+    return true
+}
+
 function open_search() {
     console.log('search...');
 }
@@ -498,6 +520,8 @@ function showMegaMenu() {
 
 var prev_cats = "";
 function fetch_types(){
+    if (!event.target.classList.contains('item'))
+        return;
     const cats = get_selecteds('categories', false, true);
     console.log(cats,'categ...');
     if (prev_cats === cats){
@@ -527,12 +551,17 @@ function fetch_types(){
 
 var prev_subtype = "";
 function fetch_subtypes() {
+    if (!event.target.classList.contains('item'))
+        return;
     const cats = get_selecteds('categories', false, true);
     const st = get_selecteds('types', true, true);
 
     if (prev_subtype === st){
         return;
     }
+    console.log(st, 'st----------');
+    if (!st)
+        return;
     const hs = event.target.dataset['hascolor'];
     if (hs === 'true'){
         //
@@ -852,16 +881,7 @@ function show_order_detail(){
 
 function show_shop_order_detail(){
     const id = event.target.dataset['id'];
-    fetch(`/shop/order/<order_id>/detail/` + id + '/',{
-        method: "GET"
-
-    }).then((response) =>{
-        
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    })
+    load_view('/shop/order/' + id + '/detail/');
 }
 
 function is_valid_email(email){
@@ -1042,24 +1062,11 @@ function show_order_detail(){
     document.getElementById('drawer').open();
 }
 
-function show_shop_order_detail(){
-    const id = event.target.dataset['id'];
-    fetch(`/shop/order/<order_id>/detail/` + id + '/',{
-        method: "GET"
-
-    }).then((response) =>{
-        
-        response.text().then((txt) => {
-            end_waiting();
-            set_view(txt);
-        })
-    })
-}
 
 
 function get_cities(pair){
 
-    selected_prov = event.target.value;
+    let selected_prov = event.target.selectedOptions[0].dataset['pid'];
     if (selected_prov != -1){
         fetch("/cities/" + "?province_id=" + selected_prov ,{
             header:{
@@ -1081,6 +1088,25 @@ function get_cities(pair){
         })
     }
 
+}
+
+function pay(){
+    const amount = document.getElementById('amount').value.trim(); 
+    console.log(amount);
+    const fdata = new FormData(document.forms['custom-address']);
+    const xhr = new XMLHttpRequest();
+    const drawer = document.getElementById('drawer');
+    drawer.showLoader();
+    xhr.onload = function() {
+            drawer.hideLoader();
+            drawer.setContent(this.responseText);
+
+    }
+    xhr.open('post','/payments/dispatch/');
+    xhr.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
+    xhr.send(fdata);
+    
+    // load_view('/payments/dispatch/','post',fdata);
 }
 
 
@@ -1181,3 +1207,18 @@ function show_filter() {
     d.setcc(c.content.cloneNode(true));
     d.open();
 }
+
+function accept_order(){
+    
+}
+function reject_order() {}
+function send_tracking_code() {}
+
+function cancel_order(){
+
+}
+
+function verify_recieved_order(){
+
+}
+

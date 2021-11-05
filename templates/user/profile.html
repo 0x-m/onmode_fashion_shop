@@ -51,9 +51,9 @@
         </div>
         <div  class="container horizontal" style="justify-content: space-between;margin-top:1.5rem">
             <select required onchange="get_cities('user-cities');" id="provinces" name="state"  style="width: 48%;">
-                <option value="-1" disabled>استان</option>
+                <option data-pid="-1" disabled>استان</option>
                 {% for province in provinces %}
-                    <option  value="{{province.id}}" {% if user.address.state == province.name %}selected{% endif %} >{{province.name}}</option>
+                    <option value="{{province.name}}" data-pid="{{province.id}}" {% if user.address.state == province.name %}selected{% endif %} >{{province.name}}</option>
                 {% endfor %}
             </select>
             <select id="user-cities" name="city" style="width: 48%;">
@@ -64,6 +64,10 @@
                 {% endif %}
             </select>
         </div>
+        <p class="txt-box mt-1">
+            <input  id="postal_code" name="town" class="text" type="text"  value="{% if user.address.town %}{{user.address.town}}{% endif %}" required/>
+            <label class="holder">شهر</label>
+        </p>
         <p class="txt-box mt-1">
             <input  id="postal_code" name="postal_code" class="text" type="text"  value="{{user.address.postal_code}}" required/>
             <label class="holder">کد پستی</label>

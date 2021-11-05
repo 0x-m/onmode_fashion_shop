@@ -10,8 +10,8 @@
 {% if  has_enough_balance %}
     <p style="width: 100%;text-align:center;font-size:0.9rem;color:rgb(151, 49, 49)">آیا با کسر  {{cart.get_total_price}}تومان از حساب خود موافقید؟</p>
     <div class="container" style="width: 100%;justify-content:space-between">
-        <button class="btn btn-primary mt-1" style="width:48%;"> بلی</button>
-        <button class="btn btn-secondary mt-1" style="width:48%"> خیر</button>
+        <button onclick="pay();" class="btn btn-primary mt-1" style="width:48%;"> بلی</button>
+        <button onclick="document.getElementById('drawer').close();" class="btn btn-secondary mt-1" style="width:48%"> خیر</button>
     </div>
 {% else %}
     <ion-icon name="sad-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
