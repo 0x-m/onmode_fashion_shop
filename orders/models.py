@@ -119,6 +119,7 @@ class Order(models.Model):
     RECEIVED = 'received' #the product is rcevied by the custoemr
     CANCELLED  = 'cancelled' #customer cancelled toe order 
     RETURNED = 'returned' #customer issue an return request
+    SENT_BUT_NOT_VERIFIED = 'sent_not_verified'
     
     STATES = [
         (PENDING,_('pending')),
@@ -128,6 +129,7 @@ class Order(models.Model):
         (RECEIVED,_('recieved')),
         (CANCELLED,_('cancelled')),
         (RETURNED,_('returned')),
+        (SENT_BUT_NOT_VERIFIED, _('not verified'))
     ]
     
     order_list = models.ForeignKey(verbose_name=_('Order List'),to=OrderList,on_delete=models.CASCADE,related_name='orders')
@@ -141,7 +143,7 @@ class Order(models.Model):
     state = models.CharField(verbose_name=_('State'),choices=STATES,default='pending', max_length=20)
     verify_sent = models.BooleanField(verbose_name=_('Verify sent'),default=False)
     transaction = models.ForeignKey(verbose_name=_('Transaction:id'),to=TransferTransaction,on_delete=models.CASCADE,related_name='orders', null=True)
-    tracking_code_status = models.CharField(max_length=500,verbose_name=_("tracking Status"),default='')
+    tracking_code_status = models.CharField(max_length=500,verbose_name=_("tracking Status"),default='در انتظار تاییدمث')
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
@@ -176,10 +178,25 @@ class Order(models.Model):
             self.state = self.SENT
             self.save()
             
+    def save(self, **kwargs):
+        if self.verify_sent:
+            self.state = self.SENT
+        else:
+            self.state = self.SENT_BUT_NOT_VERIFIED
+        super().save(**kwargs) 
+        
+    # @classmethod
+    # def post_save(sender, instance, created, raw, using, update_fields):
+    #     if instance.verify_sent:
+    #         instance.state = Order.SENT
+    #     else:
+    #         instance.state = Order.SENT_BUT_NOT_VERIFIED
+    #     instance.save()
+        
         
     def accept(self): #seller accept 
         if self.state == self.PENDING:
-            self.state = self.ACCEPT
+            self.state = self.ACCEPTED
             #----------- create account trasaction------------
             self.save()
     
@@ -204,7 +221,12 @@ class Order(models.Model):
                 self.transaction.reject()
                 self.state == self.CANCELLED
                 self.save()
-    
+    def register_tracking_code(self,t_code):
+        self.tracking_code = t_code
+        self.state = self.SENT_BUT_NOT_VERIFIED
+        self.save()
+        pass
+        
 
     
     def quantity(self):

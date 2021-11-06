@@ -133,10 +133,20 @@
               </li>
               <li onclick="">
                 <ion-icon name="settings-outline" style="font-size: 19px;margin-left:8px"></ion-icon>
-                <a href="{% url 'orders:shop_orders' %}">مدیریت فروش</a>
+                <a class="container horizontal" style="justify-content: space-between;" href="{% url 'orders:shop_orders' %}">
+                  <span>مدیریت فروش</span>
+                </a>
               </li> 
             </ul>
           </label>
+          <div style="display:inline-block;position:relative;">
+            <ion-icon name="document-outline" style="font-size: 25px;margin-left:8px;position:relative">
+            </ion-icon>
+            <span style="position:absolute;top:2px;right:2px;font-size:0.7rem;background-color: rgb(201, 44, 44);color:white;border-radius:6px;padding:0.2rem;text-align:center">{{num_of_pending_orders}}</span>
+          </div>
+          
+
+
         {% endif %}
     </div>
 

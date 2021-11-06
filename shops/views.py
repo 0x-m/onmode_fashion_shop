@@ -1,3 +1,4 @@
+from orders.models import Order
 from reviews.models import Comment
 from django.db.models.query import QuerySet, RawQuerySet
 from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
@@ -168,6 +169,7 @@ def change_image(request: HttpRequest):
 def get_products_of_shop(request:HttpRequest, shop_name):  
     
     shop = get_object_or_404(Shop, name=shop_name, is_active=True)
+    num_of_pending_orders = shop.orders.filter(state=Order.PENDING).count()
     products = Product.objects.filter(shop=shop, is_active=True).order_by('-date_created')
     print(len(products), shop.name)
     paginator = Paginator(products, 20, allow_empty_first_page=True)
@@ -193,6 +195,7 @@ def get_products_of_shop(request:HttpRequest, shop_name):
         'sizes': Size.objects.all(),
         'subtypes': SubType.objects.all(),
         'types': Type.objects.all(),
+        'num_of_pending_orders': num_of_pending_orders
         
     })
   

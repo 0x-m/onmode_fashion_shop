@@ -147,13 +147,17 @@
 </style>
     <div class="container horizontal" style="justify-content:flex-end;width: 50%;margin:2rem auto;">
         <form action="{% if owner == 'user' %}/user/orders{% else %}/shop/orders/{% endif %}" method="get" style="width: 100%;display:flex;justify-content:flex-end">
-                <select name="status">
-                    <option value="pending">درحال بررسی</option>
-                    <option value="accept">تایید شده</option>
-                    <option value="rejected">رد شده</option>
-                    <option value="sent">ارسال شده</option>
-                    <option value="returned">بازگشتی</option>
-                    <option value="received">دریافت شده</option>
+                <select style="width: 50%;"  name="status">
+                    <option value="all" {% if selected_status == 'all' %}selected{% endif %}>همه</option>
+                    <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>درحال بررسی</option>
+                    <option value="accept" {% if selected_status == 'accept' %}selected{% endif %}>تایید شده</option>
+                    <option value="rejected" {% if selected_status == 'rejected' %}selected{% endif %}>رد شده</option>
+                    {% if owner == 'shop' %}
+                    <option value="sent_not_verified" {% if selected_status == 'sent_not_verified' %}selected{% endif %}>ارسالی تایید نشده</option>
+                    {% endif %}
+                    <option value="sent" {% if selected_status == 'sent' %}selected{% endif %}>ارسال شده</option>
+                    <option value="returned" {% if selected_status == 'returned' %}selected{% endif %}>بازگشتی</option>
+                    <option value="received" {% if selected_status == 'received' %}selected{% endif %}>دریافت شده</option>
                 </select>   
                 <button class="btn cta" style="margin-right: 0.5rem;border-radius:4px" type="submit">فیلتر</button>    
         </form>

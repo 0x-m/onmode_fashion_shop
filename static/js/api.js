@@ -9,6 +9,7 @@ function get(url, callback= function(){}) {
     };
     
     xr.open('get', url);
+    xr.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
     xr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xr.send();
     
@@ -1209,16 +1210,26 @@ function show_filter() {
 }
 
 function accept_order(){
-    
+    let id = document.getElementById('order_id').value;
+    load_view('/shop/order/' + id + '/accept/');
 }
-function reject_order() {}
-function send_tracking_code() {}
+function reject_order() {
+    let id = document.getElementById('order_id').value;
+    load_view('/shop/order/' + id + '/reject/');
+}
+function send_tracking_code() {
+    let id = document.getElementById('order_id').value;
+    let code = document.getElementById('tracking_code').value;
+    load_view('/shop/order/' + id + '/tracking_code/' + '?tracking_code=' + code);
+}
 
 function cancel_order(){
-
+    let id = document.getElementById('order_id').value;
+    load_view('/shop/order/' + id + '/cancel/');
 }
 
 function verify_recieved_order(){
-
+    let id = document.getElementById('order_id').value;
+    load_view('/shop/order/' + id + '/verify/');
 }
 

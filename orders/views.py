@@ -34,40 +34,41 @@ def checkout_cart(request:HttpRequest):
 
 @login_required        
 def get_shop_orders(request:HttpRequest):
-    status = request.GET.get('status', 'pending')
-    order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED,'all']
+    status = request.GET.get('status', 'all')
+    order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT,Order.SENT_BUT_NOT_VERIFIED, Order.RETURNED,'all']
     order_states = [o.lower() for o in order_states]
-    print(status.lower() in order_states)
     if not (status.lower() in [o.lower() for o in order_states]):
         return HttpResponseNotFound('not found')
     
     if not request.user.shop.first():
         return HttpResponseBadRequest("shop not found")
-    orders = Order.objects.filter(shop=request.user.shop.first(), state=status)
+    orders = Order.objects.filter(shop=request.user.shop.first()).all()
+    if status.lower() != 'all':
+        orders = Order.objects.filter(shop=request.user.shop.first(), state=status)
     return render(request, 'orders/all_orders.html', {
         'orders': orders,
-        'owner': 'shop'
+        'owner': 'shop',
+        'selected_status': status,
     })
     
     
 @login_required    
 def get_user_orders(request:HttpRequest):
-    status = request.GET.get('status')
-    if not status:
-        status = 'pending'
+    status = request.GET.get('status', 'all')
+
     order_states = [Order.PENDING, Order.ACCEPTED, Order.REJECTED, Order.RECEIVED, Order.SENT, Order.RETURNED,'all']
     order_states = [o.lower() for o in order_states]
     if not (status.lower() in [o.lower() for o in order_states]):
         return HttpResponseNotFound('not found')
-    orders = Order.objects.all()
-    print(len(orders), 'numbers....')
+    orders = Order.objects.filter(user=request.user).all()
     if (status != 'all'):
-        print('not all')
         orders = Order.objects.filter(user=request.user, state=status)
  
     return render(request, 'orders/all_orders.html', {
         'orders': orders,
-        'owner': 'user'
+        'owner': 'user',
+        'selected_status': status,
+
     })
     
         
@@ -82,7 +83,7 @@ def accept_order(request:HttpRequest, order_id):
     
     if order.state == Order.PENDING:
         order.accept()
-    return redirect('/orders/shop/' + order_id + '/')
+    return redirect('/shop/order/' + order_id + '/')
 
 @login_required
 def reject_order(request:HttpRequest,order_id):
@@ -94,7 +95,7 @@ def reject_order(request:HttpRequest,order_id):
     
     if order.state == Order.PENDING:
         order.reject()
-    return redirect('/orders/shop/' + order_id + '/')
+    return redirect('/shop/order/' + order_id + '/')
 
 
 @login_required
@@ -107,7 +108,7 @@ def cancell_order(request:HttpRequest, order_id):
     
     if order.state == Order.PENDING:
         order.cancell()
-    return redirect('/orders/shop/' + order_id + '/')
+    return redirect('/user/order/' + order_id + '/')
 
 
 @login_required
@@ -123,10 +124,9 @@ def register_tracking_code(request:HttpRequest, order_id):
     if not tracking_code:
         return HttpResponseBadRequest('invalid tracking code...')
     
-    if order.state == Order.ACCEPTED:
-        order.tracking_code = tracking_code
-        order.save();
-    return redirect('/orders/shop/' + order_id + '/')
+    if order.state == Order.ACCEPTED or order.state == Order.SENT_BUT_NOT_VERIFIED:
+        order.register_tracking_code(tracking_code)
+    return redirect('/shop/order/' + order_id + '/')
 
 
 @login_required
@@ -139,12 +139,7 @@ def verify_recieve_order(request:HttpRequest,order_id):
     
     if order.state == Order.SENT:
         order.recieve();
-    return redirect('/orders/shop/' + order_id + '/')
-
-
-        
-    
-
+    return redirect('/user/order/' + order_id + '/')
 
 
 @login_required

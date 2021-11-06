@@ -1,9 +1,48 @@
 {% load jalali_tags %}
 <style>
+
+    .tracking-code {
+        margin-top: 1rem;
+        width: 100%;
+        background-color: white;
+        border-radius: 32px;
+        border: 1px solid #333;
+        padding: 0.2rem;
+        position: relative;
+        
+    }
+    .tracking-code input[type="text"] {
+        appearance: none;
+        outline: none;
+        border: none;
+        padding: 0.7rem;
+        font-size: 0.8rem;
+        color: #333;
+        width: 78%;
+        margin-right: 0.5rem;
+    }
+    .reg {
+        position: absolute;
+        appearance: none;
+        outline: none;
+        border: none;
+        background-color: #333;
+        color: white;
+        font-size: 0.8rem;
+        cursor: pointer;
+        left: 3px;
+        top: 50%;
+        transform: translate(0, -50%);
+        padding: 0.2;
+        width: 20%;
+        height: 85%;
+        border-radius: 32px;
+
+    }
     .tab-item {
         font-size: 0.7rem !important;
     }
-    table{
+    .table-1{
         border-collapse: collapse;
         width: 100%;
         margin: 1rem auto;
@@ -84,9 +123,10 @@
     }
 
 </style>
+<input type="hidden" id="order_id" value="{{order.id}}" />
 <div class="container vertical" style="width: 95%;margin:1rem auto;">
  
-    <table style="margin-top: 1rem;">
+    <table class="table-1" style="margin-top: 1rem;">
         <tr>
             <th>نام</th>
             <th>سایز</th>
@@ -118,6 +158,7 @@
 
        
     </table>
+    <p>{{order.state}}</p>
     <p style="padding:0.7rem; margin:0.5rem auto;border-radius:6px;width:100%;background:rgb(121, 121, 121); color:white;">
         جمع کل: {{order.discounted_total_price}} تومان
     </p> 
@@ -206,24 +247,44 @@
             </div>
         {% elif owner == 'user' %}
             <div class="box">
-                <button onclick="cancell_order();" class="btn btn-primary">کنسل میکنم</button>
+                <button onclick="cancel_order();" class="btn btn">کنسل میکنم</button>
             </div>
         {% endif %}
  
     {% elif order.state == 'accept' %}
         {% if owner == 'shop' %}
             <div class="box">
-                <input type="text" class="text-box" placeholder="کد رهگیری">
-                <button onclick="send_tracking_code" class="btn btn-primary">ثبت</button>
-                <span style="font-size: 0.8rem;color:red">
-                    {{ order.tracking_code_status }}
-                </span>
+                <div class="tracking-code">
+                    <input id="tracking_code" type="text"  placeholder="کد رهگیری" />
+                    <button onclick="send_tracking_code();" class="reg">ثبت</button>
+                </div>
             </div>
         {% elif owner == 'user' %}
             <div class="box">
                 <span style="width: 100%;text-align:center;color:white;background-color:green;padding:0.5rem">تایید شده</span>
             </div>
         {% endif %}
+    {% elif order.state == 'sent_not_verified' %}
+            {% if owner == 'shop' %}
+                {% if order.verify_sent %}
+                <div class="box">
+                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(160, 31, 31);padding:0.5rem">کد رهگیری تایید نشده است</span>
+                </div>
+                {% else %}
+                    <div class="tracking-code">
+                        <input id="tracking_code" type="text" value="{{order.tracking_code}}"  placeholder="کد رهگیری" />
+                        <button onclick="send_tracking_code();" class="reg">ثبت</button>
+                    </div>
+                    <span style="font-size: 0.8rem;color:red">
+                        {{ order.tracking_code_status }}
+                    </span>
+                {% endif %}
+            {% else %}
+            <div class="box">
+                <span style="width: 100%;text-align:center;color:white;background-color:rgb(55, 170, 55);padding:0.5rem">آماده ارسال</span>
+            </div>
+            {% endif %}
+
     {% elif order.state == 'returned' %}
         <div class="box">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55);padding:0.5rem">بازگشتی</span>
@@ -234,21 +295,16 @@
         </div>
     {% elif order.state == 'sent' %}
         {% if owner == 'shop' %}
-            {% if order.verify_sent %}
                 <div class="box">
-                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55);padding:0.5rem">کد رهگیری ثبت شده است</span>
+                    <span style="width: 100%;text-align:center;color:white;background-color:rgb(241, 182, 55);padding:0.5rem">کاربر وصول مروسله را اعلام نکرده است</span>
                 </div>
-            {% else %}
-                <div class="box">
-                    <input id="tracking_code" type="text" class="text-box" placeholder="کد رهگیری">
-                    <button onclick="send_tracking_code();" style="cursor:pointer;border-radius:4px;padding:0.5rem;color:white;background-color:rgb(54, 219, 95)">ثبت</button>
-                </div>
-            {% endif %}
         {% elif owner == 'user' %}
             {% if order.verify_sent %}
-                <div class="box">
-                    <button  onclick="recieve_order();" class="btn btn-primary">دریافت کردم</button>
-                </div>
+            <div class="container horizontal mt-1" style="width: 100%;justify-content:space-between;font-size:0.8rem;background:rgb(212, 42, 42);border-radius:6px;color:white;padding:0.5rem;font-size:0.8rem">
+                <p>کد رهگیری:</p>
+                <span>{{order.tracking_code}}</span>
+            </div>
+            <button style="width: 100%;margin-top:1rem"  onclick="verify_recieved_order();" class="btn cta">دریافت کردم</button>
             {% else  %}  
                 <div class="box">
                     <span style="width: 100%;text-align:center;color:white;background-color:green;padding:0.5rem">ارسال شده</span>

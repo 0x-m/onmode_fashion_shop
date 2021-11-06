@@ -16,6 +16,14 @@ class AdminMessage(models.Model):
         (ERROR, _('Error')),
         (INFO, _('Info'))
     ]
+
+    UNREAD = 0
+    READ = 1
+
+    STATUS = {
+        (READ, 'read'),
+        (UNREAD, 'unread')
+    }
     
     sender = models.ForeignKey(verbose_name=_('Sender'),to=User,on_delete=models.CASCADE, related_name='sent_messages')
     reciever = models.ForeignKey(verbose_name=_('Reciever'),to=User,on_delete=models.CASCADE, related_name='recieved_messages')
@@ -23,6 +31,7 @@ class AdminMessage(models.Model):
     title = models.CharField(verbose_name=_('Title'),max_length=100,blank=True)
     body = models.CharField(verbose_name=_('Body'),max_length=5000, blank=True)
     date_created = models.DateTimeField(default=timezone.now)
+    status = models.PositiveIntegerField(verbose_name=_('status'),choices=STATUS, default=0)
     class Meta:
         verbose_name = 'Admin message'
         verbose_name_plural = 'Admin messages'

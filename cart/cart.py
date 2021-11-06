@@ -207,7 +207,7 @@ class Cart():
             
         order_list.save() #to compute price
         if self.coupon:
-            order_list.coupon = Coupon
+            order_list.coupon = self.coupon
         
         order_list.finish()
 
