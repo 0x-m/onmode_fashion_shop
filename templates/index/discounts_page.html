@@ -1,0 +1,23 @@
+{% extends 'index/base.html' %}
+{% load static %}
+{% load render_products %}
+
+{% block content %}
+<div class="container horizontal" style="flex-wrap: wrap;width: 95%; margin:1.5rem auto;justify-content:center; align-items:flex-start">
+    {% render_products page.object_list %}
+</div>
+<div class="pagination">    
+    {% if page.has_previous %}
+     <a class="page-item" href="?pg={{page.previous_page_number}}">&laquo;</a>
+    {% endif %}
+    <a class="page-item" href="?pg=1">ابتدا</a>
+     
+    {% for p in page.paginator.page_range %}
+        <a class="page-item" href="?pg={{p}}" class="{% if page.number == p %}active-page{% endif %}">{{ p }}</a>
+    {% endfor %}
+         <a class="page-item" href="?pg={{page.paginator.num_pages }}">انتها</a>
+    {% if page.has_next %}
+     <a class="page-item" href="?pg={{page.next_page_number}}">&raquo;</a>
+    {% endif %}
+ </div>
+{% endblock %}

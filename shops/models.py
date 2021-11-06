@@ -75,6 +75,9 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
     
+    def get_absolute_url(self):
+        return reverse('shop:category', self.name)
+    
 #product type: shoes, bag, cloth,...
 class Type(models.Model):
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='types')
@@ -174,3 +177,9 @@ class ProductImage(models.Model):
     
     image = models.ImageField(upload_to = generate_path)
 
+
+class Collection(models.Model):
+    name = models.CharField(max_length=50,verbose_name=_('name'), unique=True,)
+    description = models.CharField(max_length=5000, verbose_name=_('description'))
+    products = models.ManyToManyField(to=Product,verbose_name=_('products'),related_name='collections')
+    

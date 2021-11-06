@@ -22,5 +22,7 @@ urlpatterns  = [
     path('shop/types/', views.get_types),
     path('shop/subtypes/', views.get_subtypes),
     path('shop/products/<category>/<type>/<subtype>/', views.get_product_by_url),
+    path('product/category/<name>/',views.get_category_product, name="category"),
+    path('product/collection/<name>/', views.get_collection_product, name='collection')
  
 ]

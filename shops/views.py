@@ -1,7 +1,7 @@
 from orders.models import Order
 from reviews.models import Comment
 from django.db.models.query import QuerySet, RawQuerySet
-from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
+from django.http.response import FileResponse, Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from .models import  Product, Shop
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render, resolve_url
@@ -200,7 +200,49 @@ def get_products_of_shop(request:HttpRequest, shop_name):
     })
   
         
+
+def get_category_product(request: HttpRequest, name):
+    category = Category.objects.filter(name=name).first()
+    if not category:
+        return HttpResponseNotFound()
+    products = category.products.filter(is_active=True).all()
+    paginator = Paginator(products, 20)
+
+    pg_num = request.GET.get('pg')
+    try:
+        page = paginator.get_page(pg_num)
+    except PageNotAnInteger:
+        page = paginator.get_page(1)
+    except EmptyPage:
+        page = paginator.get_page(paginator.num_pages)
     
+    return render(request,'index/category_page.html',{
+        'page':page,
+        'category_name': category.name
+
+    })
+
+def get_collection_product(request: HttpRequest, name):
+    col = Collection.objects.filter(name=name).first()
+    if not col:
+        return HttpResponseNotFound()
+    
+    products = col.products.filter(is_active=True).all()
+    paginator = Paginator(products, 20)
+
+    pg_num = request.GET.get('pg')
+    try:
+        page = paginator.get_page(pg_num)
+    except PageNotAnInteger:
+        page = paginator.get_page(1)
+    except EmptyPage:
+        page = paginator.get_page(paginator.num_pages)
+    
+    return render(request,'index/collection_page.html',{
+        'page':page,
+        'collection_name': name
+
+    })
 
 
 def get_all_products(request:HttpRequest):
