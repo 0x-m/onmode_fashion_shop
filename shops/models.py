@@ -51,7 +51,18 @@ class Shop(models.Model):
     
     def num_of_customers(self):
         return len(self.orders.all().distinct('user'))
-        
+     
+     
+def my_slugify(name):
+    res = ''
+    for c in name:
+        if not c in [' ',',', '(', ')', '?']:
+            res += c
+        else:
+            res += '-'
+    return res
+
+               
 
 class Brand(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40, unique=True)
@@ -82,13 +93,11 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('shop:category', self.name)
     
-    def save(self, **kwargs):
-        self.slug = slugify(self.name)
-        self.save(**kwargs)
+    def save(self,*args, **kwargs):
+        self.slug = my_slugify(self.name)
+        super().save(*args,**kwargs)
 
 
-
-    
 #product type: shoes, bag, cloth,...
 class Type(models.Model):
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='types')
@@ -196,10 +205,10 @@ class Collection(models.Model):
     description = models.CharField(max_length=5000, verbose_name=_('description'))
     products = models.ManyToManyField(to=Product,verbose_name=_('products'),related_name='collections')
 
+    
     def save(self, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-            super().save(**kwargs)
+        self.slug = my_slugify(self.name)
+        super().save(**kwargs)
 
 
     

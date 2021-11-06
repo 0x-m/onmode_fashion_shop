@@ -232,3 +232,4 @@ AWS_LOCATION = 'static'
 
 
 DEFAULT_FILE_STORAGE = 'onmode.storage_backends.MediaStorage'
+ALLOW_UNICODE_SLUGS = True

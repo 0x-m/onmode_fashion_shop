@@ -240,7 +240,7 @@ class Order(models.Model):
         return _("order number: ") + str(self.id)
 
             
-            
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(verbose_name=_('Order'),to=Order,on_delete=models.CASCADE, related_name='items')
