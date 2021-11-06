@@ -28,6 +28,7 @@
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
+                min-height: 100vh;
             }
       
             html {
@@ -82,9 +83,9 @@
             {% block content %}
             
             {% endblock %}
-        {% include 'index/footer.html' %}
         <my-drawer id="drawer"></my-drawer>
         {% include 'index/home/mobile_menu.html' %}
+        {% include 'index/footer.html' %}
       {% block body %}
       {% endblock %}
 

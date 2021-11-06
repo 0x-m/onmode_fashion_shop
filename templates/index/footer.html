@@ -6,62 +6,18 @@
         background-position: center;
         width:100%;
         min-height: 450px;
-        bottom: 0;
         margin: 0;
         display: flex;
         align-items: flex-end;
         position: relative;
         justify-content: flex-start;
         padding: 1rem;
+        position: relative;
+        bottom: -3rem;
         background-image: url('{% static "img/slideshow/wave.svg" %}');
 
     }
 
-
-    .img-logo {
-        background-color: transparent;
-        width: 32px;
-        height: 32px;
-        margin-left: 8px;
-    }
-   .copyright {
-       font-size: 0.7rem;
-       font-weight: bold;
-       font-style: italic;
-       color: white;
-       background-color: rgb(238, 64, 64);
-       padding: 0.3rem;
-       display: flex;
-       justify-content: center;
-       text-align: center;
-       align-items: center;
-       
-   }
-    @media screen and (max-width: 576px) {
-        .site-footer {
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-top: 1rem;
-        }
-
-        .footer-logo {
-            display: none;
-
-        }
-
-        .site-footer .footer-menu a:hover {
-            background-color: transparent !important;
-            color: rgb(224, 83, 83);
-        }
-
-        .footer-tokens {
-            margin-top: 1rem;
-        }
-        .copyright {
-            background-color: transparent;
-        }
-    }
 
     .footer-menu {
         display: flex;
@@ -89,13 +45,6 @@
         padding-right: 0;
     }
 
-    @media screen and (max-width: 570px) {
-        .bbb {
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-    }
 
     .footer-container {
         display: flex;
@@ -148,26 +97,3 @@
         </section>
     </div>
 </div>
-<!-- 
-<footer class="site-footer">
-    <a href="" class="footer-logo">
-        <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 32px;background:transparent" />
-    </a>
-    <section class="footer-menu">
-        <a href="">سوالات متداول</a>
-        <a href="">قوانین</a>
-        <a href="">وبلاگ</a>
-        <a onclick="get_profile();">تماس با ما</a>
-    </section>
-    <section class="footer-tokens">
-        <div id="zarinpal">
-            <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
-        </div>
-        <img src="{% static 'img/logos/enamad-1.png' %}" class="img-logo" />
-        <img src="{% static 'img/logos/sazmandehi.png' %}" class="img-logo" />
-
-    </section>
-    <p class="copyright">
-        onmode.ir&copy;<br/>آسوده خرید کنید
-    </p>
-</footer> -->
