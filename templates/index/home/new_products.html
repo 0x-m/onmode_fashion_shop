@@ -69,7 +69,7 @@
             {% for cat in categories %}
                 <div id="new-{{ forloop.counter }}" class="tab-content {% if forloop.counter == 1%}tab-show-content {% endif %}">
                     <p class="linkTo">
-                        <a href="{% url 'shops:category' cat.name %}" class="btn cta" style="width: 150px;">
+                        <a href="{% url 'shops:category' cat.slug %}" class="btn cta" style="width: 150px;">
                             مشاهده همه 
                             <!-- <span style="flex: 80%;display:block;">مشاهده همه</span>
                             <ion-icon style="font-size:1.5rem;display:block;flex:10%" name="arrow-forward-circle-outline"></ion-icon> -->

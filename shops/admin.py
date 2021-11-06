@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin, VERTICAL
-from .models import  Brand, Category,   Product, Shop, SubType, Type
+from .models import  Brand, Category,   Product, Shop, SubType, Type, Collection
 from django.utils.translation import gettext_lazy as _
 from django.contrib.admin.sites import AdminSite
 
@@ -40,6 +40,7 @@ class ProductCustomAdmin(ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
     list_display = ['id','name']
+    readonly_fields = ['slug']
 
 @admin.register(Type)
 class TypeAdmin(ModelAdmin):
@@ -55,3 +56,9 @@ class BrandAdmin(ModelAdmin):
     list_display = ['id','name']
 
     
+@admin.register(Collection)
+class CollectionAdmin(ModelAdmin):
+    raw_id_fields = ['products']
+    readonly_fields = ['slug']
+    list_display = ['id', 'name', 'slug']
+

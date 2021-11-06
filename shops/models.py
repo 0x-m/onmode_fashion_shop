@@ -2,9 +2,11 @@
 from typing import Dict
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
+from django.db.models.signals import post_save
 from django.forms.fields import JSONString, NullBooleanField
 from django.urls import utils
-from django.utils import timezone
+from django.utils import timezone, tree
+from django.utils.text import slugify
 from django.contrib.postgres.fields import HStoreField
 from users.models import User, Address
 from django.utils import timezone
@@ -67,6 +69,8 @@ class Brand(models.Model):
 #such as men, women, kids,...
 class Category(models.Model):
     name = models.CharField(verbose_name=_('Name'),max_length=40,unique=True)
+    slug = models.SlugField(verbose_name=_('slug'), null=True)
+    
 
     class Meta:
         verbose_name = _('Category')
@@ -78,6 +82,13 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('shop:category', self.name)
     
+    def save(self, **kwargs):
+        self.slug = slugify(self.name)
+        self.save(**kwargs)
+
+
+
+    
 #product type: shoes, bag, cloth,...
 class Type(models.Model):
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='types')
@@ -88,6 +99,7 @@ class Type(models.Model):
     class Meta:
         verbose_name = _('Type')
         verbose_name_plural = _('Types')
+
 
     def __str__(self) -> str:
         return str(self.name) 
@@ -180,6 +192,16 @@ class ProductImage(models.Model):
 
 class Collection(models.Model):
     name = models.CharField(max_length=50,verbose_name=_('name'), unique=True,)
+    slug = models.SlugField(verbose_name=_('slug'), null=True)
     description = models.CharField(max_length=5000, verbose_name=_('description'))
     products = models.ManyToManyField(to=Product,verbose_name=_('products'),related_name='collections')
+
+    def save(self, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+            super().save(**kwargs)
+
+
+    
+
     

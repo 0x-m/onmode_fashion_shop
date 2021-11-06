@@ -6,3 +6,4 @@ from django.contrib.admin.decorators import register
 @admin.register(PaymentTransaction)
 class PaymentAdmin(ModelAdmin):
     list_display = ['user', 'ref_id', 'code']
+    

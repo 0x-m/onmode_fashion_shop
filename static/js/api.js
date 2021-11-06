@@ -1233,3 +1233,16 @@ function verify_recieved_order(){
     load_view('/shop/order/' + id + '/verify/');
 }
 
+
+function mark__as_read(){
+    const target = event.target;
+    const id = target.dataset['id'];
+    const spinner = document.createElement('span');
+    spinner.className.add('loader');
+    target.replaceChildren(spinner)
+    get('/messages/' + id + '/mark_as_read', function(data,status) {
+        if (status === 200){
+            target.remove();
+        }
+    });    
+}

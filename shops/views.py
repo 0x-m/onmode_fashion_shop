@@ -201,8 +201,8 @@ def get_products_of_shop(request:HttpRequest, shop_name):
   
         
 
-def get_category_product(request: HttpRequest, name):
-    category = Category.objects.filter(name=name).first()
+def get_category_product(request: HttpRequest, slug):
+    category = Category.objects.filter(slug=slug).first()
     if not category:
         return HttpResponseNotFound()
     products = category.products.filter(is_active=True).all()
@@ -222,8 +222,9 @@ def get_category_product(request: HttpRequest, name):
 
     })
 
-def get_collection_product(request: HttpRequest, name):
-    col = Collection.objects.filter(name=name).first()
+
+def get_collection_product(request: HttpRequest, slug):
+    col = Collection.objects.filter(slug=slug).first()
     if not col:
         return HttpResponseNotFound()
     

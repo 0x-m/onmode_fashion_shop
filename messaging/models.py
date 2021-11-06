@@ -33,6 +33,6 @@ class AdminMessage(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     status = models.PositiveIntegerField(verbose_name=_('status'),choices=STATUS, default=0)
     class Meta:
-        verbose_name = 'Admin message'
-        verbose_name_plural = 'Admin messages'
+        verbose_name = 'Message'
+        verbose_name_plural = 'Messages'
         
