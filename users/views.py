@@ -148,7 +148,7 @@ def set_password(request:HttpRequest):
         verified = request.session.get('verified')
         if not verified or verified != 'True':
             return HttpResponseBadRequest("unauthenticated attempt")
-        
+        refferal_code = request.POST.get('refferal')
         form = SetPasswordForm(request.POST)
         if form.is_valid():
             phone_no = request.session.get('phone_no')
@@ -160,6 +160,10 @@ def set_password(request:HttpRequest):
             reset_verified = request.session.get('reset_verified')
             if not user:
                 user = User(phone_no=phone_no)
+                if refferal_code:
+                    ref = User.objects.filter(user_code=refferal_code).first()
+                    if ref:
+                        user.refferal = ref;
             else:
                 if not reset_verified == 'True':
                     return HttpResponseBadRequest('malicious attempt..!')
