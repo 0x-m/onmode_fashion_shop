@@ -16,8 +16,6 @@ class Color(models.Model):
 
 class Size(models.Model):
     code = models.CharField(verbose_name=_('Size code'),max_length=12, null=True, blank=True)
-    description = models.CharField(verbose_name=_('Description'),max_length=20, null=True, blank=True)
-
     class Meta:
         verbose_name = _('Size')
         verbose_name_plural = _('Sizes')

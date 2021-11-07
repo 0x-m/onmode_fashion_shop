@@ -28,6 +28,8 @@ def check_for_shop_name(request:HttpRequest, shop_name):
 def add_product(request:HttpRequest):
     shop = get_object_or_404(Shop, seller=request.user, is_active=True)
     if request.method == "POST":
+        if shop.products.filter(is_active=True).count() == shop.max_num_of_products:
+            return HttpResponseForbidden('your boutique can has only 100 products')
         form = AddProductForm(request.POST)
         print(request.POST.get('free_delivery'))
         if form.is_valid():
@@ -52,9 +54,12 @@ def add_product(request:HttpRequest):
             
             product = Product(**new_values)
             product.save()
-            product.categories.set(categories)
-            product.colors.set(colors)
-            product.sizes.set(sizes)
+            if categories:
+                product.categories.set(categories)
+            if colors:
+                product.colors.set(colors)
+            if sizes:
+                product.sizes.set(sizes)
             product.save()
             if images:
                 num_img = len(images)
@@ -77,10 +82,10 @@ def add_product(request:HttpRequest):
             return HttpResponse("added successfully")
         return HttpResponseBadRequest(form.errors)
     
+    if shop.products.filter(is_active=True).count() == shop.max_num_of_products:
+        return HttpResponse('بوتیک شما نمیتواندبیش از 100 محصول داشته باشد')
     return render(request, 'product/edit.html',{
         'categories': Category.objects.all(),
-        'types': Type.objects.all(),
-        'subtypes': SubType.objects.all(),
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
         'sizes': Size.objects.all(),
@@ -115,17 +120,18 @@ def edit_product(request:HttpRequest, product_id):
             for key,value in new_values.items():
                 setattr(product, key, value)
                 
-            product.categories.set(categories)
-            product.colors.set(colors)
-            product.sizes.set(sizes)
+            if categories:
+                product.categories.set(categories)
+            if colors:
+                product.colors.set(colors)
+            if sizes:
+                product.sizes.set(sizes)
             product.save()
         else:
             return HttpResponseBadRequest("Invalid inputs")
     return render(request, 'product/edit.html',{
         'product': product,
         'categories': Category.objects.all(),
-        'types': Type.objects.all(),
-        'subtypes': SubType.objects.all(),
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
         'sizes': Size.objects.all(),
@@ -553,8 +559,13 @@ def get_types(request: HttpRequest):
 @login_required
 def get_subtypes(request: HttpRequest):
     type = request.GET.get('type')
+    if not type.strip():
+        return HttpResponseBadRequest()
     types = [int(type)]
     categories = request.GET.get('cats')
+    if not categories.strip():
+        return HttpResponseBadRequest()
+    print(categories)
     categories = [int(i) for i in categories.split(',')]
     subtypes = SubType.objects.filter(types__id__in=types, categories__id__in=categories).distinct().values('id', 'name')
     return JsonResponse({

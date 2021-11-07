@@ -80,12 +80,12 @@
 
         </div>
         
-        <div id="cart-icon" style="position: relative;" class="">
+        <div id="cart-icon" style="position: relative;" class="{% if not user.is_authenticated %}hi{% endif %}">
             <ion-icon style="position: relative;display:block" name="cart-outline" onclick="open_cart();" class="icon">
             </ion-icon>
             <span id="cart-num-badge"  style="border-radius:6px;position: absolute;top:2px;right:0;background:rgb(230, 42, 114);color:white;font-size:0.6rem;padding:0.2rem;user-select:none;pointer-events:none">{{ cart|length }}</span>
         </div>
-            <button id="login-button" onclick="open_dashboard()"  class="btn  {% if user.is_authenticated %}hi{% endif %}" style="margin-left: 0.5rem;font-size:0.7rem;">عضویت / ورود</button>
+            <button id="login-button" onclick="open_dashboard()"  class="btn cta  {% if user.is_authenticated %}hi{% endif %}" style="margin-left: 0.5rem;font-size:0.7rem;">عضویت / ورود</button>
        <ion-icon name="menu-outline" onclick="open_mobile_menu();"  class="icon vi"></ion-icon>
    </div>
 </nav>

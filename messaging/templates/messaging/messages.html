@@ -25,11 +25,12 @@
     }
 </style>
 <div class="container vertical">
+    {% if user.recieved_messages.all %}
     {% for message in user.recieved_messages.all %}
         <div class="message">
-            {% if message.leve = 0 %}
+            {% if message.level == 0 %}
             <ion-icon name="happy-outline" style="font-size: 3.5rem;color:rgb(80, 224, 116);position:absolute;top:3px;left:8px;"></ion-icon>
-            {% elif message.leve == 1 %}
+            {% elif message.level == 1 %}
             <ion-icon name="warning-outline" style="font-size: 3.5rem;color:rgb(243, 247, 20);position:absolute;top:3px;left:8px;"></ion-icon>
             {% elif message.level == 2 %}
             <ion-icon name="close-circle-outline" style="font-size: 3.5rem;color:skyblue;position:absolute;top:3px;left:8px;"></ion-icon>
@@ -42,9 +43,13 @@
             <p class="message-body">
                 {{ message.body }}
             </p>
-            {% if message.status = 0 %}
+            {% if message.status == 0 %}
                  <button onclick="mark__as_read();" style="font-size: 0.8rem;margin:1rem auto;width:30%" class="btn cta">خوانده شد</button>
             {% endif %}
         </div>
+    {% endfor %}
+
+    {% else %}
+        <p>پیامی یافت نشد</p>
     {% endif %}
 </div>

@@ -4,8 +4,7 @@
         "pk": 1,
         "fields": {
             "categories": [1,2,3],
-            "name": "cloth",
-            "description": "best clothes"
+            "name": "cloth"
         }
     },
     {
@@ -13,8 +12,7 @@
         "pk": 2,
         "fields": {
             "categories": [1,2,3],
-            "name": "shoe",
-            "description": "best shoes"
+            "name": "shoe"
         }
     },
     {
@@ -22,8 +20,7 @@
         "pk": 3,
         "fields": {
             "categories": [1,2,3],
-            "name": "bag",
-            "description": "best bags"
+            "name": "bag"
         }
     }
 ]

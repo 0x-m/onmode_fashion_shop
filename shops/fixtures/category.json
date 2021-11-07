@@ -3,24 +3,21 @@
         "model": "shops.Category",
         "pk": 1,
         "fields": {
-            "name": "Mens",
-            "description": "for mens"
+            "name": "Mens"
         }
     },
     {
         "model": "shops.Category",
         "pk": 2,
         "fields": {
-            "name": "Womens",
-            "description": "for women"
+            "name": "Womens"
         }
     },
     {
         "model": "shops.Category",
         "pk": 3,
         "fields": {
-            "name": "Children",
-            "description": "for childs.."
+            "name": "Children"
         }
     }
 ]

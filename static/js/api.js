@@ -125,17 +125,10 @@ function get_selecteds(name, single, allow_empty=false){
             selecteds += ',' + items[i].dataset["id"]
         }
     }
-    if(single && selecteds == ""){
-        return items[0].dataset["id"];
-    }
-    if (selecteds == ""){
-        selecteds = all;
-        if (allow_empty){
-            selecteds = "";
-            return selecteds
-        }
-    }
-    return selecteds.slice(1,selecteds.length); //eliminating first ,
+
+    if (selecteds != "")
+        selecteds = selecteds.slice(1,selecteds.length);
+    return selecteds;
 }
 
 function validate_field(rx){
@@ -194,127 +187,149 @@ function prepare_product_info(command){
         }
         keyword = keyword.slice(1, keyword.length);
 
-    }    
+    }
+    let has_error = false;    
     const attrs =  get_attrs();
     const name = document.getElementById("name").value;
+    if (!name){
+        document.getElementById('product-name-error-box').innerText = 'نام محصول را وارد کنید';
+        has_error = true;
+    }
+    else {
+        document.getElementById('product-name-error-box').innerText = '';
+        has_error = false;
+    }
     const description = document.getElementById("description").value;
     const quantity = document.getElementById("quantity").value;
+    if (!quantity){
+        document.getElementById('product-quantity-error-box').innerText = 'تعداد بین 1 تا 100';
+        has_error = true;
+    }
+    else {
+        document.getElementById('product-quantity-error-box').innerText = '';
+        has_error = false;
+    }
     const price = document.getElementById("price").value;
-    const brand = get_selecteds("brands", true);
-    const type = get_selecteds("types", true);
-    const categories = get_selecteds("categories",false);
-    const subtype = get_selecteds("subtypes", true);
+    if (!price){
+        document.getElementById('product-price-error-box').innerText = 'قیمت را وارد کنید';
+        has_error = true;
+    }
+    else {
+        document.getElementById('product-price-error-box').innerText = '';
+        has_error = false;
+    }
+
+    if (has_error) {
+        return false
+    }
+
+    const brand = get_selecteds("brands", true,true);
+    const type = get_selecteds("types", true, true);
+    const categories = get_selecteds("categories",false, true);
+    const subtype = get_selecteds("subtypes", true, true);
     const free_delivery = document.getElementById('free_delivery').checked == 'true' ? 'true': ' ';
     console.log(free_delivery,'ffff')
     const  colors = document.getElementById("colors").children;
     let selected_colors = "";
-    let all_colors = "";
     for (let i=0; i < colors.length; ++i){
-        all_colors += "," + colors[i].dataset["id"];
         if (colors[i].classList.contains("inline-item--selected")){
             selected_colors += "," + colors[i].dataset["id"];
         }
     }
-    // if (selected_colors == ""){
-    //     selected_colors = all_colors;
-    // }
+
     if(selected_colors != "")
           selected_colors = selected_colors.slice(1,selected_colors.length);
 
     const sizes = document.getElementById("sizes").children;
-    let all_sizes = "";
     let selected_sizes = "";
     for (let i=0; i < sizes.length; ++i){
-        all_sizes += "," + sizes[i].dataset["id"];
         if (sizes[i].classList.contains("inline-item--selected")){
             selected_sizes += "," + sizes[i].dataset["id"];
         }
     }
-    // if (selected_sizes == ""){
-    //     selected_sizes = all_sizes;
-    // }
+ 
     if (selected_sizes != ""){
         selected_sizes = selected_sizes.slice(1, selected_sizes.length);
     }
     
     //-------------------------validations--------------------
-    const errors = new Array()
-    if (name == ""){
-        errors.push("نام محصول را وارد کنید");
+    // const errors = new Array()
+    // if (name == ""){
+    //     errors.push("نام محصول را وارد کنید");
 
-    }
-    let rx = new RegExp('^[1-9][0-9]{3,6}$');
-    if (!rx.test(price)){
-        errors.push("قیمت باید بین 1000 تا 10 میلیون تومان باشد");
-    }
-    rx = new RegExp('^[1-9][0-9]{0,2}$')
-    if(!rx.test(quantity)){
-        errors.push("تعداد باید بین 1 تا 999 باشد");
-    }
+    // }
+    // let rx = new RegExp('^[1-9][0-9]{3,6}$');
+    // if (!rx.test(price)){
+    //     errors.push("قیمت باید بین 1000 تا 10 میلیون تومان باشد");
+    // }
+    // rx = new RegExp('^[1-9][0-9]{0,2}$')
+    // if(!rx.test(quantity)){
+    //     errors.push("تعداد باید بین 1 تا 999 باشد");
+    // }
 
-    if(type == ""){
-        errors.push("نوع محصول را انتخاب کنید");
-    }
-    if(subtype == ""){
-        errors.push("زیرنوع محصول را انخاب کنید");
-    }
-    if (brand == ""){
-        errors.push("برند محصول را انتخاب کنید");
-    }
-    if(categories == ""){
-        errors.push("دسته بندی محصول را مشخص کنید");
-    }
-    if(selected_colors == ""){
-        errors.push("رنگ بندی محصول را انتخاب کنید")
-    }
-    if(selected_sizes == ""){
-        errors.push("سایزبندی محصول را انتخاب کنید")
-    }
-    //------------------------------------------------------------
+    // if(type == ""){
+    //     errors.push("نوع محصول را انتخاب کنید");
+    // }
+    // if(subtype == ""){
+    //     errors.push("زیرنوع محصول را انخاب کنید");
+    // }
+    // if (brand == ""){
+    //     errors.push("برند محصول را انتخاب کنید");
+    // }
+    // if(categories == ""){
+    //     errors.push("دسته بندی محصول را مشخص کنید");
+    // }
+    // if(selected_colors == ""){
+    //     errors.push("رنگ بندی محصول را انتخاب کنید")
+    // }
+    // if(selected_sizes == ""){
+    //     errors.push("سایزبندی محصول را انتخاب کنید")
+    // }
+    // //------------------------------------------------------------
 
     //------------------- Error Dialog----------------------------
-    if( errors.length !=0){
+    // if( errors.length !=0){
 
-        //--------ul of errors-------------------------
-        const frag = document.createDocumentFragment();
-        for (let i=0; i < errors.length; ++i){
-            // msg += errors[i] + "<br/>";
-            let li = document.createElement('li');
-            li.innerHTML = errors[i];
-            frag.appendChild(li)
-        }
-        const err_list = document.createElement('ul');
-        err_list.appendChild(frag);
-        //----------------------------------------------
+    //     //--------ul of errors-------------------------
+    //     const frag = document.createDocumentFragment();
+    //     for (let i=0; i < errors.length; ++i){
+    //         // msg += errors[i] + "<br/>";
+    //         let li = document.createElement('li');
+    //         li.innerHTML = errors[i];
+    //         frag.appendChild(li)
+    //     }
+    //     const err_list = document.createElement('ul');
+    //     err_list.appendChild(frag);
+    //     //----------------------------------------------
 
-        //-------------------fetch drawer---------------
-        const drawer = document.getElementById('drawer');
-        const prevcontent = drawer.innerHTML;
-        //-----------------------------------------------
+    //     //-------------------fetch drawer---------------
+    //     const drawer = document.getElementById('drawer');
+    //     const prevcontent = drawer.innerHTML;
+    //     //-----------------------------------------------
 
-        const err_container = document.createElement('div');
-        err_container.className = 'container vertical position--center';
-        err_container.style = 'color:red;font-size:0.9rem;line-height: 1.3rem;'
-        err_container.appendChild(err_list); //append error list to err_container**
+    //     const err_container = document.createElement('div');
+    //     err_container.className = 'container vertical position--center';
+    //     err_container.style = 'color:red;font-size:0.9rem;line-height: 1.3rem;'
+    //     err_container.appendChild(err_list); //append error list to err_container**
 
-        const backbtn = document.createElement('button'); //back to add product button
-        backbtn.className = 'btn cta mt-1 ';
-        backbtn.style = "font-size:0.8rem";
-        backbtn.textContent = "بازگشت"
-        err_container.appendChild(backbtn); //append backbutton to err_container
-        drawer.setcc(err_container); //replace drawer content with a given node (err_container)
+    //     const backbtn = document.createElement('button'); //back to add product button
+    //     backbtn.className = 'btn cta mt-1 ';
+    //     backbtn.style = "font-size:0.8rem";
+    //     backbtn.textContent = "بازگشت"
+    //     err_container.appendChild(backbtn); //append backbutton to err_container
+    //     drawer.setcc(err_container); //replace drawer content with a given node (err_container)
 
-        //handle go back to add product------------------------------
-        backbtn.addEventListener('click', (function (drawer, val) {
-            return function() {
-                drawer.setContent(val);
-                //ex: try to keeping text contents of add product view...
-            }
-        })(drawer,prevcontent)); 
-        //-----------------------------------------------------------
+    //     //handle go back to add product------------------------------
+    //     backbtn.addEventListener('click', (function (drawer, val) {
+    //         return function() {
+    //             drawer.setContent(val);
+    //             //ex: try to keeping text contents of add product view...
+    //         }
+    //     })(drawer,prevcontent)); 
+    //     //-----------------------------------------------------------
 
-        return null; //data were corrupted so, nothing will return (endpoint_1 of prepare_product_info)
-    }
+    //     return null; //data were corrupted so, nothing will return (endpoint_1 of prepare_product_info)
+    // }
 
     //otherwise, in the case of clean data::
 
@@ -325,14 +340,21 @@ function prepare_product_info(command){
     data.append("description", description);
     data.append("quantity",quantity);
     data.append("keywords", keyword);
-    data.append("colors", selected_colors);
-    data.append("sizes", selected_sizes);
-    data.append("type", type);
-    data.append("subtype", subtype);
-    data.append("attrs",attrs);
+    if (colors)
+        data.append("colors", selected_colors);
+    if(sizes)
+        data.append("sizes", selected_sizes);
+    if (type)
+        data.append("type", type);
+    if (subtype)
+        data.append("subtype", subtype);
+    if (attrs)
+        data.append("attrs",attrs);
     data.append("is_available",'True')
-    data.append("categories",categories);
-    data.append("brand", brand);
+    if (categories)
+        data.append("categories",categories);
+    if (brand)
+        data.append("brand", brand);
     data.append('free_delivery', free_delivery);
     if (command == "add"){
         const images = document.getElementById("images").files;
@@ -353,6 +375,11 @@ function toggle_search_box(){
  
 function add_product(command){
     const data = prepare_product_info("add");
+    if (!data) {
+        document.getElementById('product-add-error-box').innerText = 'خطا: لطف موارد خواسته شده را تکمیل کند';
+        return;
+    }
+    console.log(data);
     const xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/product/add/");
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
@@ -375,6 +402,10 @@ function add_product(command){
 
 function edit_product(){
     const data = prepare_product_info("edit");
+    if (!data) {
+        document.getElementById('product-add-error-box').innerText = 'خطا: لطف موارد خواسته شده را تکمیل کند';
+        return;
+    }
     const product_id = document.getElementById("id").value;
     const xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/product/edit/" + product_id + "/");
@@ -521,8 +552,13 @@ function showMegaMenu() {
 
 var prev_cats = "";
 function fetch_types(){
-    if (!event.target.classList.contains('item'))
+    const target = event.target
+    if (!target.classList.contains('item')){
         return;
+    }
+    if (!target.classList.contains('selected')){
+        document.getElementById('types').replaceChildren('');
+    }
     const cats = get_selecteds('categories', false, true);
     console.log(cats,'categ...');
     if (prev_cats === cats){
@@ -539,34 +575,53 @@ function fetch_types(){
             for (let i=0; i < da['types'].length; ++i) {
                 let div = document.createElement('div');
                 div.dataset['id'] = da['types'][i].id;
-                div.dataset['hascolor'] = da['types'][i]['has_size'];
+                div.dataset['hascolor'] = da['types'][i]['has_color'];
                 div.dataset['hassize'] = da['types'][i]['has_size'];
                 div.innerText = da['types'][i].name;
                 div.className = 'item';
                 frag.appendChild(div);
             }
             document.getElementById('types').replaceChildren(frag);
+           
         }
     });
 }
 
 var prev_subtype = "";
 function fetch_subtypes() {
+    const colors = document.getElementById('colors');
+    const sizes = document.getElementById('sizes');
     if (!event.target.classList.contains('item'))
         return;
+        if (!event.target.classList.contains('selected')){
+            document.getElementById('subtypes').replaceChildren('');
+        }
     const cats = get_selecteds('categories', false, true);
     const st = get_selecteds('types', true, true);
+    const has_color = event.target.dataset['hascolor'];
+    const has_size = event.target.dataset['hassize'];
 
     if (prev_subtype === st){
         return;
     }
+    console.log('*********', has_color, has_size);
+    if (has_color === 'true'){
+        colors.classList.remove('hi');
+    }
+    else {
+        colors.classList.add('hi');
+    }
+    if (has_size === 'true'){
+        sizes.classList.remove('hi');
+    }
+    else 
+    {
+        sizes.classList.add('hi')
+    }
     console.log(st, 'st----------');
     if (!st)
         return;
-    const hs = event.target.dataset['hascolor'];
-    if (hs === 'true'){
-        //
-    }
+
     document.getElementById('subtypes').replaceChildren('');
     get('/shop/subtypes?cats='+ cats+'&type=' + st, function(data, status) {
         if (status == 200){
@@ -800,12 +855,11 @@ function edit_shop(){
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
     xhttp.onload = () =>{
         if(xhttp.status == 200){
-            
+            document.getElementById('drawer').hideLoader();
             document.getElementById('drawer').setContent(xhttp.responseText);
-
         }
     }
-
+    document.getElementById('drawer').showLoader();
     xhttp.send(data);
 }
 

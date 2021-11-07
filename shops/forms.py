@@ -31,7 +31,7 @@ class IntegerCSVFields(forms.Field):
         try:
             return [int(i) for i in value.split(',')]
         except:
-            raise ValidationError("Invalid ids")
+            return []
         
     
 class JsonField(forms.Field):
@@ -41,62 +41,52 @@ class JsonField(forms.Field):
         return json.loads(value)
         
 class AddProductForm(forms.Form):
-    brand = forms.IntegerField()
-    categories = IntegerCSVFields()
-    type = forms.IntegerField()
-    subtype = forms.IntegerField()
-    colors = IntegerCSVFields()
-    sizes = IntegerCSVFields()
+    brand = forms.IntegerField(required=False)
+    categories = IntegerCSVFields(required=False)
+    type = forms.IntegerField(required=False)
+    subtype = forms.IntegerField(required=False)
+    colors = IntegerCSVFields(required=False)
+    sizes = IntegerCSVFields(required=False)
     name = forms.CharField(max_length=120)
-    description = forms.CharField(max_length=500,empty_value="بدون توضیحات")
+    description = forms.CharField(max_length=500,empty_value="بدون توضیحات",required=False)
     quantity = forms.IntegerField(required=True)
-    keywords = StringTagField()
-    attrs = JsonField()
-    price = forms.IntegerField()
-    free_delivery = forms.BooleanField()
+    keywords = StringTagField(required=False)
+    attrs = JsonField(required=False)
+    price = forms.IntegerField(required=True)
+    free_delivery = forms.BooleanField(required=False)
     
     def clean_brand(self):
         id = self.cleaned_data['brand']
         brand = Brand.objects.filter(id=id).first()
-        if not brand:
-            raise ValidationError('Brand is not defined')
         return brand
     
     def clean_categories(self):
         ids = self.cleaned_data['categories']
-        cateegories = Category.objects.filter(id__in=ids)
-        if len(ids) != len(cateegories):
-            raise ValidationError('Some categories are not defined')
-        return cateegories
+        categories = Category.objects.filter(id__in=ids).all()
+        return categories
     
     def clean_type(self):
         id = self.cleaned_data['type']
         type = Type.objects.filter(id=id).first()
-        if not type:
-            raise ValidationError("Type is not defined")
         return type
     
     
     def clean_subtype(self):
         id = self.cleaned_data['subtype']
         subtype = SubType.objects.filter(id=id).first()
-        if not subtype:
-            raise ValidationError("Subtype is not defined")
         return subtype
     
     
     def clean_colors(self):
         color_ids = self.cleaned_data['colors']
-        colors = Color.objects.filter(id__in=color_ids)
-        if len(color_ids) != len(colors):
-            raise ValidationError("some colors are not defined")
+        colors = Color.objects.filter(id__in=color_ids).all()
         return colors
     
     def clean_sizes(self):
-        size_ids = self.cleaned_data['sizes']
-        sizes = Size.objects.filter(id__in=size_ids)
-        if len(size_ids) != len(sizes):
-            raise ValidationError("Some sizes are not defined")
+        size_ids = self.cleaned_data.get('sizes')
+        if not size_ids:
+            return None
+        sizes = Size.objects.filter(id__in=size_ids).all()
         return sizes 
     
     def clean_quantity(self):

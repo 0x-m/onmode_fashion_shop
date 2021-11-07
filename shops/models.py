@@ -2,7 +2,7 @@
 from typing import Dict
 from django.db import models
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator, RegexValidator
-from django.db.models.signals import post_save
+from django.db.models.signals import ModelSignal, post_save
 from django.forms.fields import JSONString, NullBooleanField
 from django.urls import utils
 from django.utils import timezone, tree
@@ -35,7 +35,8 @@ class Shop(models.Model):
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
     post_destinations = models.CharField(verbose_name=_('Postal Destinations'),max_length=1000, null=True, blank=True)
     convers_all_states = models.BooleanField(default=False, blank=True)
-    
+    max_num_of_products = models.PositiveIntegerField(verbose_name=_('#Max Allowed Product'), default=100)
+
     class Meta:
         verbose_name = _('Shop')
         verbose_name_plural = _('Shops')
@@ -130,7 +131,7 @@ class SubType(models.Model):
 
 
 class Product(models.Model):
-    shop = models.ForeignKey(verbose_name=_('Shop'),to=Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(verbose_name=_('Shop'),to=Shop, on_delete=models.CASCADE, related_name='products')
     brand = models.ForeignKey(verbose_name=_('Brand'),to=Brand, on_delete=models.CASCADE,null=True, blank=True)
     categories = models.ManyToManyField(verbose_name=_('Categories'),to=Category,related_name='products', blank=True)
     type = models.ForeignKey(verbose_name=_('Type'),to=Type,on_delete=models.CASCADE,null=True, blank=True)

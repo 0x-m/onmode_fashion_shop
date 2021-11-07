@@ -79,6 +79,7 @@
         <input onkeypress="return validateName(event);" id="name" value="{{ product.name }}" name="name" type="text" class="text" required>
         <label class="holder">نام محصول</label>
     </div>
+    <p id="product-name-error-box" style="color: red;font-size:0.7rem;margin-top:0.5rem;width:100%;text-align:right"></p>
     <div class="container horizontal w-100" style="justify-content: space-between;">
         <div class="txt-box  mt-1" style="width: 48%;">
             <input onkeypress="return isNumber(event)" id="price" value="{{ product.price }}" name="price" type="text" class="text" required>
@@ -88,6 +89,10 @@
             <input onkeypress="return isNumber(event)"  value="{{ product.quantity }}"  id="quantity" name="quantity" type="number" min="0" class="text" required>
             <label class="holder">تعداد</label>
         </div>
+    </div>
+    <div class="container horizontal w-100" style="justify-content: space-between;">
+        <p id="product-quantity-error-box" style="color: red;font-size:0.7rem;margin-top:0.5rem;text-align:right;width:50%;"></p>
+        <p id="product-price-error-box" style="color: red;font-size:0.7rem;margin-top:0.5rem;text-align:right;width:50%"></p>
     </div>
     <div class="txt-box w-100 mt-1">
         <textarea id="description" class="text" name="description" required>{{ product.description }}</textarea>
@@ -146,7 +151,7 @@
         </div>    
     </div>
 
-    <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:flex-start" class="inline-list" >
+    <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:flex-start;" class="inline-list hi" >
        {% for color in colors %}
         <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if color in product.colors.all %}inline-item--selected{% endif %}">
             <span style="background-color: {{ color.code }}" />
@@ -154,7 +159,7 @@
        {% endfor %}
        
     </div>
-    <div id="sizes" onclick="select_multi_size();" style="justify-content: flex-start;width:100%" class="inline-list mt-05">
+    <div id="sizes" onclick="select_multi_size();" style="justify-content: flex-start;width:100%" class="inline-list mt-05 hi">
        {% for size in sizes %}
         <div data-id="{{size.id}}" class="inline-item {% if size in product.sizes.all %}inline-item--selected{% endif %}">
             <span  class="ssz">{{ size.code }}</span>
@@ -220,6 +225,8 @@
     {% else %}
           <input type="submit" onclick="add_product();" class="w-100 btn cta mt-1 mb-1" value="افزودن">
     {% endif %}
+    <p id="product-add-error-box" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
+
 
 
 </div>

@@ -12,6 +12,7 @@ from .cart import Cart
 from index.utils import get_provinces
 
 
+@login_required
 def add(request:HttpRequest, product_id):
     print(request.session)
     product = Product.objects.filter(id=product_id).first()

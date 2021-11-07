@@ -1,10 +1,6 @@
-from datetime import time
-from logging import setLogRecordFactory
-from typing import Iterable, Optional
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.query_utils import select_related_descend
-from django.forms.widgets import NumberInput
 from users.models import User
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import ModelSignal, post_save
@@ -80,7 +76,11 @@ class CheckoutRequest(models.Model):
     final_amount = models.DecimalField(verbose_name=_('Final Amount'), max_digits=15, decimal_places=0, default=0)
     
     def save(self,*arg, **kwargs):
-        self.fee = math.floor((self.applicant.fee / 100) * self.amount)
+        fee = self.applicant.fee
+        promo = self.applicant.fee_promotions.last()
+        if promo.is_valid():
+            fee = promo.fee
+        self.fee = math.floor((fee / 100) * self.amount)
         self.final_amount = self.amount - self.fee
         super().save(*arg, **kwargs)
         
@@ -104,6 +104,8 @@ class CheckoutRequest(models.Model):
         if status:
             self.status = status       
         self.save()
+
+
 
 
 class TransferTransaction(models.Model):
@@ -188,3 +190,21 @@ class DepositTransaction(models.Model):
     
          
 
+
+class FeePromo(models.Model):
+    customer = models.ForeignKey(verbose_name=_('customer'),on_delete=models.CASCADE, to=User, related_name='fee_promotions')
+    date_from = models.DateTimeField(verbose_name=('date from'))
+    date_to = models.DateTimeField(verbose_name=_('date to'))
+    fee = models.PositiveIntegerField(default=0, verbose_name=_('fee'),
+                                      validators=[
+                                          MaxValueValidator(100),
+                                          MinValueValidator(100)
+                                      ])
+
+    def is_valid(self):
+        dt = timezone.now()
+        return (self.date_from <= dt <= self.date_to)
+
+
+    
+    

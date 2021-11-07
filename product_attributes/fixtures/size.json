@@ -4,8 +4,7 @@
         "pk":1,
         "fields":
         {
-            "code": "S",
-            "description": "for kids"
+            "code": "S"
         }
     },
     {
@@ -13,8 +12,7 @@
         "pk":2,
         "fields":
         {
-            "code": "M",
-            "description": "for youngs"
+            "code": "M"
         }
     },
     {
@@ -22,8 +20,7 @@
         "pk":3,
         "fields":
         {
-            "code": "L",
-            "description": "for adults"
+            "code": "L"
         }
     }
 ]
