@@ -25,7 +25,7 @@
         text-align: right;
     }
 </style>
-<div class="container vertical" style="width: 90%;justify-content:center;align-items:center;margin:1rem auto;">
+<div class="container vertical" style="width: 90%;justify-content:flex-start;align-items:center;margin:1rem auto;">
     <label class="caption">حداکثر قیمت</label>
     <input name="price_to"  oninput="change_price();" min="100000" step="100000" max="10000000" value="0" id="price-slider" type="range" style="margin-top: 1rem;margin-right:0.5rem" class="slider">
     <label style="font-size: 0.8rem;" id="slider-val">100000تومان</label>
@@ -40,93 +40,107 @@
         <input type="hidden" name="subtypes" id="subtypes">
         <input type="hidden" name="brands" id="brands">
     </div>
-    <!-- <label class="caption" for="fname"> نوع محصول</label> -->
-    <div  class="list-box" style="background-color: white">
-        <input data-target="type_list" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول...(جستجو)">
-        <div id="type_list" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-            {% for type in types %}
-                <div data-id="{{ type.id }}" class="item">
-                    {{ type.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+  
+        <div class="container horizontal w-100" style="justify-content: space-between;">
+            <div  class="list-box mt-1" style="background-color: white;width:48%">
+                <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="کتگوریها">
+                <div id="categories" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
+                 {% for category in categories %}
+                    <div data-id="{{ category.id }}" class="item">
+                        {{ category.name }}
+                        <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                    </div>
+                 {% endfor %}
                 </div>
-            {% endfor %}
+            </div>    
+            <div  class="list-box mt-1" style="background-color: white;width:48%">
+                <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
+                <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                    {% for type in types %}
+                        <div data-id = "{{type.id}}" class="item selected">
+                            {{type.name}}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>    
+        </div> 
+        <div class="container horizontal w-100" style="justify-content: space-between;margin-top:-1rem">
+            <div  class="list-box" style="background-color: white;width:48%">
+                <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
+                <div id="subtypes" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                    {% for subtype in subtypes %}
+                    <div data-id="{{subtype.id }}" class="item selected">
+                        {{subtype.name }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>  
+            <div  class="list-box" style="background-color: white;width:48%">
+                <input data-target="brands" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند">
+                <div id="brands" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
+                   {% for brand in brands %}
+                        <div data-id="{{ brand.id }}" class="item {% if brand == product.brand %}selected{% endif %}">
+                            {{ brand.name }}
+                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                        </div>
+                   {% endfor %}
+                </div>
+            </div>    
         </div>
-    </div>
-        <!-- <label class="caption" for="fname">دسته بندی</label> -->
-        <div  class="list-box" style="background-color: white">
-            <input data-target="category_list" onkeyup="listboxFilter();" type="text" class="filter" placeholder="دسته محصول...(جستجو)">
-            <div id="category_list" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-            {% for category in categories %}
-                <div data-id="{{ category.id }}" class="item">
-                    {{ category.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                </div>
-            {% endfor %}
+    
+        <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:flex-start;" class="inline-list hi" >
+           {% for color in colors %}
+            <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if color in product.colors.all %}inline-item--selected{% endif %}">
+                <span style="background-color: {{ color.code }}" />
             </div>
+           {% endfor %}
         </div>
-
-
-        <!-- <label class="caption" for="fname">رده محصول</label> -->
-        <div class="list-box" style="background-color: white;">
-            <input data-target="subtype_list" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول...(جستجو)">
-            <div  id="subtype_list" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-             {% for subtype in subtypes %}
-                <div data-id="{{ subtype.id }}" class="item">
-                    {{ subtype.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                </div>
-            {% endfor %}
+        <div id="sizes" onclick="select_multi_size();" style="justify-content: flex-start;width:100%" class="inline-list mt-05 hi">
+           {% for size in sizes %}
+            <div data-id="{{size.id}}" class="inline-item {% if size in product.sizes.all %}inline-item--selected{% endif %}">
+                <span  class="ssz">{{ size.code }}</span>
             </div>
-        </div>
-
-        <!-- <label class="caption" for="fname">برند</label> -->
-        <div class="list-box" style="background-color: white;">
-            <input data-target="brand_list" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند...(جستجو)">
-            <div  id="brand_list" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-            {% for brand in brands %}
-                <div data-id="{{ brand.id }}" class="item">
-                    {{ brand.name }}
-                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                </div>
-            {% endfor %}
-            </div>
-        </div>
-
-        <p style="font-size:0.8rem">رنگ های موجود:</p>
-        <div id="color_list" onclick="select_multi_color();" style="flex-wrap: wrap;" class="inline-list" >
-            
-            {% for color in colors %}
-                <div data-id="{{ color.id }}" class="color" style="background-color:{{color.code }};"></div>
-            {% endfor %}
-            
-        </div>  
-        <p style="font-size:0.8rem">سایز های موجود:</p>
-        <div id="size_list" onclick="select_multi_size();" class="inline-list">
-            {% for size in sizes %}
-                <div data-id="{{ size.id }}" class="size">{{ size.code }}</div>
-            {% endfor %}
-        </div>
+           {% endfor %}
+        </div> 
         <div class="container vertical" style="width: 100%;">
             <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
                 <span style="font-size: 0.8rem;">تخفیف دار</span>
                 <input class="switch" type="checkbox" id="discounted" value="true" name="discounted">
             </label>
             <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-                <span style="font-size: 0.8rem;">مرتب سازی بر اساس قیمت</span>
-                <input class="switch" type="radio"  name="order_by" value="price" checked>
+                <span style="font-size: 0.8rem;"> جدیدترینها</span>
+                <input class="switch" type="checkbox" id="discounted" value="true" name="discounted">
             </label>
             <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-                <span style="font-size: 0.8rem;">مرتب سازی براساس تاریخ</span>
-                <input  type="radio" class="switch"  name="order_by" value="date_created">
+                <span style="font-size: 0.8rem;">پرفروشترینها</span>
+                <input class="switch" type="checkbox" id="discounted" value="true" name="discounted">
             </label>
-            <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-                <span style="font-size: 0.8rem;">مرتب سازی سعودی</span>
-                <input  type="radio" class="switch" name="order_kind" value="asc" checked> 
-            </label>
-            <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-                <span style="font-size: 0.8rem;">مرتب سازی نزولی</span>
-                <input  type="radio" class="switch" name="order_kind" value="desc" > 
-            </label>
+            <div class="container horizontal mt-2 w-100" style="justify-content: space-between;">
+                <label style="font-size: 0.8rem;text-align:right;display:block; ">مرتبسازی بر اساس: </label>
+                <div>
+                    <label  class="radio-box">
+                        <input type="radio" name="order_by" style="margin: 0 0 0  0.5rem;"  value="price" checked>
+                        <span>قیمت</span>
+                    </label>
+                    <label class="radio-box" >
+                        <input type="radio" style="margin: 0 0 0 0.5rem" name="order_by" value="date">
+                        <span>تاریخ</span>
+                    </label> 
+                </div>
+            </div>
+            <div class="container horizontal mt-2 w-100" style="justify-content: space-between;">
+                <label style="font-size: 0.8rem;text-align:right;display:block;">ترتیب: </label>
+                <div>
+                    <label  class="radio-box">
+                        <input type="radio" name="order_kind" style="margin: 0 0 0  0.5rem;" value="asc" checked>
+                        <span>صعودی</span>
+                    </label>
+                    <label class="radio-box" >
+                        <input type="radio" style="margin: 0 0 0 0.5rem" name="order_kind"  value="desc" >
+                        <span>نزولی</span>
+                    </label> 
+                </div>
+            </div>
         </div> 
-        <input   type="submit" class="w-100 mt-1 btn btn-primary" value="فیلتر کن"></button>
+        <input   type="submit" class="w-100 mt-1 btn cta" value="فیلتر کن"></button>
 </div>

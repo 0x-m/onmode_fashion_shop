@@ -1,5 +1,5 @@
 import re
-from typing import OrderedDict, SupportsBytes
+from typing import DefaultDict, OrderedDict, SupportsBytes
 from django.db.models import fields
 from django.db.models.query import FlatValuesListIterable, prefetch_related_objects
 from django.forms.widgets import SelectDateWidget
@@ -105,16 +105,20 @@ class AddProductForm(forms.Form):
 
 
 class FilterForm(forms.Form):
-    price_from = forms.IntegerField()
-    price_to = forms.IntegerField()
-    categories = IntegerCSVFields()
-    types = IntegerCSVFields()
-    subtypes = IntegerCSVFields()
-    colors = IntegerCSVFields()
-    sizes = IntegerCSVFields()
-    brands = IntegerCSVFields()
-    order_by = forms.CharField(max_length=20)
+    price_from = forms.IntegerField(required=False)
+    price_to = forms.IntegerField(required=False)
+    categories = IntegerCSVFields(required=False)
+    types = IntegerCSVFields(required=False)
+    subtypes = IntegerCSVFields(required=False)
+    colors = IntegerCSVFields(required=False)
+    sizes = IntegerCSVFields(required=False)
+    brands = IntegerCSVFields(required=False)
+    discounted = forms.BooleanField(required=False)
+    top_sales = forms.BooleanField(required=False)
+    most_popular = forms.BooleanField(required=False)
     order_kind = forms.CharField(max_length=20) 
+    order_by = forms.CharField(max_length=20)
+
     
     def clean_order_by(self):
         try:

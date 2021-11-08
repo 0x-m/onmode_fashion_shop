@@ -270,7 +270,6 @@ def get_all_products(request:HttpRequest):
     })
 
 def filter(request:HttpRequest,shop_name=None):
-    
     filter_form = FilterForm(request.GET)
     discounted_only = request.POST.get('discounted')
     print(request.POST.get('discounted'))
@@ -285,8 +284,6 @@ def filter(request:HttpRequest,shop_name=None):
         order_kind = filter_form.cleaned_data['order_kind']
         price_from = filter_form.cleaned_data['price_from']
         price_to = filter_form.cleaned_data['price_to']
-        print(categories,"  ", brands, " " , colors, sizes,
-              types, subtypes,price_from, price_to )
         if order_kind == 'desc':
             order_by = '-' + order_by
         
@@ -299,11 +296,9 @@ def filter(request:HttpRequest,shop_name=None):
                             price__lte=price_to,
                             price__gte=price_from).distinct().order_by(order_by)
     
-        print("number:", len(products))
         shop = None
         if shop_name:
             shop = Shop.objects.filter(name=shop_name).first()
-            print(shop.name)
             if shop:
                 products &= Product.objects.filter(shop=shop).distinct().all()
         if discounted_only:
