@@ -111,7 +111,7 @@ def apply_coupon(request:HttpRequest, code):
 
 @login_required
 def checkout(request:HttpRequest):
-    return render(request, 'cart/checkout.html', {
+    return render(request, 'cart/cc.html', {
         'provinces': get_provinces(),
         });
 

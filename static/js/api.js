@@ -90,13 +90,7 @@ function open_cart() {
    const p = document.createElement('p')
    p.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);";
    p.innerText = "سبد خرید";
-   const v = document.createElement('a');
-   v.className = 'btn cta ';
-   v.innerText = "خرید";
-   v.href = '/cart/checkout'
-   v.style = 'text-decoration:none;width:45%;border-radius: 32px;font-size:0.8rem;border:none;padding:0.5rem;text-align:center;margin:3% auto;';
    document.getElementById('drawer').addHeader(p);
-   document.getElementById('drawer').addFooter(v)
    load_view('/cart/');
 }
 
@@ -105,7 +99,7 @@ function update_cart(){
 }
 
 function checkout() {
- //
+ load_view('/cart/checkout/');
 }
 
 function get_add_product_view(product_id) {
@@ -1097,8 +1091,7 @@ function apply_coupon(){
 }
 
 function toggle_address(){
-    console.log('check checke')
-    document.getElementById('other-address').classList.toggle('disp-none');
+    document.getElementById('other-address').classList.toggle('hi');
 
 }
 
@@ -1155,7 +1148,7 @@ function pay(){
     xhr.onload = function() {
             drawer.hideLoader();
             drawer.setContent(this.responseText);
-
+            document.getElementById('cart-num-badge').innerText = '0';
     }
     xhr.open('post','/payments/dispatch/');
     xhr.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
@@ -1299,4 +1292,33 @@ function mark__as_read(){
             target.remove();
         }
     });    
+}
+
+function filter_product(){
+    const categories = get_selecteds('filter-categories',false, true);
+    const types = get_selecteds('filter-types', false, true);
+    const subtypes = get_selecteds('filter-subtypes', false, true);
+    const brands = get_selecteds('filter-brands', false, true);
+    const  colors = document.getElementById("filter-colors").children;
+    let selected_colors = "";
+    for (let i=0; i < colors.length; ++i){
+        if (colors[i].classList.contains("inline-item--selected")){
+            selected_colors += "," + colors[i].dataset["id"];
+        }
+    }
+    const sizes = document.getElementById("filter-sizes").children;
+    let selected_sizes = "";
+    for (let i=0; i < sizes.length; ++i){
+        if (sizes[i].classList.contains("inline-item--selected")){
+            selected_sizes += "," + sizes[i].dataset["id"];
+        }
+    }
+
+    document.getElementById('categories').value = categories;
+    document.getElementById('types').value = types;
+    document.getElementById('subtypes').value = subtypes;
+    document.getElementById('brands').value = brands;
+    document.getElementById('colors').value = selected_colors;
+    document.getElementById('sizes').value = selected_colors;
+
 }

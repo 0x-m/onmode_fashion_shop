@@ -1,29 +1,15 @@
 <style>
-    .brick {
-        border: 1px solid gray;
-        border-radius: 2px;
-        text-align: center;
-        padding: 1rem;
-
-    }
     .tab-item-1 {
         font-size: 0.8rem !important;
     }
-
-
 </style>
 <div class="container vertical" style="width: 100%;">
-    <div class="brick" style="border-radius:8px;background:rgb(218, 29, 92);border:none;width:100%" >
-        <p style="font-size: 3rem;color:rgb(255, 255, 255);" class="fnt">{{user.account.balance}} تومن</p>
-    </div>
-    <div class="container horizontal" style="width: 100%;margin-top:0.3rem;justify-content:space-between;">
-        <div class="brick" style="width: 49%;border:none;">
-            <p style="font-size: 1.5rem;color:rgb(99, 99, 99)" class="fnt">15000 تومن</p>
-            <p style="font-size: 0.7rem;margin-top:0.5rem">قابل برداشت</p>
-        </div>
-        <div class="brick" style="border-radius:8px;width: 49%;border:none;background:#777">
-            <p style="font-size: 1.5rem;color:rgb(255, 255, 255)" class="fnt">27500 تومن</p>
-            <p style="font-size: 0.7rem;margin-top:0.5rem;color:white">غیرقابل برداشت</p>
+    <div class="container horizontal w-100" style="background-color: #121212;border-radius:6px">
+        <ion-icon name="wallet-outline" style="font-size:10rem;color:rgb(255, 255, 255) ;--ionicon-stroke-width: 12px;"></ion-icon>           
+        <div class="container vertical" style="justify-content: center;align-items:flex-start;line-height:2rem;color:white">
+            <p>کل موجودی:{{user.account.balance}}</p>
+            <p>قابل برداشت:sss</p>
+            <p>غیرقابل برداشت:ddd</p>
         </div>
     </div>
     <div class="tab-container">
@@ -31,7 +17,6 @@
             <div data-tab="tab-widthraw" class="tab-item tab-item-1 tab-item-selected">برداشت</div>
             <div data-tab="tab-deposit" class="tab-item tab-item-1">واریز</div>
             <div data-tab=""tab-history"" class="tab-item tab-item-1">تاریخچه</div>
-
         </div>
         <div class="tab-contents">
             <div class="tab-content tab-show-content" id="tab-widthraw">

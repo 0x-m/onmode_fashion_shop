@@ -1,3 +1,6 @@
+from django.db.models.aggregates import Avg
+from django.db.models.expressions import F
+from django.db.models.signals import pre_delete
 from orders.models import Order
 from reviews.models import Comment
 from django.db.models.query import QuerySet, RawQuerySet
@@ -15,7 +18,7 @@ from index.utils import get_provinces
 from .forms import AddProductForm, FilterForm, ShopInfoForm
 from django.contrib.staticfiles.storage import staticfiles_storage
 from random import shuffle
-
+from django.db.models import Count
 @login_required
 def check_for_shop_name(request:HttpRequest, shop_name):
     res = Shop.objects.filter(name=shop_name).exists()
@@ -271,8 +274,7 @@ def get_all_products(request:HttpRequest):
 
 def filter(request:HttpRequest,shop_name=None):
     filter_form = FilterForm(request.GET)
-    discounted_only = request.POST.get('discounted')
-    print(request.POST.get('discounted'))
+    print(request.GET.get('categories'))
     if filter_form.is_valid():
         categories = filter_form.cleaned_data['categories']
         brands = filter_form.cleaned_data['brands']
@@ -284,30 +286,53 @@ def filter(request:HttpRequest,shop_name=None):
         order_kind = filter_form.cleaned_data['order_kind']
         price_from = filter_form.cleaned_data['price_from']
         price_to = filter_form.cleaned_data['price_to']
+        discounted = filter_form.cleaned_data['discounted']
+        top_sales = filter_form.cleaned_data['top_sales']
+        most_popular = filter_form.cleaned_data['most_popular']
         if order_kind == 'desc':
             order_by = '-' + order_by
+        products = Product.objects.all()
+        if categories:
+            products &= products.filter(categories__id__in=categories)
+        if types:
+            products &= products.filter(type__id__in=types)
+        if subtypes:
+            products &= products.filter(subtype__id__in=subtypes)
+        if brands:
+            products &= products.filter(brand__id__in=brands)
+        if sizes:
+            products &= products.filter(sizes__id__in=sizes)
+        if colors:
+            products &= products.filter(color__id__in=colors)
+        if price_from:
+            products &= products.filter(price__gte=price_from)
+        if price_to:
+            products &= products.filter(price__lte=price_to)
         
-        products = Product.objects.filter(type__id__in =types,is_active=True,
-                           subtype__id__in=subtypes,
-                            categories__id__in=categories,
-                            brand__id__in=brands,
-                            sizes__id__in=sizes,
-                            colors__id__in=colors,
-                            price__lte=price_to,
-                            price__gte=price_from).distinct().order_by(order_by)
-    
         shop = None
         if shop_name:
             shop = Shop.objects.filter(name=shop_name).first()
             if shop:
-                products &= Product.objects.filter(shop=shop).distinct().all()
-        if discounted_only:
+                products &= Product.objects.filter(shop=shop)
+        if discounted:
             dt = timezone.now()
             products &= Product.objects.filter( discounts__is_active=True,
                                                 discounts__date_from__gte=dt,
                                                 discounts__date_to__lte=dt,
-                                                discounts__quantity__gt=0).distinct().all()
-       
+                                                discounts__quantity__gt=0)
+        if top_sales:
+            products &= products.annotate(
+                                        n_s=Count('sales', 
+                                        filter=Q(sales__order__state=Order.RECEIVED))).annotate(
+                                        av=Avg('n_s')).filter(
+                                        n_s__gte=F('n_s'))
+                                        
+
+        if most_popular:
+            products &= products.annotate(
+                like_count=Count('favs')).annotate(
+                    a=Avg('like_count')).filter(
+                        like_count__lte=F('a'))
         
         paginator = Paginator(products, 20)
         pg_num = request.GET.get('pg')

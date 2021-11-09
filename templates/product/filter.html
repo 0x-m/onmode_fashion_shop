@@ -1,14 +1,8 @@
 
 <style>
-    .list-box {
-        width: 100%;
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-        margin-top: 1rem;
-        padding-bottom: 0.2rem;
-    }
+
     .list-box .filter::placeholder{
-        color: #acacac;
+        color: #5f5f5f;
     }
     .list-box .filter:focus {
         color: gray;
@@ -25,7 +19,7 @@
         text-align: right;
     }
 </style>
-<div class="container vertical" style="width: 90%;justify-content:flex-start;align-items:center;margin:1rem auto;">
+<div class="container vertical" style="width: 95%;justify-content:flex-start;align-items:center;margin:1rem auto;">
     <label class="caption">حداکثر قیمت</label>
     <input name="price_to"  oninput="change_price();" min="100000" step="100000" max="10000000" value="0" id="price-slider" type="range" style="margin-top: 1rem;margin-right:0.5rem" class="slider">
     <label style="font-size: 0.8rem;" id="slider-val">100000تومان</label>
@@ -40,62 +34,57 @@
         <input type="hidden" name="subtypes" id="subtypes">
         <input type="hidden" name="brands" id="brands">
     </div>
-  
-        <div class="container horizontal w-100" style="justify-content: space-between;">
-            <div  class="list-box mt-1" style="background-color: white;width:48%">
-                <input data-target="categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="کتگوریها">
-                <div id="categories" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
-                 {% for category in categories %}
-                    <div data-id="{{ category.id }}" class="item">
-                        {{ category.name }}
-                        <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                    </div>
-                 {% endfor %}
-                </div>
-            </div>    
-            <div  class="list-box mt-1" style="background-color: white;width:48%">
-                <input data-target="types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
-                <div id="types" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-                    {% for type in types %}
-                        <div data-id = "{{type.id}}" class="item selected">
-                            {{type.name}}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>    
-        </div> 
-        <div class="container horizontal w-100" style="justify-content: space-between;margin-top:-1rem">
-            <div  class="list-box" style="background-color: white;width:48%">
-                <input data-target="subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
-                <div id="subtypes" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-                    {% for subtype in subtypes %}
-                    <div data-id="{{subtype.id }}" class="item selected">
-                        {{subtype.name }}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>  
-            <div  class="list-box" style="background-color: white;width:48%">
-                <input data-target="brands" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند">
-                <div id="brands" style="font-size:0.8rem;" onclick="listboxSelect_mono();" class="items">
-                   {% for brand in brands %}
-                        <div data-id="{{ brand.id }}" class="item {% if brand == product.brand %}selected{% endif %}">
-                            {{ brand.name }}
-                            <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
-                        </div>
-                   {% endfor %}
-                </div>
-            </div>    
+    <div  class="list-box mt-1 w-100" style="background-color: white;width:100%;border:none;">
+        <input data-target="filter-categories" onkeyup="listboxFilter();" type="text" class="filter" placeholder="کتگوریها">
+        <div id="filter-categories" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
+         {% for category in categories %}
+            <div data-id="{{ category.id }}" class="item">
+                {{ category.name }}
+                <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+            </div>
+         {% endfor %}
         </div>
-    
-        <div id="colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:flex-start;" class="inline-list hi" >
+    </div>    
+    <div  class="list-box" style="background-color: white;width:100%;border:none;margin:0">
+        <input data-target="filter-types" onkeyup="listboxFilter();" type="text" class="filter" placeholder="نوع محصول">
+        <div id="filter-types" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
+            {% for type in types %}
+                <div data-id = "{{type.id}}" class="item">
+                    {{type.name}}
+                </div>
+            {% endfor %}
+        </div>
+    </div> 
+    <div  class="list-box" style="background-color: white;width:100%;border:none;margin:0">
+        <input data-target="filter-subtypes" onkeyup="listboxFilter();" type="text" class="filter" placeholder="رده محصول">
+        <div id="filter-subtypes" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
+            {% for subtype in subtypes %}
+            <div data-id="{{subtype.id }}" class="item">
+                {{subtype.name }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>  
+    <div  class="list-box" style="background-color: white;width:100%;border:none;">
+        <input data-target="filter-brands" onkeyup="listboxFilter();" type="text" class="filter" placeholder="برند">
+        <div id="filter-brands" style="font-size:0.8rem;" onclick="listboxSelect();" class="items">
+           {% for brand in brands %}
+                <div data-id="{{ brand.id }}" class="item">
+                    {{ brand.name }}
+                    <span style="float: left;display:none;font-size:1.2rem">&#10003;</span>
+                </div>
+           {% endfor %}
+        </div>
+    </div>    
+
+        <div id="filter-colors" onclick="select_multi_color();" style="width: 100%;margin-top:0.5rem;justify-content:flex-start;" class="inline-list hi" >
            {% for color in colors %}
             <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if color in product.colors.all %}inline-item--selected{% endif %}">
                 <span style="background-color: {{ color.code }}" />
             </div>
            {% endfor %}
         </div>
-        <div id="sizes" onclick="select_multi_size();" style="justify-content: flex-start;width:100%" class="inline-list mt-05 hi">
+        <div id="filter-sizes" onclick="select_multi_size();" style="justify-content: flex-start;width:100%" class="inline-list mt-05 hi">
            {% for size in sizes %}
             <div data-id="{{size.id}}" class="inline-item {% if size in product.sizes.all %}inline-item--selected{% endif %}">
                 <span  class="ssz">{{ size.code }}</span>
@@ -108,12 +97,12 @@
                 <input class="switch" type="checkbox" id="discounted" value="true" name="discounted">
             </label>
             <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
-                <span style="font-size: 0.8rem;"> جدیدترینها</span>
-                <input class="switch" type="checkbox" id="discounted" value="true" name="discounted">
+                <span style="font-size: 0.8rem;"> محبوبترینها</span>
+                <input class="switch" type="checkbox" id="discounted" value="true" name="most-popular">
             </label>
             <label style="margin-top:1rem;width:100%;display:inline-flex;justify-content:space-between;align-items:center">
                 <span style="font-size: 0.8rem;">پرفروشترینها</span>
-                <input class="switch" type="checkbox" id="discounted" value="true" name="discounted">
+                <input class="switch" type="checkbox" id="discounted" value="true" name="top-sales">
             </label>
             <div class="container horizontal mt-2 w-100" style="justify-content: space-between;">
                 <label style="font-size: 0.8rem;text-align:right;display:block; ">مرتبسازی بر اساس: </label>
@@ -142,5 +131,5 @@
                 </div>
             </div>
         </div> 
-        <input   type="submit" class="w-100 mt-1 btn cta" value="فیلتر کن"></button>
+        <input  onmouseenter="filter_product();"  type="submit" class="w-100 mt-2 btn cta" value="فیلتر کن"></button>
 </div>

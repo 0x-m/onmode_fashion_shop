@@ -329,7 +329,7 @@
   border-bottom: 1px solid #dbdbdb;
 }
 .list-box .filter::placeholder {
-  color: #c7c7c7;
+  color: #5c5b5b;
 }
 .list-box .items {
   overflow-y: auto;

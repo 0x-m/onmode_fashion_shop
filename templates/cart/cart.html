@@ -1,20 +1,10 @@
 {% load static %}
 <div class="cart">
     {% if cart.is_empty %}
-        <cart-item pid="1"
-                   title="sdfsdfsdf"
-                   preview= "{% static 'img/sampleproduct/product-1.jpg' %}"
-                   price="1000"
-                   description="dfsfsfsfsfsfsfsfsfsfsfsfjdskfsjflksfjskfs"
-                   discounted_price="120">
-        </cart-item>
-        <cart-item pid="1"
-                    title="sdfsdfsdf"
-                    preview= "{% static 'img/sampleproduct/product-1.jpg' %}"
-                    price="1000"
-                    description="dfsfsfsfsfsfsfsfsfsfsfsfjdskfsjflksfjskfs"
-                    discounted_price="120">
-        </cart-item>
+       <div class="position--center" style="text-align: center;" >
+        <ion-icon name="cart-outline" style="font-size:10rem;color:rgb(230, 121, 121) ;--ionicon-stroke-width: 12px;"></ion-icon>           
+        <p>سبد شما خالیست!</p>
+       </div>
     {% else %}
         {% for item in cart %}
             <cart-item pid="{{item.product.id}}"
@@ -47,6 +37,7 @@
                <span id="total_price">{{ cart.get_total_price }}</span>
                 تومان
             </p>
+            <button onclick="checkout();" class="btn cta" style="padding: 0.5rem;width:50%;margin-top:1rem" >پرداخت</button>
             <!-- <a  style="display: block;text-decoration:none;border-radius:32px" href="{% url 'cart:checkout' %}" class="btn cta">خرید</a> -->
         </div>
     {% endif %}

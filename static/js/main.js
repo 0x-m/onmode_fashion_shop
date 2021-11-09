@@ -131,3 +131,7 @@ function add_attr(){
     event.target.parentNode.remove();
   }
 
+function change_price() {
+    document.getElementById('slider-val').innerText = event.target.value + 'تومان';
+    
+}
