@@ -14,7 +14,6 @@ from index.utils import get_provinces
 
 @login_required
 def add(request:HttpRequest, product_id):
-    print(request.session)
     product = Product.objects.filter(id=product_id).first()
     qunatity = request.GET.get('q',1)
     color = request.GET.get('color')
@@ -24,6 +23,7 @@ def add(request:HttpRequest, product_id):
     if request.user.is_authenticated:
         if product.shop == request.user.shop.first():
             return HttpResponseForbidden("you can not buy from yourself...!")
+        
     if qunatity:
         try:
             qunatity = int(qunatity)
@@ -31,6 +31,13 @@ def add(request:HttpRequest, product_id):
             qunatity = 1
    
     cart = Cart(request)
+    if product.discounts.last().is_valid(): 
+        qua = cart.get_item_by_id(product.id)
+        if qua: 
+            qua = int(qua['quantity'])
+            if qua >= 3:
+                return HttpResponseBadRequest('not allowed')     
+
     cart.add(product.id, qunatity)
     if size and color:
         try:

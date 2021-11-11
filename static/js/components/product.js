@@ -189,7 +189,22 @@ class Product extends HTMLElement {
     }
 
     _remove() {
-        get('/product/remove/' + this.pid + '/');
+        const iid = this.pid;
+        const self = this;
+        remove_product_dialog(function() {
+            get('/product/remove/' + iid + '/');
+            document.getElementById('drawer').close();
+            self.remove();
+
+        }, function() {
+            document.getElementById('drawer').close();
+        });
+        console.log('remove issued...');
+
+    }
+
+    _remove_confirmed() {
+
     }
 
     _render() {

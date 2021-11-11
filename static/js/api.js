@@ -153,20 +153,15 @@ function change_preview() {
 }
 
 function get_attrs(){
-    console.log('get atttrs......')
     const _attrs = document.getElementById("attr-list").children;
     let attrs = new Map();
     
     for (let i=1; i < _attrs.length; ++i){
         key_value = _attrs[i].children[0].innerHTML.split(':');
         // attrs[key_value[0]] = key_value[1];
-        attrs.set(key_value[0], key_value[1]);
+        attrs[key_value[0]] =  key_value[1];
     }
 
-    console.log(attrs.keys.length)
-    if(attrs.keys.length == 0){
-        attrs["مخشصات"] = "ندارد"
-    }
     console.log(attrs);
 
     return JSON.stringify(attrs);
@@ -184,6 +179,7 @@ function prepare_product_info(command){
     }
     let has_error = false;    
     const attrs =  get_attrs();
+    console.log(attrs)
     const name = document.getElementById("name").value;
     if (!name){
         document.getElementById('product-name-error-box').innerText = 'نام محصول را وارد کنید';
@@ -516,19 +512,66 @@ function open_favourites() {
     load_view('/favourites/');
 }
 
+
+
 //in product detail page
 function add_to_favourites() {
     const pid = document.getElementById('product_id').value;
-    get('/favourites/add/' + pid + '/', function(resp, status) {
-        if (status === 200) {
-        }
-    });
-    console.log('addddd');
-    event.target.style.color = 'red';
+    const like = event.target;
+    let counts = document.getElementById('like-counts');
+    counts_val = +counts.innerText;
+    if (like.classList.contains('liked')){
+        get('/favourites/remove/' + pid + '/',  function(resp, staus){
+            if (staus === 200) {
+                if (counts_val > 0)
+                    counts_val -=1
+                counts.innerText = counts_val;
+                like.classList.remove('liked');
 
-  
+            }
+        })
+    }   
+    else {
+        get('/favourites/add/' + pid + '/', function(resp, status) {
+            if (status === 200) {
+                like.classList.add('liked');
+                counts_val +=1;
+                counts.innerHTML = counts_val;
+                open_favourites()
+            }
+        });
+       
+    }  
 }
 
+function remove_product_dialog(accept, reject){
+    console.log('remove product dialog...');
+    const temp = document.getElementById('remove-dialog-box').content.cloneNode(true);
+    temp.getElementById('accept-button').addEventListener('click', accept);
+    temp.getElementById('reject-button').addEventListener('click', reject);
+    document.getElementById('drawer').open();
+    document.getElementById('drawer').setcc(temp);
+}
+
+function add_to_cart_in_detail_page(){
+
+    let color = null, size = null;
+    const id = document.getElementById('product_id').value;
+    try{
+        color = 
+            document.getElementById('product_colors')?.getElementsByClassName('inline-item--selected')?.dataset['id'];
+
+        size = document.
+        getElementById('product_sizes').
+        getElementsByClassName('inline-item--selected').dataset['id'];
+    }
+    catch {}
+    get('/cart/add/' + id + '/?' + 'color=' + color + ';size=' + size, function() {
+        update_cart_badge('add');
+        open_cart();
+    });
+
+}
 
 function open_mobile_menu() {
     const d = document.getElementById('drawer');
@@ -838,7 +881,7 @@ function edit_shop(){
     for (let i=0; i < states.length; i++){
         if( states[i].classList.contains("selected")){
             let t = states[i].innerText;
-            selected_states += "," + t.slice(0,t.length - 1).trim();
+            selected_states += "," + t.slice(0,t.length).trim();
         }
     }
 

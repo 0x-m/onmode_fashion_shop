@@ -3,6 +3,9 @@
 {% load render_products %}
 
 {% block content %}
+<div class="container horizontal mt-1">
+    <button style="width: 15%;padding-left: 0.5rem;padding-right:0.5rem;margin-left:0;font-size:0.8rem" onclick="show_filter();" class="btn-tiny">فیلتر</button>
+</div>
 <div class="container horizontal" style="flex-wrap: wrap;width: 95%; margin:1.5rem auto;justify-content:center; align-items:flex-start">
     {% render_products page.object_list %}
 </div>
@@ -20,4 +23,10 @@
      <a class="page-item" href="?pg={{page.next_page_number}}">&raquo;</a>
     {% endif %}
  </div>
+ <template id="filter_box">
+    <form onsubmit="filter_product();" action="{% url 'shops:all_product_filter' %}" method="GET">
+        {% include 'product/filter.html' %}
+    </form>
+</template>
+
 {% endblock %}

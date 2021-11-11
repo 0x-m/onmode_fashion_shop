@@ -245,6 +245,13 @@ class Cart():
         return code[:len(code) - 1]
     
     
+    def get_item_by_id(self, id):
+        item = None
+        print('in cart this is the id',id)
+        if str(id) in self.cart.keys():
+           item =  self.cart[str(id)]
+        return item
+    
     def check_for_valid_discount(self,product: Product):
         disc =  product.discounts.all().last()
         print (type(disc))

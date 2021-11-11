@@ -91,7 +91,17 @@
 
       <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-   
+      <template id="remove-dialog-box">
+        <div class="container vertical  position--center" style="width:80%;justify-content: center;align-items:center">
+            <ion-icon name="warning-outline" 
+                 style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
+            <p style="font-size: 0.8rem;color:#121212">آیا مایل به حذف محصول انتخابی هتسید؟</p>
+            <div class="container horizontal mt-1 w-100" style="justify-content: space-between;">
+                <button class="btn cta" style="width: 48%;" id="accept-button">تایید</button>
+                <button class="btn" style="width:48%" id="reject-button">رد</button>
+            </div>
+        </div>
+      </template>
     </body>
 
 </html>

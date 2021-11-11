@@ -1,6 +1,7 @@
 {% extends 'index/base.html' %}
 {% load static %}
 {% load filter_product %}
+{% load render_products %}
 {% load jalali_tags %}
 {% block title %}{{ product.name }}{% endblock %}
 {% block content %}
@@ -39,9 +40,7 @@
         font-size: 0.7rem;
         pointer-events: none;
     }
-    .in-fav{
-        color: red !important;
-    }
+
     .in-comment{
         color: green !important;
     }
@@ -50,6 +49,18 @@
             width: 80% !important;
             margin: 2rem auto;
         }
+    }
+
+    .liked{
+        color: rgb(170, 48, 48);
+        animation-name: bit;
+        animation-duration: 0.3s;
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes bit {
+        from{ transform: scale(0,0);}
+        to {transform: scale(1.5,1.5);}
     }
 </style>
     <input type="hidden" value="{{ product.id }}" id="product_id" />
@@ -82,22 +93,22 @@
                         <span style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem">{{product.comments.all|length}}</span>
                     </p>
                     <p onclick="add_to_favourites();"  style="cursor:pointer;color:#777;justify-self: flex-start;text-align:center;display:flex;justify-content:center;align-items:center;padding:0.5rem">
-                        <ion-icon class="{% if liked == 1 %}in-fav{% endif %}" style="font-size:1.1rem;user-select:none" name="heart-outline"></ion-icon>  
-                        <span  style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;user-select:none;">{{product.favs.all|length}}</span>
+                        <ion-icon class="{% if liked == 1 %} liked {% endif %}" style="font-size:1.1rem;user-select:none" name="heart-outline"></ion-icon>  
+                        <span id="like-counts" style="font-size: 0.8rem;font-weight:10;margin-right:0.3rem;user-select:none;">{{product.favs.all|length}}</span>
                     </p>
                     {% if product.discounts.last.is_valid %}
-                    <span style="border-radius:4px;font-size: 0.8rem;font-weight:10;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:rgb(199, 15, 15);color:#fff">{{ product.discounts.last.percent }}%</span>
+                    <span style="border-radius:4px;font-size: 0.8rem;font-weight:10;margin-right:0.3rem;padding:0.5rem;position:absolute;left:10px;background:#121212;color:#fff;font-weight:bold">{{ product.discounts.last.percent }}%</span>
                     {% endif %}
                 </div>
               
-                <p class="product-description">
-                  {{product.description}}
+                <p style="word-wrap: break-word;" class="product-description">
+                  {{product.description|truncatewords:100}}
                 </p>   
                 <div class="product-prices">
                     
                     {% if product.discounts.last.is_valid %}
                     <span class="product-price">{{product.price}} تومان</span>
-                    <span class="product-discounted-price">{{product.discount.last.get_discounted_price}} تومن</span>    
+                    <span class="product-discounted-price">{{product.discounts.last.get_discounted_price}} تومن</span>    
                     {% else %}
                     <span style="font-size: 1rem;color:gray">{{product.price}}تومن</span>
                     {% endif %}
@@ -114,7 +125,7 @@
                     {% if product.shop.convers_all_states %}
                     امکان ارسال به : سراسر ایران
                     {% else %}
-                    امکان ارسال به استانهای: {{product.shop.post_destinations}}    
+                    امکان ارسال به استانهای: {{ product.shop.post_destinations }}    
 
                     {% endif %}
                 </p>
@@ -122,109 +133,36 @@
                 <div class="product-options" style="flex-direction: column;display:flex">
                     {% if  product.type.has_color %}
                         <div id="colors" onclick="select_color();" style="width: 100%;margin-top:0.5rem;justify-content:center" class="inline-list" >
-                            {% for color in colors %}
-                            <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if color in product.colors.all %}inline-item--selected{% endif %}">
+                            {% for color in product.colors.all %}
+                            <div title="{{color.name}}" data-id="{{ color.id }}" class="inline-item {% if forloop.counter == 1 %}inline-item--selected{% endif %}">
                                 <span style="background-color: {{ color.code }}" />
                             </div>
                             {% endfor %}
-                            <div title="{{color.name}}" class="inline-item">
-                                <span class="color" style="background-color: red" />
-                            </div>
-                            <div title="{{color.name}}"  class="inline-item">
-                                <span class="color" style="background-color: rgb(231, 97, 97)" />
-                            </div>
-                            <div title="{{color.name}}" class="inline-item">
-                                <span class="color" style="background-color: rgb(56, 53, 53)" />
-                            </div>
-                            <div title="{{color.name}}"  class="inline-item">
-                                <span class="color" style="background-color: rgb(255, 255, 255)" />
-                            </div>
-                            <div title="{{color.name}}" class="inline-item">
-                                <span class="color" style="background-color: rgb(56, 53, 53)" />
-                            </div>
-                            <div title="{{color.name}}"  class="inline-item">
-                                <span class="color" style="background-color: rgb(255, 255, 255)" />
-                            </div>
-                            <div title="{{color.name}}" class="inline-item">
-                                <span class="color" style="background-color: rgb(56, 53, 53)" />
-                            </div>
-                            <div title="{{color.name}}"  class="inline-item">
-                                <span class="color" style="background-color: rgb(255, 255, 255)" />
-                            </div>
-
                         </div>           
                     {% endif %}
                     {% if product.type.has_size %}
                     <div id="sizes" onclick="select_size();" style="justify-content:center;width:100%;" class="inline-list mt-05">
-                        {% for size in sizes %}
-                         <div data-id="{{size.id}}" class="inline-item {% if size in product.sizes.all %}inline-item--selected{% endif %}">
+                        {% for size in product.sizes.all %}
+                         <div data-id="{{size.id}}" class="inline-item {% if forloop.counter == 1 %}inline-item--selected{% endif %}">
                              <span  class="ssz">{{ size.code }}</span>
                          </div>
                         {% endfor %}
-                        <div data-id="{{size.id}}" class="inline-item ">
-                            <span  class="ssz">XX</span>
-                        </div>
-                        <div data-id="{{size.id}}" class="inline-item ">
-                            <span  class="ssz">XX</span>
-                        </div>                        <div data-id="{{size.id}}" class="inline-item ">
-                            <span  class="ssz">XX</span>
-                        </div>
-                     </div> 
-                             
+                     </div>           
                      {% endif %}
                 </div>
+                {% if not product.shop == user.shop.first %}
                 <div class="product-actions">
-                    <button class="btn cta" style="width: 50%;margin:0rem auto;">میخرم</button>
+                    <button  class="btn cta" onclick="add_to_cart_in_detail_page();" style="width: 50%;margin:0rem auto;">میخرم</button>
                 </div>
+
+            {% endif %}
             </div>
         </div> 
 </div>
 <div  style="margin:1rem auto;width:85%" class="splide" id="related_products" data-splide='{ "autoplay": "true", "interval": "4000","perPage":4, "pagination":"false"}'>
 	<div class="splide__track">
 		<ul class="splide__list">
-            
-			<li  class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-2.jpg' %}"></om-product>
-            </li>
-			<li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-			<li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-3.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-4.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-5.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-6.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-7.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-5.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-4.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-1.jpg' %}"></om-product>
-            </li>
-            <li class="splide__slide">
-                <om-product title="my aaa" price="2500 تومان" discountedprice="4500 تومان" preview="{% static 'img/sampleproduct/product-2.jpg' %}"></om-product>
-            </li>
+            {% render_products related_products  %}    
 		</ul>
 	</div>
 </div>
@@ -239,17 +177,38 @@
         </div>
         <div class="tab-contents">
             <div id="specs" class="tab-content tab-show-content">
+                <p style="max-width: 90%;;word-wrap:break-word;line-break:strict;margin:1rem auto;line-height:1.6rem;font-size:0.8rem;color:#121212">
+                    {{product.description}}
+                </p>
                 <div style="display: flex;flex-direction:column;padding:0.5rem">
-                    {% comment %}
-                    {% for key,value in product.attrs %}
+                    {% for key,value in product.attrs.items %}
                         <div  style="margin:0.2rem;padding: 0.5rem;background-color:#fcfcfc">
                             <span style="font-size: 0.8rem;">{{ key }}:</span>
                             <span style="font-size: 0.8rem;">{{ value }}</span>
                         </div>
                     {% endfor %}
-                    {% endcomment %}
-                    {{product.get_attributes}}
+                    {% if product.type.has_color %}
+                    <div  style="margin:0.2rem;padding: 0.5rem;background-color:#fcfcfc">
+                        <span style="font-size: 0.8rem;">رنگبندی:</span>
+                        <span style="font-size: 0.8rem;">
+                        {% for c in product.colors.all %}
+                            {{c.name }}&nbsp;,
+                        {% endfor %}
+                        </span>
+                    </div>
+                    {% endif %}
+                    {% if product.type.has_size %}
+                    <div  style="margin:0.2rem;padding: 0.5rem;background-color:#fcfcfc">
+                        <span style="font-size: 0.8rem;">سایزبندی:</span>
+                        <span style="font-size: 0.8rem;">
+                        {% for s in product.sizes.all %}
+                            {{ s.code }}&nbsp;,
+                        {% endfor %}
+                        </span>
+                    </div>
+                    {% endif %}
                 </div>
+
             </div>
             <div id="comments" class="tab-content">
                 {% if user.is_authenticated %}
