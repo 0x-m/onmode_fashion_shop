@@ -1,3 +1,8 @@
+document.addEventListener('keydown', function(e) {
+    if (e.keyCode == 27){
+        document.getElementById('drawer').close();
+    }
+})
 let product_attrs = new Map()
  //--------------------searchbox-----------------------------------------------
  function toggle_search_box(){

@@ -19,7 +19,7 @@
         <select  required onchange="get_cities('cus-cities');"  name="state"  style="width: 48%;">
             <option value="-1" disabled selected>استان</option>
             {% for province in provinces %}
-                <option  value="{{province.id}}">{{province.name}}</option>
+                <option  value="{{province.name}}" data-pid="{{province.id}}"">{{province.name}}</option>
             {% endfor %}
         </select>
         <select name="city" id="cus-cities" style="width: 48%;">

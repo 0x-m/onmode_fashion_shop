@@ -7,10 +7,15 @@
         pid="{{product.id}}"
         link="{{ product.get_absolute_url }}"
         price="{{product.price}} تومان" 
+        quantity="{{product.quantity}}"
         {%if product.discounts.last.is_valid  %}
         discountedprice="{{product.discounts.last.get_discounted_price }}تومان" 
         badge = "{{ product.discounts.last.percent }}%"
         badgeclass="badge-red"
+        {% endif %}
+        {% if  product.quantity == 0 %}
+            badge = "ناماموجود"
+            badgeclass="badge-red"
         {% endif %}
         {% if product.images.first.image %}
         preview="{{ product.images.first.image.url }}"

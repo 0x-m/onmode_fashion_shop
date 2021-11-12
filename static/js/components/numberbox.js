@@ -8,6 +8,7 @@ numbox_template.innerHTML = `
     #container {
         display: flex;
         border: 1px solid #efefef;
+        border-radius: 6px;
         user-select: none;
         background:white;
     }
@@ -109,6 +110,8 @@ class NumberBox extends HTMLElement {
     }
 
     _increment() {
+        if (this.value == this.maxValue)
+            return;
         this.setAttribute('value', ++this.value);
         this.dispatchEvent(this.incrementEvent);
     }

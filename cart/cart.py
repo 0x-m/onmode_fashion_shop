@@ -93,7 +93,7 @@ class Cart():
         logger.info('quantity increment is issued...product:%s' % product_id)
         id = str(product_id)
         if id in self.cart:
-            q = Product.objects.filter(id=product_id).first().quantity;
+            q = Product.objects.filter(id=id).first().quantity;
             desired_q = int(self.cart[id]['quantity'])
             if ( desired_q +1 <= q):
                 self.cart[id]['quantity'] +=1

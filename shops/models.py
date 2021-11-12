@@ -146,7 +146,7 @@ class Product(models.Model):
     ])
     
     def decrement_quantity(self,q):
-        if self.quantity > q :
+        if self.quantity >= q :
             self.quantity -=q
         else:
             raise ValueError()

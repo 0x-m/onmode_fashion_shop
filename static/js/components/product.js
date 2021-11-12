@@ -124,6 +124,12 @@ class Product extends HTMLElement {
         return (val === '') || (val === 'true');
     }
     
+    get qunatity(){
+        let q = Number(this.getAttribute('quantity'));
+        return q;
+
+    }
+
     _command(cmd) {
         console.log('ccc..........');
         if (!(cmd === 'add' || cmd === 'remove' || cmd === 'edit'))
@@ -203,10 +209,6 @@ class Product extends HTMLElement {
 
     }
 
-    _remove_confirmed() {
-
-    }
-
     _render() {
         const parts = this.querySelectorAll('.link, .product-preview, .name, .realprice, .offprice, .badge');
         parts[0].href=this.link;
@@ -226,9 +228,12 @@ class Product extends HTMLElement {
         }
 
         if (!this.badge) {
-            this.querySelector('.badge').classList.add('hide');
+            this.querySelector('.badge').classList.add('hi');
         }
 
+        if (this.qunatity === 0 && this.editable == false){
+            this.querySelector('#a1').classList.add('hi');
+        }
     }
 
 

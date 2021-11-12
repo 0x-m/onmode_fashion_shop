@@ -28,6 +28,7 @@
     HTMLElement.prototype.constructor = HTMLElement;
     Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
   })();
+
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -65,21 +66,36 @@ var CartItem = /** @class */ (function (_super) {
         this.querySelector('.remove').addEventListener('click', this._remove);
         var quant = this.querySelector('.quantity');
         quant.setAttribute('value', (_a = this.quantity) !== null && _a !== void 0 ? _a : "1");
-        quant.addEventListener('onincrement', function () { get('/cart/increment/' + _this._pid + '/', function (resp, status) { 
-            update_cart_badge('increment'); 
-            const s = JSON.parse(resp);
-            document.getElementById('total_price').innerText = s['total'];
-            document.getElementById("in-cart-num").innerText = s['num'];
-
-        }); });
-        quant.addEventListener('ondecrement', function () { get('/cart/decrement/' + _this._pid + '/', function (resp, status) { 
-            update_cart_badge('decrement'); 
-            const s = JSON.parse(resp);
-            document.getElementById('total_price').innerText = s['total'];
-            document.getElementById("in-cart-num").innerText = s['num'];
-
-
-        }); });
+        quant.setAttribute('maxValue', this.max_quantity);
+        quant.addEventListener('onincrement', function () {
+            get('/cart/increment/' + _this._pid + '/', function (resp, status) {
+                if (status === 200) {
+                    console.log(resp);
+                    update_cart_badge('increment');
+                    var c = document.getElementById('total_price');
+                    var xx = document.getElementById('in-cart-num');
+                    if (c) {
+                        var sss = JSON.parse(resp);
+                        c.innerText = sss['total'];
+                        xx.innerText = sss['num'];
+                    }
+                }
+            });
+        });
+        quant.addEventListener('ondecrement', function () {
+            get('/cart/decrement/' + _this._pid + '/', function (resp, status) {
+                if (status === 200) {
+                    update_cart_badge('decrement');
+                    var c = document.getElementById('total_price');
+                    var xx = document.getElementById('in-cart-num');
+                    if (c) {
+                        var s = JSON.parse(resp);
+                        c.innerText = s['total'];
+                        xx.innerText = s['num'];
+                    }
+                }
+            });
+        });
         this.querySelector('#colors').addEventListener('onselectedchange', function () { get('/cart/set_color/?product_id=' + _this.pid + '&color_id=' + _this.selected_color); });
         this.querySelector('#sizes').addEventListener('onselectedchange', function () { get('/cart/set_size/?product_id=' + _this.pid + '&size_id=' + _this.selected_size); });
     };
@@ -97,11 +113,19 @@ var CartItem = /** @class */ (function (_super) {
             this.querySelector('.action').classList.add('hide');
         var color_box = this.querySelector('#colors');
         var size_box = this.querySelector('#sizes');
-        color_box.appendChild(this._prepareColors());
-        size_box.appendChild(this._prepareSizes());
+        if (this.colors)
+            color_box.appendChild(this._prepareColors());
+        else
+            this.querySelector('#colors').classList.add('hi');
+        if (this.sizes)
+            size_box.appendChild(this._prepareSizes());
+        else
+            this.querySelector('#sizes').classList.add('hi');
     };
     CartItem.prototype._prepareColors = function () {
         var frag = document.createDocumentFragment();
+        if (!this.colors)
+            return;
         for (var _i = 0, _a = this.colors; _i < _a.length; _i++) {
             var color = _a[_i];
             var comboboxItem = document.createElement('combo-box-item');
@@ -117,6 +141,8 @@ var CartItem = /** @class */ (function (_super) {
     };
     CartItem.prototype._prepareSizes = function () {
         var frag = document.createDocumentFragment();
+        if (!this.sizes)
+            return;
         for (var _i = 0, _a = this.sizes; _i < _a.length; _i++) {
             var size = _a[_i];
             var comboboxItem = document.createElement('combo-box-item');
@@ -137,6 +163,13 @@ var CartItem = /** @class */ (function (_super) {
     Object.defineProperty(CartItem.prototype, "quantity", {
         get: function () {
             return this.getAttribute('quantity');
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CartItem.prototype, "max_quantity", {
+        get: function () {
+            return this.getAttribute('max_quantity');
         },
         enumerable: false,
         configurable: true
@@ -253,8 +286,6 @@ var CartItem = /** @class */ (function (_super) {
         var subs = code.split(',');
         var decoded = subs.map(function (i) {
             var d = i.split(':');
-            if (d.length !== 3)
-                throw new Error('Invalid inputs');
             var cc = {
                 id: d[0],
                 name: d[1],
@@ -268,8 +299,6 @@ var CartItem = /** @class */ (function (_super) {
         var subs = code.split(',');
         var decoded = subs.map(function (i) {
             var d = i.split(':');
-            if (d.length !== 2)
-                throw new Error('Invalid inputs');
             var c = {
                 id: d[0],
                 code: d[1]
@@ -282,6 +311,8 @@ var CartItem = /** @class */ (function (_super) {
         get: function () {
             var _a;
             var color_code = (_a = this.getAttribute('colors')) !== null && _a !== void 0 ? _a : '';
+            if (color_code == '')
+                return null;
             return this.decodeColors(color_code);
         },
         enumerable: false,
@@ -291,6 +322,8 @@ var CartItem = /** @class */ (function (_super) {
         get: function () {
             var _a;
             var size_code = (_a = this.getAttribute('sizes')) !== null && _a !== void 0 ? _a : '';
+            if (size_code === '')
+                return null;
             return this.decodeSizes(size_code);
         },
         enumerable: false,
@@ -316,9 +349,6 @@ var CartItem = /** @class */ (function (_super) {
             return function (resp, status) {
                 if (status === 200) {
                     update_cart_badge('subtract', a.quantity);
-                    const s = JSON.parse(resp);
-                    document.getElementById('total_price').innerText = s['total'];        
-                    document.getElementById("in-cart-num").innerText = s['num'];
                     a.remove();
                 }
             };

@@ -52,8 +52,34 @@ class CartItem extends HTMLElement {
         this.querySelector('.remove').addEventListener('click', this._remove);
         const quant = this.querySelector('.quantity');
         quant.setAttribute('value', this.quantity ?? "1");
-        quant.addEventListener('onincrement', () => { get('/cart/add/' + this._pid + '/', function(){update_cart_badge('increment')});});
-        quant.addEventListener('ondecrement', ()=> { get('/cart/remove/' + this._pid + '/', function() {update_cart_badge('decrement')});});
+        quant.setAttribute('maxValue', this.max_quantity);
+        quant.addEventListener('onincrement', () => { get('/cart/increment/' + this._pid + '/', function(resp, status){
+            if (status === 200){
+                update_cart_badge('increment');
+                const c = document.getElementById('total_price');
+                const xx = document.getElementById('in-cart-num');
+                if (c){
+                    const s = JSON.parse(resp);
+                    c.innerText = s['total'];
+                    xx.innerText = s['num'];
+                }
+
+            }
+        });
+        });
+        quant.addEventListener('ondecrement', ()=> { get('/cart/decrement/' + this._pid + '/', function(resp, status) {
+            if (status === 200){
+                update_cart_badge('decrement');
+                const c = document.getElementById('total_price');
+                const xx = document.getElementById('in-cart-num');
+                if (c){
+                    const s = JSON.parse(resp);
+                    c.innerText = s['total'] + 'تومان';
+                    xx.innerText = s['num'];
+                }
+
+            }
+        });});
         this.querySelector('#colors').addEventListener('onselectedchange', () => { get('/cart/set_color/?product_id=' + this.pid + '&color_id=' + this.selected_color ); });
         this.querySelector('#sizes').addEventListener('onselectedchange', () => { get('/cart/set_size/?product_id=' + this.pid + '&size_id=' + this.selected_size ); })
     }
@@ -76,14 +102,21 @@ class CartItem extends HTMLElement {
 
        const color_box = this.querySelector('#colors');
        const size_box = this.querySelector('#sizes');
-       color_box.appendChild(this._prepareColors());
-       size_box.appendChild(this._prepareSizes());
+        if (this.colors)
+           color_box.appendChild(this._prepareColors());
+        else 
+            this.querySelector('#colors').classList.add('hi');
+        if (this.sizes)
+           size_box.appendChild(this._prepareSizes());
+        else
+            this.querySelector('#sizes').classList.add('hi');
 
     }
 
 
     private _prepareColors(): DocumentFragment{
         const frag = document.createDocumentFragment();
+        if (!this.colors) return;
         for (const color of this.colors){
             const comboboxItem = document.createElement('combo-box-item');
             comboboxItem.setAttribute('caption', color.name);
@@ -100,6 +133,8 @@ class CartItem extends HTMLElement {
 
     private _prepareSizes() {
         const frag = document.createDocumentFragment();
+        if (!this.sizes) return;
+
         for (const size of this.sizes){
             const comboboxItem = document.createElement('combo-box-item');
             comboboxItem.setAttribute('caption', size.code);
@@ -117,6 +152,10 @@ class CartItem extends HTMLElement {
 
     get quantity() {
         return this.getAttribute('quantity');
+    }
+
+    get max_quantity(){
+        return this.getAttribute('max_quantity');
     }
 
     get pid(): number {
@@ -199,8 +238,6 @@ class CartItem extends HTMLElement {
         const subs = code.split(',');
         const decoded = subs.map(i => {
             const d = i.split(':');
-            if (d.length !== 3)
-                throw new Error('Invalid inputs');
             const cc: Color = {
                 id: d[0],
                 name: d[1],
@@ -216,8 +253,6 @@ class CartItem extends HTMLElement {
         const subs = code.split(',');
         const decoded = subs.map(i => {
             const d = i.split(':');
-            if (d.length !== 2)
-                throw new Error('Invalid inputs');
             const c: Size = {
                 id: d[0],
                 code: d[1]
@@ -230,11 +265,15 @@ class CartItem extends HTMLElement {
 
     get colors(){
         const color_code = this.getAttribute('colors') ?? ''
+        if (color_code == '')
+            return null;
         return this.decodeColors(color_code);
     }
         
     get sizes() {
         const size_code = this.getAttribute('sizes') ?? '';
+        if (size_code === '')
+            return null;
         return this.decodeSizes(size_code);
     }
 

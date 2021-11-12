@@ -57,6 +57,7 @@
 <div class="container vertical" style="width: 96%;margin:1rem auto;">
     {% if cart|length  > 0 %}
     <form id="custom-address">
+        <input id="amount" type="hidden" name="amount" value="{{ cart.get_total_price }}" />
         {% include 'cart/address.html' %}
         <section class="total">
             <span id="total_sum" >

@@ -1,5 +1,6 @@
+from django.contrib.admin.helpers import Fieldline, Fieldset
 from django.utils.decorators import async_only_middleware
-from .models import Order, OrderItem, OrderList
+from .models import Order, OrderAddress, OrderItem, OrderList
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
@@ -43,5 +44,9 @@ class OrderListCustomAdmin(admin.ModelAdmin):
     search_fields = ['user__phone_no']
     list_filter = ['post_method','date_created','is_paid']
     list_display = ['user','total_price','total_price_after_discount','total_price_after_applying_coupon','post_method','coupon','is_paid']
+
+@admin.register(OrderAddress)
+class CustomOrderAddress(admin.ModelAdmin):
+    fields = ['first_name', 'last_name', 'state', 'city', 'town', 'postal_code', 'description']
 
     

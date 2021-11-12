@@ -94,10 +94,6 @@ function open_cart() {
    load_view('/cart/');
 }
 
-function update_cart(){
-
-}
-
 function checkout() {
  load_view('/cart/checkout/');
 }
@@ -479,6 +475,10 @@ function update_cart_badge(cmd, val=0) {
 }
 
 
+function update_cart_summary(){
+
+}
+
 
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -744,6 +744,9 @@ function dispatch_pay() {
     }
     //------------------------------------------
     load_view('/cart/dispatcher?use_default_address=' + uda);
+    const vv = document.forms['custom-address'];
+    let fdata = new FormData(vv); 
+    window.address_form_data = fdata;
 }
 
 function login(){
@@ -1182,9 +1185,9 @@ function get_cities(pair){
 }
 
 function pay(){
+
     const amount = document.getElementById('amount').value.trim(); 
     console.log(amount);
-    const fdata = new FormData(document.forms['custom-address']);
     const xhr = new XMLHttpRequest();
     const drawer = document.getElementById('drawer');
     drawer.showLoader();
@@ -1195,7 +1198,7 @@ function pay(){
     }
     xhr.open('post','/payments/dispatch/');
     xhr.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
-    xhr.send(fdata);
+    xhr.send(window.address_form_data);
     
     // load_view('/payments/dispatch/','post',fdata);
 }
@@ -1315,7 +1318,7 @@ function send_tracking_code() {
 
 function cancel_order(){
     let id = document.getElementById('order_id').value;
-    load_view('/shop/order/' + id + '/cancel/');
+    load_view('/user/order/' + id + '/cancel/');
 }
 
 function verify_recieved_order(){
@@ -1364,4 +1367,13 @@ function filter_product(){
     document.getElementById('colors').value = selected_colors;
     document.getElementById('sizes').value = selected_colors;
 
+}
+
+function register_checkout_request(){
+    
+}
+
+function issue_deposit(){
+    const amount = document.getElementById('deposit-amount').value;
+    get('/payments/pay/?type=deposit&amount=' + amount + '/');
 }

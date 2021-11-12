@@ -2,27 +2,45 @@
 <div class="container vertical position--center" 
      style="justify-content:center;align-items:center;width: 80%;background:rgb(255, 255, 255)">
      <input id="amount" type="hidden" name="amount" value="{{ cart.get_total_price }}" />
-
-{% if  has_complete_address == 'False' %}
-    <ion-icon name="person-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
-    <p style="width: 100%;text-align:center;font-size:0.9rem;color:rgb(151, 49, 49)">لطفا مشخصات خود را تکمیل کنید</p>
-    <button onclick="get_profile()" class="btn btn-primary mt-1" style="width:50%;"> تکمیل مشخصات</button>
+{% if use_default_address %}
+    {% if user.address.is_complete %}
+        {% if has_enough_balance %}
+            <ion-icon name="wallet-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
+            <p style="width: 100%;text-align:center;font-size:0.9rem;color:rgb(151, 49, 49)">آیا با کسر  {{cart.get_total_price}}تومان از حساب خود موافقید؟</p>
+            <div class="container" style="width: 100%;justify-content:space-between">
+                <button onclick="pay();" class="btn cta mt-1" style="width:48%;"> بلی</button>
+                <button onclick="document.getElementById('drawer').close();" class="btn  mt-1" style="width:48%"> خیر</button>
+            </div>
+        {% else %}
+            <ion-icon name="sad-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
+            <p style="font-size: 0.9rem;color:rgb(243, 81, 81);width:100%;text-align:center">موجودی حساب شما کافی نیست!</p>
+            <form method="get" action="{% url 'payments:pay' %}" style="width: 100%;">
+                <input type="hidden" name="amount" value="{{cart.get_total_price }}" />
+                <input type="hidden" name="type" value="checkout" />
+                <input type="submit" class="btn btn-primary" style="margin:1rem auto;width:50%" value="پرداخت مستقیم">
+            </form>
+        {% endif %}
+    {% else %}
+        <ion-icon name="person-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
+        <p style="width: 100%;text-align:center;font-size:0.9rem;color:rgb(151, 49, 49)">لطفا مشخصات خود را تکمیل کنید</p>
+        <button onclick="get_profile()" class="btn btn-primary mt-1" style="width:50%;"> تکمیل مشخصات</button>
+    {% endif %}
 {% else %}
-{% if has_enough_balance %}
-    <ion-icon name="wallet-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
-    <p style="width: 100%;text-align:center;font-size:0.9rem;color:rgb(151, 49, 49)">آیا با کسر  {{cart.get_total_price}}تومان از حساب خود موافقید؟</p>
-    <div class="container" style="width: 100%;justify-content:space-between">
-        <button onclick="pay();" class="btn cta mt-1" style="width:48%;"> بلی</button>
-        <button onclick="document.getElementById('drawer').close();" class="btn  mt-1" style="width:48%"> خیر</button>
-    </div>
-{% else %}
-    <ion-icon name="sad-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
-    <p style="font-size: 0.9rem;color:rgb(243, 81, 81);width:100%;text-align:center">موجودی حساب شما کافی نیست!</p>
-    <form method="get" action="{% url 'payments:pay' %}" style="width: 100%;">
-        <input type="hidden" name="amount" value="{{cart.get_total_price }}" />
-        <input type="hidden" name="type" value="checkout" />
-        <input type="submit" class="btn btn-primary" style="margin:1rem auto;width:50%" value="پرداخت مستقیم">
-    </form>
-{% endif %}
+    {% if has_enough_balance %}
+        <ion-icon name="wallet-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
+        <p style="width: 100%;text-align:center;font-size:0.9rem;color:rgb(151, 49, 49)">آیا با کسر  {{cart.get_total_price}}تومان از حساب خود موافقید؟</p>
+        <div class="container" style="width: 100%;justify-content:space-between">
+            <button onclick="pay();" class="btn cta mt-1" style="width:48%;"> بلی</button>
+            <button onclick="document.getElementById('drawer').close();" class="btn  mt-1" style="width:48%"> خیر</button>
+        </div>
+    {% else %}
+        <ion-icon name="sad-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
+        <p style="font-size: 0.9rem;color:rgb(243, 81, 81);width:100%;text-align:center">موجودی حساب شما کافی نیست!</p>
+        <form method="get" action="{% url 'payments:pay' %}" style="width: 100%;">
+            <input type="hidden" name="amount" value="{{cart.get_total_price }}" />
+            <input type="hidden" name="type" value="checkout" />
+            <input type="submit" class="btn btn-primary" style="margin:1rem auto;width:50%" value="پرداخت مستقیم">
+        </form>
+    {% endif %}
 {% endif %}
 </div>

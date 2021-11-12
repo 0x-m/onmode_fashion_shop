@@ -100,11 +100,9 @@ def reject_order(request:HttpRequest,order_id):
 
 @login_required
 def cancell_order(request:HttpRequest, order_id):
-    order = Order.objects.filter(id=order_id).first()
+    order = request.user.orders.filter(id=order_id).first()
     if not order:
         return HttpResponseBadRequest('order not found...')
-    if not order.order_list.user == request.user:
-        return HttpResponseForbidden('you are not allowed...')
     
     if order.state == Order.PENDING:
         order.cancell()

@@ -3,8 +3,9 @@ from django.db import models
 from django.db.models.query_utils import select_related_descend
 from users.models import User
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import ModelSignal, post_save
+from django.db.models.signals import ModelSignal, post_migrate, post_save
 from django.utils import timezone, tree
+from django.dispatch import receiver
 import math
 from django.db.models.aggregates import Sum
 class Account(models.Model):
@@ -130,17 +131,19 @@ class TransferTransaction(models.Model):
         verbose_name = _('Transfer Transaction')
         verbose_name_plural = _('Transfer Tranactions')
     
- 
-    
-    def __prepare(self):
-        self.debtor.withdraw(self.amount)
-          
+
     def commit(self):
         if self.state == self.PENDING:
             self.creditor.deposit(self.amount)
             self.state = self.COMMITTED
             self.save()
-        
+      
+    @classmethod
+    def when_created(cls, sender, instance, created, *args, **kwargs):
+        if created:
+            instance.debtor.withdraw(instance.amount)
+            instance.save()  
+    
     def reject(self):
         if self.state == self.PENDING:
             self.debtor.deposit(self.amount)
@@ -154,12 +157,13 @@ class TransferTransaction(models.Model):
             self.state = self.ROLLBACKED
             self.save()
 
-    def save(self, **kwargs) -> None:
-        self.__prepare()
-        return super().save(**kwargs)
+    
+    # def save(self, **kwargs) -> None:
+    #     self.__prepare()
+    #     return super().save(**kwargs)
 
+post_save.connect(TransferTransaction.when_created, sender=TransferTransaction)
 
-        
 class DepositTransaction(models.Model):
     PENDING = 'pending'
     COMMITTED = 'committed'

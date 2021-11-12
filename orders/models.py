@@ -179,10 +179,9 @@ class Order(models.Model):
             self.save()
             
     def save(self, **kwargs):
-        if self.verify_sent:
-            self.state = self.SENT
-        else:
-            self.state = self.SENT_BUT_NOT_VERIFIED
+        if self.state == self.SENT_BUT_NOT_VERIFIED:
+            if self.verify_sent:
+                self.state = self.SENT
         super().save(**kwargs) 
         
     # @classmethod
@@ -218,8 +217,9 @@ class Order(models.Model):
     def cancell(self):
         if self.state == self.PENDING:
             if self.transaction:
+                print('inside cancel....')
                 self.transaction.reject()
-                self.state == self.CANCELLED
+                self.state = self.CANCELLED
                 self.save()
     def register_tracking_code(self,t_code):
         self.tracking_code = t_code

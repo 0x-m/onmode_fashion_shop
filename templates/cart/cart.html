@@ -16,6 +16,7 @@
                     colors="{{ item.colors }}" 
                     sizes="{{ item.sizes }}" 
                     quantity="{{item.quantity}}"
+                    max_quantity="{{item.product.quantity}}"
                     {% if item.product.has_valid_discount %}
                     discounted
                     discounted_price={{item.discounted_price }}

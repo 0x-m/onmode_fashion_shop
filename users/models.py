@@ -21,7 +21,7 @@ class CustomUserManager(UserManager):
       u.save(using=self._db)
     
 
-
+    
 class User(AbstractUser):
     username = None
     email = models.EmailField(verbose_name=_('Email'),unique=True,null=True,blank=True)

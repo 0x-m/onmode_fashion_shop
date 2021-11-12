@@ -101,8 +101,6 @@ class Drawer extends HTMLElement {
         this.querySelector('.content').style.overflow = 'auto';
     }
 
-
-
     setContent(val) {
         this.querySelector('.content').innerHTML = val;
     }

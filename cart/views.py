@@ -23,7 +23,9 @@ def add(request:HttpRequest, product_id):
     if request.user.is_authenticated:
         if product.shop == request.user.shop.first():
             return HttpResponseForbidden("you can not buy from yourself...!")
-        
+    if product.quantity == 0:
+        return HttpResponseBadRequest()
+     
     if qunatity:
         try:
             qunatity = int(qunatity)
@@ -31,7 +33,8 @@ def add(request:HttpRequest, product_id):
             qunatity = 1
    
     cart = Cart(request)
-    if product.discounts.last().is_valid(): 
+    discount = product.discounts.last()
+    if discount and discount.is_valid(): 
         qua = cart.get_item_by_id(product.id)
         if qua: 
             qua = int(qua['quantity'])
@@ -137,13 +140,17 @@ def dispatcher(request: HttpRequest):
     ua = Address.objects.filter(user=request.user).first()
     if ua:
         has_address = ua.is_complete()
-    print(uda, has_address, '----------------------------')
-    adds =  has_address == True and uda == 'true'
-    print(adds,'aaaaaaaassasas')
+    has_complete_address =  False
+    try:
+        has_complete_address = request.user.address.is_complete()
+    except:
+        pass
+    
     hs = request.user.account.has_enough_balance(c.get_total_price())
     return render(request, 'cart/dispatcher.html', {
         'has_enough_balance': hs,
-        'has_complete_address': str(adds),
+        'has_complete_address': has_complete_address,
+        'use_default_address': uda,
     })
 
 @login_required
