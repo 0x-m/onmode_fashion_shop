@@ -1,7 +1,7 @@
 
 const cartItemTemplate = document.createElement('template');
 cartItemTemplate.innerHTML = `   
-    <img class="preview" style="width:96px" />
+    <a href="" id="link"><img class="preview" style="width:96px" /></a>
     <span class="remove"></span>
     <span class="cart-badge"></span>
     <number-box class="quantity"></number-box>
@@ -100,6 +100,11 @@ class CartItem extends HTMLElement {
        if (this.noteditable)
         this.querySelector('.action').classList.add('hide');
 
+
+
+        if (this.link){
+            this.querySelector('#link').href = this.link;
+        }
        const color_box = this.querySelector('#colors');
        const size_box = this.querySelector('#sizes');
         if (this.colors)
@@ -263,6 +268,10 @@ class CartItem extends HTMLElement {
         return decoded;
     }
 
+    get link() {
+        return this.getAttribute('link');
+    }
+
     get colors(){
         const color_code = this.getAttribute('colors') ?? ''
         if (color_code == '')
@@ -306,7 +315,10 @@ class CartItem extends HTMLElement {
         get('/cart/remove/' + this.pid + '/', (function(a) {
           return function(resp, status){
             if (status === 200){
-                update_cart_badge('subtract',a.quantity);
+                update_cart_badge('subtract', a.quantity);
+                const s = JSON.parse(resp);
+                document.getElementById('total_price').innerText = s['total'];        
+                document.getElementById("in-cart-num").innerText = s['num'];
                 a.remove();
             }
         }})(this));

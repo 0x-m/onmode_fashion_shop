@@ -1,13 +1,14 @@
-from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator
+from django.core.validators import  MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models.query_utils import select_related_descend
 from users.models import User
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import ModelSignal, post_migrate, post_save
-from django.utils import timezone, tree
-from django.dispatch import receiver
 import math
+from django.utils import timezone
 from django.db.models.aggregates import Sum
+
+
+
 class Account(models.Model):
     user = models.OneToOneField(verbose_name=_('User'),to=User,on_delete=models.CASCADE,related_name='account')
     balance = models.DecimalField(verbose_name=_('Balance'),max_digits=15,decimal_places=0,default=0)
@@ -51,7 +52,6 @@ class Account(models.Model):
 post_save.connect(Account.create_account_for_user, sender=User)
 
     
-    
 class CheckoutRequest(models.Model):
     PENDING = 'pending'
     ACCEPTED  = 'accepted'
@@ -65,45 +65,50 @@ class CheckoutRequest(models.Model):
     class Meta:
         verbose_name = _('Checkout request')
         verbose_name_plura = _('Checkout requests')
-    applicant = models.ForeignKey(verbose_name=_('Applicant'),to=User,related_name='Checkouts', on_delete=models.CASCADE, null=True)
-    intendant = models.OneToOneField(verbose_name=_('Intendant'),to=User,related_name='intendant_checkouts', null=True, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(verbose_name=_('Applicant'),to=User,related_name='checkouts', on_delete=models.CASCADE,blank=True, null=True)
+    intendant = models.OneToOneField(verbose_name=_('Intendant'),to=User,related_name='intendant_checkouts',blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(verbose_name=_('Date created'),default=timezone.now)
-    data_accomplished = models.DateTimeField(verbose_name=_('Accomplished date'), default=timezone.now)
-    amount = models.DecimalField(verbose_name=_('Amount'),max_digits=15,decimal_places=0,default=timezone.now)
-    description = models.TextField(verbose_name=_('Description'),max_length=500,null=True)
+    data_accomplished = models.DateTimeField(verbose_name=_('Accomplished date'), blank=True, null=True)
+    amount = models.DecimalField(verbose_name=_('Amount'),max_digits=15,decimal_places=0,default=0, blank=True, null=True)
     state = models.CharField(verbose_name=_('state'),choices=STATES,default='pending',max_length=20)
-    status = models.TextField(verbose_name=_('status'),max_length=500, null=True)
-    fee = models.DecimalField(verbose_name=_('Fee'),decimal_places=0,max_digits=15, default=0)
+    status = models.CharField(verbose_name=_('status'),max_length=500, null=True, blank=True)
+    fee_amount = models.DecimalField(verbose_name=_('Fee amount'),decimal_places=0,max_digits=15, default=0)
+    fee_percent = models.PositiveBigIntegerField(verbose_name=_('fee percent'), validators=
+                                                 [MinValueValidator(0),
+                                                 MaxValueValidator(100)], default=0)
     final_amount = models.DecimalField(verbose_name=_('Final Amount'), max_digits=15, decimal_places=0, default=0)
     
     def save(self,*arg, **kwargs):
         fee = self.applicant.fee
         promo = self.applicant.fee_promotions.last()
-        if promo.is_valid():
+        if promo and promo.is_valid():
             fee = promo.fee
-        self.fee = math.floor((fee / 100) * self.amount)
-        self.final_amount = self.amount - self.fee
+        self.fee_percent = fee
+        self.fee_amount = math.floor((fee / 100) * float(self.amount))
+        self.final_amount = self.amount - self.fee_amount
         super().save(*arg, **kwargs)
         
     class Meta:
         verbose_name = _('Checkout Request')
         verbose_name_plural = _('Checkout Requests')
     
+    def __str__(self) -> str:
+        return 'Checkout Request Number: ' + str(self.id)
+    
     def accept(self,intendant:User):
+        if not self.state == self.PENDING:
+            return;
         self.state = self.ACCEPTED
         #-------- othr actions------
         self.intendant = intendant #who verify this transaction
         self.applicant.account.withdraw(self.amount)
+        self.data_accomplished = timezone.now()
         self.save()
     
     def reject(self,status=None):
-        if not self.state == self.ACCEPTED:
+        if not self.state == self.PENDING:
             return
-        self.state = self.REJECTED
-        #--------other actions-------
-        #----------------------------
-        if status:
-            self.status = status       
+        self.state = self.REJECTED 
         self.save()
 
 
@@ -158,6 +163,7 @@ class TransferTransaction(models.Model):
             self.save()
 
     
+  
     # def save(self, **kwargs) -> None:
     #     self.__prepare()
     #     return super().save(**kwargs)

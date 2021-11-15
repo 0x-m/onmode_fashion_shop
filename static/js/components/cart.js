@@ -45,7 +45,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var cartItemTemplate = document.createElement('template');
-cartItemTemplate.innerHTML = "   \n    <img class=\"preview\" style=\"width:96px\" />\n    <span class=\"remove\"></span>\n    <span class=\"cart-badge\"></span>\n    <number-box class=\"quantity\"></number-box>\n\n    <div class=\"detail\">\n        <h3 class=\"title\"></h3>\n        <h5 class=\"boutique\"></h5>\n        <p class=\"description\"></p>\n        <span class=\"price\"></span>\n        <span class=\"discounted_price\"></span>\n        <div class=\"action\">\n            <combo-box id=\"colors\" placeholder=\"\u0631\u0646\u06AF\">\n            </combo-box>\n            <combo-box id=\"sizes\" placeholder=\"\u0633\u0627\u06CC\u0632\"></combo-box>\n        </div>\n    </div>\n    \n";
+cartItemTemplate.innerHTML = "   \n    <a href=\"\" id=\"link\"><img class=\"preview\" style=\"width:96px\" /></a>\n    <span class=\"remove\"></span>\n    <span class=\"cart-badge\"></span>\n    <number-box class=\"quantity\"></number-box>\n\n    <div class=\"detail\">\n        <h3 class=\"title\"></h3>\n        <h5 class=\"boutique\"></h5>\n        <p class=\"description\"></p>\n        <span class=\"price\"></span>\n        <span class=\"discounted_price\"></span>\n        <div class=\"action\">\n            <combo-box id=\"colors\" placeholder=\"\u0631\u0646\u06AF\">\n            </combo-box>\n            <combo-box id=\"sizes\" placeholder=\"\u0633\u0627\u06CC\u0632\"></combo-box>\n        </div>\n    </div>\n    \n";
 var CartItem = /** @class */ (function (_super) {
     __extends(CartItem, _super);
     function CartItem() {
@@ -70,14 +70,13 @@ var CartItem = /** @class */ (function (_super) {
         quant.addEventListener('onincrement', function () {
             get('/cart/increment/' + _this._pid + '/', function (resp, status) {
                 if (status === 200) {
-                    console.log(resp);
                     update_cart_badge('increment');
                     var c = document.getElementById('total_price');
                     var xx = document.getElementById('in-cart-num');
                     if (c) {
-                        var sss = JSON.parse(resp);
-                        c.innerText = sss['total'];
-                        xx.innerText = sss['num'];
+                        var s = JSON.parse(resp);
+                        c.innerText = s['total'];
+                        xx.innerText = s['num'];
                     }
                 }
             });
@@ -90,7 +89,7 @@ var CartItem = /** @class */ (function (_super) {
                     var xx = document.getElementById('in-cart-num');
                     if (c) {
                         var s = JSON.parse(resp);
-                        c.innerText = s['total'];
+                        c.innerText = s['total'] + 'تومان';
                         xx.innerText = s['num'];
                     }
                 }
@@ -111,6 +110,9 @@ var CartItem = /** @class */ (function (_super) {
         this.toggleBage();
         if (this.noteditable)
             this.querySelector('.action').classList.add('hide');
+        if (this.link) {
+            this.querySelector('#link').href = this.link;
+        }
         var color_box = this.querySelector('#colors');
         var size_box = this.querySelector('#sizes');
         if (this.colors)
@@ -307,6 +309,13 @@ var CartItem = /** @class */ (function (_super) {
         });
         return decoded;
     };
+    Object.defineProperty(CartItem.prototype, "link", {
+        get: function () {
+            return this.getAttribute('link');
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(CartItem.prototype, "colors", {
         get: function () {
             var _a;
@@ -349,6 +358,9 @@ var CartItem = /** @class */ (function (_super) {
             return function (resp, status) {
                 if (status === 200) {
                     update_cart_badge('subtract', a.quantity);
+                    var s = JSON.parse(resp);
+                    document.getElementById('total_price').innerText = s['total'];
+                    document.getElementById("in-cart-num").innerText = s['num'];
                     a.remove();
                 }
             };

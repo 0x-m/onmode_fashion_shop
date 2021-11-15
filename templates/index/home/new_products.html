@@ -32,12 +32,12 @@
 
     .product-hub {
         display: flex;
-        justify-content: center;
-        margin: 1rem auto;
+        justify-content:center;
         padding: 0.3rem;
-        width: 100%;
-        flex-wrap: wrap;
+        width:100%;
+        flex-wrap: wrap;    
     }
+
 @media screen and (max-width:480px) {
     .w-100-md {
         width: 100%;
@@ -55,7 +55,7 @@
 <p class="caption fnt" style="margin-top: 1rem;margin-bottom:1rem;text-align:center;font-size:1.5rem;color:gray">
     جدیدترینها
 </p>
-<div style="margin-top: -0.5rem;" class="w-100-md">
+<div style="margin-top: -0.5rem;width:100%" class="w-100-md" >
     <div class="tab-container" >
         <div  onclick="select_tab();" class="tab-items" style="justify-content: center;">
             {% for cat in categories %}
@@ -65,7 +65,7 @@
             {% endfor %}
         </div>
 
-        <div class="tab-contents">
+        <div class="tab-contents" style="width:100%;">
             {% for cat in categories %}
                 <div id="new-{{ forloop.counter }}" class="tab-content {% if forloop.counter == 1%}tab-show-content {% endif %}">
                     <p class="linkTo">

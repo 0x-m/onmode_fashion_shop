@@ -950,12 +950,6 @@ function showMegaMenu() {
 
  }
 
- function closeMegaMenu() {
-     const el = document.getElementById('prods');
-     document.getElementById('megamenu').style.display = 'none';
-     el.classList.remove('cc');
-     console.log('move...')
- }
 
 
 
@@ -1196,13 +1190,33 @@ function pay(){
             drawer.setContent(this.responseText);
             document.getElementById('cart-num-badge').innerText = '0';
     }
-    xhr.open('post','/payments/dispatch/');
+    // xhr.open('post','/payments/dispatch/');
+    xhr.open('post', '/payments/checkout/')
     xhr.setRequestHeader("X-CSRFTOKEN",getCookie("csrftoken"));
     xhr.send(window.address_form_data);
     
     // load_view('/payments/dispatch/','post',fdata);
 }
 
+
+function deposit_then_pay(){
+    const amount = document.getElementById('cart-total').value;
+    window.open('/payments/deposit/?amount' + amount + '&direct=true');
+}
+
+function deposit_account(){
+    const amount = document.getElementById('deposit-amount').value.trim();
+    if (amount == '' )
+        return
+    window.open('/payments/deposit/?amount=' + amount, '_self');
+}
+
+function widthraw_account() {
+    const amount = document.getElementById('widthraw-amount').value.trim();
+    if (amount == '')
+    return
+    load_view('/account/withdraw?amount=' + amount)
+}
 
 function send_issue(){
     const subject_id = document.getElementById('issue-subject').selectedItems;
@@ -1323,7 +1337,7 @@ function cancel_order(){
 
 function verify_recieved_order(){
     let id = document.getElementById('order_id').value;
-    load_view('/shop/order/' + id + '/verify/');
+    load_view('/user/order/' + id + '/verify/');
 }
 
 

@@ -316,6 +316,10 @@
         <div class="box">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89);padding:0.5rem">ردشده</span>
         </div>
+    {% elif order.state == 'recieved' %}
+        <div class="box">
+            <span style="width: 100%;text-align:center;color:white;background-color:rgb(253, 81, 89);padding:0.5rem">دریافت شده</span>
+        </div>
     {% else %}
         <div class="box">
             <span style="width: 100%;text-align:center;color:white;background-color:rgb(105, 194, 253);padding:0.5rem">دریافت شده</span>

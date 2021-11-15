@@ -10,18 +10,18 @@
         background-position: center;
         width:100%;
         margin: 0;
-        background-image: url('{% static "img/slideshow/wave_(1).svg" %}');
+       /* background-image: url('{% static "img/slideshow/wave_(1).svg" %}');*/
 
     }
 
 </style>
 
-<nav class="navbar {% if not shop %}hhe {% endif %}" >
+<nav class="navbar {% if not shop %}hhe {% endif %}"  >
     <a style="text-decoration: none;position:absolute;top:6px;right:16px" href="{% url 'index:home'%}">
         <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 50%;background:transparent">
     </a>
-   <div class="nav nav-md" style="margin-right: 100px;margin-top:8px;z-index:700;">
-    <a href="{% url 'shops:all_products' %}" id="prods" class="nav-item" onclick="showMegaMenu();"  onmousemove="showMegaMenu();">محصولات</a>
+   <div class="nav nav-md" style="margin-right: 100px;margin-top:8px;z-index:700;" onmousemove="closeMegaMenu();">
+    <a href="{% url 'shops:all_products' %}" id="prods" class="nav-item" onclick="showMegaMenu();" onmousemove="showMegaMenu();"  onmouseenter="showMegaMenu();">محصولات</a>
     <a href="{% url 'shops:boutiques' %}" class="nav-item">بوتیکها</a>
     <a href="#" class="nav-item">شگفت انگیز</a>
     <a href="#" class="nav-item">وبلاگ</a>

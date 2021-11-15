@@ -10,6 +10,7 @@
             <cart-item pid="{{item.product.id}}"
                     title="{{item.product.name|truncatechars:50}}"
                     boutique="{{item.product.shop.name}}" 
+                    link="{{ item.product.get_absolute_url }}"
                     price="{{item.product.price}}تومن" 
                     description="{{ itme.product.description }}" 
                     preview="{% if item.product.images.first.image %}{{ item.product.images.first.image.url }}{% else %}{% static 'img/sampleproduct/noimage.png' %}{% endif %}" 

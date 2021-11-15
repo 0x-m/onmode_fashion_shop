@@ -182,6 +182,7 @@ class Order(models.Model):
         if self.state == self.SENT_BUT_NOT_VERIFIED:
             if self.verify_sent:
                 self.state = self.SENT
+        print(self.state,'-----------------in save-----------')
         super().save(**kwargs) 
         
     # @classmethod
@@ -209,8 +210,10 @@ class Order(models.Model):
     def receive(self):
         if self.transaction:
             self.transaction.commit()
-            self.state == self.RECEIVED
+            self.state = self.RECEIVED
             self.date_accomplished = timezone.now()
+            print(self.state)
+            print('---------------in recieve-------------')
             self.save()
 
     

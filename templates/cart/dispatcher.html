@@ -14,9 +14,9 @@
         {% else %}
             <ion-icon name="sad-outline" style="font-size: 10rem;margin-bottom:2rem;color:#555;  --ionicon-stroke-width: 16px;"></ion-icon>
             <p style="font-size: 0.9rem;color:rgb(243, 81, 81);width:100%;text-align:center">موجودی حساب شما کافی نیست!</p>
-            <form method="get" action="{% url 'payments:pay' %}" style="width: 100%;">
+            <form method="get" action="{% url 'payments:deposit' %}" style="width: 100%;">
                 <input type="hidden" name="amount" value="{{cart.get_total_price }}" />
-                <input type="hidden" name="type" value="checkout" />
+                <input type="hidden" name="direct" value="true" />
                 <input type="submit" class="btn btn-primary" style="margin:1rem auto;width:50%" value="پرداخت مستقیم">
             </form>
         {% endif %}

@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>نتیجه پرداخت</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-with, initial-scale=1" />
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body{
+                background-color: white;
+            }
+
+            .container{
+                width: 30%;
+                display: flex;
+                flex-direction: column;
+                height: 50%;
+                position: absolute;
+                border: 1px solid #acaca8;
+                border-radius: 6px;
+                top: 50%;
+                left: 50%;
+                justify-content: center;
+                align-items: center;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                box-shadow: 0 0 5px rgb(201, 201, 201);
+            }
+            .btn{
+                background-color: #121212;
+                color: #ffffff;
+                padding: 0.5rem;
+                width: 50%;
+                border-radius: 32px;
+                border: 1px solid #121212;
+                cursor: pointer;
+            }
+            .btn:active {
+                transform: translate(2px,2px);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            {% if staus == 'success' %}
+            <ion-icon name="checkmark-circle-outline" style="font-size:10rem;color:rgb(14, 158, 14) ;--ionicon-stroke-width: 12px;"></ion-icon>           
+            <div style="text-align: center;">
+                <p style="font-size: 1.3rem;">پرداخت با موفقیت انجام شد</p>
+                <p style="font-size: 0.8rem;">شماره تراکنش:{{refid}}</p>
+            </div>
+            <button class="btn cta">تسویه سبد خرید</button>
+            {% elif status == 'fail' %}
+            <ion-icon name="close-circle-outline" style="font-size:10rem;color:rgb(187, 29, 29) ;--ionicon-stroke-width: 12px;"></ion-icon>           
+            <div style="text-align: center;">
+                <p style="font-size: 1.3rem;">خطا در انجام تراکنش</p>
+                <p style="font-size: 0.8rem;">شماره تراکنش:{{refid}}</p>
+            </div>
+            {% endif %}
+        </div>
+
+
+      <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </body>
+</html>

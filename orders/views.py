@@ -136,8 +136,9 @@ def verify_recieve_order(request:HttpRequest,order_id):
         return HttpResponseForbidden('you are not allowed...')
     
     if order.state == Order.SENT:
-        order.recieve();
-    return redirect('/user/order/' + order_id + '/')
+        order.receive()
+        return HttpResponse('success')
+    return HttpResponseBadRequest('error')
 
 
 @login_required

@@ -1,50 +1,129 @@
+{% load jalali_tags %}
 <style>
     .tab-item-1 {
         font-size: 0.8rem !important;
+    }
+
+    .history-item {
+        width: 95%;
+        margin: 1rem auto;
+        border-bottom: 1px solid #eee;
+        border-radius: 6px;
+        padding: 0.5rem;
+        position: relative;
+    }
+    .history-date{
+        position: absolute;
+        left: 3px;
+        top: 5px;
+        color: gray;
+        font-size: 0.6rem;
+    }
+    .history-amount {
+        position: absolute;
+        right: 3px;
+        top: 25px;
+
+        font-size: 0.7rem;
+        color: #121212;
+    }
+    .history-state {
+        font-size: 0.6rem;
+        color: gray;
+        position: absolute;
+        right: 3px;
+        top: 5px;
+    }
+    .history-desc{
+        font-size: 0.7rem;
+        width: 100%;
+        margin-top: 3rem;
+        color: #777;
     }
 </style>
 <div class="container vertical" style="width: 100%;">
     <div class="container horizontal w-100" style="background-color: #d44141;border-radius:0 0 50% 50%;">
         <ion-icon name="wallet-outline" style="font-size:10rem;color:rgb(255, 255, 255) ;--ionicon-stroke-width: 12px;"></ion-icon>           
         <div class="container vertical" style="justify-content: center;align-items:flex-start;line-height:2rem;color:white;font-size:0.9rem">
-            <p>کل موجودی:{{user.account.balance}}</p>
-            <p>قابل برداشت:sss</p>
-            <p>غیرقابل برداشت:ddd</p>
+            <p>کل موجودی:{{total_money}}</p>
+            <p>قابل برداشت:{{user.account.balance}}</p>
+            <p>غیرقابل برداشت:{% if pending_money %}{{pending_money}}{% else %}0{% endif %}</p>
         </div>
     </div>
     <div class="tab-container">
         <div onclick="select_tab()" class="tab-items" style="width: 100%;justify-content:center">
             <div data-tab="tab-widthraw" class="tab-item tab-item-1 tab-item-selected">برداشت</div>
             <div data-tab="tab-deposit" class="tab-item tab-item-1">واریز</div>
-            <div data-tab=""tab-history"" class="tab-item tab-item-1">تاریخچه</div>
+            <div data-tab="tab-history" class="tab-item tab-item-1">تاریخچه</div>
         </div>
         <div class="tab-contents">
             <div class="tab-content tab-show-content" id="tab-widthraw">
                 <div style="margin: 2rem auto;width:80%">
+                    {% if user.account.balance %}
+                    {% if allowed_checkout %}
                     <div class="txt-box w-100 mt-1">
-                        <input id="widthraw-text"  type="text" class="text" required>
+                        <input id="widthraw-amount"  type="number" class="text" required>
                         <label class="holder">مبلغ به تومان</label>
                     </div>
                     <p id="widthraw-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
-                    <button  class="btn cta w-100" onclick="edit_profile();">ثبت درخواست</button>
+                    <button  class="btn cta w-100" onclick="widthraw_account();">ثبت درخواست</button>
                     <p style="margin-top: 1rem;font-size:0.8rem">
-                        **تاریخ برداشت قبلی...
+                        **تاریخ برداشت قبلی:{{last_checkout.date_created|to_jalali:'%y/%M/%d'}}
                     </p>
+                    {% else %}
+                        <div style="text-align: center;color:#121212;font-size:0.8rem;">
+                            <p>
+                                آخرین درخواست شما در تاریخ
+                            </p>
+                            <br />
+                            <p>
+                                {{user.checkouts.last.date_created|to_jalali:'%y/%M/%d'}}
+                            </p>
+                            <p style="text-align:right;margin-top:0.5rem">
+                                ثبت شده است. ثبت درخواست جدید تا هفت روز پس از تاریخ مذکور امکانپذیر نمیباشد
+                            </p>
+    
+                        </div>
+                    {% endif %}
+                    {% else %}
+                    <p style="width: 100%;text-align:center">کیف پول شما خالیست!</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="tab-content" id="tab-deposit">
                 <div  style="width:80%;margin:2rem auto;">
                     <div class="txt-box w-100 mt-1">
-                        <input id="deposit-text"  type="text" class="text" required>
+                        <input id="deposit-amount"  type="number" class="text" required>
                         <label class="holder">مبلغ به تومان</label>
                     </div>
                     <p id="deposit-error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>
-                    <button  class="btn cta w-100" onclick="edit_profile();">اتصال به درگاه</button>
+                    <button  class="btn cta w-100" onclick="deposit_account();">اتصال به درگاه</button>
     
                 </div>
             </div>
             <div id="tab-history" class="tab-content">
-
+                <div class="container vertical">
+                  {% for ch in user.checkouts.all|dictsortreversed:'date_created'|slice:'0:5' %}
+                    <div class="history-item">
+                        <span class="history-amount"> درخواست برداشت {{ch.amount}} تومان</span>
+                        <span class="history-date">{{ch.date_created|to_jalali:'%y/%m/%d'}}</span>
+                        {% with ch.state as state %}
+                            {% if state == 'pending' %}
+                            <span class="history-state">وضعیت: بررسی نشده</span>
+                            {% elif state == 'rejected' %}
+                            <span class="history-state">وضعیت:رد شده</span>
+                            {% elif state == '' %}
+                            <span class="history-state">وضعیت:انجام شده</span>
+                            {% endif %}
+                        {% endwith %}
+                        <p class="history-desc">
+                            {% if ch.status %}
+                                {{ch.status}}
+                            {% endif %}
+                        </p>
+                    </div>
+                  {% endfor %}
+                </div>
             </div>
         </div>
     </div>
