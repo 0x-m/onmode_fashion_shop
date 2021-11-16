@@ -29,9 +29,10 @@
         </div>
     </div>
         <div class="txt-box ">
-            <input class="text"  onblur="validate_email();" name="email" id="profile-email" type="email"  value="{% if user.email %}{{user.email}}{% endif %}" required />
+            <input style="direction: ltr;" class="text"  onblur="validate_email();" name="email" id="profile-email" type="email"  value="{% if user.email %}{{user.email}}{% endif %}" required />
             <label class="holder" >ایمیل</label>
         </div>
+        <span class="" id="email-error" style="color: red;font-size:0.7rem;margin-top:0.3rem"></span>
         <div class="txt-box mt-1">
             <input style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" name="merchan_card" id="profile-merchan_card" class="text" type="text"  value="{% if user.merchan_card %}{{user.merchan_card}}{% endif %}" required />
             <label class="holder">شماره کارت: </label>

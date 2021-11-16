@@ -28,7 +28,9 @@ def make_appeal(request:HttpRequest):
             return HttpResponseBadRequest("the boutique with name %s is already exist" % page_name)
         appeal = Appeal(user=request.user, page_name=page_name)
         appeal.save()
-        return HttpResponse("an appeal is registered")
+        return render(request, 'utils/operation_done.html',{
+            'description': 'درخواست شما ثبت شد'
+        })
   
     return render(request, 'topic/request_for_boutique.html', {
         'appeal': appeal
@@ -45,7 +47,9 @@ def make_issue(request:HttpRequest):
             issue = form.save(commit=False)
             issue.user = request.user
             issue.save()
-            return HttpResponse('issue was registerd successfully')
+            return render(request, 'utils/operation_done.html', {
+                'description': 'تقاضا شما ثبت شد.'
+            })
         else:
             return HttpResponseBadRequest('invalid inputs')
 

@@ -143,7 +143,7 @@ class Order(models.Model):
     state = models.CharField(verbose_name=_('State'),choices=STATES,default='pending', max_length=20)
     verify_sent = models.BooleanField(verbose_name=_('Verify sent'),default=False)
     transaction = models.ForeignKey(verbose_name=_('Transaction:id'),to=TransferTransaction,on_delete=models.CASCADE,related_name='orders', null=True)
-    tracking_code_status = models.CharField(max_length=500,verbose_name=_("tracking Status"),default='در انتظار تاییدمث')
+    tracking_code_status = models.CharField(max_length=500,verbose_name=_("tracking Status"),default='در انتظار تایید')
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')

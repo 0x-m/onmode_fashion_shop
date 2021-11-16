@@ -30,7 +30,7 @@
     <span style="color:#888;cursor:pointer;" >نام صفحه بوتیک به انگلیسی را وارد نمایید</span>
 </p>
 <div class="txt-box w-100 mt-1">
-    <input id="page_name"  type="text" class="text" required>
+    <input onkeypress="return validate_shop_name(event)" id="page_name"  type="text" class="text" required>
     <label class="holder">نام بوتیک</label>
 </div>
 <p id="page_name_error" style="color: red;font-size:0.7rem;margin-top:0.5rem"></p>

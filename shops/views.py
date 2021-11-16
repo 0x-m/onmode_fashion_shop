@@ -82,7 +82,9 @@ def add_product(request:HttpRequest):
                     empty_img = ProductImage(product=product)
                     empty_img.save()
                
-            return HttpResponse("added successfully")
+            return render(request, 'utils/operation_done.html', {
+                'description': 'محصول جدید با موفقیت ثبت شد'
+            })
         return HttpResponseBadRequest(form.errors)
     
     if shop.products.filter(is_active=True).count() == shop.max_num_of_products:
@@ -130,6 +132,9 @@ def edit_product(request:HttpRequest, product_id):
             if sizes:
                 product.sizes.set(sizes)
             product.save()
+            return render(request, 'utils/operation_done.html', {
+                'description': 'محصول ویرایش شد.'
+            })
         else:
             return HttpResponseBadRequest("Invalid inputs")
     return render(request, 'product/edit.html',{
@@ -250,7 +255,7 @@ def get_collection_product(request: HttpRequest, slug):
     
     return render(request,'index/collection_page.html',{
         'page':page,
-        'collection_name': name
+        'collection_name': col.name
 
     })
 
@@ -490,7 +495,9 @@ def edit_shop(request:HttpRequest):
 
             shop.convers_all_states = all_states
             shop.save()
-            return HttpResponse("edited successfully")
+            return render(request, 'utils/operation_done.html', {
+                'description': 'اطلاعات بوتیک ویرایش شد'
+            })
         else:
             print(form.errors)
             return HttpResponseBadRequest("Invalid inputs..")

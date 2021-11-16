@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpRequest, request
 from http import HTTPStatus
 import logging
+
 from .forms import *
 from .models import User, Address
 from django.contrib.auth import authenticate, login,logout
@@ -54,7 +55,7 @@ def send_verify_code(phone_no, code):
 def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
         logger.warning("an authenticated user issues an enrollment")
-        return render(request, 'user/dashboard.html')
+        return HttpResponseBadRequest('error')
 
     if request.method == 'POST':
         form = PhoenForm(request.POST)
@@ -87,7 +88,8 @@ def enrollment(request:HttpRequest):
             expire = timezone.now() + timezone.timedelta(seconds=120)
             request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
             request.session.save()
-            is_sent = send_verify_code(phone_no, verification_code)
+           # is_sent = send_verify_code(phone_no, verification_code)
+            is_sent = True
             if is_sent:
                 return render(request, 'registration/verification.html',
                               {'code':verification_code })
@@ -134,7 +136,6 @@ def verification(request:HttpRequest):
             verification_code = request.session.get('verification_code')
             dt = timezone.now().replace(tzinfo=None)
             expire = timezone.datetime.strptime(request.session.get('expire_date'),'%Y-%m-%d %H:%M:%S.%f')
-            print(expire,"\n",dt)
 
             if expire < dt:
                 return render(request, 'registration/code_expiration.html')
@@ -251,10 +252,12 @@ def profile(request:HttpRequest):
                 address = Address(user=request.user)
             address_form = AddressForm(request.POST, instance=address)
             if address_form.is_valid():
-                print('address....')
                 
                 address_form.save()
             profile_form.save()
+            return render(request, 'utils/operation_done.html', {
+                'description': 'اطلاعات شما ویرایش شد'
+            })
         else:
             return HttpResponseUnprocessableEntity(profile_form.errors)
     
@@ -262,8 +265,14 @@ def profile(request:HttpRequest):
         'provinces': get_provinces()
     })
 
-
-
-
-
+@login_required
+def check_email(request: HttpRequest):
+    email = request.GET.get('email', None)
+    if not email:
+        return HttpResponseBadRequest()
+    usr = User.objects.filter(email=email).first()
+    if usr != request.user:
+        return HttpResponseBadRequest()
+    return HttpResponse('ok')
+    
 

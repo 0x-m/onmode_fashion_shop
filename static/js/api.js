@@ -374,8 +374,7 @@ function add_product(command){
             // const sucess = document.getElementById("sucessful-edit").innerHTML;
             const d = document.getElementById('drawer');
             d.hideLoader();
-            d.setContent('success'); // ex:change with xhttp.responseText and, in the server side, make the addition is done successfully prompt...
-            
+            d.setContent(xhttp.responseText); // ex:change with xhttp.responseText and, in the server side, make the addition is done successfully prompt...
         }
 
     };
@@ -500,6 +499,40 @@ function validateName(evt) {
     return true
 }
 
+function validate_shop_name(evt){
+    evt = (evt) ? evt : window.event;
+    var charCode = evt.key;
+    console.log(charCode);
+    const wilds = ".+--)(*&^%$#@!~`,/'\";:][\|= ";
+    if (wilds.indexOf(charCode) > 0) {
+        return false;
+    }
+    return true
+}
+
+function validate_email(){
+    const email = event.target.value.trim()
+    const mail_rx = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+    const err_box =  document.getElementById('email-error');
+    console.log(mail_rx.test(email));
+    if (!mail_rx.test(email)) {
+        err_box.innerText = 'ایمیل معتبر نمیباشد';
+        event.target.focus();
+        return;
+    }
+    else{
+        err_box.innerText = '';
+    }
+    get('/users/check_email?email=' + email,function(resp, status){
+        if (status != 200){
+            document.getElementById('email-error').innerText = 'ایمیل قبلا ثبت شده است';
+        }
+        else{
+            document.getElementById('email-error').innerText = '';
+        }
+    });
+}
+
 function open_search() {
     console.log('search...');
 }
@@ -559,7 +592,7 @@ function add_to_cart_in_detail_page(){
     const id = document.getElementById('product_id').value;
     try{
         color = 
-            document.getElementById('product_colors')?.getElementsByClassName('inline-item--selected')?.dataset['id'];
+            document.getElementById('product_colors').getElementsByClassName('inline-item--selected').dataset['id'];
 
         size = document.
         getElementById('product_sizes').
@@ -1099,9 +1132,11 @@ function edit_profile(){
     xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
     xhttp.onload = () =>{
         if(xhttp.status == 200){
-            document.getElementById('drawer').setContent('successfully edited');
+            document.getElementById('drawer').setContent(xhttp.responseText);
+            document.getElementById('drawer').hideLoader();
         }
     }
+    document.getElementById('drawer').showLoader();
     xhttp.send(data);
 }
 

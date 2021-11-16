@@ -61,7 +61,7 @@ class NumberBox extends HTMLElement {
     }
 
     get maxValue() {
-        return parseInt(this.getAttribute('maxValue') ?? 100);
+        return parseInt(this.getAttribute('maxValue') ? Number(this.getAttribute('maxValue')) : 100);
     }
 
     constructor() {
@@ -70,7 +70,7 @@ class NumberBox extends HTMLElement {
         this.shadowRoot.appendChild(numbox_template.content.cloneNode(true));
         this._increment = this._increment.bind(this);
         this._decrement = this._decrement.bind(this);
-        this._value = this.value ?? 1;
+        this._value = this.value ? this.val : 1;
 
         this.incrementEvent = new CustomEvent('onincrement', {
             bubbles: true,
