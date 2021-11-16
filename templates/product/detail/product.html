@@ -152,7 +152,9 @@
                 </div>
                 {% if not product.shop == user.shop.first %}
                 <div class="product-actions">
+                    {% if product.quantity %}
                     <button  class="btn cta" onclick="add_to_cart_in_detail_page();" style="width: 50%;margin:0rem auto;">میخرم</button>
+                    {% endif %}
                 </div>
 
             {% endif %}

@@ -14,6 +14,8 @@ from index.utils import get_cities, get_provinces
 import secrets
 from django.utils import timezone
 from ratelimit.decorators import ratelimit
+from ippanel import Client
+from decouple import config
 #--------------------LOGGING CONFIG--------------
 logger = logging.getLogger(__name__)
 # f_handller = logging.FileHandler('logs/users.log','a')
@@ -33,6 +35,21 @@ def generate_code():
     code = ''.join(secrets.choice(alphbet)for i in range(6))
     return code
         
+        
+def send_verify_code(phone_no, code):
+    api_key = config('VERIFICATION_SMS_API_KEY')
+    sms = Client(api_key)
+    pattern_code = config('VERIFICATION_CODE_SMS_CODE')
+    pattern_values ={
+    "verification_code": code
+    }
+    pattern_code = config('VERIFICATION_CODE_SMS_CODE')
+    num = config('SMS_NUMBER')
+    is_sent = sms.send_pattern(pattern_code,num, phone_no, pattern_values)
+    return is_sent
+
+    
+
 @ratelimit(key='ip',rate='15/m',method='POST', block=True)
 def enrollment(request:HttpRequest):
     if request.user.is_authenticated:
@@ -70,9 +87,7 @@ def enrollment(request:HttpRequest):
             expire = timezone.now() + timezone.timedelta(seconds=120)
             request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
             request.session.save()
-            #send otp via sms
-            
-            is_sent  = True
+            is_sent = send_verify_code(phone_no, verification_code)
             if is_sent:
                 return render(request, 'registration/verification.html',
                               {'code':verification_code })
@@ -96,9 +111,10 @@ def reset_password(request: HttpRequest):
     request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
     request.session.save()
     #-----------------------------
-    #send code via sms
+    is_sent = send_verify_code(phone_no, verification_code)
     #-----------------------------
-    return render(request, 'registration/verification.html', {'code': verification_code, 'phone_no': phone_no});            
+    return render(request, 'registration/verification.html', {'phone_no': phone_no});            
+
 
 @ratelimit(key='ip',rate='5/m',method='POST',block=True)            
 def verification(request:HttpRequest):

@@ -465,6 +465,7 @@
   color: white;
   display: flex;
   border-radius: 6px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
 }
 .badge-red {
@@ -912,7 +913,7 @@
 .navbar .nav .nav-item {
   color: #696969;
   padding: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   text-decoration: none;
   position: relative;
 }

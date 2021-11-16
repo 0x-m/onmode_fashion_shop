@@ -29,7 +29,7 @@
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
-                min-height: 100vh;
+                height: fit-content;
             }
       
             html {
@@ -46,10 +46,20 @@
                 background-color: rgba(120,120,120,0.7)
             }
             
+           /* .fnn {
+                font-family: 'Noto Nastaliq Urdu', serif;
+            }*/
+            .fnn {
+                font-family: 'Harmattan', sans-serif;
+            }
+
+            .fnn1 {
+                font-family: 'Amiri', serif;
+            }
         </style>
  
         <script>
-            document.addEventListener( 'DOMContentLoaded', function () {
+          /*  document.addEventListener( 'DOMContentLoaded', function () {
                 new Splide( '.splide' ).mount();
                 new Splide('#discounteds', {
                     perPage:3,
@@ -64,10 +74,12 @@
                     }
                 }).mount();
               
-            } );
+            } );*/
             document.addEventListener('click', function(e) {
                 closeMegaMenu();
             })
+
+       
          
         </script>
         <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
@@ -75,6 +87,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Quicksand:wght@300&family=Vibes&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Harmattan&family=Open+Sans+Condensed:wght@300&family=Quicksand:wght@300&family=Vibes&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>

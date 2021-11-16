@@ -14,9 +14,16 @@
 
     }
 
+    .fsize {
+        font-size: 1.5rem;
+    }
+    .prof-dropdown {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.9rem;
+    }
 </style>
 
-<nav class="navbar {% if not shop %}hhe {% endif %}"  >
+<nav class="navbar {% if not shop %}hhe {% endif %} fnn1" >
     <a style="text-decoration: none;position:absolute;top:6px;right:16px" href="{% url 'index:home'%}">
         <img src="{% static 'img/slideshow/onmodelogo.png' %}" style="width: 50%;background:transparent">
     </a>
@@ -34,7 +41,7 @@
         <div class="prof-dropdown">
             <ion-icon id="user-icon"  name="person-outline" class="icon prof-toggle {% if not user.is_authenticated %}hi{% endif %}"></ion-icon>
             <ul class="prof-menu">
-                <div style="width: 100%;background-color:rgb(223, 68, 89);padding:0.5rem;text-align:center;border-radius:4px 4px 0 0;">
+                <div style="width: 100%;background-color:rgb(65, 65, 65);padding:0.5rem;text-align:center;border-radius:4px 4px 0 0;">
                     <span style="font-size:0.9rem;color:rgb(255, 255, 255);display:block;margin-top:0.0rem">{{ user.phone_no}}</span>
                     <span style="font-size: 0.7rem;color:rgb(255, 255, 255);display:block;margin-top:0.4rem">کد کاربری: {{ user.user_code}}</span>        
                 </div>
@@ -53,12 +60,12 @@
                 <li style="position: relative;"  onclick="open_favourites();" >
                     <ion-icon name="heart-outline" style="font-size: 19px;margin-left:8px;color:rgb(250, 100, 100)"></ion-icon>
                     <span>علاقه مندیها</span>
-                    <span style="left:8px;top:50%;transform:translate(0,-50%);font-size:0.6rem;color:white;position:absolute;border-radius:6px;padding:0.3rem;display:block;background:rgb(255, 90, 90)">{{user.favourites.all|length}}</span>
+                    <span style="left:8px;top:50%;transform:translate(0,-50%);font-size:0.6rem;color:white;position:absolute;border-radius:6px;padding:0.3rem;display:block;background:rgb(87, 87, 87)">{{user.favourites.all|length}}</span>
                 </li>
                 <li onclick="get_messages();" style="position: relative;">
                     <ion-icon name="mail-outline" style="font-size: 19px;margin-left:8px;color:rgb(250, 100, 100)"></ion-icon>
                     <span>پیامها</span>
-                    <span style="left:8px;top:50%;transform:translate(0,-50%);font-size:0.6rem;color:white;position:absolute;border-radius:6px;padding:0.3rem;display:block;background:rgb(255, 90, 90)">{{user.recieved_messages.all|length}}</span>
+                    <span style="left:8px;top:50%;transform:translate(0,-50%);font-size:0.6rem;color:white;position:absolute;border-radius:6px;padding:0.3rem;display:block;background:rgb(85, 85, 85)">{{user.recieved_messages.all|length}}</span>
                 </li>
                 {% if user.shop.first.is_active %}
                     <a href="{{user.shop.first.get_absolute_url }}" >

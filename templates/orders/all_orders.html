@@ -175,7 +175,7 @@
             <th>تاریخ ایجاد</th>
             <th>جزئیات</th>
         </tr>
-     {% for order in orders %}
+     {% for order in orders|dictsortreversed:'date_created'|slice:'0:20' %}
         <tr>
             <td>{{ order.id }}</td>
             {% if owner == 'shop' %}
