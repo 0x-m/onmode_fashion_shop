@@ -5,7 +5,9 @@ boto3==1.18.64
 botocore==1.21.64
 cached-property==1.5.2
 certifi==2021.5.30
+cffi==1.15.0
 chardet==4.0.0
+cryptography==35.0.0
 defusedxml==0.7.1
 dj-database-url==0.5.0
 Django==3.2.4
@@ -14,12 +16,15 @@ django-ratelimit==3.0.1
 django-storages==1.12.2
 gunicorn==20.1.0
 idna==2.10
+ippanel==1.1.0
 isodate==0.6.0
 jdatetime==3.6.2
 jmespath==0.10.0
 lxml==4.6.3
 Pillow==8.2.0
+pkg_resources==0.0.0
 psycopg2-binary==2.9.1
+pycparser==2.21
 pyotp==2.6.0
 python-dateutil==2.8.2
 python-decouple==3.4
