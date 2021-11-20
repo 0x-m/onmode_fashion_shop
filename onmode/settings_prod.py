@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['onmode.ir','www.onmode.ir']
 
 INSTALLED_APPS = [
     'apps.MyAdminConfig',
@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'users',
     'index',
     'product_attributes',
@@ -84,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  config('DB_NAME'),
-        'USER': config('DB_USER'),
+        'USER': config('DB_USER_NAME'),
         'PASSWORD': config('DB_PASSWORD'),
 
     }
@@ -110,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 #----------------------------------
 
 
-LANGUAGE_CODE = 'fa-ir'
+LANGUAGE_CODE = 'en-us'
 lANGUAGES = [
     ('en','English'),
     ('fa','Farsi')
@@ -121,7 +122,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -151,7 +152,7 @@ STATICFILES_DIRS = (
 #whitenoise.storage.CompressedManifestStaticFilesStorage
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 #whitenoise.storage.CompressedStaticFilesStorage
-
+#MERCHANT_ID = config('MERCHANT_CODE')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
