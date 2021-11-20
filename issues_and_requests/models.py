@@ -1,9 +1,12 @@
+from posixpath import normcase
 from django.db import models
 from shops.models import Shop
 from django.utils.translation import gettext_lazy as _
 from users.models import User
 from django.utils import timezone, tree
 from orders.models import Order
+from decouple import config
+from ippanel import Client
 
 class Appeal(models.Model):
     PENDING = 'pending'
@@ -22,11 +25,28 @@ class Appeal(models.Model):
     status = models.CharField(verbose_name=_('Status'),max_length=500,blank=True,null=True)
     
     def accept(self, msg= ""):
+        prev_shop = Shop.objects.filter(seller=self.user, name=self.page_name).first()
+        if prev_shop:
+            return 
         self.state = self.ACCEPTED
         shop = Shop(seller=self.user,name=self.page_name)
         shop.save()
         self.status = msg
         self.save()
+        api_key = config('SELLER_SMS_API_KEY')
+        cl = Client(api_key)
+        pattern_code = config('BOUTIQUE_ACCEPTED_SMS_CODE')
+        sms_num = config('SMS_NUMBER')
+        pattern_values = {
+            "name": self.user.first_name,
+            "bout": shop.name,
+            "link": shop.get_absolute_url(),
+        }
+        try:
+            cl.send_pattern(pattern_code, sms_num, self.user.phone_no, pattern_values)
+        except:
+            pass
+        
         
     def reject(self, msg = ""):
         self.state = self.REJECTED

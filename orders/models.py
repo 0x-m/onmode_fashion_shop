@@ -15,6 +15,23 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from users.models import Address, User
 from django.utils.translation import gettext_lazy as _
+from ippanel import Client
+from decouple import config
+
+
+SEL_API_KEY = config('SELLER_SMS_API_KEY')
+CUS_API_KEY = config('CUSTOMER_SMS_API_KEY')
+cus_sms_client = Client(CUS_API_KEY)
+sel_sms_client = Client(SEL_API_KEY)
+
+#--------------utiuls-----------------
+def send_notification(client: Client,pattern,values,phone_no):
+    pattern_code = config(pattern)
+    num = config('SMS_NUMBER')
+    is_sent = client.send_pattern(pattern_code,num, phone_no, values)
+    return is_sent
+
+
 
 class OrderAddress(models.Model):
     first_name = models.CharField(verbose_name=_('First name'),max_length=50)
@@ -206,6 +223,13 @@ class Order(models.Model):
                 self.transaction.reject()
                 self.state = self.REJECTED
                 self.save()
+                try:
+                    send_notification(cus_sms_client,'ORDER_REJECTED_SMS_CODE', {
+                            "name": self.user.first_name,
+                            "id": self.id,
+                        }, self.user.phone_no)
+                except:
+                    pass
     
     def receive(self):
         if self.transaction:
@@ -224,6 +248,14 @@ class Order(models.Model):
                 self.transaction.reject()
                 self.state = self.CANCELLED
                 self.save()
+                try:
+                    send_notification(sel_sms_client,'ORDER_CANCELED_SMS_CODE', {
+                            "name": self.shop.seller.first_name,
+                            "id": self.id,
+                        }, self.user.phone_no)
+                except:
+                    pass
+                
     def register_tracking_code(self,t_code):
         self.tracking_code = t_code
         self.state = self.SENT_BUT_NOT_VERIFIED

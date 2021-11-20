@@ -40,7 +40,6 @@ def generate_code():
 def send_verify_code(phone_no, code):
     api_key = config('VERIFICATION_SMS_API_KEY')
     sms = Client(api_key)
-    pattern_code = config('VERIFICATION_CODE_SMS_CODE')
     pattern_values ={
     "verification_code": code
     }
@@ -88,8 +87,8 @@ def enrollment(request:HttpRequest):
             expire = timezone.now() + timezone.timedelta(seconds=120)
             request.session['expire_date'] = expire.strftime('%Y-%m-%d %H:%M:%S.%f')
             request.session.save()
-           # is_sent = send_verify_code(phone_no, verification_code)
-            is_sent = True
+            is_sent = send_verify_code(phone_no, verification_code)
+            # is_sent = True
             if is_sent:
                 return render(request, 'registration/verification.html',
                               {'code':verification_code })

@@ -22,10 +22,16 @@ def make_appeal(request:HttpRequest):
         
         if not page_name:
             return HttpResponseBadRequest("page name is not provided")
+        wilds = ".+--)(*&^%$#@!~`,/'\";:][\|= "
+        for c in page_name:
+            if c in wilds:
+                return HttpResponseBadRequest()
+        
         shop =  Shop.objects.filter(name=page_name).exists()
         
         if shop:
             return HttpResponseBadRequest("the boutique with name %s is already exist" % page_name)
+        
         appeal = Appeal(user=request.user, page_name=page_name)
         appeal.save()
         return render(request, 'utils/operation_done.html',{
